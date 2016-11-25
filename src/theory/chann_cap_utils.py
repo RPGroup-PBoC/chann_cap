@@ -738,3 +738,24 @@ def set_plotting_style():
     sns.set_style('darkgrid', rc=rc)
     sns.set_palette("colorblind", color_codes=True)
     sns.set_context('notebook', rc=rc)
+
+#============================================================================== 
+# Useful generic functions
+#============================================================================== 
+def ecdf(data):
+    """
+    Computes the empirical cumulative distribution function (ECDF)
+    of a given set of 1D data.
+
+    Parameters
+    ----------
+    data : 1d-array
+        Data from which the ECDF will be computed.
+
+    Returns
+    -------
+    x, y : 1d-arrays
+        The sorted data (x) and the ECDF (y) of the data.
+    """
+
+    return np.sort(data), np.arange(len(data))/len(data)
