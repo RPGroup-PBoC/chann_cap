@@ -19,7 +19,6 @@
 *.eps
 *.ai
 tmp/
-data/microscopy/
 **/.ipynb_checkpoints/
 fig/
 output/
@@ -30,3 +29,6 @@ graphicspath.tex
 *.lnk
 __pycache__/
 **/__pycache__/
+data/microscopy/
+data/csv_channcap_bootstrap/
+
