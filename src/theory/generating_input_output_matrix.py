@@ -52,13 +52,14 @@ if compute_matrix:
 	# If the file exists read the file, find the maximum number of repressors
 	# And compute from this starting point.
         if os.path.isfile(file): 
-            df = pd.read_csv(file)
-            max_rep = df.repressors.max()
-            df = df[df.repressors != max_rep]
+            df = pd.read_csv(file, index_col=0)
+            max_rep = df.repressor.max()
+            df = df[df.repressor != max_rep]
             df.to_csv(file)
-            r_array = np.arange(max_rep, max(R_array))
+            r_array = np.arange(max_rep, np.max(R_array) + 1)
         else:
             r_array = R_array
+
         # Loop through repressor copy numbers
         for i, r in enumerate(r_array):
             if r%50==0:
