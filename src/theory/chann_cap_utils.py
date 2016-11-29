@@ -135,7 +135,7 @@ def log_p_m_mid_C(C, mRNA, rep, ki, ka, epsilon, kon, k0, gamma, r_gamma,
         C = 10**C
     
     # Calculate the off rate including the MWC model
-    koff = k0 * rep * evo_utils.p_act(C, ka, ki, epsilon)
+    koff = k0 * rep * p_act(C, ka, ki, epsilon)
 
     # Compute the probability
     lnp = scipy.special.gammaln(kon / gamma + mRNA) \
@@ -204,7 +204,7 @@ def log_p_p_mid_C(C, protein, rep, ka, ki, epsilon, kon, k0, gamma_m, r_gamma_m,
         C = 10**C
  
     # Calculate the off rate including the MWC model
-    koff = k0 * rep * evo_utils.p_act(C, ka, ki, epsilon)
+    koff = k0 * rep * p_act(C, ka, ki, epsilon)
 
     # compute the variables needed for the distribution
     a = r_gamma_m * gamma_m / gamma_p # r_m / gamma_p
