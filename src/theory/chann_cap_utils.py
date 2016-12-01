@@ -565,149 +565,198 @@ def trans_matrix(C, m, logPmC_fun, param, tol=0.01,
                 
     return QmC
 
-#=============================================================================== 
-# Automatic gating of the flow cytometry data
-#=============================================================================== 
+#============================================================================== 
+# Computing experimental channel capacity
+#============================================================================== 
 
-def fit_2D_gaussian(df, x_val='FSC-A', y_val='SSC-A', log=False):
+def trans_matrix(df, bins, frac=None,
+                 output_col='mean_intensity', group_col='IPTG_uM'):
     '''
-    This function hacks astroML fit_bivariate_normal to return the mean and
-    covariance matrix when fitting a 2D gaussian fuction to the data contained
-    in the x_vall and y_val columns of the DataFrame df.
+    Builds the transition matrix P(m|C) from experimental data contained in a
+    tidy dataframe. The matrix is build by grouping the data according to the
+    entries from group_col.
     Parameters
     ----------
-    df : DataFrame.
-        dataframe containing the data from which to fit the distribution
-    x_val, y_val : str.
-        name of the dataframe columns to be used in the function
-    log : bool.
-        indicate if the log of the data should be use for the fit or not
-        
+    df : pandas Dataframe
+        Single cell output reads measured at different inducer concentrations. 
+        The data frame must contain a column output_col that will be binned to
+        build the matrix, and a matrix group_col that will be used to group
+        the different inputs.
+    bins : int.
+        Number of bins to use when building the empirical PMF of the data set.
+        If `bins` is a string from the list below, `histogram` will use
+        the method chosen to calculate the optimal bin width and
+        consequently the number of bins from the data that falls within 
+        the requested range.
+    frac : None or float [0, 1]
+        Fraction of the data to sample for building the matrix. Default = None
+        meaning that the entire data set will be used. The fraction of data is 
+        taken per input value.
+    output_col : str.
+        Name of the column that contains the quantity (usually fluorescence 
+        measurements) to be binned in order to build the matrix
+    group_col : str.
+        Name of the column that contains the inputs C of the matrix (usually
+        inducer concentrations). This column will be used to separate the
+        different rows ot the transition matrix.
     Returns
     -------
-    mu : tuple.
-        (x, y) location of the best-fit bivariate normal
-    cov : 2 x 2 array
-        covariance matrix.
-        cov[0, 0] = variance of the x_val column
-        cov[1, 1] = variance of the y_val column
-        cov[0, 1] = cov[1, 0] = covariance of the data
+    QmC : array-like.
+        Experimentally determined input-output function.
+    len(df) : int
+        Number of data points considered for building the matrix
     '''
-    if log:
-        x = np.log10(df[x_val])
-        y = np.log10(df[y_val])
-    else:
-        x = df[x_val]
-        y = df[y_val]
-        
-    # Fit the 2D Gaussian distribution using atroML function
-    mu, sigma_1, sigma_2, alpha = fit_bivariate_normal(x, y, robust=True)
-
-    # compute covariance matrix from the standar deviations and the angle
-    # that the fit_bivariate_normal function returns
-    sigma_xx = ((sigma_1 * np.cos(alpha)) ** 2
-                + (sigma_2 * np.sin(alpha)) ** 2)
-    sigma_yy = ((sigma_1 * np.sin(alpha)) ** 2
-                + (sigma_2 * np.cos(alpha)) ** 2)
-    sigma_xy = (sigma_1 ** 2 - sigma_2 ** 2) * np.sin(alpha) * np.cos(alpha)
     
-    # put elements of the covariance matrix into an actual matrix
-    cov = np.array([[sigma_xx, sigma_xy], [sigma_xy, sigma_yy]])
+    # Extract the data to bin
+    bin_data = df[output_col]
     
-    return mu, cov
+    # indicate the range in which bin the data
+    bin_range = [np.min(bin_data), np.max(bin_data)]
+    
+    # If inidicated select a fraction frac of the data at random
+    if frac != None:
+        # Group by group_col and take samples
+        group = df.groupby(group_col)
+        # Initialize data frame to save samples
+        df_sample = pd.DataFrame()
+        for g, d in group:
+            df_sample = pd.concat([df_sample, d.sample(frac=frac)])
+        # Use the subsample data frame
+        df = df_sample
+    
+    # Extract the number of unique inputs in the data frame
+    n_inputs = df.IPTG_uM.unique().size
+    
+    # Initialize transition matrix
+    QmC = np.zeros([bins, n_inputs])
+    
+    # Loop through different groups
+    # Unfortunately we need to initalize a counter because the groupby
+    # function is not compatible with enumerate
+    k = 0
+    for c, f in df.groupby(group_col):
+        # Obtain the empirical PMF from the experimental data
+        p, bin_edges = np.histogram(f[output_col], bins=int(bins), 
+                                    range=bin_range)
+        # Normalized the empirical PMF. We don't use the option from numpy
+        # because it DOES NOT build a PMF but assumes a PDF.
+        p = p / np.sum(p)
+        # Add column to matrix
+        QmC[:, k] = p
+        # Increase counter
+        k+=1
+   
+    return QmC, len(df)
 
-#=============================================================================== 
+#============================================================================== 
 
-def gauss_interval(df, mu, cov, x_val='FSC-A', y_val='SSC-A', log=False):
+def channcap_bootstrap(df, nrep, bins, frac, **kwargs):
     '''
-    Computes the of the statistic
-    (x - µx)'∑(x - µx) 
-    for each of the elements in df columns x_val and y_val.
-    
+    Given a fraction of the data frac computes the channel capacity nrep times
+    taking different random samples on each time.
     Parameters
     ----------
-    df : DataFrame.
-        dataframe containing the data from which to fit the distribution
-    mu : array-like.
-        (x, y) location of bivariate normal
-    cov : 2 x 2 array
-        covariance matrix
-    x_val, y_val : str.
-        name of the dataframe columns to be used in the function
-    log : bool.
-        indicate if the log of the data should be use for the fit or not 
-    
-    Returns
-    -------
-    statistic_gauss : array-like.
-        array containing the result of the linear algebra operation:
-        (x - µx)'∑(x - µx) 
+    df : pandas Dataframe
+        Single cell output reads measured at different inducer concentrations. 
+        The data frame must contain a column output_col that will be binned to
+        build the matrix, and a matrix group_col that will be used to group
+        the different inputs.
+    bins : int.
+        Number of bins to use when building the empirical PMF of the data set.
+        If `bins` is a string from the list below, `histogram` will use
+        the method chosen to calculate the optimal bin width and
+        consequently the number of bins from the data that falls within 
+        the requested range.
+    frac : float [0, 1]
+        Fraction of the data to sample for building the matrix. 
+        The fraction of data is taken per input value.
+    kwargs : dictionary
+        Optional arguments that can be passed to the trans_matrix function.
+        Optional arguments that can be passed to the channel_capacity function.
     '''
-    # Determine that the covariance matrix is not singular
-    det = np.linalg.det(cov)
-    if det == 0:
-        raise NameError("The covariance matrix can't be singular")
-            
-    # Compute the vector x defined as [[x - mu_x], [y - mu_y]]
-    if log: 
-        x_vect = np.log10(np.array(df[[x_val, y_val]]))
-    else:
-        x_vect = np.array(df[[x_val, y_val]])
-    x_vect[:, 0] = x_vect[:, 0] - mu[0]
-    x_vect[:, 1] = x_vect[:, 1] - mu[1]
+    #---------------------------------------------
+    # Extract arguments for trans_matrix function
+    tm_arg_names =  trans_matrix.__code__.co_varnames\
+                        [0:trans_matrix.__code__.co_argcount]
+    tm_kwargs = dict((k, kwargs[k]) for k in tm_arg_names if k in kwargs)
     
-    # compute the inverse of the covariance matrix
-    inv_sigma = np.linalg.inv(cov)
+    # Extract the arguments for the channel capacity function
+    cc_arg_names =  channel_capacity.__code__.co_varnames\
+                        [0:channel_capacity.__code__.co_argcount]
+    cc_kwargs = dict((k, kwargs[k]) for k in cc_arg_names if k in kwargs)
+    #---------------------------------------------
     
-    # compute the operation
-    interval_array = np.zeros(len(df))
-    for i, x in enumerate(x_vect):
-        interval_array[i] = np.dot(np.dot(x, inv_sigma), x.T)
-        
-    return interval_array
+    # Initialize array to save channel capacities
+    MI = np.zeros(nrep)
+    for i in np.arange(nrep):
+        QgC, samp_size = trans_matrix(df, bins=bins, frac=frac,  **tm_kwargs)
+        MI[i] = channel_capacity(QgC.T, **cc_kwargs)[0]
+    
+    return MI, samp_size
 
-#=============================================================================== 
+#============================================================================== 
 
-def auto_gauss_gate(df, alpha, x_val='FSC-A', y_val='SSC-A', log=False,
-                    verbose=False):
+def tidy_df_channcap_bs(channcap_list, fracs, bins, **kwargs):
     '''
-    Function that applies an "unsupervised bivariate Gaussian gate" to the data
-    over the channels x_val and y_val.
-    
+    Breaks up the output of channcap_bs_parallel into a tidy data frame.
     Parameters
     ----------
-    df : DataFrame.
-        dataframe containing the data from which to fit the distribution
-    alpha : float. [0, 1]
-        fraction of data aimed to keep. Used to compute the chi^2 quantile function
-    x_val, y_val : str.
-        name of the dataframe columns to be used in the function
-    log : bool.
-        indicate if the log of the data should be use for the fit or not 
-    verbose : bool.
-        indicate if the percentage of data kept should be print
+    channcap_list : list of length len(bins)
+        List containing the channel capacity bootstrap repeats for each bin.
+        Each entry in the list contains 2 elements:
+        1) MI_bs : matrix of size len(fracs) x nreps
+        This matrix contains on each row the nreps bootrstrap estimates for a
+        fraction of the data frac.
+        2) samp_sizes : array of length len(fracs)
+        This array keeps the amount of data used for each of the fractions
+        indicated.
+    fracs : array-like
+        Array containing the fractions at which the bootstrap estimates were 
+        computed.
+    bins : array-like.
+        Number of bins used when generating the matrix Qg|c
+    kwargs : dictionary
+        Dictionary containing extra fields to be included in the tidy dataframe.
+        Every entry in this dictionary will be added to all rows of the dataframe.
+        Examples of relevant things to add:
+        - date of the sample
+        - username that generated the data
+        - operator
+        - binding_energy
+        - rbs
+        - repressors
     Returns
     -------
-    df_thresh : DataFrame
-        Pandas data frame to which the automatic gate was applied.
+    Tidy dataframe of the channel capacity bootstrap samples
     '''
-    data = df[[x_val, y_val]]
-    # Fit the bivariate Gaussian distribution
-    mu, cov = fit_2D_gaussian(data, log=log)
-
-    # Compute the statistic for each of the pair of log scattering data
-    interval_array = gauss_interval(data, mu, cov, log=log)
+    # Initialize data frame where all the information will be saved
+    df = pd.DataFrame()
+    
+    # Loop through the elements of the list containing the bs samples
+    # for each number of bins
+    for i, b in enumerate(bins):
+        # Extract the sample element
+        bin_samples = channcap_list[i] 
+        # Loop through each of the rows of the MI_bs matrix containing the
+        # nrep samples for each fraction
+        for j, s in enumerate(bin_samples[0]):
+            # Initialize df to save the outcomes from this specific fraction
+            df_frac = pd.DataFrame(s, columns=['channcap_bs'])
+            # Save sample size
+            df_frac['samp_size'] = [bin_samples[1][j]] * len(s)
+            # Save fraction of data used
+            df_frac['frac'] = [fracs[j]] * len(s)
+            # Save the number of bins used for this bs samples
+            df_frac['bins'] = [b] * len(s)    
+            # append to the general data frame
+            df = pd.concat([df, df_frac], axis=0)
         
-    # Find which data points fall inside the interval
-    idx = interval_array <= scipy.stats.chi2.ppf(alpha, 2)
-
-    # print the percentage of data kept
-    if verbose:
-        print('''
-        with parameter alpha={0:0.2f}, percentage of data kept = {1:0.2f}
-        '''.format(alpha, np.sum(idx) / len(df)))
-
-    return df[idx]
+    
+    # Add elements contained in the kwards dictioary
+    for key, value in kwargs.items():
+        df[key] = [value] * len(df)
+    
+    return df
 
 #============================================================================== 
 # Plotting style
