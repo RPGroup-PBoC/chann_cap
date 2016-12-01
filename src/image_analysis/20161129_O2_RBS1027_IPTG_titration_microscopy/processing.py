@@ -83,7 +83,10 @@ plt.savefig('./outdir/background_correction.png')
 
 # Iterate through each strain and concentration to make the dataframes.
 dfs = []
+
+# Select random IPTG and random strain to print the example segmentation
 ex_iptg = np.random.choice(IPTG_RANGE)
+ex_strain = STRAINS[-1]
 for i, st in enumerate(STRAINS):
     print(st)
     for j, name in enumerate(IPTG_NAMES):
@@ -97,17 +100,21 @@ for i, st in enumerate(STRAINS):
                            'uMIPTG*/*.ome.tif')
             
         if len(images) is not 0:
+
             ims = skimage.io.ImageCollection(images)
-    
-            for _, x in enumerate(ims):
+            # Select random image to print example segmentation
+            ex_no = np.random.choice(np.arange(0, len(images) - 1))    
+            for z, x in enumerate(ims):
                 _, m, y = im_utils.ome_split(x)
                 y_flat = im_utils.generate_flatfield(y, yfp_noise, yfp_avg)
     
                 # Segment the mCherry channel.
                 m_seg = im_utils.log_segmentation(m, label=True)
-                if iptg == ex_iptg:
-                    ex_seg = m_seg
-                    ex_phase = _
+
+                # Print example segmentation for the random image
+                if (st==ex_strain) & (iptg == ex_iptg) & (z == ex_no):
+                    merge = im_utils.example_segmentation(m_seg, _, 10/IPDIST)
+                    skimage.io.imsave('./outdir/example_segmentation.png', merge)
     
                 # Extract the measurements.
                 im_df = im_utils.props_to_df(m_seg, physical_distance=IPDIST,
@@ -129,4 +136,5 @@ for i, st in enumerate(STRAINS):
 df_im = pd.concat(dfs, axis=0)
 df_im.to_csv('./outdir/' + str(DATE) + '_' + OPERATOR + '_' +\
                STRAINS[-1] + '_raw_segmentation.csv', index=False)
+
 

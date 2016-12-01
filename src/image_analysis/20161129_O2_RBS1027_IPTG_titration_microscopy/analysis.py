@@ -204,3 +204,81 @@ plt.figtext(0.0, .46, 'B', fontsize=20)
 
 plt.subplots_adjust(hspace=0.06)
 plt.savefig('./outdir/fluor_ecdf.png', bbox_inches='tight')
+
+#============================================================================== 
+
+# Plot nice histogram and ECDF of filtered data
+
+fig, ax = plt.subplots(2, 1, figsize=(6,5), sharex=True)
+
+# Set the nice scientific notation for the y axis of the histograms
+ax[0].yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(\
+                             useMathText=True, 
+                             useOffset=False))
+ax[0].xaxis.set_major_formatter(mpl.ticker.ScalarFormatter(\
+                             useMathText=True, 
+                             useOffset=False))
+
+# Group data frame by concentration
+df_group = df_filt[df_filt.rbs == 'delta'].groupby('IPTG_uM')
+
+# initialize counter for colors
+i = 0
+mean_fl = []
+for c, data in df_group:
+    mean_int = data.mean_intensity
+    mean_fl.append(mean_int.mean())
+    # Histogram plot
+    n, bins, patches = ax[0].hist(mean_int, 30,
+                                normed=1, histtype='stepfilled', alpha=0.4,
+                                label=str(c)+ r' $\mu$M', facecolor=colors[i],
+                               linewidth=1)
+    n, bins, patches = ax[0].hist(mean_int, 30,
+                                normed=1, histtype='stepfilled', 
+                                label='', edgecolor='k',
+                               linewidth=1.5, facecolor='none')
+    # ECDF Plot
+    x, y = im_utils.ecdf(mean_int)
+    ax[1].plot(x, y, '.', label=str(c)+ r' $\mu$M', color=colors[i])
+    
+    # Increase counter
+    i += 1
+
+# Declare color map for legend
+cmap = plt.cm.get_cmap('Blues_r', len(concentrations))
+bounds = np.linspace(0, len(concentrations), len(concentrations) + 1)
+
+# # Plot a little triangle indicating the mean of each distribution
+mean_plot = ax[0].scatter(mean_fl, [0.018] * len(mean_fl), marker='v', s=200,
+            c=np.arange(len(mean_fl)), cmap=cmap,
+            edgecolor='k',
+            linewidth=1.5)
+# Generate a colorbar with the concentrations
+cbar_ax = fig.add_axes([0.95, 0.25, 0.03, 0.5])
+cbar = fig.colorbar(mean_plot, cax=cbar_ax)
+cbar.ax.get_yaxis().set_ticks([])
+for j, c in enumerate(concentrations):
+    if c == 0.1:
+        c = str(c)
+    else:
+        c = str(int(c))
+    cbar.ax.text(1, j / len(concentrations) + 1 / (2 * len(concentrations)),
+                 c, ha='left', va='center',
+                 transform = cbar_ax.transAxes, fontsize=12)
+cbar.ax.get_yaxis().labelpad = 35
+cbar.set_label(r'[inducer] ($\mu$M)')
+
+ax[0].set_ylim(bottom=0)
+ax[0].set_ylabel('probability')
+ax[0].ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+ 
+ax[1].margins(0.02)
+ax[1].set_xlabel('fluorescence (a.u.)')
+ax[1].set_ylabel('ECDF')
+ax[1].set_xscale('log')
+
+plt.figtext(0.0, .9, 'A', fontsize=20)
+plt.figtext(0.0, .46, 'B', fontsize=20)
+
+plt.subplots_adjust(hspace=0.06)
+plt.savefig('./outdir/fluor_ecdf_delta.png', bbox_inches='tight')
