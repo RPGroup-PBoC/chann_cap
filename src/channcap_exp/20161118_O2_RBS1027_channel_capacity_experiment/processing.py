@@ -35,7 +35,7 @@ chann_cap.set_plotting_style()
 # METADATA
 #==============================================================================
 
-DATE = 20161129
+DATE = 20161118
 USERNAME = 'mrazomej'
 OPERATOR = 'O2'
 STRAIN = 'RBS1027'
@@ -65,7 +65,7 @@ df = df_micro[(df_micro.rbs != 'auto') & (df_micro.rbs != 'delta')]
 #============================================================================== 
 # Compute channel capacity for experimental data
 #============================================================================== 
-compute_exp = False
+compute_exp = True
 if compute_exp:
     def channcap_bs_parallel(b):
         # Initialize matrix to save bootstrap repeats
@@ -127,7 +127,7 @@ df_cc[['date', 'bins']] = df_cc[['date', 'bins']].astype(int)
 # Computing the channel capacity for randomized data
 #============================================================================== 
 
-compute_shuff = False
+compute_shuff = True
 
 if compute_shuff:
     print('shuffling mean_intensity data')
