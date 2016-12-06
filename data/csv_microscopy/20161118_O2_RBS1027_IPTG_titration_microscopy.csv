@@ -14,7 +14,7 @@
 #The auto and delta strains were grown without IPTG
 #The analysis strain was grown with the following IPTG concentrations
 #IPTG concentrations:
-#0uM, 0.1uM, 1uM, 5uM, 10uM, 25uM, 50uM, 75uM, 100uM, 250uM, 500uM, 1000uM
+#0uM, 0.1uM, 5uM, 10uM, 25uM, 50uM, 75uM, 100uM, 250uM, 500uM, 1000uM, 5000uM
 #After 8 hours the cells were diluted 1:10 into 1x PBS buffer and imaged
 #using 2% agar pads also of PBS buffer.
 #
