@@ -42,6 +42,7 @@ kon_array = [chann_cap.kon_fn(-13.9, prot_params['k0']),
 kon_operators = ['O2', 'O1', 'O3', 'Oid']
 kon_dict = dict(zip(kon_operators, kon_array))
 
+kon_operators = ['O2']
 compute_matrix = True
 if compute_matrix:
     for kon, op in enumerate(kon_operators):
@@ -64,7 +65,7 @@ if compute_matrix:
         # Loop through repressor copy numbers
         for i, r in enumerate(r_array):
             if r%50==0:
-                print('repressors : {:d}'.format(r))
+                print('repressors : {:0.0f}'.format(r))
             prot_params['rep'] = r * 1.66
             # -- Parallel computation of distribution -- #
             # define a function to run in parallel the computation
@@ -79,4 +80,4 @@ if compute_matrix:
                     df.to_csv(file) 
                 else: # else it exists so append without writing the header
                     df.to_csv(file, mode='a', header=False)
-            Parallel(n_jobs=40)(delayed(lnp_parallel)(p) for p in prot_grid)
+            Parallel(n_jobs=48)(delayed(lnp_parallel)(p) for p in prot_grid)
