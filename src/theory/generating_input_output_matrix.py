@@ -19,8 +19,9 @@ from joblib import Parallel, delayed
 import chann_cap_utils as chann_cap
 
 # Protein parameters
-k0 = 2.7E-3 # From Jones & Brewster
-prot_params = dict(ka=141.52, ki=0.56061, epsilon=4.5,
+#k0 = 2.7E-3 # From Jones & Brewster
+k0 = 0.0002409 # From fitting to the O2-RBS1027 microscopy data
+prot_params = dict(ka=139.55, ki=0.53, epsilon=4.5,
                    kon=chann_cap.kon_fn(-9.7, k0),
                    k0=k0,
                    gamma_m=0.00284, r_gamma_m=15.7,
@@ -48,7 +49,7 @@ if compute_matrix:
         # Set the value for the kon
         prot_params['kon'] = kon_dict[op]
         # Define filename
-        file = '../../data/csv_protein_dist/lnp_' + op + '_DJ_RB.csv'
+        file = '../../data/csv_protein_dist/lnp_' + op + '_O2_RBS1027_fit.csv'
 	# If the file exists read the file, find the maximum number of repressors
 	# And compute from this starting point.
         if os.path.isfile(file): 
