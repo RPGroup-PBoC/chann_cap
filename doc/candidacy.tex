@@ -1,5 +1,7 @@
 \subsection{Predict and measure the information processing capacity of cells.}
 
+\talComment{From Manuel's Candidacy, good source of introduction and equations}
+
 One of the key characteristics of living organisms is their unique ability to
 gather information from the environment and generate a dose-dependent response
 to a stimulus \cite{Nemenman2010}. But given the small number of molecules
@@ -20,14 +22,14 @@ map to a unique concentration of inducer. The more overlap there is between
 distributions the less accurate the inference of the environmental state will
 be.
 
-\begin{figure}[h!]
-	\centering \includegraphics[scale=0.53]{fig/RBS1027_distribution.pdf}
-	\caption{{\bf Distributions of gene expression under different environmental
-	stimulus.} (A) histogram, and (B) cumulative distribution function (CDF) of
-	the fluorescence values of cells exposed to different concentration levels.
-	This data is the same data used to generate \fref[fig:fit].}
-  \label{fig:gene_dist}
-\end{figure}
+%\begin{figure}[h!]
+%	\centering \includegraphics[scale=0.53]{fig/RBS1027_distribution.pdf}
+%	\caption{{\bf Distributions of gene expression under different environmental
+%	stimulus.} (A) histogram, and (B) cumulative distribution function (CDF) of
+%	the fluorescence values of cells exposed to different concentration levels.
+%	This data is the same data used to generate \fref[fig:fit].}
+%  \label{fig:gene_dist}
+%\end{figure}
 
 The question then becomes: how to analyze this probabilistic rather than
 deterministic relationship between inputs and outputs? This problem was worked
@@ -71,7 +73,7 @@ By computing the mutual information between the environment and the gene
 expression level, the distributions shown in \fref[fig:gene_dist] can be
 collapsed into a single value. If measured in bits, the mutual information
 quantifies how many environments a population of cells can properly resolve
-($2^{n}}$ environments where $n$ is the number of bits). The mutual information
+($2^{n}$ environments where $n$ is the number of bits). The mutual information
 between an environmental state $s$ and the gene expression level $g$ can be
 written as
 \begin{equation}
@@ -113,21 +115,21 @@ like that shown in \fref[fig:gene_dist], was used in combination with the same
 algorithm to experimentally determine the channel capacity for strains with
 varying repressor copy numbers.
 
-\begin{figure}[h!]
-	\centering \includegraphics[scale=0.53]{fig/channcap_protein.pdf}
-	\caption{{\bf Information processing capacity as a function of transcription
-	factor copy number.} The channel capacity was computed using the
-	Blahut-Arimoto algorithm \cite{Blahut1972} for 3 operator binding sites with
-	different affinities for the Lac repressor as the number of repressors is
-	changed. The theoretical predictions were performed using the full
-	probabilistic input-output function for a two state system using the chemical
-	master equation \cite{Shahrezaei2008}. The experimental results are obtained
-	by automatically binning the flow cytometer measurements from
-	\fref[fig:theory_vs_data] to generate a discrete input-output function, and
-	then applying the Blahut-Arimoto algorithm to this discrete input-output
-	function.}
-	\label{fig:channcap}
-\end{figure}
+%\begin{figure}[h!]
+%	\centering \includegraphics[scale=0.53]{fig/channcap_protein.pdf}
+%	\caption{{\bf Information processing capacity as a function of transcription
+%	factor copy number.} The channel capacity was computed using the
+%	Blahut-Arimoto algorithm \cite{Blahut1972} for 3 operator binding sites with
+%	different affinities for the Lac repressor as the number of repressors is
+%	changed. The theoretical predictions were performed using the full
+%	probabilistic input-output function for a two state system using the chemical
+%	master equation \cite{Shahrezaei2008}. The experimental results are obtained
+%	by automatically binning the flow cytometer measurements from
+%	\fref[fig:theory_vs_data] to generate a discrete input-output function, and
+%	then applying the Blahut-Arimoto algorithm to this discrete input-output
+%	function.}
+%	\label{fig:channcap}
+%\end{figure}
 
 At this preliminary stage the results shown in \fref[fig:channcap] seem
 encouraging. Our theory is able to reproduce the qualitative behavior of the
