@@ -1,0 +1,88 @@
+\section{Introduction}
+
+\textcolor{blue}{Really important reference for us is \cite{Hansen2015}.
+	\begin{itemize}
+		\item (Page 6, Figure 2A) Their measured channel capacity for amplitude modulated (AM) signal, was 1.3 for the natural promoter. We are also planning to measure this AM signal, but not the frequency modulated (FM) signal that they also measured.
+		\item (Page 7) "Measuring mutual information in a cell population subject to extrinsic noise...underestimates the intrinsic information transduction capacity of a promoter." They claimed this was caused by cells being at different stages of the cell cycle. After correcting for this error, they measured a channel capacity of 1.5, which still means the system can only distinguish between two or three input states
+		\item (Page 8) They made a mutant promoter that had a channel capacity of ~2. I assume we are not going to pursue this angle, but it shows that natural operators do not necessarily maximize channel capacity.
+		\item Overall, I found it difficult to understand what change in channel capacity was "significant." They claimed that an increase of 0.15 is "small but robust," but I wondered whether this was comparable to their experimental noise. I am worried that if the Lac system also yields small channel capacities, we will end up making statements like "we saw a 0.1 increase in channel capacity between O2 and O1..."
+		\item To rephrase that last point, we hope that the Lac system can distinguish multiple inputs (what they call the Rheostat Model), but if channel capacity is ~1 then you can only distinguish the OFF and ON state (i.e. their Noisy Switch Model). Based on your calculations of channel capacity so far, how many bits do you suspect we will find?
+		\item I think our paper needs to go \textit{beyond} this paper in a meaningful way. One way I think we will improve upon their results is that we have a \textbf{theoretical prediction} for the form of the variability in gene expression. We should really stress that!
+	\end{itemize}
+	}
+	
+\textcolor{blue}{Another important reference \cite{Chevalier2015}:
+	\begin{itemize}
+		\item Several other groups are making similar mutual information measurements (between ligand concentration and gene expression) in their systems, and so we should really stress what is new about our paper - that we are \textit{predicting everything theoretically}! References 6-10 from this paper should be good to cite.
+		\item I really like their short and sweet introduction on mutual information: ``Mutual information (MI) is a natural metric for characterizing information transmission between the inputs of a stochastic network and its nodes. MI quantifies the level of precision with which a given node(s) in a network estimates and responds to an input(s) by accounting for both the mean and variability in the response.''
+		\item They also claimed that our theoretical measurements should overestimate the measured mutual information because of: (1) variability of cell's being at different stages of the cell cycle and (2) variability that is extrinsic to the pathway. We can keep that in mind if we theoretically overshoot the measured values.
+		\item Finally, they point out that the measured mutual information is time-dependent, so we need to be super careful about making all of our measurements using precisely the same method. Hopefully the O1, O2, O3, Oid strains all grow at exactly the same speed, because otherwise if you always wait until OD 0.5 (or whatever) but this waiting time is different between strains, that could introduce a bias into the measurements.
+	\end{itemize}
+	}
+
+A cell's ability to process an environmental signal into a robust and adequate
+response determines its evolutionary fitness.
+
+The \textit{lac} operon in \textit{Escherichia coli} has served as a canonical
+example of transcriptional regulation. Precise, quantitative measurements have
+been made on both natural and synthetic constructs \cite{Garcia2011} that
+capture average gene expression based on the number of Lac repressors and the
+repressor-DNA binding affinity. This work was later extended to include cell to
+cell variability by measuring the Fano factor \cite{Jones2014}, with the results
+once again well matching the corresponding thermodynamic models. In this work,
+we take the next step by measuring the full distribution of gene expression as
+repressor copy number and DNA affinity are varied. In doing so, we can transform
+our deep understanding of transcriptional regulation into the context of an
+evolutionary landscape.
+
+It has been shown in many contexts that the natural currency of evolution comes
+in the form of a cell's signal processing capability, more specifically in the
+mutual information between an environmental cue and a cell's response
+[\textit{cite Bialek}]. \talComment{Need some background sentences on what
+	mutual information is and some history on how it has been used effectively.} In
+this paper, we combine experiment and theory to investigate how the channel
+capacity, the maximum mutual information between an environmental input and gene
+expression over all possible distribution of inputs, varies with Lac repressor
+copy number and DNA affinity. 
+
+Information theory provides a useful metric for quantifying biological
+phenomenon. For example, it has been shown that transcription factor binding
+maximizes the information transfer between binding energy and the information
+gain per energy \cite{Savir2016} \talComment{Some more examples here would be
+	nice.}. For our purposes, extending the analysis of simple repression to
+incorporate not only the mean gene expression but the full distribution of
+single-cell measurements enables us to compute the channel capacity and verify
+whether \talComment{what is our theoretical prediction for this?}.
+
+Even in clonal populations of bacteria, various mechanisms give rise to
+fluctuations in the number of protein produced in a cell including the intrinsic
+noise in gene expression \cite{Elowitz2002} and uneven partitioning during cell
+division \cite{Huh2011}, which ultimately constrains how tightly protein copy
+numbers can be regulated \cite{Lestas2010}. Such fluctuations are not
+necessarily harmful to biological systems, and in several systems such noise has
+been harnessed to aid fitness. For example, fluctuations in the chemotaxis
+machinery of clonal \textit{E. coli} enables the colony to better adapt to
+changing environmental conditions \cite{Frankel2014}.
+
+Measuring the channel requires the full gene expression probability
+distribution, and hence is a new metric that has not been explored for the Lac
+system. We show that experimental measurements are well characterized by a simple two-state thermodynamic model where the Lac promoter is either occupied by RNA polymerase (RNAP) or Lac repressor. We ignore the the possibility that the promoter is empty state, and show that the results are still extremely accurate \talComment{Do we want to have the full version in the SI? This allows us to get a closed analytic form for the distribution, but can we get a closed form solution for the mutual information? If not, perhaps we should just use a full 3-state model since we will be doing thing numerically anyways.}. \textit{Talk about the allosteric nature of the Lac repressor and its relationship to the gratuitous inducer IPTG...}
+
+By working on the well studied Lac system, we can theoretically predict the channel capacity as a function of the biophysical parameters of repressor copy number, DNA affinity, and the mRNA production and degradation rates. This glimpse into the evolutionary landscape of the Lac repressor allows us to place the wild type Lac repressor in the context of the pressures acting upon it.
+
+\begin{figure}[h!]
+	\centering \includegraphics[scale=1]{experiment_setup} \caption{Transcription
+		regulation under different environmental conditions. As environmental
+		concentrations of the small signaling molecule IPTG increase, more Lac
+		repressor molecules within the cell will transition into their allosterically
+		inactivate state, where they are much less likely to bind to DNA. Consequently,
+		RNAP is more likely to bind to the operator which increases the mRNA copy
+		number. This mRNA is both translated into a reporter protein and degraded by
+		the cell. Variability in this process will create a probability distribution
+		for gene expression in the presence of different levels of IPTG, with the mean
+		gene expression increasing with IPTG concentration. Note that we only consider
+		a two state system where the Lac operator is either bound to RNAP or Lac
+		repressor, and we ignore the case where the promoter is unbound. \talComment{More ideas: (1) Can emphasize that the middle box permits us to theoretically predict the variability in gene expression. Maybe have a knob of some kind, or a graph showing variance as a function of mean gene expression or a formula or something}; (2) We could have two arrows on the right, one leading to high mutual information where the peaks are clearly distinct and the other leading to low mutual information where they all overlap strongly}
+	\label{figExpSetup}
+\end{figure}
+

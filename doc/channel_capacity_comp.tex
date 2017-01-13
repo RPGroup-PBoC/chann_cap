@@ -1,0 +1,62 @@
+% Preamble
+\input{./TeX_preamble.tex}
+
+% import macro for the figures path
+% this will not be synchronized to the GitHub repository since each collaborator will adapt it to
+%his/her own directory structure
+\input{graphicspath.tex}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Begin packages
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{color} % ULTIMATELY delete since I can't have colored text???
+\newcommand{\manuelComment}[1]{\textcolor{orange}{(MR:~#1)}} % Commenting
+\newcommand{\talComment}[1]{\textcolor{blue}{(TE:~#1)}} % Commenting
+\newcommand{\robComment}[1]{\textcolor{red}{(RP:~#1)}} % Commenting
+
+% To make jumping between equation, figure, citation references easier
+\usepackage{hyperref}
+
+% To define more useful LaTeX commands
+\usepackage{xparse}
+
+% Equation referencing
+\DeclareDocumentCommand \eref{oooo}
+{\IfNoValueTF{#2}{Eq.~(\ref{#1})}{\IfNoValueTF{#3}{Eqs.~(\ref{#1}) and
+(\ref{#2})}{\IfNoValueTF{#4}{Eqs.~(\ref{#1})-(\ref{#3})}{Eqs.~(\ref{#1})-(\ref{#4})}}}}
+% Equation referencing without the ``Eq.''
+\newcommand{\erefEq}[1]{(\ref{#1})} % Equations
+
+% Figure referencing
+\DeclareDocumentCommand \fref{ooo}
+{\IfNoValueTF{#2}{Fig.~\ref{#1}}{\IfNoValueTF{#3}{Figs.~\ref{#1} and
+\ref{#2}}{Figs.~\ref{#1}-\ref{#3}}}}
+
+% Letters for figure sub-parts
+\newcommand{\letter}[1]{#1} % For main text. Ex: As shown in Fig. 12A
+\newcommand{\letterParen}[1]{(#1)} % For captions. Ex: (A) Low limit and (B) high limit
+
+% Allows you to specify file paths with spaces
+\usepackage[space]{grffile}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Begin document
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\title{\textbf{Beyond Average: Quantifying Gene Expression Distributions and Channel Capacity in  \textit{Escherichia coli}}}
+\author{Manuel Razo, Tal Einav and Rob Phillips}
+%\date{\today}
+
+\begin{document}
+\maketitle
+	\input{section_00_introduction}
+	\input{section_01}
+%	\input{section_02}
+%	\input{section_03}
+%	\input{section_04}
+	\input{section_99_ToDo} % To Do list of future items
+
+% Bibliography
+\bibliography{../evolution_bits_bibtex}
+\bibliographystyle{../pnas}
+
+\end{document}

@@ -1,0 +1,37 @@
+\section{To Do}
+
+\begin{itemize}	
+	\item Get distribution of error from Jane's paper. 
+	\begin{itemize}
+		\item Use Jane's closed form solution and write this up in our paper
+		
+		\item Also consider doing (numerically, not analytically) a 3-state context
+		with an empty promoter. See if the numerical result is any different from
+		Jane's 2-state solution.
+		
+		\item Read Peter Swain's paper "Analytical distributions for stochastic gene
+		expression" to see how to get from Jane's mRNA profile to the gene expression
+		profile. Manuel thinks that we lose some information at every step of the
+		central dogma (see "Data processing inequality" in my Chrome Bookmarks) and
+		that if we can get the gene expression prediction/experiment to match then we
+		can try to measure the mRNA levels directly and see if they also match the
+		prediction. That would be a really nice match between theory and experiment.
+		Manuel and I should discuss the derivations in Peter Swain's paper go.
+	\end{itemize}
+	
+	\item As per Rob: Would be good to compare the 2-step model (promoter either
+	bound to RNAP or repressor) with the 3-step model (promoter may also be empty).
+	Probably needs to be done numerically, but get the relevant parameters from
+	Jeff Gelles
+	
+	\textcolor{brown}{
+	\item (Paper 2) How can the theory be applied to an evolutionary context? For example, compete RBS 1027 against RBS 446, and predict both which will win and exactly by how much. Then unconstrain the system and let them evolve over time on the growth rate versus mutual information graph and see that they (hopefully) move upwards. (May need to make new strains that have LacI and possibly SacB for this)
+	\begin{itemize}
+		\item Cost/benefit function. Do we use Lassig Paper (Nonlinear fitness landscape of a molecular pathway), Uri Alon paper, or our own? (At the very least, should try both cost/benefit functions and see if they give different results.)
+		\item Make a strain as close to optimal as possible. Manuel tried doing this, but got unphysical parameters. Wiggle, wiggle, wiggle them until they are reasonable. Noah is willing to help on this end, if desired (potentially as another member of the project, if desired).
+		\item We agree that there is evolutionary pressure to move up in the growth rate plot, but is there any pressure to move left or right (other than being able to access more upwards space the further you go to the right). Give readers some intuition on what it means for two points to be on the same horizontal line (i.e. what could their profiles look like); what about two vertical points? Do these points have smaller errors, or must they have different curve shapes? Can we make a phase diagram in some way of the different Mutual Info/Growth Rate plot? If you take any curve and scale its error bars up or down, what trajectory do you get on the Mutual Info/Growth Rate plot?
+		\item Keep in mind that we are trying to maximize \textit{growth rate} and not \textit{mutual information}. To be honest about this, we should talk a bit about a strain that maximizes mutual information at the cost of growth rate. Could there be some other metric that is analogous to growth rate and still uses the full distribution?
+	\end{itemize}
+	\item (Future) Does the natural Lac operon provide qualitatively different behavior than the synthetic ones? Explore this theoretically, and if it does then we could potentially make these strains as well.
+	}
+\end{itemize}
