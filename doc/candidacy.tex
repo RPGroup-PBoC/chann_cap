@@ -1,0 +1,153 @@
+\subsection{Predict and measure the information processing capacity of cells.}
+
+One of the key characteristics of living organisms is their unique ability to
+gather information from the environment and generate a dose-dependent response
+to a stimulus \cite{Nemenman2010}. But given the small number of molecules
+involved in most chemical transformations in the cell and the fact that, at the
+length scale of cellular components, thermal noise is in the same regime as
+other deterministic energies \cite{Phillips2006}, two genetically identical
+cells exposed to the same stimulus will not have an identical response
+\cite{Eldar2010}.
+
+Using the same data used to generate \fref[fig:fit], \fref[fig:gene_dist]
+highlights the non-deterministic input-output relationship for the simple
+repression circuit. The differences at the level of mean gene expression shown
+in \fref[fig:fit] are blurred out when considering the full distribution of gene
+expression. This implies that, at the single cell level, cells cannot uniquely
+resolve the extracellular concentration of inducer. For a cell to properly
+resolve an environment, any point on the x-axis of \fref[fig:gene_dist] should
+map to a unique concentration of inducer. The more overlap there is between
+distributions the less accurate the inference of the environmental state will
+be.
+
+\begin{figure}[h!]
+	\centering \includegraphics[scale=0.53]{fig/RBS1027_distribution.pdf}
+	\caption{{\bf Distributions of gene expression under different environmental
+	stimulus.} (A) histogram, and (B) cumulative distribution function (CDF) of
+	the fluorescence values of cells exposed to different concentration levels.
+	This data is the same data used to generate \fref[fig:fit].}
+  \label{fig:gene_dist}
+\end{figure}
+
+The question then becomes: how to analyze this probabilistic rather than
+deterministic relationship between inputs and outputs? This problem was worked
+out in 1948 by Claude Shannon who, in his seminal work, founded the field of
+information theory \cite{Shannon1948}. Shannon developed a general framework for
+how to analyze information transmission through noisy communication channels. In
+his work, Shannon showed that the only quantity that satisfies simple
+conditions of what a metric for information should be, was of the same
+functional form as the thermodynamic entropy -- thereby naming it the same
+\cite{MacKay2003}. He also gave a definition, based on this information entropy,
+for the relationship between inputs and outputs known as the mutual information
+(see Appendix B for details on these metrics).
+
+In recent years there has been an explosion of studies modeling cellular
+signaling pathways as input-output devices, as evidenced by the number of recent
+reviews on that topic \cite{Rhee2012a, Levchenko2014, Tkacik2016, Bowsher2014,
+Nemenman2010, Brennan2012}. This approach seems natural given the stochastic
+nature of signal transduction systems and the mathematically precise framework
+that information theory provides for studying the effect of noise in
+communication channels. But this is far from a technically convenient
+abstraction. As we will detail on aim 3, information, as defined by Shannon, has
+been associated with biological fitness \cite{Taylor2007a, Bergstrom2004,
+Donaldson-Matasci2010, Rivoire2011}.
+
+A decade long effort of careful gene expression measurements, contrasted with
+theoretical predictions, puts us in a unique position to make progress in
+understanding the type of data shown in \fref[fig:gene_dist]. We can go beyond
+the description of the mean \cite{Garcia2011c} and noise \cite{Jones2014a} to
+derive the full probability distribution of gene expression. For this, the
+thermodynamic picture presented in aim 1 needs to be changed to the
+chemical master equation framework \cite{Sanchez2013, Swain2016}.
+
+But even more interesting than being able to predict shapes of gene expression
+distributions as different inducer concentrations are titrated in, we can use
+ideas from information theory to quantify the full relationship between inducer
+inputs and gene expression outputs \cite{Tkacik2008a}. In particular mutual
+information measures how well a cell can distinguish between different input
+concentration \cite{Bowsher2014}.
+
+By computing the mutual information between the environment and the gene
+expression level, the distributions shown in \fref[fig:gene_dist] can be
+collapsed into a single value. If measured in bits, the mutual information
+quantifies how many environments a population of cells can properly resolve
+($2^{n}}$ environments where $n$ is the number of bits). The mutual information
+between an environmental state $s$ and the gene expression level $g$ can be
+written as
+\begin{equation}
+  I(s;g) = \sum_s \sum_g P(s) P(g \mid s) \log_2 \frac{P(g \mid s)}{P(g)}.
+\end{equation}
+$P(g \mid s)$, the probability of a gene expression level $g$
+given an inducer concentration $s$ (the input-output function), is set by the
+physics of the system and can be analytically derived using the chemical master
+equation approach \cite{Shahrezaei2008, Swain2016} in combination with the
+theoretical framework explained in aim 1. $P(g)$, the distribution of gene
+expression regardless of the inducer concentration, can be computed from the
+input-output function by averaging over all inputs. Mathematically this is
+written as
+\begin{equation}
+  P(g) = \sum_s P(g \mid s) P(s).
+\end{equation}
+$P(s)$, the distribution of environments/inputs, which is not a property of the
+communication channel, in principle cannot be determined -- In aim 3 we will
+come back to this point where as experimentalists we get to choose different
+distributions for the environments that the cells are exposed to. A useful
+metric to compute then, is one of the key results from Shannon's work known as
+the channel capacity \cite{Rhee2012a}. This quantity is defined as
+\begin{equation}
+  C(s; g) \equiv \max_{P(s)} I(s; g),
+\end{equation}
+which represents the maximum amount of information that can be sent through a
+channel optimized over all possible distributions of the signal $s$.
+This quantity has previously been used as a metric for the regulatory power that
+cells have over their gene expression profiles \cite{Tkacik2008a, Rieckh2014}.
+
+We propose building upon all the quantitative characterization done on the
+simple repression motif to predict and measure the channel capacity of this
+signal transduction system. \fref[fig:channcap] shows preliminary results where
+we computed the theoretical channel capacity for different repressor copy
+numbers and binding affinities. These predictions were done using the full
+analytical distribution of output protein copy numbers \cite{Shahrezaei2008} and
+the well known Blahut-Arimoto algorithm \cite{Blahut1972}. Flow cytometry data,
+like that shown in \fref[fig:gene_dist], was used in combination with the same
+algorithm to experimentally determine the channel capacity for strains with
+varying repressor copy numbers.
+
+\begin{figure}[h!]
+	\centering \includegraphics[scale=0.53]{fig/channcap_protein.pdf}
+	\caption{{\bf Information processing capacity as a function of transcription
+	factor copy number.} The channel capacity was computed using the
+	Blahut-Arimoto algorithm \cite{Blahut1972} for 3 operator binding sites with
+	different affinities for the Lac repressor as the number of repressors is
+	changed. The theoretical predictions were performed using the full
+	probabilistic input-output function for a two state system using the chemical
+	master equation \cite{Shahrezaei2008}. The experimental results are obtained
+	by automatically binning the flow cytometer measurements from
+	\fref[fig:theory_vs_data] to generate a discrete input-output function, and
+	then applying the Blahut-Arimoto algorithm to this discrete input-output
+	function.}
+	\label{fig:channcap}
+\end{figure}
+
+At this preliminary stage the results shown in \fref[fig:channcap] seem
+encouraging. Our theory is able to reproduce the qualitative behavior of the
+curves. For example, the theory predicts that the maximum channel capacity is
+shifted to the right as the binding affinity decreases (in terms of binding
+affinity O1 $>$ O2 $>$ O3). For the O1 and O2 curves the predictions go beyond a
+qualitative behavior as the theory matches the data quantitatively. The lack of
+quantitative agreement for the O3 curve might be due to the quality of the data,
+or the estimate of the channel capacity itself. Further analysis needs to be
+done comparing microscopy data with the flow cytometer readouts in order to
+analyze the instrumental noise that the latter could add to the data. Also
+better techniques for estimating the experimental channel capacity can be
+applied to the data to see if the agreement improves \cite{Cheong2011}.
+
+This portion of the proposal delves into the extent by which we can combine
+multiple quantitative characterizations of gene expression input-output function
+in order to go beyond mean and variance in gene expression, computing from first
+principles information processing capacities as the parameters in
+\fref[fig:knobs] are tuned. In the third and last aim we will connect this
+biophysical predictive power with the process of natural selection. This
+bridging between seemingly unrelated questions could shed some light on what
+evolutionary lessons can be learned from well informed biophysical models of
+gene regulation.
