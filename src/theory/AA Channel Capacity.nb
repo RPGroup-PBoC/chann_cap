@@ -1,0 +1,402 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 11.0' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     12415,        394]
+NotebookOptionsPosition[     10810,        341]
+NotebookOutlinePosition[     11278,        357]
+CellTagsIndexPosition[     11235,        354]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["To Do", "Subsection",
+ CellChangeTimes->{{3.6933332136567235`*^9, 3.6933332165504*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["MOST IMPORTANT", "Subsubsection",
+ CellChangeTimes->{{3.693333229745514*^9, 3.6933332309697423`*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["\<\
+Can we exactly solve the 3 state model where we have transition rates from \
+the RNAP-bound state to the empty state to the (active) repressor-bound state\
+\>", "Item",
+ CellChangeTimes->{{3.6933332354185696`*^9, 3.6933332634982367`*^9}}],
+
+Cell["\<\
+Essentially, this is a question of whether we can follow Swain well enough \
+and replicate his model for this slightly more complex system. I don\
+\[CloseCurlyQuote]t think that there will be significant added complexity \
+from adding one more stage\
+\>", "Subitem",
+ CellChangeTimes->{{3.6933332354185696`*^9, 3.693333290671524*^9}}],
+
+Cell[TextData[{
+ "As per Peter Swain\[CloseCurlyQuote]s last sentence before Discussion, in \
+the limit of \"fast rates\" the full protein distribution for the 3 stage \
+model reduces to that of the two stage model with ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"a", "\[Rule]", 
+    RowBox[{
+     FractionBox[
+      SubscriptBox["k", "0"], 
+      RowBox[{
+       SubscriptBox["k", "0"], "+", 
+       SubscriptBox["k", "1"]}]], "a"}]}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ", where ",
+ Cell[BoxData[
+  FormBox[
+   FractionBox[
+    SubscriptBox["k", "0"], 
+    RowBox[{
+     SubscriptBox["k", "0"], "+", 
+     SubscriptBox["k", "1"]}]], TraditionalForm]]],
+ " is the equilibrium probability of the RNAP-bound state. So we can easily \
+accommodate another model where the promoter may be unbound by changing the \
+fraction to the probability (in our full equilibrium Statistical Mechanics \
+model) of the RNAP being bound compared to the unbound and repressor-bound \
+states"
+}], "Item",
+ CellChangeTimes->{{3.6933332354185696`*^9, 3.6933334115624857`*^9}, {
+  3.6933334537606964`*^9, 3.693333461723872*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Nuances with the Theory", "Subsubsection",
+ CellChangeTimes->{{3.693331918431535*^9, 3.6933319208208866`*^9}}],
+
+Cell["\<\
+We are going to use Peter Swain\[CloseCurlyQuote]s 3 stage model, but \
+assuming that his empty state is our active repressor bound state\
+\>", "Text",
+ CellChangeTimes->{{3.69333248497103*^9, 3.6933324994194555`*^9}}],
+
+Cell[TextData[{
+ "So ",
+ Cell[BoxData[
+  FormBox[
+   SubscriptBox["k", "1"], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " will be the rate from which the RNAP-bound state switches to the \
+active-repressor-bound state. "
+}], "Text",
+ CellChangeTimes->{{3.693332509020986*^9, 3.6933325291876106`*^9}}],
+
+Cell["\<\
+Average number of proteins from Peter Swain\[CloseCurlyQuote]s 3 stage model \
+is \
+\>", "Text",
+ CellChangeTimes->{{3.693332475279259*^9, 3.6933324833015995`*^9}, {
+  3.6933331696216393`*^9, 3.6933332021310844`*^9}}],
+
+Cell[TextData[Cell[BoxData[
+ FormBox[
+  RowBox[{
+   RowBox[{"\[LeftAngleBracket]", "n", "\[RightAngleBracket]"}], "=", 
+   RowBox[{
+    FractionBox[
+     SubscriptBox["v", "0"], 
+     SubscriptBox["d", "0"]], 
+    FractionBox[
+     SubscriptBox["v", "1"], 
+     SubscriptBox["d", "1"]], 
+    FractionBox[
+     SubscriptBox["k", "0"], 
+     RowBox[{
+      SubscriptBox["k", "0"], "+", 
+      SubscriptBox["k", "1"]}]]}]}], TraditionalForm]],
+ FormatType->"TraditionalForm"]], "TextNumbered",
+ CellChangeTimes->{{3.693332475279259*^9, 3.6933324833015995`*^9}, {
+  3.6933331696216393`*^9, 3.693333200160847*^9}}],
+
+Cell[TextData[{
+ "where ",
+ Cell[BoxData[
+  FormBox[
+   FractionBox[
+    SubscriptBox["k", "0"], 
+    RowBox[{
+     SubscriptBox["k", "0"], "+", 
+     SubscriptBox["k", "1"]}]], TraditionalForm]]],
+ " is the equilibrium probability of the RNAP-bound state"
+}], "Text",
+ CellChangeTimes->{3.693333350437423*^9}],
+
+Cell[TextData[{
+ "Right now, Manuel is using Swain\[CloseCurlyQuote]s 2 stage model and \
+defining ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["k", "1"], "=", 
+    RowBox[{
+     SubscriptBox["k", "\[EmptySet]"], "[", 
+     SubscriptBox["R", "A"], "]"}]}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " where ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"[", 
+    SubscriptBox["R", "A"], "]"}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " is the concentration of active repressors. So if we look at fold-change, "
+}], "Text",
+ CellChangeTimes->{{3.69333346504771*^9, 3.693333475860464*^9}, {
+  3.6933335828690424`*^9, 3.693333633961876*^9}}],
+
+Cell[TextData[Cell[BoxData[
+ FormBox[
+  RowBox[{
+   RowBox[{"fold", "-", "change"}], "=", 
+   RowBox[{
+    FractionBox[
+     SubscriptBox["k", "0"], 
+     RowBox[{
+      SubscriptBox["k", "0"], "+", 
+      SubscriptBox["k", "1"]}]], "=", 
+    RowBox[{
+     FractionBox[
+      SubscriptBox["k", "0"], 
+      RowBox[{
+       SubscriptBox["k", "0"], "+", 
+       RowBox[{
+        SubscriptBox["k", "\[EmptySet]"], "[", 
+        SubscriptBox["R", "A"], "]"}]}]], "=", 
+     FractionBox["1", 
+      RowBox[{"1", "+", 
+       RowBox[{
+        FractionBox[
+         SubscriptBox["k", "\[EmptySet]"], 
+         SubscriptBox["k", "0"]], "[", 
+        SubscriptBox["R", "A"], "]"}]}]]}]}]}], TraditionalForm]],
+ FormatType->"TraditionalForm"]], "TextNumbered",
+ CellChangeTimes->{{3.693333634878312*^9, 3.6933336831095963`*^9}}],
+
+Cell[TextData[{
+ "We can fit ",
+ Cell[BoxData[
+  FormBox[
+   FractionBox[
+    SubscriptBox["k", "\[EmptySet]"], 
+    SubscriptBox["k", "0"]], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " from Hernan\[CloseCurlyQuote]s data, and then we can get ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{
+    SubscriptBox["k", "\[EmptySet]"], "+", 
+    SubscriptBox["k", "0"]}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " from Swain\[CloseCurlyQuote]s Equation (21) for the coefficient of \
+variation (standard deviation over the mean, ",
+ Cell[BoxData[
+  FormBox[
+   FractionBox["\[Sigma]", "\[Mu]"], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ ")"
+}], "Text",
+ CellChangeTimes->{{3.693333685317439*^9, 3.6933337188766756`*^9}}]
+}, Open  ]]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Basics", "Subsection",
+ CellChangeTimes->{{3.6933332221362514`*^9, 3.693333222591491*^9}}],
+
+Cell[CellGroupData[{
+
+Cell["Basic Theory", "Subsubsection",
+ CellChangeTimes->{{3.6933319788070745`*^9, 3.693331980012283*^9}}],
+
+Cell[TextData[{
+ "Need to find the probability distribution ",
+ Cell[BoxData[
+  FormBox[
+   RowBox[{"P", "[", "IPTG", "]"}], TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " to maximize mutual information:"
+}], "Text",
+ CellChangeTimes->{{3.69333206818775*^9, 3.6933320787107353`*^9}}],
+
+Cell[TextData[Cell[BoxData[
+ FormBox[
+  RowBox[{
+   RowBox[{"Channel", " ", 
+    RowBox[{"Capacity", "(", "IPTG", ")"}]}], "=", 
+   RowBox[{
+    RowBox[{
+     SubscriptBox["Max", 
+      RowBox[{"P", "[", "IPTG", "]"}]], 
+     RowBox[{"I", "[", 
+      RowBox[{"ge", ";", "IPTG"}], "]"}]}], "=", 
+    RowBox[{
+     SubscriptBox["Max", 
+      RowBox[{"P", "[", "IPTG", "]"}]], 
+     RowBox[{
+      SubscriptBox["\[Sum]", "IPTG"], 
+      RowBox[{
+       SubscriptBox["\[Sum]", "ge"], 
+       RowBox[{
+        RowBox[{"P", "[", 
+         RowBox[{"ge", "|", "IPTG"}], "]"}], 
+        RowBox[{"P", "[", "IPTG", "]"}], 
+        RowBox[{
+         SubscriptBox["Log", "2"], "[", 
+         FractionBox[
+          RowBox[{"P", "[", 
+           RowBox[{"ge", "|", "IPTG"}], "]"}], 
+          RowBox[{"P", "[", "ge", "]"}]], "]"}]}]}]}]}]}]}], TraditionalForm]],
+ FormatType->"TraditionalForm"]], "TextNumbered",
+ CellChangeTimes->{{3.6933319835457115`*^9, 3.6933320361305356`*^9}}],
+
+Cell["where ", "Text",
+ CellChangeTimes->{{3.693332040146186*^9, 3.6933320428263693`*^9}}],
+
+Cell[TextData[Cell[BoxData[
+ FormBox[
+  RowBox[{
+   RowBox[{"P", "[", "ge", "]"}], "=", 
+   RowBox[{
+    SubscriptBox["\[Sum]", "IPTG"], 
+    RowBox[{
+     RowBox[{"P", "[", 
+      RowBox[{"ge", "|", "IPTG"}], "]"}], 
+     RowBox[{"P", "[", "IPTG", "]"}]}]}]}], TraditionalForm]],
+ FormatType->"TraditionalForm"]], "TextNumbered",
+ CellChangeTimes->{{3.693332049342638*^9, 3.6933320647455997`*^9}}]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["Algorithm to Compute Channel Capacity", "Subsubsection",
+ CellChangeTimes->{{3.693330910602577*^9, 3.6933309146834307`*^9}}],
+
+Cell[TextData[StyleBox["This should all be run on the computation machine!",
+ FontSlant->"Italic"]], "Text",
+ CellChangeTimes->{{3.6933308615290956`*^9, 3.6933308618699903`*^9}, {
+  3.6933309026404047`*^9, 3.6933309082312717`*^9}}],
+
+Cell["\<\
+Algorithm implemented in
+blahut_algorithm_channel_capacity.ipynb
+from paper \"Computation of Channel Capacity and Rate-Distortion Functions\" \
+on shared Mendeley with Manuel\
+\>", "Text",
+ CellChangeTimes->{{3.6933305374667897`*^9, 3.6933305640073695`*^9}, {
+  3.693330687349184*^9, 3.693330698619151*^9}}],
+
+Cell["\<\
+For experimental data, the algorithm is implemented in
+channel_capacity_bias_correction.ipynb\
+\>", "Text",
+ CellChangeTimes->{{3.693330788573084*^9, 3.693330823457847*^9}, {
+  3.6933312949405823`*^9, 3.693331295094015*^9}}],
+
+Cell[TextData[{
+ "How to deal with binning when you don\[CloseCurlyQuote]t know the \
+conversion factor (between GFP arbitrary units and # of proteins)\n\
+\"Information Transduction Capacity of Noisy Biochemical Signaling Networks\"\
+\nEquation (2.1.3)\n",
+ StyleBox["Question: How does the data look on different days? Does it look \
+exactly identical? If so, can we find a conversion factor between GFP \
+arbitrary units and # of proteins from Hernan?",
+  FontWeight->"Bold",
+  FontColor->RGBColor[1, 0.5, 0]]
+}], "Text",
+ CellChangeTimes->{{3.693331200212723*^9, 3.6933312009025307`*^9}, {
+  3.693331266065802*^9, 3.6933312896565356`*^9}, {3.6933315335049715`*^9, 
+  3.693331563741379*^9}}],
+
+Cell[TextData[{
+ "Ultimate goal is to build a graph of number of repressors ",
+ Cell[BoxData[
+  FormBox["R", TraditionalForm]],
+  FormatType->"TraditionalForm"],
+ " versus Channel Capacity\n(see \
+C:\\Users\\talei\\Documents\\GitHub\\evolution_bits\\doc\\channel_capacity\\\
+channel_capacity_comp.pdf)"
+}], "Text",
+ CellChangeTimes->{{3.6933317042850924`*^9, 3.693331718435714*^9}, {
+  3.6933319027558684`*^9, 3.6933319139466004`*^9}}]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{1520, 781},
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
+FrontEndVersion->"11.0 for Microsoft Windows (64-bit) (September 21, 2016)",
+StyleDefinitions->FrontEnd`FileName[{$RootDirectory, "C:", "Users", "talei", 
+   "Dropbox", "Mathematica"}, "TalStyle.nb", CharacterEncoding -> "UTF-8"]
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 93, 1, 77, "Subsection"],
+Cell[CellGroupData[{
+Cell[698, 27, 107, 1, 59, "Subsubsection"],
+Cell[CellGroupData[{
+Cell[830, 32, 248, 4, 71, "Item"],
+Cell[1081, 38, 344, 6, 64, "Subitem"],
+Cell[1428, 46, 1121, 29, 141, "Item"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[2598, 81, 116, 1, 59, "Subsubsection"],
+Cell[2717, 84, 228, 4, 47, "Text"],
+Cell[2948, 90, 311, 9, 47, "Text"],
+Cell[3262, 101, 227, 5, 47, "Text"],
+Cell[3492, 108, 609, 18, 42, "TextNumbered"],
+Cell[4104, 128, 310, 11, 64, "Text"],
+Cell[4417, 141, 671, 20, 79, "Text"],
+Cell[5091, 163, 818, 26, 60, "TextNumbered"],
+Cell[5912, 191, 743, 23, 108, "Text"]
+}, Open  ]]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[6704, 220, 96, 1, 77, "Subsection"],
+Cell[CellGroupData[{
+Cell[6825, 225, 105, 1, 59, "Subsubsection"],
+Cell[6933, 228, 292, 8, 47, "Text"],
+Cell[7228, 238, 968, 29, 44, "TextNumbered"],
+Cell[8199, 269, 90, 1, 47, "Text"],
+Cell[8292, 272, 398, 11, 29, "TextNumbered"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[8727, 288, 130, 1, 59, "Subsubsection"],
+Cell[8860, 291, 231, 3, 47, "Text"],
+Cell[9094, 296, 317, 7, 107, "Text"],
+Cell[9414, 305, 234, 5, 77, "Text"],
+Cell[9651, 312, 693, 13, 167, "Text"],
+Cell[10347, 327, 435, 10, 77, "Text"]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
