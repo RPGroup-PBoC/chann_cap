@@ -26,7 +26,6 @@ output/
 *.gz
 *.bbl
 graphicspath.tex
-bibliography.tex
 *.lnk
 __pycache__/
 **/__pycache__/
