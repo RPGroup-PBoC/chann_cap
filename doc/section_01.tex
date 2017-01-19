@@ -1,7 +1,41 @@
 \section{Models}
 
-\textcolor{blue}{Introduce Jane's paper as a means of mRNA variability}
+\subsection{Mutual Information and Channel Capacity}
 
+The mutual information
+between an environmental state $s$ and the gene expression level $g$ can be
+written as
+\begin{equation}
+I(s;g) = \sum_s \sum_g P(s) P(g \mid s) \log_2 \frac{P(g \mid s)}{P(g)}.
+\end{equation}
+$P(g \mid s)$, the probability of a gene expression level $g$
+given an inducer concentration $s$ (the input-output function), is set by the
+physics of the system and can be analytically derived using the chemical master
+equation approach \cite{Shahrezaei2008, Swain2016} in combination with the
+theoretical framework explained in aim 1. $P(g)$, the distribution of gene
+expression regardless of the inducer concentration, can be computed from the
+input-output function by averaging over all inputs. Mathematically this is
+written as
+\begin{equation}
+P(g) = \sum_s P(g \mid s) P(s).
+\end{equation}
+$P(s)$, the distribution of environments/inputs, which is not a property of the
+communication channel, in principle cannot be determined -- In aim 3 we will
+come back to this point where as experimentalists we get to choose different
+distributions for the environments that the cells are exposed to. A useful
+metric to compute then, is one of the key results from Shannon's work known as
+the channel capacity \cite{Rhee2012a}. This quantity is defined as
+\begin{equation}
+C(s; g) \equiv \max_{P(s)} I(s; g),
+\end{equation}
+which represents the maximum amount of information that can be sent through a
+channel optimized over all possible distributions of the signal $s$.
+This quantity has previously been used as a metric for the regulatory power that
+cells have over their gene expression profiles \cite{Tkacik2008a, Rieckh2014}.
+
+\subsection{Full Gene Expression Profile}
+
+\talComment{Peter Swain's paper. Not yet finalized on exactly which model we are doing}
 
 \begin{figure}[h!]
 	\centering \includegraphics[scale=0.1]{Figure2.jpg} \caption{Channel capacity of the Lac repressor. Experimental data with \textbf{theory perfectly overlaid on top}, omg bbq roflcopter!}
@@ -12,17 +46,3 @@
 	\centering \includegraphics[scale=0.2]{Figure3v2.jpg} \caption{Experimental results of gene expression overlaid with theoretical prediction. \talComment{Show all results for O2, say that other plots are in SI}}
 	\label{figFullProfile}
 \end{figure}
-
-\talComment{Potential other figures:
-	\begin{itemize}
-		\item Varying cross all $R$ and $k_{off}$ values, what is the maximal channel capacity you can achieve?
-		\item Potentially look at Mitch Lewis's strains which will have different $K_{DNA}$ or $K_{A}$ and $K_{I}$ parameters and redo the analysis there, showing that the theory is amazingly good!
-	\end{itemize}
-	}
-
-\talComment{Other things that would be very interesting to explore:
-\begin{itemize}
-	\item Explore the channel capacity analytically in the limit of small noise (discuss whether this is a valid assumption from our data)
-	\item Be theorists, and consider how other variables affect the channel capacity. For example, the (active) repressor-DNA binding energy, or $K_A/K_I$, or the rates in the problem. Would be really cool to basically look at the effects of all of the variables that we have on channel capacity, and consider which yield the coolest results.
-\end{itemize}
-}
