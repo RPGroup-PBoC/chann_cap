@@ -1,37 +1,64 @@
 \section{To Do}
 
 \begin{itemize}	
-	\item Get distribution of error from Jane's paper. 
+%	\item Get distribution of error from Jane's paper. 
+%	\begin{itemize}
+%		\item Use Jane's closed form solution and write this up in our paper
+%		
+%		\item Also consider doing (numerically, not analytically) a 3-state context
+%		with an empty promoter. See if the numerical result is any different from
+%		Jane's 2-state solution.
+%		
+%		\item Read Peter Swain's paper "Analytical distributions for stochastic gene
+%		expression" to see how to get from Jane's mRNA profile to the gene expression
+%		profile. Manuel thinks that we lose some information at every step of the
+%		central dogma (see "Data processing inequality" in my Chrome Bookmarks) and
+%		that if we can get the gene expression prediction/experiment to match then we
+%		can try to measure the mRNA levels directly and see if they also match the
+%		prediction. That would be a really nice match between theory and experiment.
+%		Manuel and I should discuss the derivations in Peter Swain's paper go.
+%	\end{itemize}
+	
+	\item As per Swain's last point before the Discussion, if the RNAP and repressor's binding-unbinding rates are fast, then the 3-stage model reduces to the 2-stage model with $a \to \frac{\kappa_0}{\kappa_0 + \kappa_1} a$, where $\frac{\kappa_0}{\kappa_0 + \kappa_1}$ is the fraction of the time that the system is in the RNAP bound state in equilibrium.
 	\begin{itemize}
-		\item Use Jane's closed form solution and write this up in our paper
+		\item Figure out experimentally what these rate constants are for our system
 		
-		\item Also consider doing (numerically, not analytically) a 3-state context
-		with an empty promoter. See if the numerical result is any different from
-		Jane's 2-state solution.
+		\item Rob has previously suggested that Jeff Gelles knows what many of these rate constants are for the Lac system
 		
-		\item Read Peter Swain's paper "Analytical distributions for stochastic gene
-		expression" to see how to get from Jane's mRNA profile to the gene expression
-		profile. Manuel thinks that we lose some information at every step of the
-		central dogma (see "Data processing inequality" in my Chrome Bookmarks) and
-		that if we can get the gene expression prediction/experiment to match then we
-		can try to measure the mRNA levels directly and see if they also match the
-		prediction. That would be a really nice match between theory and experiment.
-		Manuel and I should discuss the derivations in Peter Swain's paper go.
+		\item If these rate constants are fast, we can use the much simpler 2-stage model protein distribution, and we can also easily add in the empty promoter stage (i.e. a 4-stage model) if we just modify $a$ accordingly
 	\end{itemize}
 	
-	\item As per Rob: Would be good to compare the 2-step model (promoter either
-	bound to RNAP or repressor) with the 3-step model (promoter may also be empty).
-	Probably needs to be done numerically, but get the relevant parameters from
-	Jeff Gelles
+	\item Expand Swain's 3-stage model (promoter either RNAP bound or repressor bound) to a 4-stage model. I think this should be straightforward to do analytically.
 	
-	\textcolor{brown}{
-	\item (Paper 2) How can the theory be applied to an evolutionary context? For example, compete RBS 1027 against RBS 446, and predict both which will win and exactly by how much. Then unconstrain the system and let them evolve over time on the growth rate versus mutual information graph and see that they (hopefully) move upwards. (May need to make new strains that have LacI and possibly SacB for this)
-	\begin{itemize}
-		\item Cost/benefit function. Do we use Lassig Paper (Nonlinear fitness landscape of a molecular pathway), Uri Alon paper, or our own? (At the very least, should try both cost/benefit functions and see if they give different results.)
-		\item Make a strain as close to optimal as possible. Manuel tried doing this, but got unphysical parameters. Wiggle, wiggle, wiggle them until they are reasonable. Noah is willing to help on this end, if desired (potentially as another member of the project, if desired).
-		\item We agree that there is evolutionary pressure to move up in the growth rate plot, but is there any pressure to move left or right (other than being able to access more upwards space the further you go to the right). Give readers some intuition on what it means for two points to be on the same horizontal line (i.e. what could their profiles look like); what about two vertical points? Do these points have smaller errors, or must they have different curve shapes? Can we make a phase diagram in some way of the different Mutual Info/Growth Rate plot? If you take any curve and scale its error bars up or down, what trajectory do you get on the Mutual Info/Growth Rate plot?
-		\item Keep in mind that we are trying to maximize \textit{growth rate} and not \textit{mutual information}. To be honest about this, we should talk a bit about a strain that maximizes mutual information at the cost of growth rate. Could there be some other metric that is analogous to growth rate and still uses the full distribution?
-	\end{itemize}
-	\item (Future) Does the natural Lac operon provide qualitatively different behavior than the synthetic ones? Explore this theoretically, and if it does then we could potentially make these strains as well.
+	
+	\item \textcolor{blue}{Really important reference for us is \cite{Hansen2015}.
+		\begin{itemize}
+			\item (Page 6, Figure 2A) Their measured channel capacity for amplitude modulated (AM) signal, was 1.3 for the natural promoter. We are also planning to measure this AM signal, but not the frequency modulated (FM) signal that they also measured.
+			\item (Page 7) "Measuring mutual information in a cell population subject to extrinsic noise...underestimates the intrinsic information transduction capacity of a promoter." They claimed this was caused by cells being at different stages of the cell cycle. After correcting for this error, they measured a channel capacity of 1.5, which still means the system can only distinguish between two or three input states
+			\item (Page 8) They made a mutant promoter that had a channel capacity of ~2. I assume we are not going to pursue this angle, but it shows that natural operators do not necessarily maximize channel capacity.
+			\item Overall, I found it difficult to understand what change in channel capacity was "significant." They claimed that an increase of 0.15 is "small but robust," but I wondered whether this was comparable to their experimental noise. I am worried that if the Lac system also yields small channel capacities, we will end up making statements like "we saw a 0.1 increase in channel capacity between O2 and O1..."
+			\item To rephrase that last point, we hope that the Lac system can distinguish multiple inputs (what they call the Rheostat Model), but if channel capacity is ~1 then you can only distinguish the OFF and ON state (i.e. their Noisy Switch Model). Based on your calculations of channel capacity so far, how many bits do you suspect we will find?
+			\item I think our paper needs to go \textit{beyond} this paper in a meaningful way. One way I think we will improve upon their results is that we have a \textbf{theoretical prediction} for the form of the variability in gene expression. We should really stress that!
+		\end{itemize}
 	}
+	
+	\item \textcolor{blue}{Another important reference \cite{Chevalier2015}:
+		\begin{itemize}
+			\item Several other groups are making similar mutual information measurements (between ligand concentration and gene expression) in their systems, and so we should really stress what is new about our paper - that we are \textit{predicting everything theoretically}! References 6-10 from this paper should be good to cite.
+			\item I really like their short and sweet introduction on mutual information: ``Mutual information (MI) is a natural metric for characterizing information transmission between the inputs of a stochastic network and its nodes. MI quantifies the level of precision with which a given node(s) in a network estimates and responds to an input(s) by accounting for both the mean and variability in the response.''
+			\item They also claimed that our theoretical measurements should overestimate the measured mutual information because of: (1) variability of cell's being at different stages of the cell cycle and (2) variability that is extrinsic to the pathway. We can keep that in mind if we theoretically overshoot the measured values.
+			\item Finally, they point out that the measured mutual information is time-dependent, so we need to be super careful about making all of our measurements using precisely the same method. Hopefully the O1, O2, O3, Oid strains all grow at exactly the same speed, because otherwise if you always wait until OD 0.5 (or whatever) but this waiting time is different between strains, that could introduce a bias into the measurements.
+		\end{itemize}
+	}
+	
+%	\textcolor{brown}{
+%	\item (Paper 2) How can the theory be applied to an evolutionary context? For example, compete RBS 1027 against RBS 446, and predict both which will win and exactly by how much. Then unconstrain the system and let them evolve over time on the growth rate versus mutual information graph and see that they (hopefully) move upwards. (May need to make new strains that have LacI and possibly SacB for this)
+%	\begin{itemize}
+%		\item Cost/benefit function. Do we use Lassig Paper (Nonlinear fitness landscape of a molecular pathway), Uri Alon paper, or our own? (At the very least, should try both cost/benefit functions and see if they give different results.)
+%		\item Make a strain as close to optimal as possible. Manuel tried doing this, but got unphysical parameters. Wiggle, wiggle, wiggle them until they are reasonable. Noah is willing to help on this end, if desired (potentially as another member of the project, if desired).
+%		\item We agree that there is evolutionary pressure to move up in the growth rate plot, but is there any pressure to move left or right (other than being able to access more upwards space the further you go to the right). Give readers some intuition on what it means for two points to be on the same horizontal line (i.e. what could their profiles look like); what about two vertical points? Do these points have smaller errors, or must they have different curve shapes? Can we make a phase diagram in some way of the different Mutual Info/Growth Rate plot? If you take any curve and scale its error bars up or down, what trajectory do you get on the Mutual Info/Growth Rate plot?
+%		\item Keep in mind that we are trying to maximize \textit{growth rate} and not \textit{mutual information}. To be honest about this, we should talk a bit about a strain that maximizes mutual information at the cost of growth rate. Could there be some other metric that is analogous to growth rate and still uses the full distribution?
+%	\end{itemize}
+%	\item (Future) Does the natural Lac operon provide qualitatively different behavior than the synthetic ones? Explore this theoretically, and if it does then we could potentially make these strains as well.
+%	}
 \end{itemize}
