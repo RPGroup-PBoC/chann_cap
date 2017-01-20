@@ -14,8 +14,8 @@
 \newcommand{\talComment}[1]{\textcolor{blue}{(TE:~#1)}} % Commenting
 \newcommand{\robComment}[1]{\textcolor{red}{(RP:~#1)}} % Commenting
 
-% To make jumping between equation, figure, citation references easier
-\usepackage{hyperref}
+% To bold the first sentence of every figure caption
+\newcommand{\captionStroke}[1]{\textbf{#1}}
 
 % To define more useful LaTeX commands
 \usepackage{xparse}
@@ -24,8 +24,6 @@
 \DeclareDocumentCommand \eref{oooo}
 {\IfNoValueTF{#2}{Eq.~(\ref{#1})}{\IfNoValueTF{#3}{Eqs.~(\ref{#1}) and
 (\ref{#2})}{\IfNoValueTF{#4}{Eqs.~(\ref{#1})-(\ref{#3})}{Eqs.~(\ref{#1})-(\ref{#4})}}}}
-% Equation referencing without the ``Eq.''
-\newcommand{\erefEq}[1]{(\ref{#1})} % Equations
 
 % Figure referencing
 \DeclareDocumentCommand \fref{ooo}
@@ -50,7 +48,7 @@
 \maketitle
 	\input{section_00_introduction}
 	\input{section_01}
-%	\input{section_02}
+	\input{section_02}
 %	\input{section_03}
 %	\input{section_04}
 	\input{section_99_ToDo} % To Do list of future items

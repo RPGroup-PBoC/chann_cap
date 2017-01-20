@@ -2,47 +2,93 @@
 
 \subsection{Mutual Information and Channel Capacity}
 
-The mutual information
-between an environmental state $s$ and the gene expression level $g$ can be
-written as
+The mutual information between an environmental state $s$ (the concentration of
+IPTG) and the gene expression level $g$ is given by
 \begin{equation}
-I(s;g) = \sum_s \sum_g P(s) P(g \mid s) \log_2 \frac{P(g \mid s)}{P(g)}.
+I(s;g) = \sum_s \sum_g P(s) P(g \mid s) \log_2 \frac{P(g \mid s)}{P(g)},
 \end{equation}
-$P(g \mid s)$, the probability of a gene expression level $g$
-given an inducer concentration $s$ (the input-output function), is set by the
-physics of the system and can be analytically derived using the chemical master
-equation approach \cite{Shahrezaei2008, Swain2016} in combination with the
-theoretical framework explained in aim 1. $P(g)$, the distribution of gene
-expression regardless of the inducer concentration, can be computed from the
-input-output function by averaging over all inputs. Mathematically this is
-written as
-\begin{equation}
-P(g) = \sum_s P(g \mid s) P(s).
-\end{equation}
-$P(s)$, the distribution of environments/inputs, which is not a property of the
-communication channel, in principle cannot be determined -- In aim 3 we will
-come back to this point where as experimentalists we get to choose different
-distributions for the environments that the cells are exposed to. A useful
-metric to compute then, is one of the key results from Shannon's work known as
-the channel capacity \cite{Rhee2012a}. This quantity is defined as
-\begin{equation}
+with the following definitions:
+\begin{itemize}
+	\item $P(s)$ represents the distribution of environmental states that the
+system sees, which is dictated by the experimental setup. For example, we
+choose to randomly expose the system to either a small or large amount of IPTG
+with $P(s=\text{small}) = \nicefrac{1}{2}$ and $P(s=\text{large}) =
+\nicefrac{1}{2}$.
+	
+	\item $P(g \mid s)$ denotes the probability of a gene expression level $g$
+given an inducer concentration $s$ (see \fref[figExpSetup]\letter{C}). We will
+derive this expression for the \textit{lac} system in Section
+\ref{sectionGeneExpressionDistribution}.
+	
+	\item $P(g) = \sum_s P(g \mid s) P(s)$ stands for the distribution of gene
+	expression regardless of the inducer concentration.
+\end{itemize}
+
+A useful
+metric that captures how well the gene expression profile can relay information about the environmental state is the channel capacity,
+\begin{equation} \label{eqChannelCapacity}
 C(s; g) \equiv \max_{P(s)} I(s; g),
 \end{equation}
-which represents the maximum amount of information that can be sent through a
-channel optimized over all possible distributions of the signal $s$.
-This quantity has previously been used as a metric for the regulatory power that
-cells have over their gene expression profiles \cite{Tkacik2008a, Rieckh2014}.
+which represents the maximum amount of information for all possible
+distributions of the signal $s$ \cite{Rhee2012a}. This quantity has previously
+been used as a metric for the regulatory power that cells have over their gene
+expression profiles \cite{Tkacik2008a, Rieckh2014}.
 
-\subsection{Full Gene Expression Profile}
+\subsection{Equilibrium Analysis of the \textit{lac} System}
 
-\talComment{Peter Swain's paper. Not yet finalized on exactly which model we are doing}
+\talComment{Purpose of this section will be to introduce the basics of the \textit{lac} system, to explain the states and weights in \fref[figRepressorStatesWeights], and to write out the probability that the RNAP is bound in equilibrium, which is given by (ignoring the weak inactive repressor binding)}
+\begin{equation} \label{eqRNAPboundEquilibrium}
+	p_\text{bound} = \frac{ \frac{P}{N_{NS}} e^{-\beta \Delta \epsilon_P} }{1 + \frac{P}{N_{NS}} e^{-\beta \Delta \epsilon_P} + \frac{R_A}{N_{NS}} e^{-\beta \Delta \epsilon_{RA}}}.
+\end{equation}
 
 \begin{figure}[h!]
-	\centering \includegraphics[scale=0.1]{Figure2.jpg} \caption{Channel capacity of the Lac repressor. Experimental data with \textbf{theory perfectly overlaid on top}, omg bbq roflcopter!}
-	\label{figChannelCapacity}
+	\centering \includegraphics[scale=0.5]{simple_states_and_weights_generic} 
+	\caption{\captionStroke{States and weights for the simple repression motif.} RNAP (light
+		blue) and repressor compete for DNA binding. There are $R_A$ repressors in the
+		active state (red) and $R_I$ repressors in the inactive state (purple). The
+		difference in energy between a repressor bound to the operator and to another
+		non-specific site on the DNA equals $\Delta\varepsilon_{RA}$ in the active
+		state and $\Delta\varepsilon_{RI}$ in the inactive state; the $P$ RNAP have a
+		corresponding energy difference $\Delta\varepsilon_{P}$. \talComment{Copied from MWC Induction paper. We will probably need a version of this to introduce the Lac repressor}}
+	\label{figRepressorStatesWeights}
 \end{figure}
 
+\subsection{Full Gene Expression Profile} \label{sectionGeneExpressionDistribution}
+
+In this section, we derive the probability distribution $P(g \mid s)$ to obtain
+a gene expression level $g$ from the \textit{lac} system given an IPTG
+concentration $s$. We will analytically solve for this distribution using a
+chemical master equation approach following Shahrezaei and Swain
+\cite{Shahrezaei2008}.
+
+Consider the rates diagram for simple repression shown in
+\fref[figRatesDiagram]. We first consider the case where $k_\text{on} =
+k_\text{off} = r_\text{on} = r_\text{off} = 0$, so that the promoter is
+constitutively expressed. From Shahrezaei and Swain, assuming $d_0 \gg d_1$ (in
+bacteria, $d_0 \approx 0.03\,\,\text{min}^{-1}$ and $d_1 \approx
+0.005\,\,\text{min}^{-1}$) and a time $t \gg \frac{1}{d_0}$ so that the mRNA
+distribution reaches steady state, the probability of having $n$ copies of
+protein is given by the negative binomial distribution \cite{Shahrezaei2008}
+\begin{equation} \label{eqGeneExpressionDistributionConstitutive}
+	P_n^\text{(constitutive)} = \binom{n + \frac{v_0}{d_1} - 1}{n} \left( \frac{v_1}{d_0 + v_1} \right)^{n} \left( 1 - \frac{v_1}{d_0 + v_1} \right)^{v_0/d_1}.
+\end{equation}
+
+In the more general case where $k_\text{on}$, $k_\text{off}$, $r_\text{on}$, and
+$r_\text{off}$ are non-zero and the promoter may be unbound or bound to the Lac
+repressor, an analytic solution still exists. Yet in the limit where these four
+rates are all large but their ratios $\frac{k_\text{on}}{k_\text{off}}$ and
+$\frac{r_\text{on}}{r_\text{off}}$ remain finite, the probability distribution
+takes the same form as \eref[eqGeneExpressionDistributionConstitutive] but with
+$v_0 \to p_\text{bound} v_0$ where $p_\text{bound}$ is given by
+\eref[eqRNAPboundEquilibrium] as the probability that the promoter is bound to
+RNAP \cite{Shahrezaei2008}. Therefore, the probability of having $n$ proteins in
+the system is given as
+\begin{equation} \label{eqGeneExpressionDistributionFastRates}
+P_n = \binom{n + \frac{v_0 p_\text{bound}}{d_1} - 1}{n} \left( \frac{v_1}{d_0 + v_1} \right)^{n} \left( 1 - \frac{v_1}{d_0 + v_1} \right)^{v_0 p_\text{bound}/d_1}.
+\end{equation}
+
 \begin{figure}[h!]
-	\centering \includegraphics[scale=0.2]{Figure3v2.jpg} \caption{Experimental results of gene expression overlaid with theoretical prediction. \talComment{Show all results for O2, say that other plots are in SI}}
-	\label{figFullProfile}
+	\centering \includegraphics[scale=1]{ratesDiagram} 
+	\caption{\captionStroke{Rates diagram for simple repression.} The Lac repressor (red) competes with RNAP (light blue) for the promoter. Only when the latter is bound is mRNA produced, which is then translated into protein. Both mRNA and protein are degraded.}
+	\label{figRatesDiagram}
 \end{figure}

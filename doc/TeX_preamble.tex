@@ -18,8 +18,6 @@
 \usepackage{enumitem}
 \usepackage{wasysym}
 \usepackage{listings}
-\usepackage[colorlinks=true, urlcolor=blue, hyperfootnotes=false, hyperfigures=false, hyperindex=false, linkcolor=red]{hyperref}
-\usepackage[font=small, margin=1cm]{caption}
 \usepackage{float}
 \usepackage{booktabs}
 \usepackage{fixltx2e}
@@ -30,6 +28,20 @@
 \usepackage{array}
 \usepackage{hhline}
 \usepackage{titlesec}
+
+% To make jumping between equation, figure, citation references easier
+\usepackage[urlcolor=blue, hyperfootnotes=false, hyperfigures=false, hyperindex=false, linkcolor=black]{hyperref}
+%\usepackage[colorlinks=true, urlcolor=blue, hyperfootnotes=false, hyperfigures=false, hyperindex=false, linkcolor=red]{hyperref}
+
+% To make caption labels (i.e. Figure 1, Figure 2...) bold and make all caption text small
+\usepackage[labelfont=bf, font=small]{caption}
+%\usepackage[labelfont=bf, font=small, margin=1cm]{caption}
+
+% To use \nicefrac
+\usepackage{units, xfrac}
+
+% For strike-out text during editing
+\usepackage[normalem]{ulem}
 
 %Latin accents
 \usepackage[utf8]{inputenc}
