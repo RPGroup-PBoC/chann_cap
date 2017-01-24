@@ -84,7 +84,7 @@ def kon_fn(epsilon, k0=2.7E-3):
     k0 : float.
         value of the difussion limited rate constant
     '''
-    return 1.66 / 2 * k0 * 4.6E6 * np.exp(epsilon)
+    return 1.66 / 1 * k0 * 4.6E6 * np.exp(epsilon)
 
 #=============================================================================== 
 
