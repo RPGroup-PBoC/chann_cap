@@ -90,7 +90,7 @@ def kon_fn(epsilon, k0=2.7E-3):
 
 # define a np.frompyfunc that allows us to evaluate the sympy.mp.math.hyp1f1
 np_log_hyp= np.frompyfunc(lambda x, y, z: \
-mpmath.ln(mpmath.hyp1f1(x, y, z, zeroprec=1000)), 3, 1)
+mpmath.ln(mpmath.hyp1f1(x, y, z, zeroprec=80)), 3, 1)
 
 def log_p_m_mid_C(C, mRNA, rep, ki, ka, epsilon, kon, k0, gamma, r_gamma,
                  logC=False):
