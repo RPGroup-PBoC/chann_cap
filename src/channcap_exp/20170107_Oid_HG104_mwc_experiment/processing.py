@@ -38,7 +38,7 @@ chann_cap.set_plotting_style()
 DATE = 20170107
 USERNAME = 'gchure'
 OPERATOR = 'Oid'
-STRAIN = 'RBS1027'
+STRAIN = 'HG104'
 REPRESSOR = 22
 BINDING_ENERGY = -17
 
@@ -65,7 +65,7 @@ df = df_micro[(df_micro.rbs != 'auto') & (df_micro.rbs != 'delta')]
 #============================================================================== 
 # Compute channel capacity for experimental data
 #============================================================================== 
-compute_exp = True
+compute_exp = False
 if compute_exp:
     def channcap_bs_parallel(b):
         # Initialize matrix to save bootstrap repeats
@@ -78,7 +78,7 @@ if compute_exp:
 
     # Perform the parallel computation
     print('Performing bootsrap estimates of channel capacity...')
-    channcap_list = Parallel(n_jobs=7)(delayed(channcap_bs_parallel)(b) \
+    channcap_list = Parallel(n_jobs=48)(delayed(channcap_bs_parallel)(b) \
                                         for b in bins)
     print('Done performing calculations.')
 
@@ -127,7 +127,7 @@ df_cc[['date', 'bins']] = df_cc[['date', 'bins']].astype(int)
 # Computing the channel capacity for randomized data
 #============================================================================== 
 
-compute_shuff = True
+compute_shuff = False
 
 if compute_shuff:
     print('shuffling mean_intensity data')
@@ -146,7 +146,7 @@ if compute_shuff:
 
     # Perform the parallel computation
     print('Performing bootsrap estimates on random data')
-    channcap_list_shuff = Parallel(n_jobs=7)\
+    channcap_list_shuff = Parallel(n_jobs=48)\
                           (delayed(channcap_bs_parallel_shuff)(b) \
                                         for b in bins)
     print('Done performing calculations.')
