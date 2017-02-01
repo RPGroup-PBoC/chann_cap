@@ -155,7 +155,7 @@ def log_p_m_mid_C(C, mRNA, rep, ki, ka, epsilon, kon, k0, gamma, r_gamma,
 
 # define a np.frompyfunc that allows us to evaluate the sympy.mp.math.hyp1f1
 np_log_gauss_hyp = np.frompyfunc(lambda a, b, c, z: \
-mpmath.ln(mpmath.hyp2f1(a, b, c, z,  maxprec=10000)).real, 4, 1)
+mpmath.ln(mpmath.hyp2f1(a, b, c, z,  maxprec=60)).real, 4, 1)
 
 def log_p_p_mid_C(C, protein, rep, ka, ki, epsilon, kon, k0, gamma_m, r_gamma_m,
                   gamma_p, r_gamma_p, logC=False):
@@ -447,6 +447,66 @@ def channel_capacity(QmC, epsilon=1E-3, info=1E4):
     # convert from nats to bits
     Il = Il / np.log(2)
     return Il, pC, loop_count
+
+#============================================================================== 
+
+def theory_trans_matrix(df_prob, c, Rtot, tol=1E-20, clean=True, **kwargs):
+    '''
+    Function that builds the transition matrix Qg|c for a series of
+    concentrations c. It builds the matrix by using the tidy data-frames
+    containing the pre-computed distributions.
+    Parameters
+    ----------
+    df_prob : Pandas data frame.
+        Data frame containing the pre-computed distributions. The data frame
+        should contain 3 columns:
+        1) repressor : number of repressors.
+        2) protein   : number of proteins.
+        3) prob      : probability of a protein copy number.
+    c : array-like.
+        Concentrations at which to evaluate the input-output function.
+    Rtot : int.
+        Total number of repressors per cell.
+    tol : float.
+        tolerance under which if a marginal probability for a protein is
+        lower than that, that column is discarded.
+    clean : bool.
+        Boolean indicating if the entire matrix should be returned or if the
+        columns with cumulative probability < tol should be removed.
+    kwargs : arguments to be passed to the p_act function such as
+        ka, ki :  dissociation constants
+        epsilon : energy difference between active and inactive state
+    Returns
+    -------
+    Qg|c : input output matrix in which each row represents a concentration
+    and each column represents the probability of a protein copy number.
+    '''
+    # Convert the concentration to a numpy array
+    c = np.array(c)
+    
+    # compute the p_active probabilities for each concentration
+    pacts = p_act(c, **kwargs)
+    pacts = np.unique(pacts)
+    # Compute the number of repressors given this p_active. The
+    # repressors will be round down for fractional number of repressors
+    repressors = np.floor(Rtot * pacts)
+    
+    # Initialize matrix to save input-output function
+    Qgc = np.zeros([len(c), len(df_prob.protein.unique())])
+    
+    # Loop through every repressor and add the probabilities to each
+    # row of the Qg|c matrix
+    for i, rep in enumerate(repressors):
+        Qgc[i, :] =\
+        df_prob[df_prob.repressor == rep].sort_values(by='protein').prob
+    
+    # Conditional on whether or not to clean the matrix
+    if clean:
+        # Remove columns whose marginal protein probability is < tol
+        prot_marginal = Qgc.sum(axis=0)
+        return Qgc[:, prot_marginal > tol]
+    else:
+        return Qgc
 
 #============================================================================== 
 # Computing experimental channel capacity
