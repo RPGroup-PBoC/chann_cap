@@ -1,0 +1,184 @@
+\section{Derivation of the two stage promoter equation}
+
+Shahreaei and Swain derive the full analytical protein distribution for a two
+stage (i.e. an unregulated promoter) and a three stage (i.e. a promoter that
+transitions between active and inactive) promoter. In this section wi will
+follow the derivation augmenting the details at each step for clarity.
+
+First let us write the chemical master equation for this system. Let $p$ and $m$
+be the protein and mRNA copy numbers, respectively, and $P_{m,p}(t)$ be the
+probability of having $m$ mRNA and $p$ proteins at time t. Then we can use the
+``spread the butter'' approach to write the discrete difference equation
+\begin{equation}
+\begin{aligned}
+P_{m,p}(t + \Delta t) =
+P_{m,p}(t)
++ \overbrace{r_m \Delta t \left[ P_{m-1,p}(t) - P_{m,p}(t) \right]}^\text{mRNA
+production}
++ \overbrace{r_p m
+\Delta t \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]}^\text{protein
+production}\\
++ \underbrace{\gamma_m \Delta t \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t)
+\right]}_\text{mRNA degradation}
++ \underbrace{\gamma_p \Delta t \left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t)
+\right]}_\text{protein degradation},
+\end{aligned}
+\end{equation}
+where $r_m$ and $r_p$ are the mRNA and protein production rates respectively,
+$\gamma_m$ and $\gamma_p$ are the mRNA and protein degradation rates
+respectively, and $\Delta t$ is a time interval small enough so that only one
+event can take place.
+
+We rearrange the terms, divide both sides by $\Delta t$ , obtaining
+\begin{equation}
+  \begin{aligned}
+\frac{P_{m,p}(t + \Delta t) - P_{m,p}(t)}{\Delta t} = r_m \left[ P_{m-1,p}(t) -
+P_{m,p}(t) \right] + r_p m \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
++ \gamma_m \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t) \right] + \gamma_p \left[
+ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right].
+  \end{aligned}
+\end{equation}
+We now take the limit $\Delta t \rightarrow 0$ to obtain the final form of the
+chemical master equation
+\begin{equation}
+\begin{aligned}
+\frac{\partial P_{m,p}}{\partial t} = r_m \left[ P_{m-1,p}(t) - P_{m,p}(t)
+\right] + r_p m \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
++ \gamma_m \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t) \right] + \gamma_p \left[
+(p + 1) p_{m, p+1}(t) - p p_{m, p}(t) \right].
+  \end{aligned}
+\end{equation}
+
+Let us now divide by the slowest rate, i.e. $\gamma_r$
+\begin{equation}
+\begin{aligned}
+\frac{1}{\gamma_p} \frac{\partial P_{m,p}}{\partial t} =
+\frac{r_m}{\gamma_p} \left[ P_{m-1,p}(t) - P_{m,p}(t) \right]
++ \frac{r_p}{\gamma_p} m  \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
++ \frac{\gamma_m}{\gamma_p} \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t)
+\right]
++ \left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right].
+\end{aligned}
+\label{eq_cme_over_gammap}
+\end{equation}
+We now introduce the following variables:
+\begin{align}
+  a \equiv \frac{r_m}{\gamma_p}\\
+  b \equiv \frac{r_p}{\gamma_m}\\
+  \gamma \equiv \frac{\gamma_m}{\gamma_p}\\
+  \tau \equiv \gamma_p \cdot t
+\end{align}
+Substituting these variables into \eref[eq_cme_over_gammap] we obtain
+\begin{equation}
+\begin{aligned}
+\frac{\partial P_{m,p}}{\partial \tau} =
+a \left[ P_{m-1,p}(t) - P_{m,p}(t) \right]
++ b \gamma m  \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
++ \gamma \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t) \right]
++ \left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right].
+\end{aligned}
+\label{eq_cme_tau}
+\end{equation}
+Note that we used $\frac{1}{\gamma_p}\frac{\partial}{\partial t} =
+\frac{\partial}{\partial \tau}$.
+
+We now define the generating function
+\begin{equation}
+F\left[ s, z \right] = \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m, p},
+\end{equation}
+where from now on we abbreviate $P_{m, p}(t)$ as $P_{m, p}$. The generating
+function will allow us to write a single PDE rather than an infinite system of
+PDEs for each mRNA and protein copy number. The generating function time
+derivative is given by
+\begin{equation}
+\frac{\partial F}{\partial \tau} =
+\frac{\partial}{\partial \tau} \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p
+P_{m, p} =
+\sum_{m=0}^{\infty}
+\sum_{p=0}^{\infty} s^m z^p \frac{\partial}{\partial \tau} P_{m, p}.
+\label{eq_dF_dtau}
+\end{equation}
+We now substitute \eref[eq_cme_tau] into \eref[eq_dF_dtau]
+\begin{equation}
+\begin{aligned}
+\frac{\partial F}{\partial \tau} =
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p a \left[ P_{m-1,p}(t) -
+P_{m,p}(t) \right]
++ b \gamma m  \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
++ \gamma \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t) \right]
++ \left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right].
+\end{aligned}
+\label{eq_dF_dtau_complete}
+\end{equation}
+
+Note that
+\begin{equation}
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( P_{m+k, p} - P_{m, p}
+\right) =
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m+k, p}
+- \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m, p}.
+\end{equation}
+We can now factorize $s^{-k}$ from the first term on the left hand side and
+redefine the variable to sum over.
+\begin{equation}
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( P_{m+k, p} - P_{m, p}
+\right) =
+s^{-k} \sum_{(m+k)=0}^{\infty} \sum_{p=0}^{\infty} s^{m+k} z^p P_{m+k, p}
+- \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m, p}.
+\end{equation}
+But since both sums on the left hand side are taken over the same ranges we can
+write it as
+\begin{equation}
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( P_{m+k, p} - P_{m, p}
+\right) =
+\left( s^{-k} - 1 \right) \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m,
+p}
+\end{equation}
+
+With this identity we can rewrite \eref[eq_dF_dtau_complete] as
+\begin{equation}
+\begin{aligned}
+\frac{\partial F}{\partial \tau} =
+(s - 1) \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( a P_{m,p} \right)
++ (z - 1) \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p b \gamma m P_{m,p}
+\\
++ \left( s^{-1} - 1 \right) \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p
+\gamma m P_{m,p}
++ \left( z^{-1} - 1 \right) \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p
+\gamma p P_{m,p}.
+\end{aligned}
+\label{eq_dF_dtau_identity}
+\end{equation}
+
+Another useful identity can be derived if we note that
+\begin{equation}
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p m P_{m, p} =
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} z^p s \frac{\partial s^m}{\partial s}
+P_{m, p}.
+\end{equation}
+But since $z^p$ and $P_{m, p}$ do not depend on $s$ we can write
+\begin{equation}
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p m P_{m, p} =
+s \frac{\partial}{\partial s}\left( \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m, p} \right) =
+s \frac{\partial}{\partial s}F.
+\end{equation}
+
+Using this identity in \eref[eq_dF_dtau_identity] allow us to remove all the
+sums, obtaining a single PDE of the form
+\begin{equation}
+\frac{\partial F}{\partial \tau} =
+(s - 1) a F + (z - 1) b \gamma s \frac{\partial F}{\partial s}
++ \left( s^{-1} - 1 \right) \gamma s \frac{\partial F}{\partial s}
++ \left( z^{-1} - 1 \right) z \frac{\partial F}{\partial Z}.
+\end{equation}
+Rearranging terms we obtain
+\begin{equation}
+\frac{\partial F}{\partial \tau} =
+a (sF - s)
++ b \gamma \left( z s \frac{\partial F}{\partial s} - s \frac{\partial
+F}{\partial s} \right)
++ \gamma \left( \frac{\partial F}{\partial s} - s \frac{\partial F}{\partial s}
+\right)
++ \left( \frac{\partial F}{\partial z} - z \frac{\partial F}{\partial z}
+\right).
+\end{equation}
