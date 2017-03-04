@@ -2,8 +2,9 @@
 
 Shahreaei and Swain derive the full analytical protein distribution for a two
 stage (i.e. an unregulated promoter) and a three stage (i.e. a promoter that
-transitions between active and inactive) promoter. In this section wi will
-follow the derivation augmenting the details at each step for clarity.
+transitions between active and inactive) promoter \cite{Shahrezaei2008}. In
+this section wi will follow the derivation augmenting the details at each step
+for clarity.
 
 First let us write the chemical master equation for this system. Let $p$ and $m$
 be the protein and mRNA copy numbers, respectively, and $P_{m,p}(t)$ be the
@@ -181,4 +182,62 @@ F}{\partial s} \right)
 \right)
 + \left( \frac{\partial F}{\partial z} - z \frac{\partial F}{\partial z}
 \right).
+\label{eq_df_dtau_PDE}
 \end{equation}
+
+With the generating function we were able to pass from an infinite system of PDE
+for each mRNA and protein copy number to a single PDE. We now have to find a
+solution for this equation and then infer back the probability distribution
+given the definition of the generating function.
+
+We now note a pattern in \eref[eq_df_dtau_PDE]. If we define $u \equiv s - 1$ and $v \equiv z - 1$, which satisfy
+\begin{align}
+  \frac{\partial}{\partial s} = \frac{\partial}{\partial u},\\
+  \frac{\partial}{\partial z} = \frac{\partial}{\partial v},
+\end{align}
+we can rewrite \eref[eq_df_dtau_PDE] as
+\begin{equation}
+  \frac{\partial F}{\partial \tau} =
+  a u F
+  + b \gamma v \left( u + 1  \right) \frac{\partial F}{\partial u}
+  - \gamma u \frac{\partial F}{\partial u}
+  - v \frac{\partial F}{\partial v}.
+\end{equation}
+
+We now divide by $v$ and rearrange terms obtaining
+\begin{equation}
+  \frac{\partial F}{\partial v}
+  - \gamma \left[ b (u + 1) - \frac{u}{v} \right] \frac{\partial F}{\partial u}
+  + \frac{1}{v} \frac{\partial F}{\partial \tau}
+  = a \frac{u}{v} F,
+  \label{eq_swain_2}
+\end{equation}
+which is Eq. (2) in \cite{Shahrezaei2008}.
+
+\eref[eq_swain_2] is a semi-linear PDE that can be solved using the method of
+the characteristics (\manuelComment{write appendix about method}). For this we
+write \eref[eq_swain_2] as
+\begin{equation}
+  A(v, u, \tau) \frac{\partial F}{\partial v}
+  + B(v, u, \tau) \frac{\partial F}{\partial u}
+  + C(v, u, \tau) \frac{\partial F}{\partial \tau}
+  = f(u, v, \tau, F),
+\end{equation}
+where
+\begin{align}
+  A &= 1,\\
+  B &= - \gamma \left[ b (1 + u) - \frac{u}{v} \right],\\
+  C &= \frac{1}{v},\\
+  f &= a \frac{u}{v} F.
+\end{align}
+
+If we parametrize the integral surface that solves this PDE with parameter $r$
+we can write a system of four PDE \manuelComment{proof in the method
+explanation}
+\begin{align}
+  \frac{\partial v}{\partial r} = 1,\\
+  \frac{\partial u}{\partial r} = - \gamma \left[ b (1 + u) - \frac{u}{v}
+  \right],\\
+  \frac{\partial \tau}{\partial r} = \frac{1}{v},\\
+  \frac{\partial F}{\partial r} = \frac{a u}{v} F.
+\end{align}
