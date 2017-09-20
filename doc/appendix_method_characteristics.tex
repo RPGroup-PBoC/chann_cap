@@ -180,11 +180,100 @@ in other words
 \end{align}
 We can now solve for $\lambda$ and equate all of the solutions, obtaining
 \begin{equation}
-  {{dx \over dt} \over a(x,y)}} =
+  {{dx \over dt} \over a(x,y)} =
   {{dy \over dt} \over b(x,y)} =
   {{du \over dt} \over f(x,y,u)},
+  \label{eq_char_eq}
 \end{equation}
 or simply in a compact differential form
 \begin{equation}
   {dx \over a} = {dy \over b} = {du \over f}.
 \end{equation}
+These are the characteristic equations that are the key to the method. From
+\eref[eq_char_eq] we can form two pairs of ODE as follows
+\begin{equation}
+  {dy \over dx} = {b(x,y) \over a(x,y)}; \;
+  {du \over dx} = {f(x,y,u)\over a(x,y)},
+\end{equation}
+or
+\begin{equation}
+  {dx \over dy} = {a(x,y) \over b(x,y)}; \;
+  {du \over dy} = {f(x,y,u)\over b(x,y)}.
+\end{equation}
+Solving this system of ODEs determines the characteristic of the PDE, giving
+a clear path to the PDE solution.
+
+\subsection{Example}
+
+Solve for $x > 0$
+\begin{equation}
+  x {\partial u \over \partial x} + y {\partial u \over \partial y} = x e^{-u},
+\end{equation}
+with boundary condition
+\begin{equation}
+  u(x, x^2) = x.
+  \label{eq_boundary_cond}
+\end{equation}
+
+First we set the system of ODEs for this semilinear problem. We have
+\begin{equation}
+  {dx \over a} = {dy \over b} = {du \over f}.
+\end{equation}
+substituting $f \equiv x e^{-u}$ we have
+\begin{equation}
+  {dx \over a} = {dy \over b} = {du \over x e^{-u}}.
+\end{equation}
+
+We now write the pair of ODEs
+\begin{equation}
+  {dy \over dx} = {y \over x},
+  \label{eq_char_eq_one}
+\end{equation}
+and
+\begin{equation}
+  {dy \over dx} = e^{-u} {x \over x}.
+  \label{eq_char_eq_two}
+\end{equation}
+
+\eref[eq_char_eq_one] can be solved using the integrating factor method. The
+solution is given by
+\begin{equation}
+  y = C_1 \exp \left\{ \int {1 \over x} dx \right\} = C_1 e^{\ln x} = C_1 x,
+\end{equation}
+thus $C_1 = y / x$. \eref[eq_char_eq_two] can be simply solved by separation of
+variables giving
+\begin{equation}
+  e^u = C_2 + x \rightarrow C_2 = e^u - x.
+\end{equation}
+
+We now need to find a functional relationship between these constants $C_1$ and
+$C_2$. That is because usually after solving the \eref[eq_char_eq_one] we would
+have to substitute the solution into \eref[eq_char_eq_two]. So let's combine
+both constants via $C_2 = G(C_1)$, i.e.
+\begin{equation}
+  e^u - x = G\left( {y \over x} \right).
+\end{equation}
+Now to find $G$ we use the boundary condition on \eref[eq_boundary_cond]. This
+gives
+\begin{equation}
+  e^x = x + G \left( {x^2 \over x} \right) = x = G(x).
+\end{equation}
+Therefore
+\begin{equation}
+  G(x) = e^x - x.
+  \label{eq_sol_ODE}
+\end{equation}
+
+Hence we substitute \eref[eq_sol_ODE] into the solution, obtaining
+\begin{equation}
+  e^u = x + e^{y/x} - {y \over x}.
+\end{equation}
+
+The reason $C_1$ and $C_2$ have to be functionally related is because we are
+solving the ODEs along the characteristic curves. Therefore to get to the value
+of $u$ we need to solve along every characteristic curve, and each time we solve
+it we obtain an undetermined constant $C_2$. This constant $C_2$ can vary
+between characteristics, but it must be the same along a particular
+characteristic. The particular characteristic curve that we are considering is
+determined by the constant $C_1$. Hence, there must be a functional relation
+between $C_1$ and $C_2$.
