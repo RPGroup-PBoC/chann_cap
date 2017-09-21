@@ -13,16 +13,16 @@ probability of having $m$ mRNA and $p$ proteins at time t. Then we can use the
 \begin{equation}
 \begin{aligned}
 P_{m,p}(t + \Delta t) =
-P_{m,p}(t)
-+ \overbrace{r_m \Delta t \left[ P_{m-1,p}(t) - P_{m,p}(t) \right]}^\text{mRNA
-production}
-+ \overbrace{r_p m
-\Delta t \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]}^\text{protein
-production}\\
-+ \underbrace{\gamma_m \Delta t \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t)
-\right]}_\text{mRNA degradation}
-+ \underbrace{\gamma_p \Delta t \left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t)
-\right]}_\text{protein degradation},
+P_{m,p}(t) +
+\overbrace{r_m \Delta t
+\left[ P_{m-1,p}(t) - P_{m,p}(t) \right]}^\text{mRNA production}
++ \overbrace{r_p m \Delta t
+\left[ P_{m, p-1}(t) - P_{m, p}(t) \right]}^\text{protein production}\\
++ \underbrace{\gamma_m \Delta t
+\left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t) \right]}_\text{mRNA degradation}
++ \underbrace{\gamma_p \Delta t
+\left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right]}_\text{protein
+degradation},
 \end{aligned}
 \end{equation}
 where $r_m$ and $r_p$ are the mRNA and protein production rates respectively,
@@ -33,22 +33,28 @@ event can take place.
 We rearrange the terms, divide both sides by $\Delta t$ , obtaining
 \begin{equation}
   \begin{aligned}
-\frac{P_{m,p}(t + \Delta t) - P_{m,p}(t)}{\Delta t} = r_m \left[ P_{m-1,p}(t) -
-P_{m,p}(t) \right] + r_p m \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
-+ \gamma_m \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t) \right] + \gamma_p \left[
- (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right].
+\frac{P_{m,p}(t + \Delta t) - P_{m,p}(t)}{\Delta t} =
+r_m \left[ P_{m-1,p}(t) - P_{m,p}(t) \right]
++ r_p m \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
++ \gamma_m \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t) \right]
++ \gamma_p \left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right].
   \end{aligned}
 \end{equation}
+Note that the production of protein is taken per mRNA.
 We now take the limit $\Delta t \rightarrow 0$ to obtain the final form of the
 chemical master equation
 \begin{equation}
-\begin{aligned}
-\frac{\partial P_{m,p}}{\partial t} = r_m \left[ P_{m-1,p}(t) - P_{m,p}(t)
-\right] + r_p m \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
-+ \gamma_m \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t) \right] + \gamma_p \left[
-(p + 1) p_{m, p+1}(t) - p p_{m, p}(t) \right].
+  \begin{aligned}
+\frac{\partial P_{m,p}}{\partial t} =
+r_m \left[ P_{m-1,p}(t) - P_{m,p}(t) \right] +
+r_p m \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
++ \gamma_m \left[ (m + 1) P_{m+1,p}(t)
+- m P_{m, p}(t) \right]
++ \gamma_p \left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right].
   \end{aligned}
 \end{equation}
+
+\manuelComment{Eq. 1 of the paper.}
 
 Let us now divide by the slowest rate, i.e. $\gamma_r$
 \begin{equation}
@@ -56,8 +62,7 @@ Let us now divide by the slowest rate, i.e. $\gamma_r$
 \frac{1}{\gamma_p} \frac{\partial P_{m,p}}{\partial t} =
 \frac{r_m}{\gamma_p} \left[ P_{m-1,p}(t) - P_{m,p}(t) \right]
 + \frac{r_p}{\gamma_p} m  \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
-+ \frac{\gamma_m}{\gamma_p} \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t)
-\right]
++ \frac{\gamma_m}{\gamma_p} \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t) \right]
 + \left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right].
 \end{aligned}
 \label{eq_cme_over_gammap}
@@ -103,36 +108,38 @@ We now substitute \eref[eq_cme_tau] into \eref[eq_dF_dtau]
 \begin{equation}
 \begin{aligned}
 \frac{\partial F}{\partial \tau} =
-\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p a \left[ P_{m-1,p}(t) -
-P_{m,p}(t) \right]
-+ b \gamma m  \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
-+ \gamma \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t) \right]
-+ \left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right].
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p
+\left\{ a \left[ P_{m-1,p} - P_{m,p} \right]
++ b \gamma m  \left[ P_{m, p-1} - P_{m, p} \right] \right. \\
+\left. + \gamma \left[ (m + 1) P_{m+1,p} - m P_{m, p} \right]
++ \left[ (p + 1) P_{m, p+1} - p P_{m, p} \right] \right\}.
 \end{aligned}
 \label{eq_dF_dtau_complete}
 \end{equation}
 
-Note that
+In order to make progress with this equation we note that we can distribute
+the terms in parenthesis as
 \begin{equation}
-\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( P_{m+k, p} - P_{m, p}
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( P_{m+1, p} - P_{m, p}
 \right) =
-\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m+k, p}
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m+1, p}
 - \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m, p}.
+\label{eq_split_sum}
 \end{equation}
-We can now factorize $s^{-k}$ from the first term on the left hand side and
-redefine the variable to sum over.
+We can now factorize $s^{-1}$ from the first term on the left hand side of
+\eref[eq_split_sum] and redefine the variable to sum over.
 \begin{equation}
-\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( P_{m+k, p} - P_{m, p}
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( P_{m+1, p} - P_{m, p}
 \right) =
-s^{-k} \sum_{(m+k)=0}^{\infty} \sum_{p=0}^{\infty} s^{m+k} z^p P_{m+k, p}
+s^{-1} \sum_{(m+1)=0}^{\infty} \sum_{p=0}^{\infty} s^{m+1} z^p P_{m+1, p}
 - \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m, p}.
 \end{equation}
 But since both sums on the left hand side are taken over the same ranges we can
 write it as
 \begin{equation}
-\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( P_{m+k, p} - P_{m, p}
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( P_{m+1, p} - P_{m, p}
 \right) =
-\left( s^{-k} - 1 \right) \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m,
+\left( s^{-1} - 1 \right) \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m,
 p}
 \end{equation}
 
@@ -157,7 +164,8 @@ Another useful identity can be derived if we note that
 \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} z^p s \frac{\partial s^m}{\partial s}
 P_{m, p}.
 \end{equation}
-But since $z^p$ and $P_{m, p}$ do not depend on $s$ we can write
+But since $z^p$ and $P_{m, p}$ do not depend on $s$ we can include these terms
+inside the derivative, obtaining
 \begin{equation}
 \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p m P_{m, p} =
 s \frac{\partial}{\partial s}\left( \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m, p} \right) =
@@ -212,11 +220,12 @@ We now divide by $v$ and rearrange terms obtaining
   = a \frac{u}{v} F,
   \label{eq_swain_2}
 \end{equation}
-which is Eq. (2) in \cite{Shahrezaei2008}.
+\manuelComment{which is Eq. (2) in \cite{Shahrezaei2008}.}
 
 \eref[eq_swain_2] is a semi-linear PDE that can be solved using the method of
-the characteristics (\manuelComment{write appendix about method}). For this we
-write \eref[eq_swain_2] as
+the characteristics (this method is described in the Appendix
+\ref{seq_method_characteristics}). In order to apply this method we write
+\eref[eq_swain_2] as
 \begin{equation}
   A(v, u, \tau) \frac{\partial F}{\partial v}
   + B(v, u, \tau) \frac{\partial F}{\partial u}
@@ -224,12 +233,34 @@ write \eref[eq_swain_2] as
   = f(u, v, \tau, F),
 \end{equation}
 where
-\begin{align}
+\begin{equation}
+  \begin{aligned}
   A &= 1,\\
   B &= - \gamma \left[ b (1 + u) - \frac{u}{v} \right],\\
   C &= \frac{1}{v},\\
   f &= a \frac{u}{v} F.
-\end{align}
+  \label{eq_coef_definition}
+  \end{aligned}
+\end{equation}
+
+The method of characteristics requires us to solve the PDE along the
+characteristic lines. To do so we can parametrize the characteristics with
+parameter $r$. This allow us to write the equality
+\begin{equation}
+  {{dv \over dr} \over A(v, u, \tau)} =
+  {{du \over dr} \over B(v, u, \tau)} =
+  {{d\tau \over dr} \over C(v, u, \tau)} =
+  {{dF \over dr} \over f(v, u, \tau, F)}.
+  \label{eq_lagrange_charpit}
+\end{equation}
+Substituting \eref[eq_coef_definition] into \eref[eq_lagrange_charpit] gives
+\begin{equation}
+  {{dv \over dr} \over 1} =
+  {{du \over dr} \over - \gamma \left[ b (1 + u) - \frac{u}{v} \right]} =
+  {{d\tau \over dr} \over {1 \over v}} =
+  {{dF \over dr} \over a \frac{u}{v} F}.
+\end{equation}
+% Substituting \eref[eq_coef_de
 
 If we parametrize the integral surface that solves this PDE with parameter $r$
 we can write a system of four PDE \manuelComment{proof in the method
