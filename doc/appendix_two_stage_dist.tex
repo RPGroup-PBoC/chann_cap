@@ -263,9 +263,73 @@ Substituting \eref[eq_coef_definition] into \eref[eq_lagrange_charpit] gives
 Or, if a particular parametrization $r$ of the curves is fixed, then these
 equations can be written as a system of ODEs as
 \begin{align}
-  \frac{\partial v}{\partial r} = 1,\\
-  \frac{\partial u}{\partial r} = - \gamma \left[ b (1 + u) - \frac{u}{v}
-  \right],\\
-  \frac{\partial \tau}{\partial r} = \frac{1}{v},\\
-  \frac{\partial F}{\partial r} = \frac{a u}{v} F.
+  \frac{\partial v}{\partial r} &= 1,
+  \label{eq_ODE_1}\\
+  \frac{\partial u}{\partial r} &= - \gamma \left[ b (1 + u) - \frac{u}{v}
+  \right],
+  \label{eq_ODE_2}\\
+  \frac{\partial \tau}{\partial r} &= \frac{1}{v},
+  \label{eq_ODE_3}\\
+  \frac{\partial F}{\partial r} &= \frac{a u}{v} F.
+  \label{eq_ODE_4}
 \end{align}
+
+\subsubsection{Solving system of ODEs}
+
+Once we find the system of ODEs that integrate the variables along the
+characteristic line we can try to solve this system in order to find the general
+integral surface that solves the PDE. The initial conditions for the system are
+given by $\tau = 0$, $u = u_0$, $v = v_0$. Let's start with \eref[eq_ODE_1].
+For this equation we use separation of variables which simply gives
+\begin{equation}
+  {\partial v \over \partial r} = 1 \Rightarrow
+  r = v + C_1,
+  \label{eq_ODE_sol_1}
+\end{equation}
+where $C_1$ is an integration constant.
+
+For \eref[eq_ODE_3] we can write
+\begin{equation}
+  {\partial \tau \over \partial r} = {1 \over v} \Rightarrow
+  {\partial r \over \partial \tau} = v.
+\end{equation}
+If we now substitute \eref[eq_ODE_sol_1] we find
+\begin{equation}
+  {\partial r \over \partial \tau} = r - C_1.
+\end{equation}
+Using separation of variables on this equation we get
+\begin{equation}
+  \int {dr \over r - C_1} = \int d\tau,
+\end{equation}
+which when integrated gives
+\begin{equation}
+  \ln (r - C_1) = \tau + C_2'.
+\end{equation}
+where $C_2'$ is an integration constant. If we now solve for $r$ we find
+\begin{equation}
+  r = C_2e^{\tau} + C1,
+  \label{eq_ODE_sol_3}
+\end{equation}
+where $C_2 \equiv e^{C_2'}$.
+
+If we substitute \eref[eq_ODE_sol_3] back on \eref[eq_ODE_sol_1] we obtain a
+functional relationship between $v$ and $\tau$ of the form
+\begin{equation}
+  C_2 e^{\tau} + C_1 = v + C_1 \Rightarrow
+  v = C_2 e^{tau}.
+\end{equation}
+
+Using the initial conditions $\tau = 0$, $v=v_0$ we find that $C_2 = v_0$,
+therefore the functional relationship between $\tau$ and $v$ is of the form
+\begin{equation}
+  v = v_0 e^{\tau}.
+  \label{eq_v_tau_relation}
+\end{equation}
+
+Using \eref[eq_ODE_1] and \eref[eq_ODE_2] we can compute
+$\partial u / \partial v$ as
+\begin{equation}
+  {\partial u \over \partial v} =
+  - \gamma \left[ b (1 + u) - {u \over v} \right].
+\end{equation}
+This is a first order linear ODE which we can rewrite as
