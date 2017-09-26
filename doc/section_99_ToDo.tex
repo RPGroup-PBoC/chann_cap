@@ -43,7 +43,7 @@
 		\end{itemize}
 	
 	
-	\item \textcolor{blue}{Really important reference for us is \cite{Hansen2015}.
+	\item Really important reference for us is \cite{Hansen2015}.
 		\begin{itemize}
 			\item (Page 6, Figure 2A) Their measured channel capacity for amplitude modulated (AM) signal, was 1.3 for the natural promoter. We are also planning to measure this AM signal, but not the frequency modulated (FM) signal that they also measured.
 			\item (Page 7) "Measuring mutual information in a cell population subject to extrinsic noise...underestimates the intrinsic information transduction capacity of a promoter." They claimed this was caused by cells being at different stages of the cell cycle. After correcting for this error, they measured a channel capacity of 1.5, which still means the system can only distinguish between two or three input states
@@ -52,16 +52,16 @@
 			\item To rephrase that last point, we hope that the Lac system can distinguish multiple inputs (what they call the Rheostat Model), but if channel capacity is ~1 then you can only distinguish the OFF and ON state (i.e. their Noisy Switch Model). Based on your calculations of channel capacity so far, how many bits do you suspect we will find?
 			\item I think our paper needs to go \textit{beyond} this paper in a meaningful way. One way I think we will improve upon their results is that we have a \textbf{theoretical prediction} for the form of the variability in gene expression. We should really stress that!
 		\end{itemize}
-	}
 	
-	\item \textcolor{blue}{Another important reference \cite{Chevalier2015}:
+	\item Another important reference \cite{Chevalier2015}:
 		\begin{itemize}
 			\item Several other groups are making similar mutual information measurements (between ligand concentration and gene expression) in their systems, and so we should really stress what is new about our paper - that we are \textit{predicting everything theoretically}! References 6-10 from this paper should be good to cite.
 			\item I really like their short and sweet introduction on mutual information: ``Mutual information (MI) is a natural metric for characterizing information transmission between the inputs of a stochastic network and its nodes. MI quantifies the level of precision with which a given node(s) in a network estimates and responds to an input(s) by accounting for both the mean and variability in the response.''
 			\item They also claimed that our theoretical measurements should overestimate the measured mutual information because of: (1) variability of cell's being at different stages of the cell cycle and (2) variability that is extrinsic to the pathway. We can keep that in mind if we theoretically overshoot the measured values.
 			\item Finally, they point out that the measured mutual information is time-dependent, so we need to be super careful about making all of our measurements using precisely the same method. Hopefully the O1, O2, O3, Oid strains all grow at exactly the same speed, because otherwise if you always wait until OD 0.5 (or whatever) but this waiting time is different between strains, that could introduce a bias into the measurements.
 		\end{itemize}
-	}
+	
+	\item In \href{http://www.pnas.org/content/113/11/E1470.full}{Rodrigues and Shakhnovich 2016} (PNAS) that near their Equation 1 they state that a fitness function based on an enzyme's activity has been shown for the lac operon's beta-galactosidase: see \href{http://www.genetics.org/content/genetics/115/1/25.full.pdf}{this paper}
 	
 %	\textcolor{brown}{
 %	\item (Paper 2) How can the theory be applied to an evolutionary context? For example, compete RBS 1027 against RBS 446, and predict both which will win and exactly by how much. Then unconstrain the system and let them evolve over time on the growth rate versus mutual information graph and see that they (hopefully) move upwards. (May need to make new strains that have LacI and possibly SacB for this)
