@@ -17,7 +17,7 @@ import numpy as np
 import scipy.optimize
 import scipy.special
 import scipy.integrate
-from sympy import mpmath
+import mpmath
 import pandas as pd
 
 # Import libraries to parallelize processes
