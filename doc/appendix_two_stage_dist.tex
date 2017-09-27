@@ -307,7 +307,7 @@ which when integrated gives
 \end{equation}
 where $C_2'$ is an integration constant. If we now solve for $r$ we find
 \begin{equation}
-  r = C_2e^{\tau} + C1,
+  r = C_2e^{\tau} + C_1,
   \label{eq_ODE_sol_3}
 \end{equation}
 where $C_2 \equiv e^{C_2'}$.
@@ -333,3 +333,83 @@ $\partial u / \partial v$ as
   - \gamma \left[ b (1 + u) - {u \over v} \right].
 \end{equation}
 This is a first order linear ODE which we can rewrite as
+\begin{equation}
+  {du \over dv} = -\gamma b
+  - \gamma b u
+  + {\gamma u \over v} =
+  -\gamma b
+  + u \left( {\gamma \over v} - \gamma b \right).
+\end{equation}
+Grouping terms with respect to $u$ gives
+\begin{equation}
+  {du \over dv} + \left( \gamma b - {\gamma \over v} \right) u = - \gamma b.
+  \label{eq_dudv}
+\end{equation}
+\eref[eq_dudv] can be solved by the integrating factor method. In this case
+the integrating factor is given by
+\begin{equation}
+  e^{\int \gamma \left( b - {1 \over v} \right) dv} =
+  e^{\gamma b v - \gamma \ln v} = v^{-\gamma} e^{\gamma b v}
+  \label{eq_dudv_integ_factor}
+\end{equation}
+
+Multiplying both sides of \eref[eq_dudv] by \eref[eq_dudv_integ_factor] we find
+that the left hand side is transformed into the derivative of the integrating
+factor times $u$, i.e.
+\begin{equation}
+  {d \over dv}\left[ v^{-\gamma} e^{\gamma b v} \cdot u \right] =
+  -\gamma b v^{-\gamma} e^{-\gamma b v}.
+\end{equation}
+
+We can now integrate both sides, obtaining
+\begin{equation}
+u v^{-\gamma} e^{\gamma b v} =
+-\gamma b \int dv \; v^{-\gamma} e^{\gamma b v} + C,
+\end{equation}
+where $C$ is an integrating constant. Solving for $u$ we find
+\begin{equation}
+  u(v) = v^{\gamma} e^{-\gamma b v} \left[ C -
+  \gamma b \int dv {e^{\gamma b v} \over v^{\gamma}} \right].
+  \label{eq_implicit_sol_u}
+\end{equation}
+\manuelComment{Eq. (26)}
+
+To solve the integral we expand the exponential as a Taylor series, i.e.
+\begin{equation}
+  e^{-\gamma b v} = \sum_{n=0}^{\infty} {\left( \gamma b v \right)^n \over n!}.
+\end{equation}
+
+Using this on the integral in \eref[eq_implicit_sol_u] gives
+\begin{equation}
+  \int dv {e^{\gamma b v} \over v^{\gamma}} =
+  \int dv {1 \over v^{\gamma}}
+  \sum_{n=0}^{\infty} {\left( \gamma b v \right)^n \over n!} =
+  \sum_{n=0}^{\infty} {\left( \gamma b v \right)^n \over n!}
+  \int dv \; v^{n - \gamma}
+\end{equation}
+We can take out the terms that do not depend on $v$ out of the integral to
+obtain
+\begin{equation}
+\int dv {1 \over v^{\gamma}}
+  \sum_{n=0}^{\infty} {\left( \gamma b v \right)^n \over n!} =
+  \sum_{n=0}^{\infty} {\left( \gamma b \right)^n \over n!}
+  \int dv \; v^{n - \gamma} =
+  \sum_{n=0}^{\infty} {\left( \gamma b \right)^n \over n!}
+  {v^{n - \gamma + 1} \over n - \gamma + 1}.
+  \label{eq_integral_implicit_sol_u}
+\end{equation}
+
+Substituting \eref[eq_integral_implicit_sol_u] into \eref[eq_implicit_sol_u]
+gives
+\begin{equation}
+  u(v) = v^\gamma e^{-\gamma b v}
+  \left[ C - \gamma b \sum_{n=0}^\infty {\left( \gamma b \right)^n \over n!}
+  {v^{n - \gamma + 1} \over n - \gamma + 1} \right].
+\end{equation}
+This can be simplified to obtain
+\begin{equation}
+  u(v) = e^{-\gamma b v} \left[ C v^{\gamma}
+  - \sum_{n=0}^\infty {\left( \gamma b v \right)^{n+1} \over
+  n! \left( n - \gamma + 1 \right)} \right].
+\end{equation}
+\manuelComment{Eq (27) in the SI.}
