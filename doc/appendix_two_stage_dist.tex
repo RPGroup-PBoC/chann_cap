@@ -383,9 +383,7 @@ Using this on the integral in \eref[eq_implicit_sol_u] gives
 \begin{equation}
   \int dv {e^{\gamma b v} \over v^{\gamma}} =
   \int dv {1 \over v^{\gamma}}
-  \sum_{n=0}^{\infty} {\left( \gamma b v \right)^n \over n!} =
   \sum_{n=0}^{\infty} {\left( \gamma b v \right)^n \over n!}
-  \int dv \; v^{n - \gamma}
 \end{equation}
 We can take out the terms that do not depend on $v$ out of the integral to
 obtain
@@ -413,3 +411,136 @@ This can be simplified to obtain
   n! \left( n - \gamma + 1 \right)} \right].
 \end{equation}
 \manuelComment{Eq (27) in the SI.}
+
+The question now becomes how can we evaluate the sum
+\begin{equation}
+  S(\gamma b v) = \sum_{n=0}^\infty {\left( \gamma b v \right)^{n+1} \over
+  n! \left( n - \gamma + 1 \right)}.
+\end{equation}
+Just as Shahrenzaei \& Swain we will follow Bender \& Orszag and use the
+so-called Laplace's method for sums. The idea behind this method is to find the
+leading behavior of the sum. What this means is that if there are some very
+dominant terms in the sum we can just add those in the vincinity to get a decent
+approximation of the sum.
+
+To find the leading behavior of the sum we first need to identify the largest
+terms in the series. Let us start by looking at the ratio of the
+$(n+1)^{\text{th}}$ term to the $n^{\text{th}}$ term of the sum. This is given
+by
+\begin{equation}
+{{(\gamma b v)^{n+2} \over (n+1)! (n - \gamma + 2)}
+\over
+{(\gamma b v)^{n+1} \over n! (n - \gamma + 1)}}
+=
+{\gamma b v \over n + 1} \cdot
+{(n - \gamma + 1) \over (n - \gamma + 2)}.
+\label{eq_ratio_series}
+\end{equation}
+From this ratio we can see that since we assumed that $\gamma \gg 1$ we can
+discard the second term on the right hand side of \eref[eq_ratio_series] since
+\begin{equation}
+{(n - \gamma + 1) \over (n - \gamma + 2)} \approx 1.
+\end{equation}
+
+Taking this approximation we can see that the ratio is greater than 1 if
+$n + 1 < \gamma b v$ and it is less than one if the opposite is true, i.e.
+$n + 1 > \gamma b v$. That implies that terms in the series increase until they
+reach $n \sim \gamma b v$, to then decrease with increasing $n$.
+
+As $\gamma b v \rightarrow \infty$ the series become sharply peaked around
+$n = \gamma b v$. Therefore we could approximate this sum by just summing in the
+vicinity of $n = \gamma b v$. This would give us
+\begin{align}
+  S(\gamma b v) =
+\sum_{n=0}^\infty {\left( \gamma b v \right)^{n+1} \over
+  n! \left( n - \gamma + 1 \right)} \approx
+\sum_{n=\gamma b v (1 - \epsilon)}
+    ^{\gamma b v (1 + \epsilon)}
+    {\left( \gamma b v \right)^{n+1} \over
+  n! \left( n - \gamma + 1 \right)},
+\end{align}
+with errors increasingly smaller as $\gamma b v \rightarrow \infty$.
+
+If this approximation is valid, that means we can use Stirling's formula to
+approximate the factorial term remaining in the sum. If we let
+$n \approx \gamma b v + s$, where $s$ is small compared to $\gamma b v$, then by
+Stirling's approximation we have
+\begin{equation}
+  n! \approx \left( {n \over e} \right)^n \sqrt{2 \pi n}.
+\end{equation}
+Substituting our approximation for $n$ gives
+\begin{equation}
+  n! \approx (\gamma b v + s)^n e^{-n} \sqrt{2 \pi n}.
+\end{equation}
+For this equation we left the exponent with $n$ untouched. That violates our
+approximation of $n \approx \gamma b v + s$, but we will come back to that
+later. For now it is convenient to carry it as $n$ and substitute at the end.
+
+We now factorize out the term $\gamma b v$ obtaining
+\begin{equation}
+  n! \approx \left[ \gamma b v \left( 1 + {s \over \gamma b v} \right) \right]^n
+  e^{-n} \sqrt{2 \pi n}.
+\end{equation}
+We can rewrite the term in parenthesis in a convenient way as
+\begin{equation}
+  n! \approx (\gamma b v)^n
+  \exp \left\{ n \ln \left( 1 + {s \over \gamma b v} \right) \right\}
+  e^{-n} \sqrt{2 \pi n}.
+\end{equation}
+The term in the exponential can be Taylor expanded up to second order as
+\begin{equation}
+n \ln \left( 1 + {s \over \gamma b v} \right) \approx
+n \left[ {s \over \gamma b v}
+- {1 \over 2} \left( {s \over \gamma b v}  \right)^2 \right].
+\end{equation}
+
+Putting all these together we obtain an approximation of the form
+\begin{equation}
+  n! \approx (\gamma b v)^n
+             e^{-n}
+             e^{n {s \over \gamma b v}}
+             e^{-{n \over 2} {s^2 \over (\gamma b v)^2}}
+             \sqrt{2 \pi n}.
+\end{equation}
+Let's now substitute what we didn't do at the beginning for the exponents.
+Let's replace $n = \gamma b v + s$ in the exponents obtaining
+\begin{equation}
+  e^{-n}
+  e^{n {s \over \gamma b v}}
+  e^{-{n \over 2} {s^2 \over (\gamma b v)^2}} =
+  \exp \left\{ -\gamma b v - s
+               + (\gamma b v + s){s \over \gamma b v}
+               - {(\gamma b v + s) \over 2} {s^2 \over (\gamma b v)^2} \right\}.
+\end{equation}
+Expanding the terms in the exponent gives
+\begin{equation}
+\exp \left\{ -\gamma b v - s
+             + (\gamma b v + s){s \over \gamma b v}
+             - {(\gamma b v + s) \over 2} {s^2 \over (\gamma b v)^2} \right\} =
+\exp \left\{ -\gamma b v - s
+             + s
+             + {s^2 \over \gamma b v}
+             - {1 \over 2} {s^2 \over \gamma b v}
+             - {1 \over s} {s^3 \over (\gamma b v)^2} \right\}
+\end{equation}
+Simplifying terms gives
+\begin{equation}
+  \exp \left\{ -\gamma b v
+             - s
+             + s
+             + {s^2 \over \gamma b v}
+             - {1 \over 2} {s^2 \over \gamma b v}
+             - {1 \over s} {s^3 \over (\gamma b v)^2} \right\} =
+\exp \left\{ -\gamma b v
+             + {1 \over 2} {s^2 \over \gamma b v}
+             - {1 \over s} {s^3 \over (\gamma b v)^2} \right\}
+\end{equation}
+Note that by assumption $s^3 \ll (\gamma b v)^2$, therefore we can remove the
+third term in the exponent. All these steps finally give an approximation for
+$n!$ of the form
+\begin{equation}
+  n! \approx (\gamma b v)^n e^{-\gamma b v} e^{s^2 \over 2 \gamma b v}
+             \sqrt{2 \pi \gamma b v}, \;\;
+             \text{for} \; (\gamma b v) \rightarrow \infty.
+\end{equation}
+\manuelComment{Eq (28) in the SI}
