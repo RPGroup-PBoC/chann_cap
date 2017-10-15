@@ -6,6 +6,8 @@ transitions between active and inactive) promoter \cite{Shahrezaei2008}. In
 this section wi will follow the derivation augmenting the details at each step
 for clarity.
 
+\subsection{From the master equation}
+
 First let us write the chemical master equation for this system. Let $p$ and $m$
 be the protein and mRNA copy numbers, respectively, and $P_{m,p}(t)$ be the
 probability of having $m$ mRNA and $p$ proteins at time t. Then we can use the
@@ -56,7 +58,7 @@ r_p m \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
 
 \manuelComment{Eq. 1 of the paper.}
 
-Let us now divide by the slowest rate, i.e. $\gamma_r$
+Let us now divide by the slowest rate, i.e. $\gamma_p$
 \begin{equation}
 \begin{aligned}
 \frac{1}{\gamma_p} \frac{\partial P_{m,p}}{\partial t} =
@@ -91,6 +93,7 @@ Note that we used $\frac{1}{\gamma_p}\frac{\partial}{\partial t} =
 We now define the generating function
 \begin{equation}
 F\left[ s, z \right] = \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m, p},
+\label{eq_generating_function}
 \end{equation}
 where from now on we abbreviate $P_{m, p}(t)$ as $P_{m, p}$. The generating
 function will allow us to write a single PDE rather than an infinite system of
@@ -263,14 +266,14 @@ Substituting \eref[eq_coef_definition] into \eref[eq_lagrange_charpit] gives
 Or, if a particular parametrization $r$ of the curves is fixed, then these
 equations can be written as a system of ODEs as
 \begin{align}
-  \frac{\partial v}{\partial r} &= 1,
+  \frac{d v}{d r} &= 1,
   \label{eq_ODE_1}\\
-  \frac{\partial u}{\partial r} &= - \gamma \left[ b (1 + u) - \frac{u}{v}
+  \frac{d u}{d r} &= - \gamma \left[ b (1 + u) - \frac{u}{v}
   \right],
   \label{eq_ODE_2}\\
-  \frac{\partial \tau}{\partial r} &= \frac{1}{v},
+  \frac{d \tau}{d r} &= \frac{1}{v},
   \label{eq_ODE_3}\\
-  \frac{\partial F}{\partial r} &= \frac{a u}{v} F.
+  \frac{d F}{d r} &= \frac{a u}{v} F.
   \label{eq_ODE_4}
 \end{align}
 
@@ -316,7 +319,7 @@ If we substitute \eref[eq_ODE_sol_3] back on \eref[eq_ODE_sol_1] we obtain a
 functional relationship between $v$ and $\tau$ of the form
 \begin{equation}
   C_2 e^{\tau} + C_1 = v + C_1 \Rightarrow
-  v = C_2 e^{tau}.
+  v = C_2 e^{\tau}.
 \end{equation}
 
 Using the initial conditions $\tau = 0$, $v=v_0$ we find that $C_2 = v_0$,
@@ -409,6 +412,7 @@ This can be simplified to obtain
   u(v) = e^{-\gamma b v} \left[ C v^{\gamma}
   - \sum_{n=0}^\infty {\left( \gamma b v \right)^{n+1} \over
   n! \left( n - \gamma + 1 \right)} \right].
+  \label{eq_SI_27_uofv}
 \end{equation}
 \manuelComment{Eq (27) in the SI.}
 
@@ -544,3 +548,258 @@ $n!$ of the form
              \text{for} \; (\gamma b v) \rightarrow \infty.
 \end{equation}
 \manuelComment{Eq (28) in the SI}
+
+So far the Laplace approximation for sums allowed us to find the leading terms
+of the sum to then have an approximation for the $n!$ term. We can now
+substitute back this approximation into the sum
+\begin{align}
+  S(\gamma b v) &= \sum_{n = 0}^{\infty} {(\gamma b v)^{n + 1} \over
+                                        n! (n - \gamma + 1)},\\
+  &\approx \sum_{n = 0}^{\infty}
+  {(\gamma b v)^{n + 1} \over (n - \gamma + 1)} \cdot
+  \overbrace{
+  { (\gamma b v)^{-n} e^{\gamma b v} e^{-s^2 \over 2 \gamma b v}
+  \over
+  \sqrt{2 \pi \gamma b v}
+  }}^{1 \over n!}.
+\end{align}
+We will now substitute for all $n \approx \gamma b v + s$ and approximate the
+sum as an integral on $s$ with an extended range from $-\infty$ to $\infty$.
+This is valid since the terms around $n = \gamma b v$ dominate the sum, so the
+extra terms would have a marginally small impact in the result. With this then
+we have
+\begin{equation}
+  S(\gamma b v) \approx \int_{-\infty}^{\infty} ds {
+  \gamma b v e^{\gamma b v} e^{-s^2 \over 2 \gamma b v}
+  \over
+  \left[ \gamma (b v - 1) + s + 1 \right] \sqrt{2 \pi \gamma b v}
+  }.
+\end{equation}
+
+Now we factorize a term $\gamma (b v - 1)$ from the denominator, obtaining
+\begin{equation}
+  S(\gamma b v) \approx \int_{-\infty}^{\infty} ds {
+  \gamma b v e^{\gamma b v} e^{-s^2 \over 2 \gamma b v}
+  \over
+  \gamma (b v - 1) \left[ 1 + {s + 1 \over \gamma (b v - 1) }\right]
+  \sqrt{2 \pi \gamma b v}
+  }.
+\end{equation}
+Since we assumed $\gamma \gg 1$ and $\gamma b v \gg s$ we can safely approximate
+$\left[ 1 + {s + 1 \over \gamma (b v - 1) }\right] \approx 1$, obtaining
+\begin{equation}
+  S(\gamma b v) \approx {b v e^{\gamma b v} \over b v - 1}
+  \int_{-\infty}^{\infty} ds
+  {e^{-s^2 \over 2 \gamma b v}
+  \over
+  \sqrt{2 \pi \gamma b v}}.
+\end{equation}
+The term inside the integral integrates to 1 by the Gaussian integral, so we
+have
+\begin{equation}
+  S(\gamma b v) \approx {b v e^{\gamma b v} \over b v - 1}.
+\end{equation}
+\manuelComment{Eq (29) in the SI.}
+
+With this rather convoluted result we can go back to \eref[eq_SI_27_uofv] to
+write
+\begin{align}
+  u(v) &= e^{-\gamma b v} \left[ C v^{\gamma}
+  - \sum_{n=0}^\infty {\left( \gamma b v \right)^{n+1} \over
+  n! \left( n - \gamma + 1 \right)} \right].\\
+  &\approx e^{-\gamma b v}
+  \left[ C v^{\gamma} - {b v e^{\gamma b v} \over b v - 1} \right]
+\end{align}
+Simplifying terms we have
+\begin{equation}
+  u(v) \approx C v^{\gamma} e^{-\gamma b v}
+  - {b v \over b v - 1}
+  \label{eq_SI_30_uofv}
+\end{equation}
+\manuelComment{Eq (30) in the SI.}
+
+To obtain the value of the integration constant $C$ we use the initial
+conditions $u(0) = u_o$ and $v(0) = v_o$. This gives us
+\begin{equation}
+  u_o = C v_o^{\gamma} e^{-\gamma b v_o}
+  - {b v_o \over b v_o - 1}.
+\end{equation}
+Solving for $C$ gives
+\begin{equation}
+  C = \left[ u_o - {b v_o \over b v_o - 1} \right] v_o^{-\gamma} e^{\gamma b v}.
+\end{equation}
+
+That means that \eref[eq_SI_30_uofv] is given by
+\begin{align}
+  u(v) &= \left[ u_o - {b v_o \over b v_o - 1} \right]
+  v_o^{-\gamma} e^{\gamma b v_o} v^{\gamma} e^{-\gamma b v}
+  - {b v \over b v - 1}\\
+  &= \left( u_o - {b v_o \over b v_o - 1}  \right)
+  \left( {v \over v_o} \right)^{\gamma}
+  e^{\gamma b v (v_o - v)}
+  + {b v \over 1 - b v}.
+  \label{eq_uofv_with_C}
+\end{align}
+
+Recall that \eref[eq_v_tau_relation] tells us the relationship between $v$ and
+$\tau$, i.e. $v = v_o e^{\tau}$. This means that since $\tau > 0$ then
+$v = v_o e^{\tau} > v_o$, therefore since the first term of
+\eref[eq_uofv_with_C] is dominated by the exponential, and
+$e^{\gamma b (v_o - v)}$ quickly converges to zero for large $\gamma$ we can
+approximate \eref[eq_uofv_with_C] as
+\begin{equation}
+  u(v) \approx {b v \over 1 - b v}.
+  \label{eq_SI_31_uofv}
+\end{equation}
+\manuelComment{Eq (30) in the SI and (5) in the main text.}
+Interestingly since in the generating function \eref[eq_generating_function]
+$u$ was indirectly related to mRNA copy number and $v$ to protein,
+\eref[eq_SI_31_uofv] implies that since $u$ quickly converges to a fixed
+function of $v$, for most of the protein lifetime the mRNA is at steady state.
+
+\subsection{Finding the generating function}
+
+With so much mathematical details so far it is easy to lose track of what is
+what we are trying to achieve. Let's recall that the ODEs that define the
+characteristics of the generating function are given byj
+\begin{align}
+  \frac{d v}{d r} &= 1,
+  \\
+  \frac{d u}{d r} &= - \gamma \left[ b (1 + u) - \frac{u}{v}
+  \right],
+  \\
+  \frac{d \tau}{d r} &= \frac{1}{v},
+  \\
+  \frac{d F}{d r} &= \frac{a u}{v} F.
+\end{align}
+So far we found functional relationships between them given by
+\begin{equation}
+  v = v_o e^{\tau},
+\end{equation}
+and
+\begin{equation}
+  u = {b v \over 1 - b v}.
+\end{equation}
+
+Now we can combine ${dv \over dr}$ and ${dF \over dr}$ with these relationships
+to obtain
+\begin{align}
+  {\partial F \over \partial v} &= a {u \over v} F, \\
+  &= a {b v \over v (1 - b v)} F, \\
+  &= {a b \over 1 - b v} F.j
+\end{align}
+This ODE can be solved by separation of variables as
+\begin{equation}
+  \int {dF \over F} = \int {a b \over 1 - b v} dv.
+\end{equation}
+Upon defining $x = 1 - b v, \; dx = - b\; dv$ we have
+\begin{equation}
+  \ln F = \int {a b \over x} \cdot {1 \over -b} dx = -a \ln x + C'.
+\end{equation}
+Therefore
+\begin{equation}
+  \ln F = -a \ln (1 - b v) + C',
+  \label{eq_lnF_constant}
+\end{equation}
+whith $C'$ being an integration constant. To find the value of this constant
+we must use the initial conditions. But we originally didn't set initial
+conditions for $F$. If we start our birth and death process with $k$ proteins
+at time $\tau = 0$, we would have that
+\begin{align}
+  F(\tau = 0) &= \sum_{n=0}^{\infty}P_n z^n
+  &= \sum_{n=0}^{\infty} \delta (n - k) z^n = z^k.
+\end{align}
+This initial condition doesn't sum over mRNA, because as explained before for
+\eref[eq_SI_31_uofv], for most of the protein lifetime the mRNA is in steady
+state. Formally this initial condition is valid for times of order
+${\gamma_p \over \gamma_m = \gamma^{-1}}$. Now $z = 1 + v$, thereforej
+$F(\tau = 0) = (1 - v_o)^k$. Using this initial condition we have
+\begin{equation}
+  \ln (1 + v_o)^k = -a \ln (1 - b v_o) + C'.
+\end{equation}
+Solving for $C'$ gives
+\begin{equation}
+  C' = \ln (1 + v_o)^k + a \ln (1 - b v_o).
+\end{equation}
+Therefore substituting this in \eref[eq_lnF_constant] gives
+\begin{align}
+  \ln F &= a \ln \left( {1 - b v_o \over 1 - b v} \right)^a
+  + \ln (1 + v_o)^k,\\
+  &= \ln \left[ \left( {1 - b v_o \over 1 - b v} \right)^a
+  (1 + v_o)^k \right].
+\end{align}
+This gives us the generating function of the form
+\begin{equation}
+  F =   \left( {1 - b v_o \over 1 - b v} \right)^a
+  (1 + v_o)^k .
+  \label{eq_generating_function_onv}
+\end{equation}
+
+We would like to write the generating function as a function of the original
+variable $z$ and $\tau$. This is done by recalling that we defined $z = 1 + v$,
+in combination with \eref[eq_v_tau_relation] gives $v_o = (z - 1) e^{-\tau}$.
+Using this on \eref[eq_generating_function_onv] gives
+\begin{equation}
+  F = \left( {1 - b (z - 1) e^{-\tau}
+  \over
+  1 - b (z - 1)
+  } \right)^a
+  \left[ 1 + (z - 1) e^{-\tau} \right]^k.
+\end{equation}
+\manuelComment{Eq (35) in the SI.}
+
+If we set $k = 0$ we get
+\begin{equation}
+  F = \left( {1 - b (z - 1) e^{-\tau}
+  \over
+  1 - b (z - 1)
+  } \right)^a.
+  \label{eq_generating_function_onz}
+\end{equation}
+\manuelComment{Eq (7) in the main text.}
+
+Given that we know the generating function we can backtrack the entire
+distribution. The difficulty resides in being able to write
+\eref[eq_generating_function_onz] in the standard form
+\begin{equation}
+  F = \sum_{n} z^n P_n.
+\end{equation}
+By the definition of the generating function we can see that to compute any
+probability we can compute
+\begin{equation}
+  P_n = {1 \over n!} \left. {\partial ^n F \over \partial z^n}.
+  \right\rvert_{z=0}
+\end{equation}
+So let's rewrite \eref[eq_generating_function_onz] in a more convenient form
+\begin{equation}
+  F = \left( {1 + b (1 - z) e^{-\tau}
+  \over
+  1 + b (z - 1)
+  }  \right)^a.
+\end{equation}
+
+Now we want to write $F$ as a product of two factors, one of them without any
+$z$ term. This means we can write
+\begin{align}
+  F &= \left( {1 + b e^{-\tau} \over 1 + b } \right)^a
+  \left[
+  \left( {1 + b} \over 1 + b (1 - z) \right)^a
+  \left( {1 + b (1 - z) e^{-\tau} \over 1 + b e^{-\tau}}  \right)^a
+  \right], \\
+  &= \left( {1 + b e^{-\tau} \over 1 + b } \right)^a
+  { \left( {1 + b (1 - z) \over 1 + b} \right)^{-a}
+  \over
+  \left( {1 + b (1 - z) e^{-\tau} \over 1 + b e^{-\tau}} \right)^{-a}
+  }, \\
+  &= \left( {1 + b e^{-\tau} \over 1 + b } \right)^a
+  { \left( {1 + b - b z) \over 1 + b} \right)^{-a}
+  \over
+  \left( {1 + b e^{-\tau} - b z e^{-\tau} \over 1 + b e^{-\tau}} \right)^{-a}
+  }, \\
+  &= \left( {1 + b e^{-\tau} \over 1 + b } \right)^a
+  { \left( 1 - {b z \over 1 + b} \right)^{-a}
+  \over
+  \left( 1 - {b z \over e^{\tau} + b} \right)^{-a}
+  }.
+\end{align}
+\manuelComment{Eq. (36) in the SI.}
