@@ -686,7 +686,7 @@ to obtain
 \begin{align}
   {\partial F \over \partial v} &= a {u \over v} F, \\
   &= a {b v \over v (1 - b v)} F, \\
-  &= {a b \over 1 - b v} F.j
+  &= {a b \over 1 - b v} F
 \end{align}
 This ODE can be solved by separation of variables as
 \begin{equation}
@@ -706,7 +706,7 @@ we must use the initial conditions. But we originally didn't set initial
 conditions for $F$. If we start our birth and death process with $k$ proteins
 at time $\tau = 0$, we would have that
 \begin{align}
-  F(\tau = 0) &= \sum_{n=0}^{\infty}P_n z^n
+  F(\tau = 0) &= \sum_{n=0}^{\infty}P_n z^n\\
   &= \sum_{n=0}^{\infty} \delta (n - k) z^n = z^k.
 \end{align}
 This initial condition doesn't sum over mRNA, because as explained before for
@@ -758,6 +758,8 @@ If we set $k = 0$ we get
 \end{equation}
 \manuelComment{Eq (7) in the main text.}
 
+\subsection{Deriving the probability distribution for proteins}
+
 Given that we know the generating function we can backtrack the entire
 distribution. The difficulty resides in being able to write
 \eref[eq_generating_function_onz] in the standard form
@@ -781,7 +783,7 @@ So let's rewrite \eref[eq_generating_function_onz] in a more convenient form
 Now we want to write $F$ as a product of two factors, one of them without any
 $z$ term. This means we can write
 \begin{align}
-  F &= \left( {1 + b e^{-\tau} \over 1 + b } \right)^a
+  F(z, \tau) &= \left( {1 + b e^{-\tau} \over 1 + b } \right)^a
   \left[
   \left( {1 + b} \over 1 + b (1 - z) \right)^a
   \left( {1 + b (1 - z) e^{-\tau} \over 1 + b e^{-\tau}}  \right)^a
