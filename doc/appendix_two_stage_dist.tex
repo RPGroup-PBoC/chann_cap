@@ -706,13 +706,13 @@ we must use the initial conditions. But we originally didn't set initial
 conditions for $F$. If we start our birth and death process with $k$ proteins
 at time $\tau = 0$, we would have that
 \begin{align}
-  F(\tau = 0) &= \sum_{n=0}^{\infty}P_n z^n\\
-  &= \sum_{n=0}^{\infty} \delta (n - k) z^n = z^k.
+  F(\tau = 0) &= \sum_{p=0}^{\infty}P_p z^p\\
+  &= \sum_{p=0}^{\infty} \delta (p - k) z^p = z^k.
 \end{align}
 This initial condition doesn't sum over mRNA, because as explained before for
 \eref[eq_SI_31_uofv], for most of the protein lifetime the mRNA is in steady
 state. Formally this initial condition is valid for times of order
-${\gamma_p \over \gamma_m = \gamma^{-1}}$. Now $z = 1 + v$, thereforej
+${\gamma_p \over \gamma_m} = \gamma^{-1}$. Now $z = 1 + v$, therefore
 $F(\tau = 0) = (1 - v_o)^k$. Using this initial condition we have
 \begin{equation}
   \ln (1 + v_o)^k = -a \ln (1 - b v_o) + C'.
@@ -764,13 +764,14 @@ Given that we know the generating function we can backtrack the entire
 distribution. The difficulty resides in being able to write
 \eref[eq_generating_function_onz] in the standard form
 \begin{equation}
-  F = \sum_{n} z^n P_n.
+  F = \sum_{p} z^p P_p.
 \end{equation}
 By the definition of the generating function we can see that to compute any
 probability we can compute
 \begin{equation}
-  P_n = {1 \over n!} \left. {\partial ^n F \over \partial z^n}.
+  P_p = {1 \over p!} \left. {\partial ^p F \over \partial z^p}.
   \right\rvert_{z=0}
+  \label{eq_prob_from_generating}
 \end{equation}
 So let's rewrite \eref[eq_generating_function_onz] in a more convenient form
 \begin{equation}
@@ -802,6 +803,135 @@ $z$ term. This means we can write
   { \left( 1 - {b z \over 1 + b} \right)^{-a}
   \over
   \left( 1 - {b z \over e^{\tau} + b} \right)^{-a}
-  }.
+  }. \label{eq_generating_final}
 \end{align}
 \manuelComment{Eq. (36) in the SI.}
+
+There are two identities that Shahrezaei \& Swain quote for the following steps.
+The first one is given by
+\begin{equation}
+    \left. {\partial ^n \over \partial z^n}
+    \left[ 1 - q z \right]^{-a} \right\vert _{z=0} =
+    {\Gamma(a + n) \over \Gamma(a)} q^n.
+\end{equation}
+To proof this relationship let's first take the first derivative of the function
+\begin{align}
+  {\partial \over \partial z}
+  \left. \left[ 1 - q z \right]^{-a} \right\vert _{z=0}
+  &= \left. -a \left[ 1 - q z \right]^{-(a + 1)} (-q) \right\vert _{z=0}\\
+  &= a q.
+\end{align}
+
+Now let's take the second derivative
+\begin{align}
+  {\partial^2 \over \partial z^2}
+  \left. \left[ 1 - q z \right]^{-a} \right\vert _{z=0}
+  &= {\partial \over \partial z}
+  \left. a q \left[ 1 - q z \right]^{-(a + 1)} \right\vert _{z=0}\\
+  &= \left. -a (a + 1) q \left[ 1 - q z \right]^{-(a + 2)} (-q)
+  \right\vert _{z=0} \\
+  &= a(a + 1) q^2.
+\end{align}
+
+The pattern seems to be emerging now. For completeness let's take the 3rd
+derivative
+\begin{align}
+  {\partial^3 \over \partial z^3}
+  \left. \left[ 1 - q z \right]^{-a} \right\vert _{z=0}
+  &= {\partial \over \partial z}
+  \left. -a (a + 1) q \left[ 1 - q z \right]^{-(a + 2)} (-q)
+  \right\vert _{z=0} \\
+  &= \left. -a (a + 1) (a + 2) q^2
+  \left[ 1 - q z \right]^{-(a + 3)} (-q) \right\vert _{z=0} \\
+  &= a(a + 1) (a + 2) q^3.
+\end{align}
+
+We have that $a (a + 1) (a + 2) \cdots (a + n - 1) = {(a + n - 1)! \over (a -
+1)!}$ for $n, a \in \mathbb{Z}$, or in general for any positive $n, a$ we have
+$a (a + 1) (a + 2) \cdots (a + n - 1) = {\Gamma(a + n) \over \Gamma(a)}$.
+Therefore for the $n^{\text{th}}$ derivative it must be true that
+\begin{equation}
+    \left. {\partial ^n \over \partial z^n}
+    \left[ 1 - q z \right]^{-a} \right\vert _{z=0} =
+    {\Gamma(a + n) \over \Gamma(a)} q^n. \blacksquare
+    \label{eq_derivative_identity}
+\end{equation}
+\manuelComment{Eq (37) in the SI.}
+
+The second identity the authors quote is more convoluted. It could be proof by
+induction but it would be a really long proof. For convenience we will quote
+the result. The identity tells us that the $n^{\text{th}}$ derivative of a ratio
+of functions is given by
+\begin{equation}
+  {\partial ^n \over \partial z^n} {x(z) \over y(z)} =
+  n! \sum_{k=0}^n {\partial ^{n-k} \over \partial z^{n-k}} x(z)
+  \sum_{j = 0}^k (-1)^j (k + 1) y(z)^{-j-1}
+  {\partial^k \over \partial z^k} y(z)^j
+  \label{eq_derivative_ratio}
+\end{equation}
+\manuelComment{Eq (39) in SI.}
+
+\eref[eq_prob_from_generating] gives us the recipe for how to compute any
+probability from the generating function we derived in
+\eref[eq_generating_final]. To use \eref[eq_derivative_ratio] we define from
+\eref[eq_generating_final]
+\begin{equation}
+  x(z) = \left( 1 - {b z \over 1 + b} \right)^{-a},
+\end{equation}
+and
+\begin{equation}
+  y(z) = \left( 1 - {b z \over e^{\tau} + b} \right)^{-a}.
+\end{equation}
+With these definitions in hand we use \eref[eq_prob_from_generating] along with
+\eref[eq_derivative_ratio] to compute
+\begin{equation}
+  \tiny
+  P_p = \left. {1 \over p!} \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
+  \left[ p! \sum_{k=0}^p  {\partial^{p-k} \over \partial z^{p-k}}
+  \left(1 - {b z \over 1 + b} \right) \cdot
+  \sum_{j=0}^k {(-1)^j (k + 1) \over (j + 1)! (p - k)! (k - j)!} \cdot
+  \left[ \left( 1 - {b z \over e^\tau + b} \right)^{-a} \right]^{-(j+1)} \cdot
+  {\partial^k \over \partial z^k}
+  \left[ \left( 1 - {b z \over e^\tau + b}  \right)^{-a} \right]^j
+  \right]\right\vert _{z=0}.
+\end{equation}
+Using \eref[eq_derivative_identity] we can rewrite the derivatives as
+\begin{equation}
+  \small
+  P_p = \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
+  \sum_{k=0}^p {\Gamma(a + p - k) \over \Gamma(a)}
+  \left( {b \over 1 + b} \right)^{p - k} \cdot
+  \sum_{j=0}^k {(-1)^j (k + 1) \over (j + 1)! (p - k)! (k - j)!} \cdot
+  {\Gamma(aj + k) \over \Gamma(aj)} \left( {b \over e^\tau + b} \right)^k
+\end{equation}
+\manuelComment{Eq (39) in SI.}
+
+For the second sum the authors quote the following identity
+\begin{equation}
+  \sum_{j=0}^k {(-1)^j \Gamma(aj + k) \over (j + 1)! \Gamma(aj) (k - j)!} =
+  {(-1)^k \Gamma(a + 1) \over \Gamma(a - k + 1) (k + 1)!}.
+\end{equation}
+\manuelComment{Eq (40) in SI. I tried really hard deriving this result, but I
+couldn't figure it out. Nevertheless computationally it can be shown to be true
+for several values of $k$.}
+
+Using this we have
+\begin{equation}
+  \small
+  P_p = \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
+  \sum_{k=0}^p {\Gamma (a + p - k) \over \Gamma(a)}
+  \left( {b \over 1 + b} \right)^{p - k}
+  {(k + 1) \over (p - k)!} \left( b \over e^\tau + b \right)^k
+  {(-1)^k \Gamma(a + 1) \over \Gamma(a - k + 1) (k + 1)!}.
+\end{equation}
+This can be further simplified to
+\begin{equation}
+  P_p = \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
+  \left( {b \over 1 + b} \right)^p
+  \sum_{k=0}^p {(-1)^k \over k!}
+  {a \Gamma(a + p - k) \over (p - k)! \Gamma(a - k + 1)}
+  \left( {1 + b \over e^\tau + b} \right)^k.
+\end{equation}
+\manuelComment{Eq (41) in the SI. Shahrezaei and Swain missed one factor of
+$a$ since $\Gamma(a + 1) / \Gamma(a) = a$, but the error doesn't propagate to
+the other equations.}
