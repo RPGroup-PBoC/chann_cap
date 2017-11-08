@@ -885,7 +885,7 @@ and
 With these definitions in hand we use \eref[eq_prob_from_generating] along with
 \eref[eq_derivative_ratio] to compute
 \begin{equation}
-  \tiny
+  \scriptscriptstyle
   P_p = \left. {1 \over p!} \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
   \left[ p! \sum_{k=0}^p  {\partial^{p-k} \over \partial z^{p-k}}
   \left(1 - {b z \over 1 + b} \right) \cdot
@@ -897,7 +897,7 @@ With these definitions in hand we use \eref[eq_prob_from_generating] along with
 \end{equation}
 Using \eref[eq_derivative_identity] we can rewrite the derivatives as
 \begin{equation}
-  \scriptscriptstyle
+  \scriptstyle
   P_p = \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
   \sum_{k=0}^p {\Gamma(a + p - k) \over \Gamma(a)}
   \left( {b \over 1 + b} \right)^{p - k} \cdot
@@ -917,7 +917,7 @@ for several values of $k$.}
 
 Using this we have
 \begin{equation}
-  \scriptscriptstyle
+  \scriptstyle
   P_p = \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
   \sum_{k=0}^p {\Gamma (a + p - k) \over \Gamma(a)}
   \left( {b \over 1 + b} \right)^{p - k}
@@ -1018,14 +1018,70 @@ $\cos(\pi k) = (-1)^k$, it must be true that for $a \notin \mathbb{N}$
 
 From \eref[eq_dist_nohyper] we can rewrite the term inside the sum as a
 hypergeometric function by rewriting $\Gamma(a - k + n) =
-\Gamma(a + n - 1 - k + 1)$. This means that
-\begin{equation}
+\Gamma(a + n - 1 - k + 1)$. This means that if we carefully look at the elements
+of the sum we can rewrite it as a hypergeometric function like
+\begin{align}
   \sum_{k=0}^p {(-1)^k \over k!}
   {a \Gamma(a + p - k) \over \Gamma(p - k + 1) \Gamma(a - k + 1)}
   \left( {1 + b \over e^\tau + b} \right)^k =
-  {}_2F_1 \left( -p, -a, 1 - a - p, {1 + b \over e^\tau + b}   \right).
+  a
+  \overbrace{
+  {\Gamma(p + a - 1 + 1) \over \Gamma(a + 1) \Gamma(p + 1)}
+  }^{\text{terms to complete } {}_2F_1}
+  \times \\
+  \sum_{k=0}^p
+  \overbrace{
+  (-1)^k {\Gamma(p + 1) \over \Gamma(p - k + 1)}
+  }^{(a)_k = (-p)_k}
+  \overbrace{
+  (-1)^k {\Gamma(a + 1) \over \Gamma(a - k + 1)}
+  }^{(b)_k = (-a)_k}
+  \underbrace{
+  {1 \over (-1)^k }{\Gamma(p + a - 1 + k + 1) \over \Gamma(p + a - 1 + 1)}
+  }_{{1 \over (c)_k} = {1 \over (-p - a + 1)_k}}
+  \underbrace{
+  {1 \over k!} \left( {1 + b \over e^\tau + b} \right)^k
+  }_{z^k \over k!}.
+\end{align}
+Therefore the sum can be simply written as
+\begin{equation}
+\sum_{k=0}^p {(-1)^k \over k!}
+  {a \Gamma(a + p - k) \over \Gamma(p - k + 1) \Gamma(a - k + 1)}
+  \left( {1 + b \over e^\tau + b} \right)^k =
+  {a \Gamma(p + a - 1 + 1) \over \Gamma(a + 1) \Gamma(p + 1)}
+  {}_2F_1 \left( -p, -a, 1 - a - n, {1 + b \over e^\tau + b} \right)
 \end{equation}
-\manuelComment{To proof this is simple but requires a lot of tedious
-algebra I don't know how to write in a clear way without using multiple colors}.
 
 This relationship means that we can rewrite \eref[eq_dist_nohyper] as
+\begin{equation}
+  P_p = \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
+  \left( {b \over 1 + b} \right)^p
+  {\Gamma(p + a) \over \Gamma(a) p!}
+  {}_2F_1 \left( -p, -a, 1 - a - n, {1 + b \over e^\tau + b} \right),
+\end{equation}
+This is the final expression for the protein distribution valid for
+$\Gamma \gg 1$ and $\tau \gg \Gamma^{-1}$.
+\manuelComment{Eq (44) in SI and (8) in main text.}
+
+\subsection{Steady State Distribution}
+To compute the steady state distribution we take the limit when
+$\tau \rightarrow \infty$. That gives ${}_2F_1(a, b, c, 0)$ which cancels all
+terms in the sum except for the first one. Therefore ${}_2F_1(a, b, c, 0) = 1$.
+This means that we have
+\begin{equation}
+  P_p^{ss} = {\Gamma(p + a) \over \Gamma(p + 1) \Gamma(a)}
+  \left( 1 - {b \over 1 + b}  \right)^a
+  \left( {b \over 1 + b} \right)^p.
+\end{equation}
+\manuelComment{Eq (9) in main text.}
+
+This is a negative binomial distribution with mean
+\begin{equation}
+  \left\langle p \right\rangle = a \cdot b =
+  {r_m \over \gamma_p}{r_p \over \gamma_m},
+\end{equation}
+and variance
+\begin{equation}
+  \sigma_p^2 = ab(1 + b) =
+  {r_m \over \gamma_p}{r_p \over \gamma_m} \left(1 + {r_p \over \gamma_m}\right)
+\end{equation}
