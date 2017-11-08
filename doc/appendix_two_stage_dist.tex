@@ -897,7 +897,7 @@ With these definitions in hand we use \eref[eq_prob_from_generating] along with
 \end{equation}
 Using \eref[eq_derivative_identity] we can rewrite the derivatives as
 \begin{equation}
-  \small
+  \scriptscriptstyle
   P_p = \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
   \sum_{k=0}^p {\Gamma(a + p - k) \over \Gamma(a)}
   \left( {b \over 1 + b} \right)^{p - k} \cdot
@@ -917,7 +917,7 @@ for several values of $k$.}
 
 Using this we have
 \begin{equation}
-  \small
+  \scriptscriptstyle
   P_p = \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
   \sum_{k=0}^p {\Gamma (a + p - k) \over \Gamma(a)}
   \left( {b \over 1 + b} \right)^{p - k}
@@ -931,7 +931,101 @@ This can be further simplified to
   \sum_{k=0}^p {(-1)^k \over k!}
   {a \Gamma(a + p - k) \over (p - k)! \Gamma(a - k + 1)}
   \left( {1 + b \over e^\tau + b} \right)^k.
+  \label{eq_dist_nohyper}
 \end{equation}
 \manuelComment{Eq (41) in the SI. Shahrezaei and Swain missed one factor of
 $a$ since $\Gamma(a + 1) / \Gamma(a) = a$, but the error doesn't propagate to
 the other equations.}
+
+\subsection{Gauss Hypergeometric Function}
+
+An important function for the solution is the Hypergeometric function
+$_2F_1(a; b; c; z)$. This funciton is defined as
+\begin{equation}
+  _2F_1(a; b; c; z) \equiv \sum_{k=0}^\infty
+  {(a)_k (b)_k \over (c)_k} {z^k \over k!}.
+\end{equation}
+
+The series is indetermined if $c$ is a non-positive integer. The $(q)_k$ terms
+are the so-called rising factorials or rising Pochhammer symbols defined as
+\begin{equation}
+  (q)_k = \begin{cases}
+  1, & \text{for }k = 0.\\
+  q (q + 1)\cdots (q + k - 1) & \text{for k > 0},
+  \end{cases}
+\end{equation}
+or using gamma functions
+\begin{equation}
+  (q)_k = {\Gamma (q + k) \over \Gamma (q)}.
+\end{equation}
+
+If $a$ or $b$ are non-positive integers the series reduces to the polynomial
+\begin{equation}
+_2F_1(-n; b; c; z) = \sum_{k=0}^\infty (-1)^k {n \choose k}
+                    {(b)_k \over (c)_k} z^k.
+\end{equation}
+Or for non-integer values we have
+\begin{equation}
+_2F_1(-n; b; c; z) = \sum_{k=0}^\infty (-1)^k
+                    {\Gamma (n + 1) \over \Gamma (n - k + 1)}
+                    {(b)_k \over (c)_k} {z^k \over k!}.
+\end{equation}
+
+From the definition of the Pochhammer symbols they must satisfy
+\begin{equation}
+  (-a)_k = {\Gamma (a + 1) \over \Gamma (a - k + 1)}.
+\end{equation}
+This relationship can be shown using the Euler reflection formula
+\begin{equation}
+  \Gamma (z) \Gamma (1 - z) = {\pi \over \sin (\pi z)}.
+\end{equation}
+
+If $z \equiv -a + k$ we have
+\begin{equation}
+  \Gamma(-a + k) \Gamma(1 - (-a + k)) = {\pi \over \sin(\pi (-a + k))}.
+\end{equation}
+On the other hand if $z \equiv -a$ we have
+\begin{equation}
+  \Gamma(-a) \Gamma(1 - (-a)) = {\pi \over \sin(\pi (-a))}.
+\end{equation}
+
+From the definition of $(-a)_k$ we have
+\begin{equation}
+  (-a)_k = {\Gamma(-a + k) \over \Gamma(-a)}
+         = {{\pi \over \sin(\pi (-a + k)) \Gamma(1 - (-a + k))}
+         \over
+           {\pi \over \sin(\pi(-a)) \Gamma(1 - (-a))}}.
+\end{equation}
+Simplifying this we have
+\begin{equation}
+  (-a)_k = {\Gamma(1 - (-a)) \over \Gamma(1 - (-a + k))}\cdot
+           {\sin(\pi (-a + k)) \over \sin(\pi (-a))}.
+\end{equation}
+
+For $\sin(\pi (-a + k))$ we can use the identity
+\begin{equation}
+  \sin(\pi (-a + k)) = \sin(\pi (-a)) \cos(\pi k) -
+                       \cos(\pi (-a)) \sin(\pi k).
+\end{equation}
+Since for $k \in \mathbb{Z}$ we have that $\sin(\pi k) = 0$, and
+$\cos(\pi k) = (-1)^k$, it must be true that for $a \notin \mathbb{N}$
+\begin{align}
+  (-a)_k &= {\Gamma(a + 1) \over \Gamma(a - k + 1)}
+           {(-1)^k \sin(\pi (-a)) \over \sin(\pi (-a))},\\
+         &= (-1)^k {\Gamma(a + 1) \over \Gamma(a - k + 1)}.
+\end{align}
+\manuelComment{Eq (43) in SI}.
+
+From \eref[eq_dist_nohyper] we can rewrite the term inside the sum as a
+hypergeometric function by rewriting $\Gamma(a - k + n) =
+\Gamma(a + n - 1 - k + 1)$. This means that
+\begin{equation}
+  \sum_{k=0}^p {(-1)^k \over k!}
+  {a \Gamma(a + p - k) \over \Gamma(p - k + 1) \Gamma(a - k + 1)}
+  \left( {1 + b \over e^\tau + b} \right)^k =
+  {}_2F_1 \left( -p, -a, 1 - a - p, {1 + b \over e^\tau + b}   \right).
+\end{equation}
+\manuelComment{To proof this is simple but requires a lot of tedious
+algebra I don't know how to write in a clear way without using multiple colors}.
+
+This relationship means that we can rewrite \eref[eq_dist_nohyper] as
