@@ -33,4 +33,5 @@ data/microscopy/
 data/csv_channcap_bootstrap/
 data/csv_protein_dist/
 data/mRNA_FISH/
+data/mcmc/
 library.bib
