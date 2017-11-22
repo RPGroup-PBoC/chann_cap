@@ -35,7 +35,7 @@ chann_cap.set_plotting_style()
 # METADATA
 #==============================================================================
 
-DATE = 201611102
+DATE = 20161102
 USERNAME = 'gchure'
 OPERATOR = 'O1'
 STRAIN = 'RBS1027'
@@ -78,7 +78,7 @@ if compute_exp:
 
     # Perform the parallel computation
     print('Performing bootsrap estimates of channel capacity...')
-    channcap_list = Parallel(n_jobs=7)(delayed(channcap_bs_parallel)(b) \
+    channcap_list = Parallel(n_jobs=48)(delayed(channcap_bs_parallel)(b) \
                                         for b in bins)
     print('Done performing calculations.')
 
@@ -146,7 +146,7 @@ if compute_shuff:
 
     # Perform the parallel computation
     print('Performing bootsrap estimates on random data')
-    channcap_list_shuff = Parallel(n_jobs=7)\
+    channcap_list_shuff = Parallel(n_jobs=48)\
                           (delayed(channcap_bs_parallel_shuff)(b) \
                                         for b in bins)
     print('Done performing calculations.')
