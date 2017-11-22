@@ -9,9 +9,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Begin packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage{color} % ULTIMATELY remove before submission
-\newcommand{\manuelComment}[1]{\textcolor{orange}{(MR:~#1)}} % Commenting
-\newcommand{\talComment}[1]{\textcolor{blue}{(TE:~#1)}} % Commenting
+% Commenting
+\newcommand{\manuelComment}[1]{\textcolor{ForestGreen}{(MR:~#1)}} % Commenting
+\newcommand{\talComment}[1]{\textcolor{Plum}{(TE:~#1)}} % Commenting
 \newcommand{\robComment}[1]{\textcolor{red}{(RP:~#1)}} % Commenting
 
 % To bold the first sentence of every figure caption
@@ -41,20 +41,22 @@
 %% Begin document
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{\textbf{Beyond Average: Quantifying Gene Expression Distributions and Channel Capacity in \textit{Escherichia coli}}}
-\author{Manuel Razo, Tal Einav and Rob Phillips}
+\author{Manuel Razo and Rob Phillips}
 %\date{\today}
 
 \begin{document}
 \maketitle
-	\input{section_00_introduction}
-	\input{section_01}
-	\input{section_02}
+%	\input{section_00_introduction}
+%	\input{section_01}
+%	\input{section_02}
 %	\input{section_03}
 %	\input{section_04}
-	\input{section_99_ToDo} % To Do list of future items
+	\input{appendix_two_stage_dist.tex}
+	% \input{appendix_method_characteristics.tex}
+%	\input{section_99_ToDo}
 
-% Bibliography
-\bibliography{library}
-\bibliographystyle{pnas}
+	% Bibliography
+	\bibliography{library}
+	\bibliographystyle{pnas}
 
 \end{document}

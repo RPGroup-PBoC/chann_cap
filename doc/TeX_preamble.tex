@@ -11,7 +11,9 @@
 \usepackage{graphicx}
 \usepackage{url}
 \usepackage{color}
-\usepackage[table]{xcolor}
+\usepackage[dvipsnames]{xcolor}
+\definecolor{cuteBlue}{rgb}{0.258, 0.387, 0.574}
+\definecolor{cuteGreen}{rgb}{0, 0.3, 0}
 \usepackage{cancel}
 \usepackage{comment}
 \usepackage[framemethod=TikZ]{mdframed}
@@ -30,7 +32,8 @@
 \usepackage{titlesec}
 
 % To make jumping between equation, figure, citation references easier
-\usepackage[urlcolor=blue, hyperfootnotes=false, hyperfigures=false, hyperindex=false, linkcolor=black]{hyperref}
+\usepackage[colorlinks=true, urlcolor=cuteBlue, citecolor=cuteGreen, linkcolor=black]{hyperref}
+%\usepackage[urlcolor=blue, hyperfootnotes=false, hyperfigures=false, hyperindex=false, linkcolor=black]{hyperref}
 %\usepackage[colorlinks=true, urlcolor=blue, hyperfootnotes=false, hyperfigures=false, hyperindex=false, linkcolor=red]{hyperref}
 
 % To make caption labels (i.e. Figure 1, Figure 2...) bold and make all caption text small

@@ -1,0 +1,1087 @@
+\section{Derivation of the two stage promoter equation}
+
+Shahreaei and Swain derive the full analytical protein distribution for a two
+stage (i.e. an unregulated promoter) and a three stage (i.e. a promoter that
+transitions between active and inactive) promoter \cite{Shahrezaei2008}. In
+this section wi will follow the derivation augmenting the details at each step
+for clarity.
+
+\subsection{From the master equation}
+
+First let us write the chemical master equation for this system. Let $p$ and $m$
+be the protein and mRNA copy numbers, respectively, and $P_{m,p}(t)$ be the
+probability of having $m$ mRNA and $p$ proteins at time t. Then we can use the
+``spread the butter'' approach to write the discrete difference equation
+\begin{equation}
+\begin{aligned}
+P_{m,p}(t + \Delta t) =
+P_{m,p}(t) +
+\overbrace{r_m \Delta t
+\left[ P_{m-1,p}(t) - P_{m,p}(t) \right]}^\text{mRNA production}
++ \overbrace{r_p m \Delta t
+\left[ P_{m, p-1}(t) - P_{m, p}(t) \right]}^\text{protein production}\\
++ \underbrace{\gamma_m \Delta t
+\left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t) \right]}_\text{mRNA degradation}
++ \underbrace{\gamma_p \Delta t
+\left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right]}_\text{protein
+degradation},
+\end{aligned}
+\end{equation}
+where $r_m$ and $r_p$ are the mRNA and protein production rates respectively,
+$\gamma_m$ and $\gamma_p$ are the mRNA and protein degradation rates
+respectively, and $\Delta t$ is a time interval small enough so that only one
+event can take place.
+
+We rearrange the terms, divide both sides by $\Delta t$ , obtaining
+\begin{equation}
+  \begin{aligned}
+\frac{P_{m,p}(t + \Delta t) - P_{m,p}(t)}{\Delta t} =
+r_m \left[ P_{m-1,p}(t) - P_{m,p}(t) \right]
++ r_p m \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
++ \gamma_m \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t) \right]
++ \gamma_p \left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right].
+  \end{aligned}
+\end{equation}
+Note that the production of protein is taken per mRNA.
+We now take the limit $\Delta t \rightarrow 0$ to obtain the final form of the
+chemical master equation
+\begin{equation}
+  \begin{aligned}
+\frac{\partial P_{m,p}}{\partial t} =
+r_m \left[ P_{m-1,p}(t) - P_{m,p}(t) \right] +
+r_p m \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
++ \gamma_m \left[ (m + 1) P_{m+1,p}(t)
+- m P_{m, p}(t) \right]
++ \gamma_p \left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right].
+  \end{aligned}
+\end{equation}
+
+\manuelComment{Eq. 1 of the paper.}
+
+Let us now divide by the slowest rate, i.e. $\gamma_p$
+\begin{equation}
+\begin{aligned}
+\frac{1}{\gamma_p} \frac{\partial P_{m,p}}{\partial t} =
+\frac{r_m}{\gamma_p} \left[ P_{m-1,p}(t) - P_{m,p}(t) \right]
++ \frac{r_p}{\gamma_p} m  \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
++ \frac{\gamma_m}{\gamma_p} \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t) \right]
++ \left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right].
+\end{aligned}
+\label{eq_cme_over_gammap}
+\end{equation}
+We now introduce the following variables:
+\begin{align}
+  a \equiv \frac{r_m}{\gamma_p}\\
+  b \equiv \frac{r_p}{\gamma_m}\\
+  \gamma \equiv \frac{\gamma_m}{\gamma_p}\\
+  \tau \equiv \gamma_p \cdot t
+\end{align}
+Substituting these variables into \eref[eq_cme_over_gammap] we obtain
+\begin{equation}
+\begin{aligned}
+\frac{\partial P_{m,p}}{\partial \tau} =
+a \left[ P_{m-1,p}(t) - P_{m,p}(t) \right]
++ b \gamma m  \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
++ \gamma \left[ (m + 1) P_{m+1,p}(t) - m P_{m, p}(t) \right]
++ \left[ (p + 1) P_{m, p+1}(t) - p P_{m, p}(t) \right].
+\end{aligned}
+\label{eq_cme_tau}
+\end{equation}
+Note that we used $\frac{1}{\gamma_p}\frac{\partial}{\partial t} =
+\frac{\partial}{\partial \tau}$.
+
+We now define the generating function
+\begin{equation}
+F\left[ s, z \right] = \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m, p},
+\label{eq_generating_function}
+\end{equation}
+where from now on we abbreviate $P_{m, p}(t)$ as $P_{m, p}$. The generating
+function will allow us to write a single PDE rather than an infinite system of
+PDEs for each mRNA and protein copy number. The generating function time
+derivative is given by
+\begin{equation}
+\frac{\partial F}{\partial \tau} =
+\frac{\partial}{\partial \tau} \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p
+P_{m, p} =
+\sum_{m=0}^{\infty}
+\sum_{p=0}^{\infty} s^m z^p \frac{\partial}{\partial \tau} P_{m, p}.
+\label{eq_dF_dtau}
+\end{equation}
+We now substitute \eref[eq_cme_tau] into \eref[eq_dF_dtau]
+\begin{equation}
+\begin{aligned}
+\frac{\partial F}{\partial \tau} =
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p
+\left\{ a \left[ P_{m-1,p} - P_{m,p} \right]
++ b \gamma m  \left[ P_{m, p-1} - P_{m, p} \right] \right. \\
+\left. + \gamma \left[ (m + 1) P_{m+1,p} - m P_{m, p} \right]
++ \left[ (p + 1) P_{m, p+1} - p P_{m, p} \right] \right\}.
+\end{aligned}
+\label{eq_dF_dtau_complete}
+\end{equation}
+
+In order to make progress with this equation we note that we can distribute
+the terms in parenthesis as
+\begin{equation}
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( P_{m+1, p} - P_{m, p}
+\right) =
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m+1, p}
+- \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m, p}.
+\label{eq_split_sum}
+\end{equation}
+We can now factorize $s^{-1}$ from the first term on the left hand side of
+\eref[eq_split_sum] and redefine the variable to sum over.
+\begin{equation}
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( P_{m+1, p} - P_{m, p}
+\right) =
+s^{-1} \sum_{(m+1)=0}^{\infty} \sum_{p=0}^{\infty} s^{m+1} z^p P_{m+1, p}
+- \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m, p}.
+\end{equation}
+But since both sums on the left hand side are taken over the same ranges we can
+write it as
+\begin{equation}
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( P_{m+1, p} - P_{m, p}
+\right) =
+\left( s^{-1} - 1 \right) \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m,
+p}
+\end{equation}
+
+With this identity we can rewrite \eref[eq_dF_dtau_complete] as
+\begin{equation}
+\begin{aligned}
+\frac{\partial F}{\partial \tau} =
+(s - 1) \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( a P_{m,p} \right)
++ (z - 1) \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p b \gamma m P_{m,p}
+\\
++ \left( s^{-1} - 1 \right) \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p
+\gamma m P_{m,p}
++ \left( z^{-1} - 1 \right) \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p
+\gamma p P_{m,p}.
+\end{aligned}
+\label{eq_dF_dtau_identity}
+\end{equation}
+
+Another useful identity can be derived if we note that
+\begin{equation}
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p m P_{m, p} =
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} z^p s \frac{\partial s^m}{\partial s}
+P_{m, p}.
+\end{equation}
+But since $z^p$ and $P_{m, p}$ do not depend on $s$ we can include these terms
+inside the derivative, obtaining
+\begin{equation}
+\sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p m P_{m, p} =
+s \frac{\partial}{\partial s}\left( \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p P_{m, p} \right) =
+s \frac{\partial}{\partial s}F.
+\end{equation}
+
+Using this identity in \eref[eq_dF_dtau_identity] allow us to remove all the
+sums, obtaining a single PDE of the form
+\begin{equation}
+\frac{\partial F}{\partial \tau} =
+(s - 1) a F + (z - 1) b \gamma s \frac{\partial F}{\partial s}
++ \left( s^{-1} - 1 \right) \gamma s \frac{\partial F}{\partial s}
++ \left( z^{-1} - 1 \right) z \frac{\partial F}{\partial Z}.
+\end{equation}
+Rearranging terms we obtain
+\begin{equation}
+\frac{\partial F}{\partial \tau} =
+a (sF - s)
++ b \gamma \left( z s \frac{\partial F}{\partial s} - s \frac{\partial
+F}{\partial s} \right)
++ \gamma \left( \frac{\partial F}{\partial s} - s \frac{\partial F}{\partial s}
+\right)
++ \left( \frac{\partial F}{\partial z} - z \frac{\partial F}{\partial z}
+\right).
+\label{eq_df_dtau_PDE}
+\end{equation}
+
+With the generating function we were able to pass from an infinite system of PDE
+for each mRNA and protein copy number to a single PDE. We now have to find a
+solution for this equation and then infer back the probability distribution
+given the definition of the generating function.
+
+We now note a pattern in \eref[eq_df_dtau_PDE]. If we define $u \equiv s - 1$ and $v \equiv z - 1$, which satisfy
+\begin{align}
+  \frac{\partial}{\partial s} = \frac{\partial}{\partial u},\\
+  \frac{\partial}{\partial z} = \frac{\partial}{\partial v},
+\end{align}
+we can rewrite \eref[eq_df_dtau_PDE] as
+\begin{equation}
+  \frac{\partial F}{\partial \tau} =
+  a u F
+  + b \gamma v \left( u + 1  \right) \frac{\partial F}{\partial u}
+  - \gamma u \frac{\partial F}{\partial u}
+  - v \frac{\partial F}{\partial v}.
+\end{equation}
+
+We now divide by $v$ and rearrange terms obtaining
+\begin{equation}
+  \frac{\partial F}{\partial v}
+  - \gamma \left[ b (u + 1) - \frac{u}{v} \right] \frac{\partial F}{\partial u}
+  + \frac{1}{v} \frac{\partial F}{\partial \tau}
+  = a \frac{u}{v} F,
+  \label{eq_swain_2}
+\end{equation}
+\manuelComment{which is Eq. (2) in \cite{Shahrezaei2008}.}
+
+\eref[eq_swain_2] is a semi-linear PDE that can be solved using the method of
+the characteristics (this method is described in the Appendix
+\ref{seq_method_characteristics}). In order to apply this method we write
+\eref[eq_swain_2] as
+\begin{equation}
+  A(v, u, \tau) \frac{\partial F}{\partial v}
+  + B(v, u, \tau) \frac{\partial F}{\partial u}
+  + C(v, u, \tau) \frac{\partial F}{\partial \tau}
+  = f(u, v, \tau, F),
+\end{equation}
+where
+\begin{equation}
+  \begin{aligned}
+  A &= 1,\\
+  B &= - \gamma \left[ b (1 + u) - \frac{u}{v} \right],\\
+  C &= \frac{1}{v},\\
+  f &= a \frac{u}{v} F.
+  \label{eq_coef_definition}
+  \end{aligned}
+\end{equation}
+
+The method of characteristics requires us to solve the PDE along the
+characteristic lines. To do so we can parametrize the characteristics with
+parameter $r$. This allow us to write the equality
+\begin{equation}
+  {{dv \over dr} \over A(v, u, \tau)} =
+  {{du \over dr} \over B(v, u, \tau)} =
+  {{d\tau \over dr} \over C(v, u, \tau)} =
+  {{dF \over dr} \over f(v, u, \tau, F)}.
+  \label{eq_lagrange_charpit}
+\end{equation}
+Substituting \eref[eq_coef_definition] into \eref[eq_lagrange_charpit] gives
+\begin{equation}
+  {{dv \over dr} \over 1} =
+  {{du \over dr} \over - \gamma \left[ b (1 + u) - \frac{u}{v} \right]} =
+  {{d\tau \over dr} \over {1 \over v}} =
+  {{dF \over dr} \over a \frac{u}{v} F}.
+\end{equation}
+Or, if a particular parametrization $r$ of the curves is fixed, then these
+equations can be written as a system of ODEs as
+\begin{align}
+  \frac{d v}{d r} &= 1,
+  \label{eq_ODE_1}\\
+  \frac{d u}{d r} &= - \gamma \left[ b (1 + u) - \frac{u}{v}
+  \right],
+  \label{eq_ODE_2}\\
+  \frac{d \tau}{d r} &= \frac{1}{v},
+  \label{eq_ODE_3}\\
+  \frac{d F}{d r} &= \frac{a u}{v} F.
+  \label{eq_ODE_4}
+\end{align}
+
+\subsubsection{Solving system of ODEs}
+
+Once we find the system of ODEs that integrate the variables along the
+characteristic line we can try to solve this system in order to find the general
+integral surface that solves the PDE. The initial conditions for the system are
+given by $\tau = 0$, $u = u_0$, $v = v_0$. Let's start with \eref[eq_ODE_1].
+For this equation we use separation of variables which simply gives
+\begin{equation}
+  {\partial v \over \partial r} = 1 \Rightarrow
+  r = v + C_1,
+  \label{eq_ODE_sol_1}
+\end{equation}
+where $C_1$ is an integration constant.
+
+For \eref[eq_ODE_3] we can write
+\begin{equation}
+  {\partial \tau \over \partial r} = {1 \over v} \Rightarrow
+  {\partial r \over \partial \tau} = v.
+\end{equation}
+If we now substitute \eref[eq_ODE_sol_1] we find
+\begin{equation}
+  {\partial r \over \partial \tau} = r - C_1.
+\end{equation}
+Using separation of variables on this equation we get
+\begin{equation}
+  \int {dr \over r - C_1} = \int d\tau,
+\end{equation}
+which when integrated gives
+\begin{equation}
+  \ln (r - C_1) = \tau + C_2'.
+\end{equation}
+where $C_2'$ is an integration constant. If we now solve for $r$ we find
+\begin{equation}
+  r = C_2e^{\tau} + C_1,
+  \label{eq_ODE_sol_3}
+\end{equation}
+where $C_2 \equiv e^{C_2'}$.
+
+If we substitute \eref[eq_ODE_sol_3] back on \eref[eq_ODE_sol_1] we obtain a
+functional relationship between $v$ and $\tau$ of the form
+\begin{equation}
+  C_2 e^{\tau} + C_1 = v + C_1 \Rightarrow
+  v = C_2 e^{\tau}.
+\end{equation}
+
+Using the initial conditions $\tau = 0$, $v=v_0$ we find that $C_2 = v_0$,
+therefore the functional relationship between $\tau$ and $v$ is of the form
+\begin{equation}
+  v = v_0 e^{\tau}.
+  \label{eq_v_tau_relation}
+\end{equation}
+
+Using \eref[eq_ODE_1] and \eref[eq_ODE_2] we can compute
+$\partial u / \partial v$ as
+\begin{equation}
+  {\partial u \over \partial v} =
+  - \gamma \left[ b (1 + u) - {u \over v} \right].
+\end{equation}
+This is a first order linear ODE which we can rewrite as
+\begin{equation}
+  {du \over dv} = -\gamma b
+  - \gamma b u
+  + {\gamma u \over v} =
+  -\gamma b
+  + u \left( {\gamma \over v} - \gamma b \right).
+\end{equation}
+Grouping terms with respect to $u$ gives
+\begin{equation}
+  {du \over dv} + \left( \gamma b - {\gamma \over v} \right) u = - \gamma b.
+  \label{eq_dudv}
+\end{equation}
+\eref[eq_dudv] can be solved by the integrating factor method. In this case
+the integrating factor is given by
+\begin{equation}
+  e^{\int \gamma \left( b - {1 \over v} \right) dv} =
+  e^{\gamma b v - \gamma \ln v} = v^{-\gamma} e^{\gamma b v}
+  \label{eq_dudv_integ_factor}
+\end{equation}
+
+Multiplying both sides of \eref[eq_dudv] by \eref[eq_dudv_integ_factor] we find
+that the left hand side is transformed into the derivative of the integrating
+factor times $u$, i.e.
+\begin{equation}
+  {d \over dv}\left[ v^{-\gamma} e^{\gamma b v} \cdot u \right] =
+  -\gamma b v^{-\gamma} e^{-\gamma b v}.
+\end{equation}
+
+We can now integrate both sides, obtaining
+\begin{equation}
+u v^{-\gamma} e^{\gamma b v} =
+-\gamma b \int dv \; v^{-\gamma} e^{\gamma b v} + C,
+\end{equation}
+where $C$ is an integrating constant. Solving for $u$ we find
+\begin{equation}
+  u(v) = v^{\gamma} e^{-\gamma b v} \left[ C -
+  \gamma b \int dv {e^{\gamma b v} \over v^{\gamma}} \right].
+  \label{eq_implicit_sol_u}
+\end{equation}
+\manuelComment{Eq. (26)}
+
+To solve the integral we expand the exponential as a Taylor series, i.e.
+\begin{equation}
+  e^{-\gamma b v} = \sum_{n=0}^{\infty} {\left( \gamma b v \right)^n \over n!}.
+\end{equation}
+
+Using this on the integral in \eref[eq_implicit_sol_u] gives
+\begin{equation}
+  \int dv {e^{\gamma b v} \over v^{\gamma}} =
+  \int dv {1 \over v^{\gamma}}
+  \sum_{n=0}^{\infty} {\left( \gamma b v \right)^n \over n!}
+\end{equation}
+We can take out the terms that do not depend on $v$ out of the integral to
+obtain
+\begin{equation}
+\int dv {1 \over v^{\gamma}}
+  \sum_{n=0}^{\infty} {\left( \gamma b v \right)^n \over n!} =
+  \sum_{n=0}^{\infty} {\left( \gamma b \right)^n \over n!}
+  \int dv \; v^{n - \gamma} =
+  \sum_{n=0}^{\infty} {\left( \gamma b \right)^n \over n!}
+  {v^{n - \gamma + 1} \over n - \gamma + 1}.
+  \label{eq_integral_implicit_sol_u}
+\end{equation}
+
+Substituting \eref[eq_integral_implicit_sol_u] into \eref[eq_implicit_sol_u]
+gives
+\begin{equation}
+  u(v) = v^\gamma e^{-\gamma b v}
+  \left[ C - \gamma b \sum_{n=0}^\infty {\left( \gamma b \right)^n \over n!}
+  {v^{n - \gamma + 1} \over n - \gamma + 1} \right].
+\end{equation}
+This can be simplified to obtain
+\begin{equation}
+  u(v) = e^{-\gamma b v} \left[ C v^{\gamma}
+  - \sum_{n=0}^\infty {\left( \gamma b v \right)^{n+1} \over
+  n! \left( n - \gamma + 1 \right)} \right].
+  \label{eq_SI_27_uofv}
+\end{equation}
+\manuelComment{Eq (27) in the SI.}
+
+The question now becomes how can we evaluate the sum
+\begin{equation}
+  S(\gamma b v) = \sum_{n=0}^\infty {\left( \gamma b v \right)^{n+1} \over
+  n! \left( n - \gamma + 1 \right)}.
+\end{equation}
+Just as Shahrenzaei \& Swain we will follow Bender \& Orszag and use the
+so-called Laplace's method for sums. The idea behind this method is to find the
+leading behavior of the sum. What this means is that if there are some very
+dominant terms in the sum we can just add those in the vincinity to get a decent
+approximation of the sum.
+
+To find the leading behavior of the sum we first need to identify the largest
+terms in the series. Let us start by looking at the ratio of the
+$(n+1)^{\text{th}}$ term to the $n^{\text{th}}$ term of the sum. This is given
+by
+\begin{equation}
+{{(\gamma b v)^{n+2} \over (n+1)! (n - \gamma + 2)}
+\over
+{(\gamma b v)^{n+1} \over n! (n - \gamma + 1)}}
+=
+{\gamma b v \over n + 1} \cdot
+{(n - \gamma + 1) \over (n - \gamma + 2)}.
+\label{eq_ratio_series}
+\end{equation}
+From this ratio we can see that since we assumed that $\gamma \gg 1$ we can
+discard the second term on the right hand side of \eref[eq_ratio_series] since
+\begin{equation}
+{(n - \gamma + 1) \over (n - \gamma + 2)} \approx 1.
+\end{equation}
+
+Taking this approximation we can see that the ratio is greater than 1 if
+$n + 1 < \gamma b v$ and it is less than one if the opposite is true, i.e.
+$n + 1 > \gamma b v$. That implies that terms in the series increase until they
+reach $n \sim \gamma b v$, to then decrease with increasing $n$.
+
+As $\gamma b v \rightarrow \infty$ the series become sharply peaked around
+$n = \gamma b v$. Therefore we could approximate this sum by just summing in the
+vicinity of $n = \gamma b v$. This would give us
+\begin{align}
+  S(\gamma b v) =
+\sum_{n=0}^\infty {\left( \gamma b v \right)^{n+1} \over
+  n! \left( n - \gamma + 1 \right)} \approx
+\sum_{n=\gamma b v (1 - \epsilon)}
+    ^{\gamma b v (1 + \epsilon)}
+    {\left( \gamma b v \right)^{n+1} \over
+  n! \left( n - \gamma + 1 \right)},
+\end{align}
+with errors increasingly smaller as $\gamma b v \rightarrow \infty$.
+
+If this approximation is valid, that means we can use Stirling's formula to
+approximate the factorial term remaining in the sum. If we let
+$n \approx \gamma b v + s$, where $s$ is small compared to $\gamma b v$, then by
+Stirling's approximation we have
+\begin{equation}
+  n! \approx \left( {n \over e} \right)^n \sqrt{2 \pi n}.
+\end{equation}
+Substituting our approximation for $n$ gives
+\begin{equation}
+  n! \approx (\gamma b v + s)^n e^{-n} \sqrt{2 \pi n}.
+\end{equation}
+For this equation we left the exponent with $n$ untouched. That violates our
+approximation of $n \approx \gamma b v + s$, but we will come back to that
+later. For now it is convenient to carry it as $n$ and substitute at the end.
+
+We now factorize out the term $\gamma b v$ obtaining
+\begin{equation}
+  n! \approx \left[ \gamma b v \left( 1 + {s \over \gamma b v} \right) \right]^n
+  e^{-n} \sqrt{2 \pi n}.
+\end{equation}
+We can rewrite the term in parenthesis in a convenient way as
+\begin{equation}
+  n! \approx (\gamma b v)^n
+  \exp \left\{ n \ln \left( 1 + {s \over \gamma b v} \right) \right\}
+  e^{-n} \sqrt{2 \pi n}.
+\end{equation}
+The term in the exponential can be Taylor expanded up to second order as
+\begin{equation}
+n \ln \left( 1 + {s \over \gamma b v} \right) \approx
+n \left[ {s \over \gamma b v}
+- {1 \over 2} \left( {s \over \gamma b v}  \right)^2 \right].
+\end{equation}
+
+Putting all these together we obtain an approximation of the form
+\begin{equation}
+  n! \approx (\gamma b v)^n
+             e^{-n}
+             e^{n {s \over \gamma b v}}
+             e^{-{n \over 2} {s^2 \over (\gamma b v)^2}}
+             \sqrt{2 \pi n}.
+\end{equation}
+Let's now substitute what we didn't do at the beginning for the exponents.
+Let's replace $n = \gamma b v + s$ in the exponents obtaining
+\begin{equation}
+  e^{-n}
+  e^{n {s \over \gamma b v}}
+  e^{-{n \over 2} {s^2 \over (\gamma b v)^2}} =
+  \exp \left\{ -\gamma b v - s
+               + (\gamma b v + s){s \over \gamma b v}
+               - {(\gamma b v + s) \over 2} {s^2 \over (\gamma b v)^2} \right\}.
+\end{equation}
+Expanding the terms in the exponent gives
+\begin{equation}
+\exp \left\{ -\gamma b v - s
+             + (\gamma b v + s){s \over \gamma b v}
+             - {(\gamma b v + s) \over 2} {s^2 \over (\gamma b v)^2} \right\} =
+\exp \left\{ -\gamma b v - s
+             + s
+             + {s^2 \over \gamma b v}
+             - {1 \over 2} {s^2 \over \gamma b v}
+             - {1 \over s} {s^3 \over (\gamma b v)^2} \right\}
+\end{equation}
+Simplifying terms gives
+\begin{equation}
+  \exp \left\{ -\gamma b v
+             - s
+             + s
+             + {s^2 \over \gamma b v}
+             - {1 \over 2} {s^2 \over \gamma b v}
+             - {1 \over s} {s^3 \over (\gamma b v)^2} \right\} =
+\exp \left\{ -\gamma b v
+             + {1 \over 2} {s^2 \over \gamma b v}
+             - {1 \over s} {s^3 \over (\gamma b v)^2} \right\}
+\end{equation}
+Note that by assumption $s^3 \ll (\gamma b v)^2$, therefore we can remove the
+third term in the exponent. All these steps finally give an approximation for
+$n!$ of the form
+\begin{equation}
+  n! \approx (\gamma b v)^n e^{-\gamma b v} e^{s^2 \over 2 \gamma b v}
+             \sqrt{2 \pi \gamma b v}, \;\;
+             \text{for} \; (\gamma b v) \rightarrow \infty.
+\end{equation}
+\manuelComment{Eq (28) in the SI}
+
+So far the Laplace approximation for sums allowed us to find the leading terms
+of the sum to then have an approximation for the $n!$ term. We can now
+substitute back this approximation into the sum
+\begin{align}
+  S(\gamma b v) &= \sum_{n = 0}^{\infty} {(\gamma b v)^{n + 1} \over
+                                        n! (n - \gamma + 1)},\\
+  &\approx \sum_{n = 0}^{\infty}
+  {(\gamma b v)^{n + 1} \over (n - \gamma + 1)} \cdot
+  \overbrace{
+  { (\gamma b v)^{-n} e^{\gamma b v} e^{-s^2 \over 2 \gamma b v}
+  \over
+  \sqrt{2 \pi \gamma b v}
+  }}^{1 \over n!}.
+\end{align}
+We will now substitute for all $n \approx \gamma b v + s$ and approximate the
+sum as an integral on $s$ with an extended range from $-\infty$ to $\infty$.
+This is valid since the terms around $n = \gamma b v$ dominate the sum, so the
+extra terms would have a marginally small impact in the result. With this then
+we have
+\begin{equation}
+  S(\gamma b v) \approx \int_{-\infty}^{\infty} ds {
+  \gamma b v e^{\gamma b v} e^{-s^2 \over 2 \gamma b v}
+  \over
+  \left[ \gamma (b v - 1) + s + 1 \right] \sqrt{2 \pi \gamma b v}
+  }.
+\end{equation}
+
+Now we factorize a term $\gamma (b v - 1)$ from the denominator, obtaining
+\begin{equation}
+  S(\gamma b v) \approx \int_{-\infty}^{\infty} ds {
+  \gamma b v e^{\gamma b v} e^{-s^2 \over 2 \gamma b v}
+  \over
+  \gamma (b v - 1) \left[ 1 + {s + 1 \over \gamma (b v - 1) }\right]
+  \sqrt{2 \pi \gamma b v}
+  }.
+\end{equation}
+Since we assumed $\gamma \gg 1$ and $\gamma b v \gg s$ we can safely approximate
+$\left[ 1 + {s + 1 \over \gamma (b v - 1) }\right] \approx 1$, obtaining
+\begin{equation}
+  S(\gamma b v) \approx {b v e^{\gamma b v} \over b v - 1}
+  \int_{-\infty}^{\infty} ds
+  {e^{-s^2 \over 2 \gamma b v}
+  \over
+  \sqrt{2 \pi \gamma b v}}.
+\end{equation}
+The term inside the integral integrates to 1 by the Gaussian integral, so we
+have
+\begin{equation}
+  S(\gamma b v) \approx {b v e^{\gamma b v} \over b v - 1}.
+\end{equation}
+\manuelComment{Eq (29) in the SI.}
+
+With this rather convoluted result we can go back to \eref[eq_SI_27_uofv] to
+write
+\begin{align}
+  u(v) &= e^{-\gamma b v} \left[ C v^{\gamma}
+  - \sum_{n=0}^\infty {\left( \gamma b v \right)^{n+1} \over
+  n! \left( n - \gamma + 1 \right)} \right].\\
+  &\approx e^{-\gamma b v}
+  \left[ C v^{\gamma} - {b v e^{\gamma b v} \over b v - 1} \right]
+\end{align}
+Simplifying terms we have
+\begin{equation}
+  u(v) \approx C v^{\gamma} e^{-\gamma b v}
+  - {b v \over b v - 1}
+  \label{eq_SI_30_uofv}
+\end{equation}
+\manuelComment{Eq (30) in the SI.}
+
+To obtain the value of the integration constant $C$ we use the initial
+conditions $u(0) = u_o$ and $v(0) = v_o$. This gives us
+\begin{equation}
+  u_o = C v_o^{\gamma} e^{-\gamma b v_o}
+  - {b v_o \over b v_o - 1}.
+\end{equation}
+Solving for $C$ gives
+\begin{equation}
+  C = \left[ u_o - {b v_o \over b v_o - 1} \right] v_o^{-\gamma} e^{\gamma b v}.
+\end{equation}
+
+That means that \eref[eq_SI_30_uofv] is given by
+\begin{align}
+  u(v) &= \left[ u_o - {b v_o \over b v_o - 1} \right]
+  v_o^{-\gamma} e^{\gamma b v_o} v^{\gamma} e^{-\gamma b v}
+  - {b v \over b v - 1}\\
+  &= \left( u_o - {b v_o \over b v_o - 1}  \right)
+  \left( {v \over v_o} \right)^{\gamma}
+  e^{\gamma b v (v_o - v)}
+  + {b v \over 1 - b v}.
+  \label{eq_uofv_with_C}
+\end{align}
+
+Recall that \eref[eq_v_tau_relation] tells us the relationship between $v$ and
+$\tau$, i.e. $v = v_o e^{\tau}$. This means that since $\tau > 0$ then
+$v = v_o e^{\tau} > v_o$, therefore since the first term of
+\eref[eq_uofv_with_C] is dominated by the exponential, and
+$e^{\gamma b (v_o - v)}$ quickly converges to zero for large $\gamma$ we can
+approximate \eref[eq_uofv_with_C] as
+\begin{equation}
+  u(v) \approx {b v \over 1 - b v}.
+  \label{eq_SI_31_uofv}
+\end{equation}
+\manuelComment{Eq (30) in the SI and (5) in the main text.}
+Interestingly since in the generating function \eref[eq_generating_function]
+$u$ was indirectly related to mRNA copy number and $v$ to protein,
+\eref[eq_SI_31_uofv] implies that since $u$ quickly converges to a fixed
+function of $v$, for most of the protein lifetime the mRNA is at steady state.
+
+\subsection{Finding the generating function}
+
+With so much mathematical details so far it is easy to lose track of what is
+what we are trying to achieve. Let's recall that the ODEs that define the
+characteristics of the generating function are given byj
+\begin{align}
+  \frac{d v}{d r} &= 1,
+  \\
+  \frac{d u}{d r} &= - \gamma \left[ b (1 + u) - \frac{u}{v}
+  \right],
+  \\
+  \frac{d \tau}{d r} &= \frac{1}{v},
+  \\
+  \frac{d F}{d r} &= \frac{a u}{v} F.
+\end{align}
+So far we found functional relationships between them given by
+\begin{equation}
+  v = v_o e^{\tau},
+\end{equation}
+and
+\begin{equation}
+  u = {b v \over 1 - b v}.
+\end{equation}
+
+Now we can combine ${dv \over dr}$ and ${dF \over dr}$ with these relationships
+to obtain
+\begin{align}
+  {\partial F \over \partial v} &= a {u \over v} F, \\
+  &= a {b v \over v (1 - b v)} F, \\
+  &= {a b \over 1 - b v} F
+\end{align}
+This ODE can be solved by separation of variables as
+\begin{equation}
+  \int {dF \over F} = \int {a b \over 1 - b v} dv.
+\end{equation}
+Upon defining $x = 1 - b v, \; dx = - b\; dv$ we have
+\begin{equation}
+  \ln F = \int {a b \over x} \cdot {1 \over -b} dx = -a \ln x + C'.
+\end{equation}
+Therefore
+\begin{equation}
+  \ln F = -a \ln (1 - b v) + C',
+  \label{eq_lnF_constant}
+\end{equation}
+whith $C'$ being an integration constant. To find the value of this constant
+we must use the initial conditions. But we originally didn't set initial
+conditions for $F$. If we start our birth and death process with $k$ proteins
+at time $\tau = 0$, we would have that
+\begin{align}
+  F(\tau = 0) &= \sum_{p=0}^{\infty}P_p z^p\\
+  &= \sum_{p=0}^{\infty} \delta (p - k) z^p = z^k.
+\end{align}
+This initial condition doesn't sum over mRNA, because as explained before for
+\eref[eq_SI_31_uofv], for most of the protein lifetime the mRNA is in steady
+state. Formally this initial condition is valid for times of order
+${\gamma_p \over \gamma_m} = \gamma^{-1}$. Now $z = 1 + v$, therefore
+$F(\tau = 0) = (1 - v_o)^k$. Using this initial condition we have
+\begin{equation}
+  \ln (1 + v_o)^k = -a \ln (1 - b v_o) + C'.
+\end{equation}
+Solving for $C'$ gives
+\begin{equation}
+  C' = \ln (1 + v_o)^k + a \ln (1 - b v_o).
+\end{equation}
+Therefore substituting this in \eref[eq_lnF_constant] gives
+\begin{align}
+  \ln F &= a \ln \left( {1 - b v_o \over 1 - b v} \right)^a
+  + \ln (1 + v_o)^k,\\
+  &= \ln \left[ \left( {1 - b v_o \over 1 - b v} \right)^a
+  (1 + v_o)^k \right].
+\end{align}
+This gives us the generating function of the form
+\begin{equation}
+  F =   \left( {1 - b v_o \over 1 - b v} \right)^a
+  (1 + v_o)^k .
+  \label{eq_generating_function_onv}
+\end{equation}
+
+We would like to write the generating function as a function of the original
+variable $z$ and $\tau$. This is done by recalling that we defined $z = 1 + v$,
+in combination with \eref[eq_v_tau_relation] gives $v_o = (z - 1) e^{-\tau}$.
+Using this on \eref[eq_generating_function_onv] gives
+\begin{equation}
+  F = \left( {1 - b (z - 1) e^{-\tau}
+  \over
+  1 - b (z - 1)
+  } \right)^a
+  \left[ 1 + (z - 1) e^{-\tau} \right]^k.
+\end{equation}
+\manuelComment{Eq (35) in the SI.}
+
+If we set $k = 0$ we get
+\begin{equation}
+  F = \left( {1 - b (z - 1) e^{-\tau}
+  \over
+  1 - b (z - 1)
+  } \right)^a.
+  \label{eq_generating_function_onz}
+\end{equation}
+\manuelComment{Eq (7) in the main text.}
+
+\subsection{Deriving the probability distribution for proteins}
+
+Given that we know the generating function we can backtrack the entire
+distribution. The difficulty resides in being able to write
+\eref[eq_generating_function_onz] in the standard form
+\begin{equation}
+  F = \sum_{p} z^p P_p.
+\end{equation}
+By the definition of the generating function we can see that to compute any
+probability we can compute
+\begin{equation}
+  P_p = {1 \over p!} \left. {\partial ^p F \over \partial z^p}.
+  \right\rvert_{z=0}
+  \label{eq_prob_from_generating}
+\end{equation}
+So let's rewrite \eref[eq_generating_function_onz] in a more convenient form
+\begin{equation}
+  F = \left( {1 + b (1 - z) e^{-\tau}
+  \over
+  1 + b (z - 1)
+  }  \right)^a.
+\end{equation}
+
+Now we want to write $F$ as a product of two factors, one of them without any
+$z$ term. This means we can write
+\begin{align}
+  F(z, \tau) &= \left( {1 + b e^{-\tau} \over 1 + b } \right)^a
+  \left[
+  \left( {1 + b} \over 1 + b (1 - z) \right)^a
+  \left( {1 + b (1 - z) e^{-\tau} \over 1 + b e^{-\tau}}  \right)^a
+  \right], \\
+  &= \left( {1 + b e^{-\tau} \over 1 + b } \right)^a
+  { \left( {1 + b (1 - z) \over 1 + b} \right)^{-a}
+  \over
+  \left( {1 + b (1 - z) e^{-\tau} \over 1 + b e^{-\tau}} \right)^{-a}
+  }, \\
+  &= \left( {1 + b e^{-\tau} \over 1 + b } \right)^a
+  { \left( {1 + b - b z) \over 1 + b} \right)^{-a}
+  \over
+  \left( {1 + b e^{-\tau} - b z e^{-\tau} \over 1 + b e^{-\tau}} \right)^{-a}
+  }, \\
+  &= \left( {1 + b e^{-\tau} \over 1 + b } \right)^a
+  { \left( 1 - {b z \over 1 + b} \right)^{-a}
+  \over
+  \left( 1 - {b z \over e^{\tau} + b} \right)^{-a}
+  }. \label{eq_generating_final}
+\end{align}
+\manuelComment{Eq. (36) in the SI.}
+
+There are two identities that Shahrezaei \& Swain quote for the following steps.
+The first one is given by
+\begin{equation}
+    \left. {\partial ^n \over \partial z^n}
+    \left[ 1 - q z \right]^{-a} \right\vert _{z=0} =
+    {\Gamma(a + n) \over \Gamma(a)} q^n.
+\end{equation}
+To proof this relationship let's first take the first derivative of the function
+\begin{align}
+  {\partial \over \partial z}
+  \left. \left[ 1 - q z \right]^{-a} \right\vert _{z=0}
+  &= \left. -a \left[ 1 - q z \right]^{-(a + 1)} (-q) \right\vert _{z=0}\\
+  &= a q.
+\end{align}
+
+Now let's take the second derivative
+\begin{align}
+  {\partial^2 \over \partial z^2}
+  \left. \left[ 1 - q z \right]^{-a} \right\vert _{z=0}
+  &= {\partial \over \partial z}
+  \left. a q \left[ 1 - q z \right]^{-(a + 1)} \right\vert _{z=0}\\
+  &= \left. -a (a + 1) q \left[ 1 - q z \right]^{-(a + 2)} (-q)
+  \right\vert _{z=0} \\
+  &= a(a + 1) q^2.
+\end{align}
+
+The pattern seems to be emerging now. For completeness let's take the 3rd
+derivative
+\begin{align}
+  {\partial^3 \over \partial z^3}
+  \left. \left[ 1 - q z \right]^{-a} \right\vert _{z=0}
+  &= {\partial \over \partial z}
+  \left. -a (a + 1) q \left[ 1 - q z \right]^{-(a + 2)} (-q)
+  \right\vert _{z=0} \\
+  &= \left. -a (a + 1) (a + 2) q^2
+  \left[ 1 - q z \right]^{-(a + 3)} (-q) \right\vert _{z=0} \\
+  &= a(a + 1) (a + 2) q^3.
+\end{align}
+
+We have that $a (a + 1) (a + 2) \cdots (a + n - 1) = {(a + n - 1)! \over (a -
+1)!}$ for $n, a \in \mathbb{Z}$, or in general for any positive $n, a$ we have
+$a (a + 1) (a + 2) \cdots (a + n - 1) = {\Gamma(a + n) \over \Gamma(a)}$.
+Therefore for the $n^{\text{th}}$ derivative it must be true that
+\begin{equation}
+    \left. {\partial ^n \over \partial z^n}
+    \left[ 1 - q z \right]^{-a} \right\vert _{z=0} =
+    {\Gamma(a + n) \over \Gamma(a)} q^n. \blacksquare
+    \label{eq_derivative_identity}
+\end{equation}
+\manuelComment{Eq (37) in the SI.}
+
+The second identity the authors quote is more convoluted. It could be proof by
+induction but it would be a really long proof. For convenience we will quote
+the result. The identity tells us that the $n^{\text{th}}$ derivative of a ratio
+of functions is given by
+\begin{equation}
+  {\partial ^n \over \partial z^n} {x(z) \over y(z)} =
+  n! \sum_{k=0}^n {\partial ^{n-k} \over \partial z^{n-k}} x(z)
+  \sum_{j = 0}^k (-1)^j (k + 1) y(z)^{-j-1}
+  {\partial^k \over \partial z^k} y(z)^j
+  \label{eq_derivative_ratio}
+\end{equation}
+\manuelComment{Eq (39) in SI.}
+
+\eref[eq_prob_from_generating] gives us the recipe for how to compute any
+probability from the generating function we derived in
+\eref[eq_generating_final]. To use \eref[eq_derivative_ratio] we define from
+\eref[eq_generating_final]
+\begin{equation}
+  x(z) = \left( 1 - {b z \over 1 + b} \right)^{-a},
+\end{equation}
+and
+\begin{equation}
+  y(z) = \left( 1 - {b z \over e^{\tau} + b} \right)^{-a}.
+\end{equation}
+With these definitions in hand we use \eref[eq_prob_from_generating] along with
+\eref[eq_derivative_ratio] to compute
+\begin{equation}
+  \scriptscriptstyle
+  P_p = \left. {1 \over p!} \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
+  \left[ p! \sum_{k=0}^p  {\partial^{p-k} \over \partial z^{p-k}}
+  \left(1 - {b z \over 1 + b} \right) \cdot
+  \sum_{j=0}^k {(-1)^j (k + 1) \over (j + 1)! (p - k)! (k - j)!} \cdot
+  \left[ \left( 1 - {b z \over e^\tau + b} \right)^{-a} \right]^{-(j+1)} \cdot
+  {\partial^k \over \partial z^k}
+  \left[ \left( 1 - {b z \over e^\tau + b}  \right)^{-a} \right]^j
+  \right]\right\vert _{z=0}.
+\end{equation}
+Using \eref[eq_derivative_identity] we can rewrite the derivatives as
+\begin{equation}
+  \scriptstyle
+  P_p = \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
+  \sum_{k=0}^p {\Gamma(a + p - k) \over \Gamma(a)}
+  \left( {b \over 1 + b} \right)^{p - k} \cdot
+  \sum_{j=0}^k {(-1)^j (k + 1) \over (j + 1)! (p - k)! (k - j)!} \cdot
+  {\Gamma(aj + k) \over \Gamma(aj)} \left( {b \over e^\tau + b} \right)^k
+\end{equation}
+\manuelComment{Eq (39) in SI.}
+
+For the second sum the authors quote the following identity
+\begin{equation}
+  \sum_{j=0}^k {(-1)^j \Gamma(aj + k) \over (j + 1)! \Gamma(aj) (k - j)!} =
+  {(-1)^k \Gamma(a + 1) \over \Gamma(a - k + 1) (k + 1)!}.
+\end{equation}
+\manuelComment{Eq (40) in SI. I tried really hard deriving this result, but I
+couldn't figure it out. Nevertheless computationally it can be shown to be true
+for several values of $k$.}
+
+Using this we have
+\begin{equation}
+  \scriptstyle
+  P_p = \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
+  \sum_{k=0}^p {\Gamma (a + p - k) \over \Gamma(a)}
+  \left( {b \over 1 + b} \right)^{p - k}
+  {(k + 1) \over (p - k)!} \left( b \over e^\tau + b \right)^k
+  {(-1)^k \Gamma(a + 1) \over \Gamma(a - k + 1) (k + 1)!}.
+\end{equation}
+This can be further simplified to
+\begin{equation}
+  P_p = \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
+  \left( {b \over 1 + b} \right)^p
+  \sum_{k=0}^p {(-1)^k \over k!}
+  {a \Gamma(a + p - k) \over (p - k)! \Gamma(a - k + 1)}
+  \left( {1 + b \over e^\tau + b} \right)^k.
+  \label{eq_dist_nohyper}
+\end{equation}
+\manuelComment{Eq (41) in the SI. Shahrezaei and Swain missed one factor of
+$a$ since $\Gamma(a + 1) / \Gamma(a) = a$, but the error doesn't propagate to
+the other equations.}
+
+\subsection{Gauss Hypergeometric Function}
+
+An important function for the solution is the Hypergeometric function
+$_2F_1(a; b; c; z)$. This funciton is defined as
+\begin{equation}
+  _2F_1(a; b; c; z) \equiv \sum_{k=0}^\infty
+  {(a)_k (b)_k \over (c)_k} {z^k \over k!}.
+\end{equation}
+
+The series is indetermined if $c$ is a non-positive integer. The $(q)_k$ terms
+are the so-called rising factorials or rising Pochhammer symbols defined as
+\begin{equation}
+  (q)_k = \begin{cases}
+  1, & \text{for }k = 0.\\
+  q (q + 1)\cdots (q + k - 1) & \text{for k > 0},
+  \end{cases}
+\end{equation}
+or using gamma functions
+\begin{equation}
+  (q)_k = {\Gamma (q + k) \over \Gamma (q)}.
+\end{equation}
+
+If $a$ or $b$ are non-positive integers the series reduces to the polynomial
+\begin{equation}
+_2F_1(-n; b; c; z) = \sum_{k=0}^\infty (-1)^k {n \choose k}
+                    {(b)_k \over (c)_k} z^k.
+\end{equation}
+Or for non-integer values we have
+\begin{equation}
+_2F_1(-n; b; c; z) = \sum_{k=0}^\infty (-1)^k
+                    {\Gamma (n + 1) \over \Gamma (n - k + 1)}
+                    {(b)_k \over (c)_k} {z^k \over k!}.
+\end{equation}
+
+From the definition of the Pochhammer symbols they must satisfy
+\begin{equation}
+  (-a)_k = {\Gamma (a + 1) \over \Gamma (a - k + 1)}.
+\end{equation}
+This relationship can be shown using the Euler reflection formula
+\begin{equation}
+  \Gamma (z) \Gamma (1 - z) = {\pi \over \sin (\pi z)}.
+\end{equation}
+
+If $z \equiv -a + k$ we have
+\begin{equation}
+  \Gamma(-a + k) \Gamma(1 - (-a + k)) = {\pi \over \sin(\pi (-a + k))}.
+\end{equation}
+On the other hand if $z \equiv -a$ we have
+\begin{equation}
+  \Gamma(-a) \Gamma(1 - (-a)) = {\pi \over \sin(\pi (-a))}.
+\end{equation}
+
+From the definition of $(-a)_k$ we have
+\begin{equation}
+  (-a)_k = {\Gamma(-a + k) \over \Gamma(-a)}
+         = {{\pi \over \sin(\pi (-a + k)) \Gamma(1 - (-a + k))}
+         \over
+           {\pi \over \sin(\pi(-a)) \Gamma(1 - (-a))}}.
+\end{equation}
+Simplifying this we have
+\begin{equation}
+  (-a)_k = {\Gamma(1 - (-a)) \over \Gamma(1 - (-a + k))}\cdot
+           {\sin(\pi (-a + k)) \over \sin(\pi (-a))}.
+\end{equation}
+
+For $\sin(\pi (-a + k))$ we can use the identity
+\begin{equation}
+  \sin(\pi (-a + k)) = \sin(\pi (-a)) \cos(\pi k) -
+                       \cos(\pi (-a)) \sin(\pi k).
+\end{equation}
+Since for $k \in \mathbb{Z}$ we have that $\sin(\pi k) = 0$, and
+$\cos(\pi k) = (-1)^k$, it must be true that for $a \notin \mathbb{N}$
+\begin{align}
+  (-a)_k &= {\Gamma(a + 1) \over \Gamma(a - k + 1)}
+           {(-1)^k \sin(\pi (-a)) \over \sin(\pi (-a))},\\
+         &= (-1)^k {\Gamma(a + 1) \over \Gamma(a - k + 1)}.
+\end{align}
+\manuelComment{Eq (43) in SI}.
+
+From \eref[eq_dist_nohyper] we can rewrite the term inside the sum as a
+hypergeometric function by rewriting $\Gamma(a - k + n) =
+\Gamma(a + n - 1 - k + 1)$. This means that if we carefully look at the elements
+of the sum we can rewrite it as a hypergeometric function like
+\begin{align}
+  \sum_{k=0}^p {(-1)^k \over k!}
+  {a \Gamma(a + p - k) \over \Gamma(p - k + 1) \Gamma(a - k + 1)}
+  \left( {1 + b \over e^\tau + b} \right)^k =
+  a
+  \overbrace{
+  {\Gamma(p + a - 1 + 1) \over \Gamma(a + 1) \Gamma(p + 1)}
+  }^{\text{terms to complete } {}_2F_1}
+  \times \\
+  \sum_{k=0}^p
+  \overbrace{
+  (-1)^k {\Gamma(p + 1) \over \Gamma(p - k + 1)}
+  }^{(a)_k = (-p)_k}
+  \overbrace{
+  (-1)^k {\Gamma(a + 1) \over \Gamma(a - k + 1)}
+  }^{(b)_k = (-a)_k}
+  \underbrace{
+  {1 \over (-1)^k }{\Gamma(p + a - 1 + k + 1) \over \Gamma(p + a - 1 + 1)}
+  }_{{1 \over (c)_k} = {1 \over (-p - a + 1)_k}}
+  \underbrace{
+  {1 \over k!} \left( {1 + b \over e^\tau + b} \right)^k
+  }_{z^k \over k!}.
+\end{align}
+Therefore the sum can be simply written as
+\begin{equation}
+\sum_{k=0}^p {(-1)^k \over k!}
+  {a \Gamma(a + p - k) \over \Gamma(p - k + 1) \Gamma(a - k + 1)}
+  \left( {1 + b \over e^\tau + b} \right)^k =
+  {a \Gamma(p + a - 1 + 1) \over \Gamma(a + 1) \Gamma(p + 1)}
+  {}_2F_1 \left( -p, -a, 1 - a - n, {1 + b \over e^\tau + b} \right)
+\end{equation}
+
+This relationship means that we can rewrite \eref[eq_dist_nohyper] as
+\begin{equation}
+  P_p = \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
+  \left( {b \over 1 + b} \right)^p
+  {\Gamma(p + a) \over \Gamma(a) p!}
+  {}_2F_1 \left( -p, -a, 1 - a - n, {1 + b \over e^\tau + b} \right),
+\end{equation}
+This is the final expression for the protein distribution valid for
+$\Gamma \gg 1$ and $\tau \gg \Gamma^{-1}$.
+\manuelComment{Eq (44) in SI and (8) in main text.}
+
+\subsection{Steady State Distribution}
+To compute the steady state distribution we take the limit when
+$\tau \rightarrow \infty$. That gives ${}_2F_1(a, b, c, 0)$ which cancels all
+terms in the sum except for the first one. Therefore ${}_2F_1(a, b, c, 0) = 1$.
+This means that we have
+\begin{equation}
+  P_p^{ss} = {\Gamma(p + a) \over \Gamma(p + 1) \Gamma(a)}
+  \left( 1 - {b \over 1 + b}  \right)^a
+  \left( {b \over 1 + b} \right)^p.
+\end{equation}
+\manuelComment{Eq (9) in main text.}
+
+This is a negative binomial distribution with mean
+\begin{equation}
+  \left\langle p \right\rangle = a \cdot b =
+  {r_m \over \gamma_p}{r_p \over \gamma_m},
+\end{equation}
+and variance
+\begin{equation}
+  \sigma_p^2 = ab(1 + b) =
+  {r_m \over \gamma_p}{r_p \over \gamma_m} \left(1 + {r_p \over \gamma_m}\right)
+\end{equation}
