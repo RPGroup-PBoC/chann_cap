@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-evolution_bits_utils
-
-This file is a compilation of the funtions developed for the channel 
-capacity project. Most of the functions found here can also be found
-in different iPython notebooks, but in order to break down those notebooks
-into shorter and more focused notebooks it is necessary to call some functions
-previously defined.
-By importing these utils you will have available all important functions
-defined in the project.
+Title:
+    chann_cap_utils
+Last update:
+    2018-01-17
+Author(s):
+    Manuel Razo-Mejia
+Purpose:
+    This file is a compilation of the funtions developed for the channel 
+    capacity project. Most of the functions found here can also be found
+    in different iPython notebooks, but in order to break down those
+    notebooks into shorter and more focused notebooks it is necessary to 
+    call some functions previously defined.
 """
 
 #==============================================================================
@@ -33,8 +36,6 @@ import matplotlib
 
 # Seaborn, useful for graphics
 import seaborn as sns
-
-from fit_bivariate_gaussian_astroML import *
 
 #==============================================================================
 # Generic themrodynamic functions
@@ -382,9 +383,53 @@ def log_p_p_mid_C_spline(C, p_range, step, rep, ka, ki, omega,
     else:
         return lnp
 
+#============================================================================== 
+# chemical_master_mRNA_FISH_mcmc 
+#============================================================================== 
+# define a np.frompyfunc that allows us to evaluate the sympy.mp.math.hyp1f1
+np_log_hyp= np.frompyfunc(lambda x, y, z: \
+mpmath.ln(mpmath.hyp1f1(x, y, z, zeroprec=1000)), 3, 1)
+
+def log_p_m_unreg(mRNA, kp_on, kp_off, gm, rm):
+    '''
+    Computes the log probability lnP(m) for an unregulated promoter, 
+    i.e. the probability of having m mRNA.
+    
+    Parameters
+    ----------
+    mRNA : float.
+        mRNA copy number at which evaluate the probability.        
+    kp_on : float.
+        rate of activation of the promoter in the chemical master equation
+    kp_off : float.
+        rate of deactivation of the promoter in the chemical master equation
+    gm : float.
+        1 / half-life time for the mRNA.
+    rm : float.
+        production rate of the mRNA
+    
+    Returns
+    -------
+    log probability lnP(m)
+    '''
+    # Convert the mRNA copy number to a  numpy array
+    mRNA = np.array(mRNA)
+    
+    # Compute the probability
+    lnp = scipy.special.gammaln(kp_on / gm + mRNA) \
+    - scipy.special.gammaln(mRNA + 1) \
+    - scipy.special.gammaln((kp_off + kp_on) / gm + mRNA) \
+    + scipy.special.gammaln((kp_off + kp_on) / gm) \
+    - scipy.special.gammaln(kp_on / gm) \
+    + mRNA * np.log(rm / gm) \
+    + np_log_hyp(kp_on / gm + mRNA,
+            (kp_off + kp_on) / gm + mRNA, -rm / gm)
+    
+    return lnp.astype(float)
+
 #==============================================================================
 # blahut_arimoto_channel_capacity
-#=============================================================================== 
+#==============================================================================
 
 def channel_capacity(QmC, epsilon=1E-3, info=1E4):
     '''
