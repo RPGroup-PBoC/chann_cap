@@ -472,7 +472,10 @@ def channel_capacity(QmC, epsilon=1E-3, info=1E4):
         # for the interpretation of these quantities
         # cC = exp(∑_m Qm|C log(Qm|C / ∑_c pC Qm|C))
         sum_C_pC_QmC = np.sum((pC * QmC.T).T, axis=0)
-        QmC_log_QmC_sum_C_pC_QmC = QmC * np.log(QmC / sum_C_pC_QmC)
+        # Compute QmC * np.log(QmC / sum_C_pC_QmC) avoiding errors with 0 and
+        # neg numbers
+        with np.errstate(divide='ignore', invalid='ignore'):
+            QmC_log_QmC_sum_C_pC_QmC = QmC * np.log(QmC / sum_C_pC_QmC)
         # check for values that go to -inf because of 0xlog0
         QmC_log_QmC_sum_C_pC_QmC[np.isnan(QmC_log_QmC_sum_C_pC_QmC)] = 0
         QmC_log_QmC_sum_C_pC_QmC[np.isneginf(QmC_log_QmC_sum_C_pC_QmC)] = 0
