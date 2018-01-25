@@ -427,6 +427,32 @@ def log_p_m_unreg(mRNA, kp_on, kp_off, gm, rm):
     
     return lnp.astype(float)
 
+#============================================================================== 
+# MaxEnt_approx_mRNA
+#============================================================================== 
+def kr_off_fun(eRA, k0, kp_on, kp_off, Nns=4.6E6):
+    '''
+    Returns the off rate of the repressor as a function of the stat. mech. 
+    binding energy and the RNAP on and off rates
+    Parameters
+    ----------
+    eRA : float.
+        Repressor binding energies [kbT]
+    k0 : float.
+        Diffusion limited constant [s**-1 nM**-1]
+    kp_on : float.
+        RNAP on rate. [time**-1]
+    kp_off : float.
+        RNAP off rate. [time**-1]
+    Nns : float.
+        Number of non-specific binding sites
+    Returns
+    -------
+    Repressor off rate
+    '''
+    return 1.66 * k0 * Nns * np.exp(eRA) * kp_off / (kp_off + kp_on)
+
+
 #==============================================================================
 # blahut_arimoto_channel_capacity
 #==============================================================================
