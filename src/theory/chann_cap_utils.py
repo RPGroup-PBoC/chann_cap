@@ -32,7 +32,7 @@ import random
 # Import plotting utilities
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import matplotlib
+import matplotlib as mpl
 
 # Seaborn, useful for graphics
 import seaborn as sns
@@ -843,4 +843,114 @@ def hpd(trace, mass_frac):
     # Return interval
     return np.array([d[min_int], d[min_int + n_samples]])
 
+#============================================================================== 
+# Plotting functions
+#============================================================================== 
+def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
+                 mean_mark=True, marker_height=0.3,
+                 color_bar=True, cbar_label='',
+                 figsize=(6,5), title='', xlabel='', xlim=None, ylim=None):
+    '''
+    Custom plot of the PMF and the CDF of multiple distributions 
+    with a side legend.
+    Parameters
+    ----------
+    x : array-like. 1 x N.
+        X values at which the probability P(X) is being plotted
+    px : array-like. M x N
+        Probability of each of the values of x for different conditions
+        such as varying repressor copy number, inducer concentration or
+        binding energy.
+    legend_var : array-like. 1 X M.
+        Value of the changing variable between different distributions
+        being plotted
+    colors : str.
+        Color palete from the seaborn options to use for the different
+        distributions.
+    mean_mark : bool.
+        Boolean indicating if a marker should be placed to point at
+        the mean of each distribution. Default=True
+    marker_height : float.
+        Height that all of the markers that point at the mean should
+        have.
+    color_bar : bool.
+        Boolean indicating if a color bar should be added on the side
+        to indicate the different variable between distributions.
+        Default=True
+    cbar_label : str.
+        Side label for color bar.
+    figsize : array-like. 1 x 2.
+        Size of the figure
+    title : str.
+        Title for the plot.
+    xlabel : str.
+        Label for the x plot
+    xlim : array-like. 1 x 2.
+        Limits on the x-axis.
+    ylim : array-like. 1 x 2.
+        Limits on the y-axis for the PMF. The CDF goes from 0 to 1 by
+        definition.
+    '''
+    
+    colors = sns.color_palette(color_palette, n_colors=len(legend_var))
 
+    # Initialize figure
+    fig, ax = plt.subplots(2, 1, figsize=figsize, sharex=True)
+    ax[0].yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(\
+                                    useMathText=True, 
+                                    useOffset=False))
+
+    # Loop through inducer concentrations
+    for i, c in enumerate(legend_var):
+        # PMF plot
+        ax[0].plot(x, px[i,:],
+                 label=r'${0:d}$'.format(c), drawstyle='steps',
+                  color='k')
+        # Fill between each histogram
+        ax[0].fill_between(x, px[i,:],
+                           color=colors[i], alpha=0.8, step='pre')
+        # CDF plot
+        ax[1].plot(x, np.cumsum(px[i,:]), drawstyle='steps',
+                  color=colors[i], linewidth=2)
+
+    # Label axis
+    ax[0].set_title(title)
+    ax[0].set_ylabel('probability')
+    ax[0].margins(0.02)
+    # Set scientific notation
+    ax[0].ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+    ax[0].set_xlim(xlim)
+    ax[0].set_ylim(ylim)
+
+    ax[1].legend(loc=0)
+    ax[1].set_xlabel(xlabel)
+    ax[1].set_ylabel('CDF')
+    ax[1].margins(0.02)
+
+    # Declare color map for legend
+    cmap = plt.cm.get_cmap(color_palette, len(legend_var))
+    bounds = np.linspace(0, len(legend_var), len(legend_var) + 1)
+
+    # Compute mean mRAN copy number from distribution
+    mean_dist = [np.sum(x * prob) for prob in px]
+    # Plot a little triangle indicating the mean of each distribution
+    mean_plot = ax[0].scatter(mean_dist, [marker_height] * len(mean_dist), 
+                              marker='v', s=200,
+                c=np.arange(len(mean_dist)), cmap=cmap,
+                edgecolor='k', linewidth=1.5)
+
+    # Generate a colorbar with the concentrations
+    cbar_ax = fig.add_axes([0.95, 0.25, 0.03, 0.5])
+    cbar = fig.colorbar(mean_plot, cax=cbar_ax)
+    cbar.ax.get_yaxis().set_ticks([])
+    for j, c in enumerate(legend_var):
+        cbar.ax.text(1, j / len(legend_var) + 1 / (2 * len(legend_var)),
+                     c, ha='left', va='center',
+                     transform = cbar_ax.transAxes, fontsize=12)
+    cbar.ax.get_yaxis().labelpad = 35
+    cbar.set_label(r'{:s}'.format(cbar_label))
+
+    plt.figtext(-0.02, .9, '(A)', fontsize=18)
+    plt.figtext(-0.02, .46, '(B)', fontsize=18)
+
+    plt.subplots_adjust(hspace=0.06)
