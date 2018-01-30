@@ -874,7 +874,7 @@ def hpd(trace, mass_frac):
 #============================================================================== 
 def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
                  mean_mark=True, marker_height=0.3,
-                 color_bar=True, cbar_label='',
+                 color_bar=True, cbar_label='', binstep=1,
                  figsize=(6,5), title='', xlabel='', xlim=None, ylim=None):
     '''
     Custom plot of the PMF and the CDF of multiple distributions 
@@ -905,6 +905,9 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
         Default=True
     cbar_label : str.
         Side label for color bar.
+    binstep : int.
+        If not all the bins need to be plot it can plot every binstep
+        bins. Especially useful when plotting a lot of bins.
     figsize : array-like. 1 x 2.
         Size of the figure
     title : str.
@@ -929,15 +932,16 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     # Loop through inducer concentrations
     for i, c in enumerate(legend_var):
         # PMF plot
-        ax[0].plot(x, px[i,:],
+        ax[0].plot(x[0::binstep], px[i,0::binstep],
                  label=r'${0:d}$'.format(c), drawstyle='steps',
                   color='k')
         # Fill between each histogram
-        ax[0].fill_between(x, px[i,:],
+        ax[0].fill_between(x[0::binstep], px[i,0::binstep],
                            color=colors[i], alpha=0.8, step='pre')
         # CDF plot
-        ax[1].plot(x, np.cumsum(px[i,:]), drawstyle='steps',
-                  color=colors[i], linewidth=2)
+        ax[1].plot(x[0::binstep], np.cumsum(px[i,:])[0::binstep], 
+                   drawstyle='steps',
+                   color=colors[i], linewidth=2)
 
     # Label axis
     ax[0].set_title(title)
