@@ -7,14 +7,16 @@ Last update:
 Author(s):
     Manuel Razo-Mejia
 Purpose:
-    This file is a compilation of the funtions developed for the channel 
+    This file is a compilation of the funtions developed for the channel
     capacity project. Most of the functions found here can also be found
     in different iPython notebooks, but in order to break down those
-    notebooks into shorter and more focused notebooks it is necessary to 
+    notebooks into shorter and more focused notebooks it is necessary to
     call some functions previously defined.
 """
 
-#==============================================================================
+# =============================================================================
+# Libraries to work with objects saved in memory
+import dill
 # Our numerical workhorses
 import numpy as np
 import scipy.optimize
@@ -22,6 +24,9 @@ import scipy.special
 import scipy.integrate
 import mpmath
 import pandas as pd
+
+# Import library to perform maximum entropy fits
+from maxentropy.skmaxent import FeatureTransformer, MinDivergenceModel
 
 # Import libraries to parallelize processes
 from joblib import Parallel, delayed
@@ -37,14 +42,14 @@ import matplotlib as mpl
 # Seaborn, useful for graphics
 import seaborn as sns
 
-#==============================================================================
+# =============================================================================
 # Generic themrodynamic functions
-#============================================================================== 
+# =============================================================================
 def p_act(C, ka, ki, epsilon=4.5, logC=False):
     '''
     Returns the probability of a lac repressor being in the active state, i.e.
     able to bind the promoter as a function of the ligand concentration.
-    
+
     Parameters
     ----------
     C : array-like.
@@ -56,22 +61,22 @@ def p_act(C, ka, ki, epsilon=4.5, logC=False):
         energetic barrier between the inactive and the active state.
     logC : Bool.
         boolean indicating if the concentration is given in log scale
-    
+
     Returns
     -------
-    p_act : float. 
+    p_act : float.
         The probability of the repressor being in the active state.
     '''
     C = np.array(C)
     if logC:
         C = 10**C
-        
+
     return (1 + C / ka)**2 / \
             ((1 + C / ka)**2 + np.exp(-epsilon) * (1 + C / ki)**2)
 
-#==============================================================================
+# =============================================================================
 # chemical_master_eq_analytic_mRNA
-#==============================================================================
+# =============================================================================
 
 def kon_fn(epsilon, k0=2.7E-3):
     '''
@@ -87,7 +92,7 @@ def kon_fn(epsilon, k0=2.7E-3):
     '''
     return 1.66 / 1 * k0 * 4.6E6 * np.exp(epsilon)
 
-#=============================================================================== 
+# =============================================================================
 
 # define a np.frompyfunc that allows us to evaluate the sympy.mp.math.hyp1f1
 np_log_hyp= np.frompyfunc(lambda x, y, z: \
@@ -96,17 +101,17 @@ mpmath.ln(mpmath.hyp1f1(x, y, z, zeroprec=80)), 3, 1)
 def log_p_m_mid_C(C, mRNA, rep, ki, ka, epsilon, kon, k0, gamma, r_gamma,
                  logC=False):
     '''
-    Computes the log conditional probability lnP(m|C,R), 
-    i.e. the probability of having m mRNA molecules given 
+    Computes the log conditional probability lnP(m|C,R),
+    i.e. the probability of having m mRNA molecules given
     an inducer concentration C and a repressor copy number R.
-    
+
     Parameters
     ----------
     C : float.
         Concentration at which evaluate the probability. if logC=True, then
         this array is defined as log10(C).
     mRNA : float.
-        mRNA copy number at which evaluate the probability.        
+        mRNA copy number at which evaluate the probability.
     repressor : float.
         repressor copy number per cell.
     ki, ka : float.
@@ -124,7 +129,7 @@ def log_p_m_mid_C(C, mRNA, rep, ki, ka, epsilon, kon, k0, gamma, r_gamma,
         average number of mRNA in the unregulated promoter.
     logC : Bool.
         boolean indicating if the concentration is given in log scale
-    
+
     Returns
     -------
     log probability lnP(m|c,R)
@@ -134,7 +139,7 @@ def log_p_m_mid_C(C, mRNA, rep, ki, ka, epsilon, kon, k0, gamma, r_gamma,
     mRNA = np.array(mRNA)
     if logC:
         C = 10**C
-    
+
     # Calculate the off rate including the MWC model
     koff = k0 * rep * p_act(C, ka, ki, epsilon)
 
@@ -147,12 +152,12 @@ def log_p_m_mid_C(C, mRNA, rep, ki, ka, epsilon, kon, k0, gamma, r_gamma,
     + mRNA * np.log(r_gamma) \
     + np_log_hyp(kon / gamma + mRNA,
             (koff + kon) / gamma + mRNA, -r_gamma)
-    
+
     return lnp.astype(float)
 
-#==============================================================================
+# =============================================================================
 # chemical_masater_eq_analytic_protein
-#============================================================================== 
+# =============================================================================
 
 # define a np.frompyfunc that allows us to evaluate the sympy.mp.math.hyp1f1
 np_log_gauss_hyp = np.frompyfunc(lambda a, b, c, z: \
@@ -161,16 +166,16 @@ mpmath.ln(mpmath.hyp2f1(a, b, c, z,  maxprec=60)).real, 4, 1)
 def log_p_p_mid_C(C, protein, rep, ka, ki, epsilon, kon, k0, gamma_m, r_gamma_m,
                   gamma_p, r_gamma_p, logC=False):
     '''
-    Computes the log conditional probability lnP(p|C,R), 
-    i.e. the probability of having p proteins given 
+    Computes the log conditional probability lnP(p|C,R),
+    i.e. the probability of having p proteins given
     an inducer concentration C and a repressor copy number R.
-    
+
     Parameters
     ----------
     C : array-like.
         Concentration at which evaluate the probability.
     protein : array-like.
-        protein copy number at which evaluate the probability.        
+        protein copy number at which evaluate the probability.
     repressor : float.
         repressor copy number per cell.
     ki, ka : float.
@@ -203,7 +208,7 @@ def log_p_p_mid_C(C, protein, rep, ka, ki, epsilon, kon, k0, gamma_m, r_gamma_m,
     # Convert from log if necessary
     if logC:
         C = 10**C
- 
+
     # Calculate the off rate including the MWC model
     koff = k0 * rep * p_act(C, ka, ki, epsilon)
 
@@ -213,12 +218,12 @@ def log_p_p_mid_C(C, protein, rep, ka, ki, epsilon, kon, k0, gamma_m, r_gamma_m,
     gamma = gamma_m / gamma_p
     Kon = kon / gamma_p
     Koff = koff / gamma_p
-    
+
     phi = np.sqrt((a + Kon + Koff)**2 - 4 * a * Kon)
-    
+
     alpha = 1 / 2 * (a + Kon + Koff + phi)
     beta = 1 / 2 * (a + Kon + Koff - phi)
-    
+
     # Compute the probability
     lnp = scipy.special.gammaln(alpha + protein) \
     + scipy.special.gammaln(beta + protein) \
@@ -233,24 +238,100 @@ def log_p_p_mid_C(C, protein, rep, ka, ki, epsilon, kon, k0, gamma_m, r_gamma_m,
             Kon + Koff + protein, b / (1 + b))
     return lnp.astype(float)
 
-#=============================================================================== 
+# ==============================================================================
 
-def log_p_p_mid_C_spline(C, p_range, step, rep, ka, ki, omega, 
+def log_p_p_mid_C_spline(C, p_range, step, rep, ka, ki, omega,
                          kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p,
                          norm_check=False, tol=0.01):
     '''
-    Computes the log conditional probability lnP(p|C,R), 
-    i.e. the probability of having p proteins given 
+    Computes the log conditional probability lnP(p|C,R),
+    i.e. the probability of having p proteins given
     an inducer concentration C and a repressor copy number R.
     This function performs an interpolation with n_points uniformly
     distributed in p_range
-    
+
     Parameters
     ----------
     C : array-like.
         Concentration at which evaluate the probability.
     p_range : array-like.
-        Protein copy number range at which evaluate the probability.        
+        Protein copy number range at which evaluate the probability.
+    step : int.
+        Step size to take between values in p_range.
+    repressor : float.
+        Repressor copy number per cell.
+    ki, ka : float.
+        Dissociation constants for the inactive and active states respectively
+        in the MWC model of the lac repressor.
+    omega : float.
+        Energetic barrier between the inactive and the active state.
+    kon : float.
+        Rate of activation of the promoter in the chemical master equation
+    k0 : float.
+        Diffusion limited rate of a repressor binding the promoter
+    gamma_m : float.
+        Half-life time for the mRNA.
+    r_gamma_m : float.
+        Average number of mRNA in the unregulated promoter.
+    gamma_p : float.
+        Half-life time for the protein.
+    r_gamma_p : float.
+        Average number of protein per mRNA in the unregulated promoter.
+    norm_check : bool.
+        Check if the returned distribution is normalized, and if not perform
+        the full evaluation of the analytical expression.
+    tol : float.
+        +- Tolerance allowed for the normalization. The distribution is
+         considered
+        normalized if it is within 1+-tol
+    Returns
+    -------
+    log probability lnP(p|c,R)
+    '''
+    # Convert C and the protein range into np.arrays
+    C = np.array(C)
+    protein = np.arange(p_range[0], p_range[1], step)
+    protein = np.append(protein, p_range[1])
+    # Compute the probability
+    lnp = log_p_p_mid_C(C, protein, rep, ka, ki, omega,
+                        kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p)
+
+    # Perform the cubic spline interpolation
+    lnp_spline = scipy.interpolate.interp1d(protein, lnp, kind='cubic')
+    # return the complete array of proteins evaluated with the spline
+    p_array = np.arange(p_range[0], p_range[1])
+
+    lnp = lnp_spline(p_array)
+    # If ask to check the normalization of the distribution
+    if norm_check:
+        if (np.sum(np.exp(lnp)) <= 1 + tol) and (np.sum(np.exp(lnp)) >= 1 - tol):
+            return lnp
+        else:
+            print('Did not pass the normalization test. Re-doing calculation')
+            protein = np.arange(p_range[0], p_range[1])
+            return log_p_p_mid_C(C, protein, rep, ka, ki, omega,
+                        kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p)
+    else:
+        return lnp
+
+# ==============================================================================
+
+def log_p_p_mid_C_spline(C, p_range, step, rep, ka, ki, omega,
+                         kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p,
+                         norm_check=False, tol=0.01):
+    '''
+    Computes the log conditional probability lnP(p|C,R),
+    i.e. the probability of having p proteins given
+    an inducer concentration C and a repressor copy number R.
+    This function performs an interpolation with n_points uniformly
+    distributed in p_range
+
+    Parameters
+    ----------
+    C : array-like.
+        Concentration at which evaluate the probability.
+    p_range : array-like.
+        Protein copy number range at which evaluate the probability.
     step : int.
         Step size to take between values in p_range.
     repressor : float.
@@ -287,14 +368,14 @@ def log_p_p_mid_C_spline(C, p_range, step, rep, ka, ki, omega,
     protein = np.arange(p_range[0], p_range[1], step)
     protein = np.append(protein, p_range[1])
     # Compute the probability
-    lnp = log_p_p_mid_C(C, protein, rep, ka, ki, omega, 
+    lnp = log_p_p_mid_logC(C, protein, rep, ka, ki, omega,
                         kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p)
-    
+
     # Perform the cubic spline interpolation
     lnp_spline = scipy.interpolate.interp1d(protein, lnp, kind='cubic')
     # return the complete array of proteins evaluated with the spline
     p_array = np.arange(p_range[0], p_range[1])
-    
+
     lnp = lnp_spline(p_array)
     # If ask to check the normalization of the distribution
     if norm_check:
@@ -303,102 +384,27 @@ def log_p_p_mid_C_spline(C, p_range, step, rep, ka, ki, omega,
         else:
             print('Did not pass the normalization test. Re-doing calculation')
             protein = np.arange(p_range[0], p_range[1])
-            return log_p_p_mid_C(C, protein, rep, ka, ki, omega, 
+            return log_p_p_mid_C(C, protein, rep, ka, ki, omega,
                         kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p)
     else:
         return lnp
 
-#=============================================================================== 
-
-def log_p_p_mid_C_spline(C, p_range, step, rep, ka, ki, omega, 
-                         kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p,
-                         norm_check=False, tol=0.01):
-    '''
-    Computes the log conditional probability lnP(p|C,R), 
-    i.e. the probability of having p proteins given 
-    an inducer concentration C and a repressor copy number R.
-    This function performs an interpolation with n_points uniformly
-    distributed in p_range
-    
-    Parameters
-    ----------
-    C : array-like.
-        Concentration at which evaluate the probability.
-    p_range : array-like.
-        Protein copy number range at which evaluate the probability.        
-    step : int.
-        Step size to take between values in p_range.
-    repressor : float.
-        Repressor copy number per cell.
-    ki, ka : float.
-        Dissociation constants for the inactive and active states respectively
-        in the MWC model of the lac repressor.
-    omega : float.
-        Energetic barrier between the inactive and the active state.
-    kon : float.
-        Rate of activation of the promoter in the chemical master equation
-    k0 : float.
-        Diffusion limited rate of a repressor binding the promoter
-    gamma_m : float.
-        Half-life time for the mRNA.
-    r_gamma_m : float.
-        Average number of mRNA in the unregulated promoter.
-    gamma_p : float.
-        Half-life time for the protein.
-    r_gamma_p : float.
-        Average number of protein per mRNA in the unregulated promoter.
-    norm_check : bool.
-        Check if the returned distribution is normalized, and if not perform
-        the full evaluation of the analytical expression.
-    tol : float.
-        +- Tolerance allowed for the normalization. The distribution is considered
-        normalized if it is within 1+-tol
-    Returns
-    -------
-    log probability lnP(p|c,R)
-    '''
-    # Convert C and the protein range into np.arrays
-    C = np.array(C)
-    protein = np.arange(p_range[0], p_range[1], step)
-    protein = np.append(protein, p_range[1])
-    # Compute the probability
-    lnp = log_p_p_mid_logC(C, protein, rep, ka, ki, omega, 
-                        kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p)
-    
-    # Perform the cubic spline interpolation
-    lnp_spline = scipy.interpolate.interp1d(protein, lnp, kind='cubic')
-    # return the complete array of proteins evaluated with the spline
-    p_array = np.arange(p_range[0], p_range[1])
-    
-    lnp = lnp_spline(p_array)
-    # If ask to check the normalization of the distribution
-    if norm_check:
-        if (np.sum(np.exp(lnp)) <= 1 + tol) and (np.sum(np.exp(lnp)) >= 1 - tol):
-            return lnp
-        else:
-            print('Did not pass the normalization test. Re-doing calculation')
-            protein = np.arange(p_range[0], p_range[1])
-            return log_p_p_mid_C(C, protein, rep, ka, ki, omega, 
-                        kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p)
-    else:
-        return lnp
-
-#============================================================================== 
-# chemical_master_mRNA_FISH_mcmc 
-#============================================================================== 
+# =============================================================================
+# chemical_master_mRNA_FISH_mcmc
+# =============================================================================
 # define a np.frompyfunc that allows us to evaluate the sympy.mp.math.hyp1f1
 np_log_hyp= np.frompyfunc(lambda x, y, z: \
 mpmath.ln(mpmath.hyp1f1(x, y, z, zeroprec=1000)), 3, 1)
 
 def log_p_m_unreg(mRNA, kp_on, kp_off, gm, rm):
     '''
-    Computes the log probability lnP(m) for an unregulated promoter, 
+    Computes the log probability lnP(m) for an unregulated promoter,
     i.e. the probability of having m mRNA.
-    
+
     Parameters
     ----------
     mRNA : float.
-        mRNA copy number at which evaluate the probability.        
+        mRNA copy number at which evaluate the probability.
     kp_on : float.
         rate of activation of the promoter in the chemical master equation
     kp_off : float.
@@ -407,14 +413,14 @@ def log_p_m_unreg(mRNA, kp_on, kp_off, gm, rm):
         1 / half-life time for the mRNA.
     rm : float.
         production rate of the mRNA
-    
+
     Returns
     -------
     log probability lnP(m)
     '''
     # Convert the mRNA copy number to a  numpy array
     mRNA = np.array(mRNA)
-    
+
     # Compute the probability
     lnp = scipy.special.gammaln(kp_on / gm + mRNA) \
     - scipy.special.gammaln(mRNA + 1) \
@@ -424,15 +430,54 @@ def log_p_m_unreg(mRNA, kp_on, kp_off, gm, rm):
     + mRNA * np.log(rm / gm) \
     + np_log_hyp(kp_on / gm + mRNA,
             (kp_off + kp_on) / gm + mRNA, -rm / gm)
-    
+
     return lnp.astype(float)
 
-#============================================================================== 
+
+# =============================================================================
+# chemical_master_moments_mRNA
+# =============================================================================
+# Import two-state mRNA moments
+# Parameters are feed in the following order:
+# (kp_on, kp_off, rm, gm)
+with open('../../tmp/two_state_mRNA_lambdify.dill', 'rb') as file:
+    first_unreg_m = dill.load(file)
+    second_unreg_m = dill.load(file)
+    third_unreg_m = dill.load(file)
+
+# Import two-state mRNA moments
+# Parameters are feed in the following order:
+# (kr_on, kr_off, kp_on, kp_off, rm, gm)
+with open('../../tmp/three_state_mRNA_lambdify.dill', 'rb') as file:
+    first_reg_m = dill.load(file)
+    second_reg_m = dill.load(file)
+    third_reg_m = dill.load(file)
+
+# =============================================================================
+# chemical_master_moments_protein
+# =============================================================================
+# Import two-state protein moments
+# Parameters are feed in the following order:
+# (kp_on, kp_off, rm, gm, rp, gp)
+with open('../../tmp/two_state_protein_lambdify.dill', 'rb') as file:
+    first_unreg_p = dill.load(file)
+    second_unreg_p = dill.load(file)
+    third_unreg_p = dill.load(file)
+
+# Import two-state protein moments
+# Parameters are feed in the following order:
+# (kr_on, kr_off, kp_on, kp_off, rm, gm, rp, gp)
+with open('../../tmp/three_state_protein_lambdify.dill', 'rb') as file:
+    first_reg_p = dill.load(file)
+    second_reg_p = dill.load(file)
+    third_reg_p = dill.load(file)
+
+# =============================================================================
 # MaxEnt_approx_mRNA
-#============================================================================== 
+# =============================================================================
 def kr_off_fun(eRA, k0, kp_on, kp_off, Nns=4.6E6):
     '''
-    Returns the off rate of the repressor as a function of the stat. mech. 
+    Returns the off rate of the repressor as a function of the stat. mech.
     binding energy and the RNAP on and off rates
     Parameters
     ----------
@@ -452,10 +497,535 @@ def kr_off_fun(eRA, k0, kp_on, kp_off, Nns=4.6E6):
     '''
     return 1.66 * k0 * Nns * np.exp(eRA) * kp_off / (kp_off + kp_on)
 
+# =============================================================================
 
-#==============================================================================
+
+def first_moment(x):
+    return np.array(x)
+
+
+def second_moment(x):
+    return np.array(x)**2
+
+
+def third_moment(x):
+    return np.array(x)**3
+
+# =============================================================================
+
+
+def moment_reg_m(moment, C, rep, eRA,
+                 k0=2.7E-3, kp_on=5.5, kp_off=28.9, rm=87.6, gm=1,
+                 Nns=4.6E6, ka=139, ki=0.53, epsilon=4.5):
+    '''
+    Computes the steady-state mRNA distribution moments as a function of the
+    parameters in the master equation for the three-state regulated promoter.
+
+    Parameters
+    ----------
+    moment : string.
+        Moment to be computed. Options: 'first', 'second', 'third'.
+    C : array-like.
+        Concentration at which evaluate the probability.
+    rep: float.
+        repressor copy number per cell.
+    eRA : float.
+        Repressor binding energy [kBT]
+    rm : float.
+        transcription initiation rate. [time**-1]
+    gm : float.
+        mRNA degradation rate. [time**-1]
+    k0 : float.
+        diffusion limited rate of a repressor binding the promoter
+    kp_on : float.
+        RNAP on rate. [time**-1]
+    kp_off : float.
+        RNAP off rate. [time**-1]
+    Nns : float.
+        Number of non-specific binding sites
+    ki, ka : float.
+        dissociation constants for the inactive and active states respectively
+        in the MWC model of the lac repressor.
+    epsilon : float.
+        energetic barrier between the inactive and the active state.
+
+    Returns
+    -------
+    mRNA copy number moment
+    '''
+    # Convert C into np.array
+    C = np.array(C)
+
+    # Calculate the repressor on rate including the MWC model
+    kr_on = k0 * rep * p_act(C, ka, ki, epsilon)
+    # Compute the repressor off-rate based on the on-rate and the binding energy
+    kr_off = kr_off_fun(eRA, k0, kp_on, kp_off, Nns)
+
+    if moment == 'first':
+        return first_reg_m(kr_on, kr_off, kp_on, kp_off, rm, gm)
+    elif moment == 'second':
+        return second_reg_m(kr_on, kr_off, kp_on, kp_off, rm, gm)
+    elif moment == 'third':
+        return third_reg_m(kr_on, kr_off, kp_on, kp_off, rm, gm)
+    else:
+        print('please specify first, second or third moment.')
+
+# =============================================================================
+
+
+def maxent_reg_m_ss(constraint_dict, samplespace, C, rep, eRA,
+                    k0=2.7E-3, kp_on=5.5, kp_off=28.9, rm=87.6, gm=1,
+                    Nns=4.6E6, ka=139, ki=0.53, epsilon=4.5,
+                    algorithm='Powell', disp=False):
+    '''
+    Computes the steady-state mRNA MaxEnt distribution approximation as a
+    function of all the parameters that go into the chemical master equation.
+
+    Parameters
+    ----------
+    constraint_dict : dictionary.
+        Dictionary containing the functions to compute the constraints.
+        The name of the entries should be the same as the name of the moments,
+        for example constraint_dict = {'first' : first}.
+    samplespace : array-like.
+        Bins to be evaluated in the maximum entropy approach.
+    C : array-like.
+        Concentrations at which evaluate the probability.
+    rep: float.
+        repressor copy number per cell.
+    eRA : float.
+        Repressor binding energy [kBT]
+    k0 : float.
+        diffusion limited rate of a repressor binding the promoter
+    kp_on : float.
+        RNAP on rate. [time**-1]
+    kp_off : float.
+        RNAP off rate. [time**-1]
+    rm : float.
+        transcription initiation rate. [time**-1]
+    gm : float.
+        mRNA degradation rate. [time**-1]
+    Nns : float.
+        Number of non-specific binding sites
+    ki, ka : float.
+        dissociation constants for the inactive and active states respectively
+        in the MWC model of the lac repressor.
+    epsilon : float.
+        energetic barrier between the inactive and the active state.
+    algorithm : str.
+        Algorithm to be used for the parameter optimization. See
+        maxentropy.BaseModel help for a list of the available algorithms.
+    disp : bool.
+        Boolean indicating if the function should display the concentration
+        which is computing at the moment
+
+    Returns
+    -------
+    max_ent_dist : array. shape = len(C) x len(samplespace)
+        Maximum Entropy probability distribution of mRNA for each concentration
+        in C
+    '''
+    # Initialize matrix to save distributions
+    max_ent_dist = np.zeros([len(C), len(samplespace)])
+    # Loop through concentrations
+    for j, c in enumerate(C):
+        if disp:
+            print(c)
+        # Initialize list to save constraints and moments
+        const_fn = []
+        const_name = []
+        # Extract each constraint function and element into lists
+        for key, val in constraint_dict.items():
+            const_name.append(key)
+            const_fn.append(val)
+
+        # Initialize array to save moment values
+        moments = np.zeros(len(const_name))
+        # Compute the value of the moments given the constraints
+        for i, moment in enumerate(const_name):
+            moments[i] = moment_reg_m(moment, c, rep, eRA,
+                                      k0, kp_on, kp_off, rm, gm,
+                                      Nns, ka, ki, epsilon)
+
+        # Define the minimum entropy moel
+        model = MinDivergenceModel(const_fn, samplespace, algorithm=algorithm)
+        # Change the dimensionality of the moment array
+        X = np.reshape(moments, (1, -1))
+        # Fit the model
+        model.fit(X)
+        max_ent_dist[j, :] = model.probdist()
+
+    # Return probability distribution
+    return max_ent_dist
+
+# =============================================================================
+# MaxEnt_approx_protein
+# =============================================================================
+
+
+def moment_reg_p(moment, C, rep, eRA,
+                 k0=2.7E-3, kp_on=5.5, kp_off=28.9, rm=87.6, gm=1,
+                 rp=0.0975, gp=97.53,
+                 Nns=4.6E6, ka=139, ki=0.53, epsilon=4.5):
+    '''
+    Computes the protein distribution moments as a function  of all the
+    parameters that go into the chemical master equation.
+
+    Parameters
+    ----------
+    moment : string.
+        Moment to be computed. Options: 'first', 'second' and 'third'.
+    C : array-like.
+        Concentration at which evaluate the probability.
+    rep: float.
+        repressor copy number per cell.
+    eRA : float.
+        Repressor binding energy [kBT]
+    rm : float.
+        transcription initiation rate. [time**-1]
+    gm : float.
+        mRNA degradation rate. [time**-1]
+    rp : float.
+        translation initiation rate. [time**-1]
+    gp : float.
+        protein degradation rate. [time**-1]
+    k0 : float.
+        diffusion limited rate of a repressor binding the promoter
+    kp_on : float.
+        RNAP on rate. [time**-1]
+    kp_off : float.
+        RNAP off rate. [time**-1]
+    Nns : float.
+        Number of non-specific binding sites
+    ki, ka : float.
+        dissociation constants for the inactive and active states respectively
+        in the MWC model of the lac repressor.
+    epsilon : float.
+        energetic barrier between the inactive and the active state.
+
+    Returns
+    -------
+    protein copy number moment
+    '''
+    # Convert C into np.array
+    C = np.array(C)
+
+    # Calculate the repressor on rate including the MWC model
+    kr_on = k0 * rep * p_act(C, ka, ki, epsilon)
+    # Compute the repressor off-rate based on the on-rate and the binding energy
+    kr_off = kr_off_fun(eRA, k0, kp_on, kp_off, Nns)
+
+    if moment == 'first':
+        return first_reg_p(kr_on, kr_off, kp_on, kp_off, rm, gm, rp, gp)
+    elif moment == 'second':
+        return second_reg_p(kr_on, kr_off, kp_on, kp_off, rm, gm, rp, gp)
+    elif moment == 'third':
+        return third_reg_p(kr_on, kr_off, kp_on, kp_off, rm, gm, rp, gp)
+    else:
+        print('please specify first, second or third moment')
+
+# =============================================================================
+
+
+def maxent_reg_p_ss(constraint_dict, samplespace, C, rep, eRA,
+                    k0=2.7E-3, kp_on=5.5, kp_off=28.9, rm=87.6, gm=1,
+                    rp=0.0975, gp=97.53,
+                    Nns=4.6E6, ka=139, ki=0.53, epsilon=4.5,
+                    algorithm='Powell', disp=False):
+    '''
+    Computes the steady-state MaxEnt distribution approximation as a function
+    of all the parameters that go into the chemical master equation.
+
+    Parameters
+    ----------
+    constraint_dict : dictionary.
+        Dictionary containing the functions to compute the constraints.
+        The name of the entries should be the same as the name of the moments,
+        for example constraint_dict = {'first' : first}.
+    samplespace : array-like.
+        Bins to be evaluated in the maximum entropy approach.
+    C : array-like.
+        Concentrations at which evaluate the probability.
+    rep: float.
+        repressor copy number per cell.
+    eRA : float.
+        Repressor binding energy [kBT]
+    k0 : float.
+        diffusion limited rate of a repressor binding the promoter
+    kp_on : float.
+        RNAP on rate. [time**-1]
+    kp_off : float.
+        RNAP off rate. [time**-1]
+    rm : float.
+        transcription initiation rate. [time**-1]
+    gm : float.
+        mRNA degradation rate. [time**-1]
+    rp : float.
+        translation initiation rate. [time**-1]
+    gp : float.
+        protein degradation rate. [time**-1]
+    Nns : float.
+        Number of non-specific binding sites
+    ki, ka : float.
+        dissociation constants for the inactive and active states respectively
+        in the MWC model of the lac repressor.
+    epsilon : float.
+        energetic barrier between the inactive and the active state.
+    algorithm : str.
+        Algorithm to be used for the parameter optimization. See
+        maxentropy.BaseModel help for a list of the available algorithms.
+    disp : bool.
+        Boolean indicating if the function should display the concentration
+        which is computing at the moment
+
+    Returns
+    -------
+    max_ent_dist : array. shape = len(C) x len(samplespace)
+        Maximum Entropy probability distribution of protein for each
+        concentration in C
+    '''
+    # Initialize matrix to save distributions
+    max_ent_dist = np.zeros([len(C), len(samplespace)])
+    # Loop through concentrations
+    for j, c in enumerate(C):
+        if disp:
+            print(c)
+        # Initialize list to save constraints and moments
+        const_fn = []
+        const_name = []
+        # Extract each constraint function and element into lists
+        for key, val in constraint_dict.items():
+            const_name.append(key)
+            const_fn.append(val)
+
+        # Initialize array to save moment values
+        moments = np.zeros(len(const_name))
+        # Compute the value of the moments given the constraints
+        for i, moment in enumerate(const_name):
+            moments[i] = moment_reg_p(moment, c, rep, eRA,
+                                      k0, kp_on, kp_off, rm, gm, rp, gp,
+                                      Nns, ka, ki, epsilon)
+
+        # Define the minimum entropy moel
+        model = MinDivergenceModel(const_fn, samplespace, algorithm=algorithm)
+        # Change the dimensionality of the moment array
+        X = np.reshape(moments, (1, -1))
+        # Fit the model
+        model.fit(X)
+        max_ent_dist[j, :] = model.probdist()
+
+    # Return probability distribution
+    return max_ent_dist
+
+# =============================================================================
+# moment_dynamics_numeric_protein
+# =============================================================================
+
+
+def dpdt(mp, t, Kmat, Rm, Gm, Rp, Gp):
+    '''
+    function to integrate all mRNA and protein moment dynamics
+    using scipy.integrate.odeint
+    Parameters
+    ----------
+    m : array-like.
+        Array containing all moments (mRNA, protein and cross correlations)
+        Unregulated
+        mp[0] = m0_P (RNAP bound)
+        mp[1] = m0_E (Empty promoter)
+        mp[2] = m1_P (RNAP bound)
+        mp[3] = m1_P (Empty promoter)
+        mp[4] = m2_P (RNAP bound)
+        mp[5] = m2_P (Empty promoter)
+        mp[6] = m3_P (RNAP bound)
+        mp[7] = m3_P (Empty promoter)
+        mp[8] = p1_P (RNAP bound)
+        mp[9] = p1_P (Empty promoter)
+        mp[10] = mp_P (RNAP bound)
+        mp[11] = mp_P (Empty promoter)
+        mp[12] = p2_P (RNAP bound)
+        mp[13] = p2_P (Empty promoter)
+        mp[14] = m2p_P (RNAP bound)
+        mp[15] = m2p_P (Empty promoter)
+        mp[16] = mp2_P (RNAP bound)
+        mp[17] = mp2_P (Empty promoter)
+        mp[18] = p3_P (RNAP bound)
+        mp[19] = p3_P (Empty promoter)
+        ---------
+        Regulated:
+        mp[0] = m0_P (RNAP bound)
+        mp[1] = m0_E (Empty promoter)
+        mp[2] = m0_R (Repressor bound)
+        mp[3] = m1_P (RNAP bound)
+        mp[4] = m1_E (Empty promoter)
+        mp[5] = m1_R (Repressor bound)
+        mp[6] = m2_P (RNAP bound)
+        mp[7] = m2_E (Empty promoter)
+        mp[8] = m2_R (Repressor bound)
+        mp[9] = m3_P (RNAP bound)
+        mp[10] = m3_E (Empty promoter)
+        mp[11] = m3_R (Repressor bound)
+        mp[12] = p1_P (RNAP bound)
+        mp[13] = p1_E (Empty promoter)
+        mp[14] = p1_R (Repressor bound)
+        mp[15] = mp_P (RNAP bound)
+        mp[16] = mp_E (Empty promoter)
+        mp[17] = mp_R (Repressor bound)
+        mp[18] = p2_P (RNAP bound)
+        mp[19] = p2_E (Empty promoter)
+        mp[20] = p2_R (Repressor bound)
+        mp[21] = m2p_P (RNAP bound)
+        mp[22] = m2p_E (Empty promoter)
+        mp[23] = m2p_R (Repressor bound)
+        mp[24] = mp2_P (RNAP bound)
+        mp[25] = mp2_E (Empty promoter)
+        mp[26] = mp2_R (Repressor bound)
+        mp[27] = p3_P (RNAP bound)
+        mp[28] = p3_E (Empty promoter)
+        mp[29] = p3_R (Repressor bound)
+    t : array-like.
+        Time array
+    Kmat : array-like.
+        Matrix containing the transition rates between the promoter states.
+    Rm : array-like.
+        Matrix containing the mRNA production rate at each of the states.
+    Gm : array-like.
+        Matrix containing the mRNA degradation rate at each of the states.
+    Rp : array-like.
+        Matrix containing the protein production rate at each of the states.
+    Gp : array-like.
+        Matrix containing the protein degradation rate at each of the states.
+
+    Returns
+    -------
+    dynamics of all mRNA and protein moments
+    '''
+    # Obtain the zeroth and first moment based on the size
+    # of the Kmat matrix
+    if Kmat.shape[0] == 2:
+        m0 = mp[0:2]
+        m1 = mp[2:4]
+        m2 = mp[4:6]
+        m3 = mp[6:8]
+        p1 = mp[8:10]
+        mp1 = mp[10:12]
+        p2 = mp[12:14]
+        m2p = mp[14:16]
+        mp2 = mp[16:18]
+        p3 = mp[18::]
+    elif Kmat.shape[0] == 3:
+        m0 = mp[0:3]
+        m1 = mp[3:6]
+        m2 = mp[6:9]
+        m3 = mp[9:12]
+        p1 = mp[12:15]
+        mp1 = mp[15:18]
+        p2 = mp[18:21]
+        m2p = mp[21:24]
+        mp2 = mp[24:27]
+        p3 = mp[27::]
+
+    # Initialize array to save all dynamics
+    dmpdt = np.array([])
+
+    # Compute the moment equations for the:
+    # === mRNA === #
+    # Zeroth moment
+    dm0dt_eq = np.dot(Kmat, m0)
+    dmpdt = np.append(dmpdt, dm0dt_eq)
+    # <m1>
+    dm1dt_eq = np.dot((Kmat - Gm), m1) + np.dot(Rm, m0)
+    dmpdt = np.append(dmpdt, dm1dt_eq)
+    # <m2>
+    dm2dt_eq = np.dot((Kmat - 2 * Gm), m2) + np.dot((2 * Rm + Gm), m1) +\
+        np.dot(Rm, m0)
+    dmpdt = np.append(dmpdt, dm2dt_eq)
+    # <m3>
+    dm3dt_eq = np.dot((Kmat - 3 * Gm), m3) +\
+        np.dot((3 * Rm + 3 * Gm), m2) +\
+        np.dot((3 * Rm - Gm), m1) +\
+        np.dot(Rm, m0)
+    dmpdt = np.append(dmpdt, dm3dt_eq)
+    # === protein and correlations === #
+    # <p1>
+    dp1dt_eq = np.dot((Kmat - Gp), p1) + np.dot(Rp, m1)
+    dmpdt = np.append(dmpdt, dp1dt_eq)
+    # <mp>
+    dmpdt_eq = np.dot((Kmat - Gm - Gp), mp1) +\
+        np.dot(Rm, p1) +\
+        np.dot(Rp, m2)
+    dmpdt = np.append(dmpdt, dmpdt_eq)
+    # <p2>
+    dp2dt_eq = np.dot((Kmat - 2 * Gp), p2) +\
+        np.dot(Gp, p1) +\
+        np.dot(Rp, m1) +\
+        np.dot((2 * Rp), mp1)
+    dmpdt = np.append(dmpdt, dp2dt_eq)
+    # <m2p>
+    dm2pdt_eq = np.dot((Kmat - 2 * Gm - Gp), m2p) +\
+        np.dot(Rm, p1) +\
+        np.dot((Rm + Gm), mp1) +\
+        np.dot(Rp, m3)
+    dmpdt = np.append(dmpdt, dm2pdt_eq)
+    # <mp2>
+    dmp2dt_eq = np.dot((Kmat - Gm - 2 * Gp), mp2) +\
+        np.dot(Rm, p2) +\
+        np.dot((2 * Rp), m2p) +\
+        np.dot(Rp, m2) +\
+        np.dot(Gp, mp1)
+    dmpdt = np.append(dmpdt, dmp2dt_eq)
+    # <p3>
+    dp3dt_eq = np.dot((Kmat - 3 * Gp), p3) +\
+        np.dot((3 * Gp), p2) -\
+        np.dot(Gp, p1) +\
+        np.dot((3 * Rp), mp2) +\
+        np.dot((3 * Rp), mp1) +\
+        np.dot(Rp, m1)
+    dmpdt = np.append(dmpdt, dp3dt_eq)
+
+    return dmpdt
+
+# =============================================================================
+
+
+def dynamics_to_df(sol, t):
+    '''
+    Takes the output of the dpdt function and the vector time and returns
+    a tidy pandas DataFrame with the GLOBAL moments.
+    Parameters
+    ----------
+    sol : array-like.
+        Array with 20 or 30 columns containing the dynamics of the mRNA and
+        protein distribution moments.
+    t : array-like.
+        Time array used for integrating the differential equations
+    Returns
+    -------
+    tidy dataframe with the GLOBAL moments
+    '''
+    # Define names of dataframe columns
+    names = ['time', 'm1', 'm2', 'm3', 'p1', 'mp', 'p2', 'm2p', 'mp2', 'p3']
+
+    # Initialize matrix to save global moments
+    mat = np.zeros([len(t), len(names)])
+    # Save time array in matrix
+    mat[:, 0] = t
+
+    # List index for columns depending on number of elements in matrix
+    idx = np.arange(int(sol.shape[1]) / 10, sol.shape[1],
+                    int(sol.shape[1]) / 10)
+
+    # Loop through index and compute global moments
+    for i, index in enumerate(idx):
+        # Compute and save global moment
+        mat[:, i+1] = np.sum(sol[:, int(index):int(index + sol.shape[1] / 10,
+            axis=1)
+
+    return pd.DataFrame(mat, columns=names)
+
+# =============================================================================
 # blahut_arimoto_channel_capacity
-#==============================================================================
+# =============================================================================
 
 def channel_capacity(QmC, epsilon=1E-3, info=1E4):
     '''
@@ -464,7 +1034,7 @@ def channel_capacity(QmC, epsilon=1E-3, info=1E4):
 
     Parameters
     ----------
-    QmC : array-like 
+    QmC : array-like
         definition of the channel with C inputs and m outputs.
     epsilon : float.
         error tolerance for the algorithm to stop the iterations. The smaller
@@ -476,18 +1046,18 @@ def channel_capacity(QmC, epsilon=1E-3, info=1E4):
     Returns
     -------
     C : float.
-        channel capacity, or the maximum information it can be transmitted 
+        channel capacity, or the maximum information it can be transmitted
         given the input-output function.
     pc : array-like.
-        array containing the discrete probability distribution for the input 
+        array containing the discrete probability distribution for the input
         that maximizes the channel capacity
     '''
     # initialize the probability for the input.
     pC = np.repeat(1 / QmC.shape[0], QmC.shape[0])
-        
+
     # Initialize variable that will serve as termination criteria
     Iu_Il = 1
-    
+
     loop_count = 0
     # Perform a while loop until the stopping criteria is reached
     while Iu_Il > epsilon:
@@ -506,23 +1076,23 @@ def channel_capacity(QmC, epsilon=1E-3, info=1E4):
         QmC_log_QmC_sum_C_pC_QmC[np.isnan(QmC_log_QmC_sum_C_pC_QmC)] = 0
         QmC_log_QmC_sum_C_pC_QmC[np.isneginf(QmC_log_QmC_sum_C_pC_QmC)] = 0
         cC = np.exp(np.sum(QmC_log_QmC_sum_C_pC_QmC, axis=1))
-       
+
         # I_L log(∑_C pC cC)
         Il = np.log(np.sum(pC * cC))
-        
+
         # I_U = log(max_C cC)
         Iu = np.log(cC.max())
-        
+
         # pC = pC * cC / ∑_C pC * cC
         pC = pC * cC / np.sum(pC * cC)
-        
+
         Iu_Il = Iu - Il
-        
+
     # convert from nats to bits
     Il = Il / np.log(2)
     return Il, pC, loop_count
 
-#============================================================================== 
+# =============================================================================
 
 def theory_trans_matrix(df_prob, c, Rtot, tol=1E-20, clean=True, **kwargs):
     '''
@@ -557,23 +1127,23 @@ def theory_trans_matrix(df_prob, c, Rtot, tol=1E-20, clean=True, **kwargs):
     '''
     # Convert the concentration to a numpy array
     c = np.array(c)
-    
+
     # compute the p_active probabilities for each concentration
     pacts = p_act(c, **kwargs)
     pacts = np.unique(pacts)
     # Compute the number of repressors given this p_active. The
     # repressors will be round down for fractional number of repressors
     repressors = np.floor(Rtot * pacts)
-    
+
     # Initialize matrix to save input-output function
     Qgc = np.zeros([len(c), len(df_prob.protein.unique())])
-    
+
     # Loop through every repressor and add the probabilities to each
     # row of the Qg|c matrix
     for i, rep in enumerate(repressors):
         Qgc[i, :] =\
         df_prob[df_prob.repressor == rep].sort_values(by='protein').prob
-    
+
     # Conditional on whether or not to clean the matrix
     if clean:
         # Remove columns whose marginal protein probability is < tol
@@ -582,9 +1152,9 @@ def theory_trans_matrix(df_prob, c, Rtot, tol=1E-20, clean=True, **kwargs):
     else:
         return Qgc
 
-#============================================================================== 
+# =============================================================================
 # Computing experimental channel capacity
-#============================================================================== 
+# =============================================================================
 
 def trans_matrix(df, bins, frac=None,
                  output_col='mean_intensity', group_col='IPTG_uM'):
@@ -595,7 +1165,7 @@ def trans_matrix(df, bins, frac=None,
     Parameters
     ----------
     df : pandas Dataframe
-        Single cell output reads measured at different inducer concentrations. 
+        Single cell output reads measured at different inducer concentrations.
         The data frame must contain a column output_col that will be binned to
         build the matrix, and a matrix group_col that will be used to group
         the different inputs.
@@ -603,14 +1173,14 @@ def trans_matrix(df, bins, frac=None,
         Number of bins to use when building the empirical PMF of the data set.
         If `bins` is a string from the list below, `histogram` will use
         the method chosen to calculate the optimal bin width and
-        consequently the number of bins from the data that falls within 
+        consequently the number of bins from the data that falls within
         the requested range.
     frac : None or float [0, 1]
         Fraction of the data to sample for building the matrix. Default = None
-        meaning that the entire data set will be used. The fraction of data is 
+        meaning that the entire data set will be used. The fraction of data is
         taken per input value.
     output_col : str.
-        Name of the column that contains the quantity (usually fluorescence 
+        Name of the column that contains the quantity (usually fluorescence
         measurements) to be binned in order to build the matrix
     group_col : str.
         Name of the column that contains the inputs C of the matrix (usually
@@ -623,13 +1193,13 @@ def trans_matrix(df, bins, frac=None,
     len(df) : int
         Number of data points considered for building the matrix
     '''
-    
+
     # Extract the data to bin
     bin_data = df[output_col]
-    
+
     # indicate the range in which bin the data
     bin_range = [np.min(bin_data), np.max(bin_data)]
-    
+
     # If inidicated select a fraction frac of the data at random
     if frac != None:
         # Group by group_col and take samples
@@ -640,20 +1210,20 @@ def trans_matrix(df, bins, frac=None,
             df_sample = pd.concat([df_sample, d.sample(frac=frac)])
         # Use the subsample data frame
         df = df_sample
-    
+
     # Extract the number of unique inputs in the data frame
     n_inputs = df.IPTG_uM.unique().size
-    
+
     # Initialize transition matrix
     QmC = np.zeros([bins, n_inputs])
-    
+
     # Loop through different groups
     # Unfortunately we need to initalize a counter because the groupby
     # function is not compatible with enumerate
     k = 0
     for c, f in df.groupby(group_col):
         # Obtain the empirical PMF from the experimental data
-        p, bin_edges = np.histogram(f[output_col], bins=int(bins), 
+        p, bin_edges = np.histogram(f[output_col], bins=int(bins),
                                     range=bin_range)
         # Normalized the empirical PMF. We don't use the option from numpy
         # because it DOES NOT build a PMF but assumes a PDF.
@@ -662,10 +1232,10 @@ def trans_matrix(df, bins, frac=None,
         QmC[:, k] = p
         # Increase counter
         k+=1
-   
+
     return QmC, len(df)
 
-#============================================================================== 
+# =============================================================================
 
 def channcap_bootstrap(df, nrep, bins, frac, **kwargs):
     '''
@@ -674,7 +1244,7 @@ def channcap_bootstrap(df, nrep, bins, frac, **kwargs):
     Parameters
     ----------
     df : pandas Dataframe
-        Single cell output reads measured at different inducer concentrations. 
+        Single cell output reads measured at different inducer concentrations.
         The data frame must contain a column output_col that will be binned to
         build the matrix, and a matrix group_col that will be used to group
         the different inputs.
@@ -682,10 +1252,10 @@ def channcap_bootstrap(df, nrep, bins, frac, **kwargs):
         Number of bins to use when building the empirical PMF of the data set.
         If `bins` is a string from the list below, `histogram` will use
         the method chosen to calculate the optimal bin width and
-        consequently the number of bins from the data that falls within 
+        consequently the number of bins from the data that falls within
         the requested range.
     frac : float [0, 1]
-        Fraction of the data to sample for building the matrix. 
+        Fraction of the data to sample for building the matrix.
         The fraction of data is taken per input value.
     kwargs : dictionary
         Optional arguments that can be passed to the trans_matrix function.
@@ -696,22 +1266,22 @@ def channcap_bootstrap(df, nrep, bins, frac, **kwargs):
     tm_arg_names =  trans_matrix.__code__.co_varnames\
                         [0:trans_matrix.__code__.co_argcount]
     tm_kwargs = dict((k, kwargs[k]) for k in tm_arg_names if k in kwargs)
-    
+
     # Extract the arguments for the channel capacity function
     cc_arg_names =  channel_capacity.__code__.co_varnames\
                         [0:channel_capacity.__code__.co_argcount]
     cc_kwargs = dict((k, kwargs[k]) for k in cc_arg_names if k in kwargs)
     #---------------------------------------------
-    
+
     # Initialize array to save channel capacities
     MI = np.zeros(nrep)
     for i in np.arange(nrep):
         QgC, samp_size = trans_matrix(df, bins=bins, frac=frac,  **tm_kwargs)
         MI[i] = channel_capacity(QgC.T, **cc_kwargs)[0]
-    
+
     return MI, samp_size
 
-#============================================================================== 
+# =============================================================================
 
 def tidy_df_channcap_bs(channcap_list, fracs, bins, **kwargs):
     '''
@@ -728,7 +1298,7 @@ def tidy_df_channcap_bs(channcap_list, fracs, bins, **kwargs):
         This array keeps the amount of data used for each of the fractions
         indicated.
     fracs : array-like
-        Array containing the fractions at which the bootstrap estimates were 
+        Array containing the fractions at which the bootstrap estimates were
         computed.
     bins : array-like.
         Number of bins used when generating the matrix Qg|c
@@ -748,12 +1318,12 @@ def tidy_df_channcap_bs(channcap_list, fracs, bins, **kwargs):
     '''
     # Initialize data frame where all the information will be saved
     df = pd.DataFrame()
-    
+
     # Loop through the elements of the list containing the bs samples
     # for each number of bins
     for i, b in enumerate(bins):
         # Extract the sample element
-        bin_samples = channcap_list[i] 
+        bin_samples = channcap_list[i]
         # Loop through each of the rows of the MI_bs matrix containing the
         # nrep samples for each fraction
         for j, s in enumerate(bin_samples[0]):
@@ -764,20 +1334,20 @@ def tidy_df_channcap_bs(channcap_list, fracs, bins, **kwargs):
             # Save fraction of data used
             df_frac['frac'] = [fracs[j]] * len(s)
             # Save the number of bins used for this bs samples
-            df_frac['bins'] = [b] * len(s)    
+            df_frac['bins'] = [b] * len(s)
             # append to the general data frame
             df = pd.concat([df, df_frac], axis=0)
-        
-    
+
+
     # Add elements contained in the kwards dictioary
     for key, value in kwargs.items():
         df[key] = [value] * len(df)
-    
+
     return df
 
-#============================================================================== 
+# =============================================================================
 # Plotting style
-#============================================================================== 
+# =============================================================================
 def set_plotting_style():
     """
     Formats plotting enviroment to that used in Physical Biology of the Cell,
@@ -805,9 +1375,9 @@ def set_plotting_style():
     sns.set_palette("colorblind", color_codes=True)
     sns.set_context('notebook', rc=rc)
 
-#============================================================================== 
+# =============================================================================
 # Useful generic functions
-#============================================================================== 
+# =============================================================================
 def ecdf(data):
     """
     Computes the empirical cumulative distribution function (ECDF)
@@ -826,7 +1396,7 @@ def ecdf(data):
 
     return np.sort(data), np.arange(len(data))/len(data)
 
-#============================================================================== 
+# =============================================================================
 
 def hpd(trace, mass_frac):
     """
@@ -869,15 +1439,15 @@ def hpd(trace, mass_frac):
     # Return interval
     return np.array([d[min_int], d[min_int + n_samples]])
 
-#============================================================================== 
+# =============================================================================
 # Plotting functions
-#============================================================================== 
+# =============================================================================
 def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
                  mean_mark=True, marker_height=0.3,
                  color_bar=True, cbar_label='', binstep=1,
                  figsize=(6,5), title='', xlabel='', xlim=None, ylim=None):
     '''
-    Custom plot of the PMF and the CDF of multiple distributions 
+    Custom plot of the PMF and the CDF of multiple distributions
     with a side legend.
     Parameters
     ----------
@@ -920,13 +1490,13 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
         Limits on the y-axis for the PMF. The CDF goes from 0 to 1 by
         definition.
     '''
-    
+
     colors = sns.color_palette(color_palette, n_colors=len(legend_var))
 
     # Initialize figure
     fig, ax = plt.subplots(2, 1, figsize=figsize, sharex=True)
     ax[0].yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(\
-                                    useMathText=True, 
+                                    useMathText=True,
                                     useOffset=False))
 
     # Loop through inducer concentrations
@@ -939,7 +1509,7 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
         ax[0].fill_between(x[0::binstep], px[i,0::binstep],
                            color=colors[i], alpha=0.8, step='pre')
         # CDF plot
-        ax[1].plot(x[0::binstep], np.cumsum(px[i,:])[0::binstep], 
+        ax[1].plot(x[0::binstep], np.cumsum(px[i,:])[0::binstep],
                    drawstyle='steps',
                    color=colors[i], linewidth=2)
 
@@ -964,7 +1534,7 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     # Compute mean mRAN copy number from distribution
     mean_dist = [np.sum(x * prob) for prob in px]
     # Plot a little triangle indicating the mean of each distribution
-    mean_plot = ax[0].scatter(mean_dist, [marker_height] * len(mean_dist), 
+    mean_plot = ax[0].scatter(mean_dist, [marker_height] * len(mean_dist),
                               marker='v', s=200,
                 c=np.arange(len(mean_dist)), cmap=cmap,
                 edgecolor='k', linewidth=1.5)
