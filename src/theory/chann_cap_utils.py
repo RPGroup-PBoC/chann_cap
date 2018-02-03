@@ -463,6 +463,9 @@ with open('../../tmp/two_state_protein_lambdify.dill', 'rb') as file:
     first_unreg_p = dill.load(file)
     second_unreg_p = dill.load(file)
     third_unreg_p = dill.load(file)
+    mp_unreg_p = dill.load(file)
+    m2p_unreg_p = dill.load(file)
+    mp2_unreg_p = dill.load(file)
 
 # Import two-state protein moments
 # Parameters are feed in the following order:
@@ -471,6 +474,10 @@ with open('../../tmp/three_state_protein_lambdify.dill', 'rb') as file:
     first_reg_p = dill.load(file)
     second_reg_p = dill.load(file)
     third_reg_p = dill.load(file)
+    mp_reg_p = dill.load(file)
+    m2p_reg_p = dill.load(file)
+    mp2_reg_p = dill.load(file)
+
 
 # =============================================================================
 # MaxEnt_approx_mRNA
@@ -1012,13 +1019,13 @@ def dynamics_to_df(sol, t):
     mat[:, 0] = t
 
     # List index for columns depending on number of elements in matrix
-    idx = np.arange(int(sol.shape[1]) / 10, sol.shape[1],
-                    int(sol.shape[1]) / 10)
+    idx = np.arange(int(sol.shape[1] / 10), sol.shape[1],
+                    int(sol.shape[1] / 10))
 
     # Loop through index and compute global moments
     for i, index in enumerate(idx):
         # Compute and save global moment
-        mat[:, i+1] = np.sum(sol[:, int(index):int(index + sol.shape[1] / 10,
+        mat[:, i+1] = np.sum(sol[:, int(index):int(index + sol.shape[1] / 10)],
             axis=1)
 
     return pd.DataFrame(mat, columns=names)
