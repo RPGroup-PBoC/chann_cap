@@ -445,6 +445,7 @@ with open('../../tmp/two_state_mRNA_lambdify.dill', 'rb') as file:
     second_unreg_m = dill.load(file)
     third_unreg_m = dill.load(file)
 
+
 # Import two-state mRNA moments
 # Parameters are feed in the following order:
 # (kr_on, kr_off, kp_on, kp_off, rm, gm)
@@ -452,6 +453,7 @@ with open('../../tmp/three_state_mRNA_lambdify.dill', 'rb') as file:
     first_reg_m = dill.load(file)
     second_reg_m = dill.load(file)
     third_reg_m = dill.load(file)
+
 
 # =============================================================================
 # chemical_master_moments_protein
@@ -478,7 +480,6 @@ with open('../../tmp/three_state_protein_lambdify.dill', 'rb') as file:
     m2p_reg_p = dill.load(file)
     mp2_reg_p = dill.load(file)
 
-
 # =============================================================================
 # MaxEnt_approx_mRNA
 # =============================================================================
@@ -503,20 +504,6 @@ def kr_off_fun(eRA, k0, kp_on, kp_off, Nns=4.6E6):
     Repressor off rate
     '''
     return 1.66 * k0 * Nns * np.exp(eRA) * kp_off / (kp_off + kp_on)
-
-# =============================================================================
-
-
-def first_moment(x):
-    return np.array(x)
-
-
-def second_moment(x):
-    return np.array(x)**2
-
-
-def third_moment(x):
-    return np.array(x)**3
 
 # =============================================================================
 
@@ -1563,6 +1550,8 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     plt.subplots_adjust(hspace=0.06)
 
 #============================================================================== 
+
+
 def joint_marginal_plot(x, y, Pxy,
                         xlabel='', ylabel='',
                         size=5.5, ratio=5, space=0.1,
