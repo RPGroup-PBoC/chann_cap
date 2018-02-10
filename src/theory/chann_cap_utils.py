@@ -1561,3 +1561,110 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     plt.figtext(-0.02, .46, '(B)', fontsize=18)
 
     plt.subplots_adjust(hspace=0.06)
+
+#============================================================================== 
+def joint_marginal_plot(x, y, Pxy,
+                        xlabel='', ylabel='',
+                        size=5.5, ratio=5, space=0.1,
+                        marginal_color='black',
+                        marginal_fill=sns.color_palette('colorblind',
+                            n_colors=1),
+                        marginal_alpha=0.8,
+                        joint_cmap='Blues', include_cbar=True,
+                        cbar_label='probability'): 
+    '''
+    Plots the joint and marginal distributions like the seaborn jointplot.
+
+    Parameters
+    ----------
+    x, y : array-like.
+        Arrays that contain the values of the x and y axis. Used to set the
+        ticks on the axis.
+    Pxy : 2d array. len(x) x len(y)
+        2D array containing the value of the joint distributions to be plot
+    xlabel : str.
+        X-label for the joint plot.
+    ylabel : str.
+        Y-label for the joint plot.
+    size : float.
+        Figure size.
+    ratio : float.
+        Plot size ratio between the joint 2D hist and the marginals.
+    space : float.
+        Space beteween marginal and joint plot.
+    marginal_color: str or RGB number. Default 'black'
+        Color used for the line of the marginal distribution
+    marginal_fill: str or RGB number. Default seaborn colorblind default
+        Color used for the filling of the marginal distribution
+    marginal_alpha : float. [0, 1]. Default = 0.8
+        Value of alpha for the fill_between used in the marginal plot.
+    joint_cmap : string. Default = 'Blues'
+        Name of the color map to be used in the joint distribution.
+    include_cbar : bool. Default = True
+        Boolean indicating if a color bar should be included for the joint
+        distribution values.
+    cbar_label : str. Default = 'probability'
+        Label for the color bar
+    '''
+    # Define the extent of axis and aspect ratio of heatmap
+    extent = [x.min(), x.max(), y.min(), y.max()]
+    aspect = (x.max() - x.min()) / (y.max() - y.min())
+
+    # Initialize figure
+    f = plt.figure(figsize=(size, size))
+    # Specify gridspec
+    gs = plt.GridSpec(ratio + 1, ratio + 1)
+
+    # Generate axis
+    # Joint
+    ax_joint = f.add_subplot(gs[1:, :-1])
+
+    # Marginals
+    ax_marg_x = f.add_subplot(gs[0, :-1], sharex=ax_joint)
+    ax_marg_y = f.add_subplot(gs[1:, -1], sharey=ax_joint)
+
+    # Turn off tick visibility for the measure axis on the marginal plots
+    plt.setp(ax_marg_x.get_xticklabels(), visible=False)
+    plt.setp(ax_marg_y.get_yticklabels(), visible=False)
+
+    # Turn off the ticks on the density axis for the marginal plots
+    plt.setp(ax_marg_x.yaxis.get_majorticklines(), visible=False)
+    plt.setp(ax_marg_x.yaxis.get_minorticklines(), visible=False)
+    plt.setp(ax_marg_y.xaxis.get_majorticklines(), visible=False)
+    plt.setp(ax_marg_y.xaxis.get_minorticklines(), visible=False)
+    plt.setp(ax_marg_x.get_yticklabels(), visible=False)
+    plt.setp(ax_marg_y.get_xticklabels(), visible=False)
+    ax_marg_x.yaxis.grid(False)
+    ax_marg_y.xaxis.grid(False)
+
+    # Set spacing between plots
+    f.subplots_adjust(hspace=space, wspace=space)
+
+    # Plot marginals
+    ax_marg_x.plot(x, Pxy.sum(axis=0), drawstyle='steps', color=marginal_color)
+    ax_marg_x.fill_between(x, Pxy.sum(axis=0), alpha=marginal_alpha, step='pre',
+            color=marginal_fill)
+    ax_marg_y.plot(Pxy.sum(axis=1), y, drawstyle='steps', color=marginal_color)
+    ax_marg_y.fill_between(Pxy.sum(axis=1), y, alpha=marginal_alpha, step='pre',
+            color=marginal_fill)
+
+    # Plot joint distribution
+    cax = ax_joint.matshow(Pxy, cmap=joint_cmap, origin='lower',
+                           extent=extent, aspect=aspect)
+    # Move ticks to the bottom of the plot
+    ax_joint.xaxis.tick_bottom()
+    ax_joint.grid(False)
+
+    # Label axis
+    ax_joint.set_xlabel(xlabel)
+    ax_joint.set_ylabel(ylabel)
+
+    if include_cbar:
+        # Generate a colorbar with the concentrations
+        cbar_ax = f.add_axes([1.0, 0.25, 0.03, 0.5])
+
+        # Add colorbar, make sure to specify tick locations to match desired ticklabels
+        cbar = f.colorbar(cax, cax=cbar_ax, format='%.0E')
+
+        # Label colorbar
+        cbar.set_label(cbar_label)
