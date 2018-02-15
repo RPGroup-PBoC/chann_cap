@@ -1560,7 +1560,7 @@ def joint_marginal_plot(x, y, Pxy,
                             n_colors=1),
                         marginal_alpha=0.8,
                         joint_cmap='Blues', include_cbar=True,
-                        cbar_label='probability'): 
+                        cbar_label='probability', vmin=None, vmax=None): 
     '''
     Plots the joint and marginal distributions like the seaborn jointplot.
 
@@ -1596,6 +1596,11 @@ def joint_marginal_plot(x, y, Pxy,
         distribution values.
     cbar_label : str. Default = 'probability'
         Label for the color bar
+    vmin, vmax : scalar, optional, default: None
+        From the plt.imshow documentation:
+        `vmin` and `vmax` are used in conjunction with norm to normalize
+        luminance data.  Note if you pass a `norm` instance, your
+        settings for `vmin` and `vmax` will be ignored.
     '''
     # Define the extent of axis and aspect ratio of heatmap
     extent = [x.min(), x.max(), y.min(), y.max()]
@@ -1645,7 +1650,7 @@ def joint_marginal_plot(x, y, Pxy,
 
     # Plot joint distribution
     cax = ax_joint.matshow(Pxy, cmap=joint_cmap, origin='lower',
-                           extent=extent, aspect=aspect)
+                           extent=extent, aspect=aspect, vmin=vmin, vmax=vmax)
     # Move ticks to the bottom of the plot
     ax_joint.xaxis.tick_bottom()
     ax_joint.grid(False)
