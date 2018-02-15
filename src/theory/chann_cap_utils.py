@@ -1553,7 +1553,7 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
 
 
 def joint_marginal_plot(x, y, Pxy,
-                        xlabel='', ylabel='',
+                        xlabel='', ylabel='', title='',
                         size=5.5, ratio=5, space=0.1,
                         marginal_color='black',
                         marginal_fill=sns.color_palette('colorblind',
@@ -1575,6 +1575,8 @@ def joint_marginal_plot(x, y, Pxy,
         X-label for the joint plot.
     ylabel : str.
         Y-label for the joint plot.
+    title : str.
+        Title for the entire plot.
     size : float.
         Figure size.
     ratio : float.
@@ -1601,6 +1603,7 @@ def joint_marginal_plot(x, y, Pxy,
 
     # Initialize figure
     f = plt.figure(figsize=(size, size))
+
     # Specify gridspec
     gs = plt.GridSpec(ratio + 1, ratio + 1)
 
@@ -1636,6 +1639,9 @@ def joint_marginal_plot(x, y, Pxy,
     ax_marg_y.plot(Pxy.sum(axis=1), y, drawstyle='steps', color=marginal_color)
     ax_marg_y.fill_between(Pxy.sum(axis=1), y, alpha=marginal_alpha, step='pre',
             color=marginal_fill)
+
+    # Set title above the ax_arg_x plot
+    ax_marg_x.set_title(title)
 
     # Plot joint distribution
     cax = ax_joint.matshow(Pxy, cmap=joint_cmap, origin='lower',
