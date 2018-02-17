@@ -811,6 +811,112 @@ def maxent_reg_p_ss(constraint_dict, samplespace, C, rep, eRA,
     # Return probability distribution
     return max_ent_dist
 
+#============================================================================== 
+# MaxEnt_approx_joint
+#============================================================================== 
+
+def moment_ss_reg(moment_fun, C, rep, eRA, 
+                 k0=2.7E-3, kp_on=5.5, kp_off=28.9, rm=87.6, gm=1,
+                 rp=0.0975, gp=97.53,
+                 Nns=4.6E6, ka=139, ki=0.53, epsilon=4.5):
+    '''
+    Computes the mRNA and/or protein steady state moments given a list
+    of functions (moments) and all the chemical master equation
+    parameters.
+    
+    Parameters
+    ----------
+    moment_fun : list.
+        List containing the functions to be used to compute the steady
+        state moments.
+    C : array-like.
+        Concentration at which evaluate the probability.
+    rep: float.
+        repressor copy number per cell.
+    eRA : float.
+        Repressor binding energy [kBT]
+    rm : float.
+        transcription initiation rate. [time**-1]
+    gm : float.
+        mRNA degradation rate. [time**-1]
+    rp : float.
+        translation initiation rate. [time**-1]
+    gp : float.
+        protein degradation rate. [time**-1]
+    k0 : float.
+        diffusion limited rate of a repressor binding the promoter
+    kp_on : float.
+        RNAP on rate. [time**-1]
+    kp_off : float.
+        RNAP off rate. [time**-1]
+    Nns : float.
+        Number of non-specific binding sites
+    ki, ka : float.
+        dissociation constants for the inactive and active states respectively
+        in the MWC model of the lac repressor.
+    epsilon : float.
+        energetic barrier between the inactive and the active state.
+        
+    Returns
+    -------
+    moments_num : array-like. len(C) x len(moments)
+        Array containing all the required moments for each of the indicated
+        concentrations of inducer
+    '''
+    # Convert C into np.array
+    C = np.array(C)
+    
+    # Calculate the repressor on rate including the MWC model
+    kr_on = k0 * rep * p_act(C, ka, ki, epsilon)
+    
+    # Compute the repressor off-rate based on the on-rate and the 
+    # binding energy
+    kr_off = kr_off_fun(eRA, k0, kp_on, kp_off, Nns)
+    
+    # Generate array with variables
+    param = [kr_on, kr_off, kp_on, kp_off, rm, gm, rp, gp]
+    
+    # Initialie array to save the moments
+    moment_num = np.zeros(len(moment_fun))
+    
+    # Loop through functions to compute moments
+    for i, fun in enumerate(moment_fun):
+        # Find the number of variables in function. mRNA functions have
+        # 6 arguments while protein functions have 8.
+        arg_num = fun.__code__.co_argcount
+        
+        # Compute moment
+        moment_num[i] = fun(*param[:arg_num])
+        
+    # Return moments
+    return moment_num
+
+#============================================================================== 
+
+
+# Functions used with the maxentropy package to fit the Lagrange multipliers of
+# the MaxEnt distribution
+# mRNA
+def m1_fn(x):
+    return x[0]
+
+def m2_fn(x):
+    return x[0]**2
+
+def m3_fn(x):
+    return x[0]**3
+
+# protein
+def p1_fn(x):
+    return x[1]
+
+def p2_fn(x):
+    return x[1]**2
+
+# Cross correlations
+def mp_fn(x):
+    return x[0] * x[1]
+
 # =============================================================================
 # moment_dynamics_numeric_protein
 # =============================================================================
