@@ -28,6 +28,9 @@
 #Comments :
 # It was particularly difficult to find lots of positions for concentration
 # 75 µM so there are less pictures for this concentration.
+# VERY IMPORTANT: The microscope was set to TIRF illumination, on the mCherry
+# channel. What this means is that the segmentation might not have been the 
+# best since it reduces the area by ≈ 30%.
 date,username,operator,binding_energy,rbs,repressors,IPTG_uM,area,eccentricity,solidity,mean_intensity
 20180320,mrazomej,O2,-13.9,auto,0,0.0,4.352,0.9575351892677836,0.9289617486338798,266.49926871424407
 20180320,mrazomej,O2,-13.9,auto,0,0.0,3.3024,0.9130604122195276,0.9847328244274808,275.1744253074616
