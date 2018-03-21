@@ -77,7 +77,7 @@ if compute_exp:
 
     # Perform the parallel computation
     print('Performing bootsrap estimates of channel capacity...')
-    channcap_list = Parallel(n_jobs=7)(delayed(channcap_bs_parallel)(b) \
+    channcap_list = Parallel(n_jobs=48)(delayed(channcap_bs_parallel)(b) \
                                         for b in bins)
     print('Done performing calculations.')
 
