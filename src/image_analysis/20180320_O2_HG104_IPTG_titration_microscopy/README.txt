@@ -28,3 +28,6 @@
 #Comments :
 # It was particularly difficult to find lots of positions for concentration
 # 75 µM so there are less pictures for this concentration.
+# VERY IMPORTANT: The microscope was set to TIRF illumination, on the mCherry
+# channel. What this means is that the segmentation might not have been the 
+# best since it reduces the area by ≈ 30%.
