@@ -64,7 +64,7 @@ df = df_micro[(df_micro.rbs != 'auto') & (df_micro.rbs != 'delta')]
 #============================================================================== 
 # Compute channel capacity for experimental data
 #============================================================================== 
-compute_exp = True
+compute_exp = False
 if compute_exp:
     def channcap_bs_parallel(b):
         # Initialize matrix to save bootstrap repeats
@@ -126,7 +126,7 @@ df_cc[['date', 'bins']] = df_cc[['date', 'bins']].astype(int)
 # Computing the channel capacity for randomized data
 #============================================================================== 
 
-compute_shuff = True
+compute_shuff = False
 
 if compute_shuff:
     print('shuffling mean_intensity data')
