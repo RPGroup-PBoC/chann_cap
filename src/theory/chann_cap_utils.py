@@ -1075,7 +1075,7 @@ def dpdt(mp, t, Kmat, Rm, Gm, Rp, Gp):
     # <m2p>
     dm2pdt_eq = np.dot((Kmat - 2 * Gm - Gp), m2p) +\
         np.dot(Rm, p1) +\
-        np.dot((Rm + Gm), mp1) +\
+        np.dot((2 * Rm + Gm), mp1) +\
         np.dot(Rp, m3)
     dmpdt = np.append(dmpdt, dm2pdt_eq)
     # <mp2>
