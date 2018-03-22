@@ -169,7 +169,7 @@ def trans_matrix(df, bins, frac=None,
     n_inputs = df.IPTG_uM.unique().size
 
     # Initialize transition matrix
-    QmC = np.zeros([bins, n_inputs])
+    QmC = np.zeros([int(bins), int(n_inputs)])
 
     # Loop through different groups
     # Unfortunately we need to initalize a counter because the groupby
