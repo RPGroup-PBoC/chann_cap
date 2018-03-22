@@ -29,7 +29,8 @@ conditions of what a metric for information should be, was of the same
 functional form as the thermodynamic entropy -- thereby naming it the same
 \cite{MacKay2003}. He also gave a definition, based on this information entropy,
 for the relationship between inputs and outputs known as the mutual information
-(see Appendix XX for details on these metrics).
+(see Appendix XX for details on these metrics). \mrm{This would be a useful
+appendix regardless of the type of journal.}
 
 In recent years there has been a growing interest in understanding the
 theoretical limits on cellular information processing \cite{Bialek2005,
@@ -46,173 +47,16 @@ regulation has lead to predictive power not only over the mean, but the noise in
 gene expression as a function of relevant parameters such as regulatory protein
 copy numbers, affinity of these proteins to the DNA promoter, as well as the
 extracellular concentrations of inducer molecules\cite{Jones2014a, Brewster2014,
-Garcia2011c} \manuelComment{maybe here we'll add both the induciton and the
-mutants paper}
+Garcia2011ck, Razo-Mejia2018} \mrm{Too self referential so far. Include Ido,
+maybe Al Sanchez. It must be experiment-theory contrasting though!}
 
 In this work we follow the same strategy of theory-experiment contrast to
-predict from first principles the effect of these parameters on the information
+predict from first principles the effect of biophysical parameters such as
+transcription factor copy number and protein-DNA affinity on the information
 processing capacity of of a simple repression genetic circuit. We use a master
 equation-based model for the protein copy number distribution in combination
 with equilibrium model for the effect of an extracellular inducer concentration
 to predict the channel capacity, i.e. the maximum information that can be
 processed by this gene regulatory architecture. We then compare these
 theoretical predictions with our experimental determinations of the channel
-capacity, \manuelComment{finding an excellent agreement between theory and
-experiment}.
-
-% One of the key characteristics of living organisms is their unique ability to
-% process an environmental signal into a robust and adequate response
-% \cite{Nemenman2010}. Such signaling pathways are commonly characterized using
-% dose-response curves, which measure the mean response for varying concentrations
-% of the stimulus. Yet from this perspective, it is easy to overlook the inherent
-% variability present within these cellular processes. %For example, given the
-% % small number of molecules involved in most chemical
-% %transformations in the cell and the fact that, at the length scale of cellular
-% %components\sout{, thermal noise is in the same regime as other deterministic
-% %	energies} \talComment{thermal noise may be comparable to binding energies}
-% %\cite{Phillips2006}, two genetically identical cells exposed to the same
-% %stimulus will not have an identical response \cite{Eldar2010}.
-% Even in clonal populations of bacteria, various mechanisms give rise to
-% fluctuations in the number of protein produced in a cell including the intrinsic
-% noise in gene expression \cite{Elowitz2002} and uneven partitioning during cell
-% division \cite{Huh2011}. Such fluctuations are not necessarily harmful to
-% biological systems, and in several systems such noise has been harnessed to aid
-% fitness. For example, fluctuations in the chemotaxis machinery of clonal
-% \textit{E. coli} enables the colony to better adapt to changing environmental
-% conditions \cite{Frankel2014}. Nevertheless, these fluctuations ultimately
-% constrain how tightly protein copy numbers can be regulated \cite{Lestas2010}
-%
-% Within the past decade, significant strides have been made both experimentally
-% and theoretically that enable us to probe beyond the mean and noise of cellular
-% responses and explore the full probability distribution of proteins (see
-% \fref[figExpSetup]). In viewing these distributions, we immediately confront a
-% nuance that remained hidden when only considering the average response, namely,
-% that multiple inputs can generate the same system response. For example, the
-% input marked by the black dashed line in \fref[figExpSetup]\letter{C} could be
-% generated from either a small or medium concentration of the input molecule. If
-% the cell would optimally respond in two different ways to small and medium
-% ranges of signal, this inability to precisely infer the input concentration from
-% the level of gene expression would hamper the cell. In contrast, if the level of
-% gene expression matches the orange line in \fref[figExpSetup]\letter{C}, the
-% cell can confidently predict a large input signal and react accordingly.
-%
-% In this sense, a cell can optimally respond to its surroundings when its gene
-% expression profile under the variety of physiologically relevant inputs are all
-% well separated, a notion which is quantified by calculating the mutual
-% information between the input signal and output of a cellular process. Mutual
-% information has been shown to be the natural currency of evolution in many
-% cellular contexts. For example, transcription factor binding maximizes the
-% information transfer between binding energy and the information gain per energy
-% \cite{Savir2016} In this work, we explore the the mutual information in the
-% context of transcriptional regulation.
-%
-% In the past few years, equilibrium models have been developed which capture the
-% mean \cite{Garcia2011c} and noise \cite{Jones2014a} of transcriptional
-% regulation. This work was then extended to capture the full probability
-% distribution of mRNA \cite{Sanchez2013} and proteins \cite{Shahrezaei2008,
-% 	Swain2016} using master equations, enabling us to analytically compute the
-% distribution of gene expression for any input in terms of a few physically
-% parameters such as the number of transcription factors and their DNA binding
-% energies. Our main result in this work will be to combine this distribution of
-% gene expression with the methods of information theory to calculate the channel
-% capacity, defined as the maximum information between an environmental input and
-% gene expression over all possible distribution of inputs. Using the standard
-% assumption that the channel capacity is proportional to the fitness of an
-% organism \cite{Tkacik2008a}, this enable us to directly link the fitness of an
-% organism to the fundamental physical parameters governing our system of
-% interest.
-%
-% To test our model, we construct a synthetic circuit using the inducible
-% \textit{lac} operon in \textit{Escherichia coli} and verify both the gene
-% expression profiles and the corresponding mutual information between the input
-% and output. We then tune two physical parameters in the system -- the Lac
-% repressor copy number and the DNA-repressor binding affinity -- and demonstrate
-% how the mutual information matches our theoretical predictions. We next explore
-% the implications of our model on the \textit{lac} system, determining what
-% combinations of physical parameters yield the maximum possible mutual
-% information between the input and output. In doing so, we can transform our deep
-% understanding of transcriptional regulation into the context of an evolutionary
-% landscape.
-
-
-%But even more interesting than being able to predict shapes of gene expression
-%distributions as different inducer concentrations are titrated in, we can use
-%ideas from information theory to quantify the full relationship between inducer
-%inputs and gene expression outputs \cite{Tkacik2008a}. In particular mutual
-%information measures how well a cell can distinguish between different input
-%concentration \cite{Bowsher2014}.
-%
-%The \textit{lac} operon in \textit{Escherichia coli} has served as a canonical
-%example of transcriptional regulation. Precise, quantitative measurements have
-%been made on both natural and synthetic constructs \cite{Garcia2011} that
-%capture average gene expression based on the number of Lac repressors and the
-%repressor-DNA binding affinity. This work was later extended to include cell to
-%cell variability by measuring the Fano factor \cite{Jones2014}, with the results
-%once again well matching the corresponding thermodynamic models. In this work,
-%we take the next step by measuring the full distribution of gene expression as
-%repressor copy number and DNA affinity are varied. In doing so, we can transform
-%our deep understanding of transcriptional regulation into the context of an
-%evolutionary landscape.
-
-%It has been shown in many contexts that the natural currency of evolution comes
-%in the form of a cell's signal processing capability, more specifically in the
-%mutual information between an environmental cue and a cell's response
-%[\textit{cite Bialek}]. \talComment{Need some background sentences on what
-%	mutual information is and some history on how it has been used effectively.} In
-%this paper, we combine experiment and theory to investigate how the channel
-%capacity, the maximum mutual information between an environmental input and gene
-%expression over all possible distribution of inputs, varies with Lac repressor
-%copy number and DNA affinity.
-
-%Using the same data used to generate \fref[fig:fit], \fref[fig:gene_dist]
-%highlights the non-deterministic input-output relationship for the simple
-%repression circuit. The differences at the level of mean gene expression shown
-%in \fref[fig:fit] are blurred out when considering the full distribution of gene
-%expression. This implies that, at the single cell level, cells cannot uniquely
-%resolve the extracellular concentration of inducer. For a cell to properly
-%resolve an environment, any point on the x-axis of \fref[fig:gene_dist] should
-%map to a unique concentration of inducer. The more overlap there is between
-%distributions the less accurate the inference of the environmental state will
-%be.
-%
-%Information theory provides a useful metric for quantifying biological
-%phenomenon. For example, it has been shown that transcription factor binding
-%maximizes the information transfer between binding energy and the information
-%gain per energy \cite{Savir2016} \talComment{Some more examples here would be
-%	nice.}. For our purposes, extending the analysis of simple repression to
-%incorporate not only the mean gene expression but the full distribution of
-%single-cell measurements enables us to compute the channel capacity and verify
-%whether \talComment{what is our theoretical prediction for this?}.
-
-%Even in clonal populations of bacteria, various mechanisms give rise to
-%fluctuations in the number of protein produced in a cell including the intrinsic
-%noise in gene expression \cite{Elowitz2002} and uneven partitioning during cell
-%division \cite{Huh2011}, which ultimately constrains how tightly protein copy
-%numbers can be regulated \cite{Lestas2010}. Such fluctuations are not
-%necessarily harmful to biological systems, and in several systems such noise has
-%been harnessed to aid fitness. For example, fluctuations in the chemotaxis
-%machinery of clonal \textit{E. coli} enables the colony to better adapt to
-%changing environmental conditions \cite{Frankel2014}.
-
-%Measuring the channel requires the full gene expression probability
-%distribution, and hence is a new metric that has not been explored for the Lac
-%system. We show that experimental measurements are well characterized by a simple two-state thermodynamic model where the Lac promoter is either occupied by RNA polymerase (RNAP) or Lac repressor. We ignore the the possibility that the promoter is empty state, and show that the results are still extremely accurate \talComment{Do we want to have the full version in the SI? This allows us to get a closed analytic form for the distribution, but can we get a closed form solution for the mutual information? If not, perhaps we should just use a full 3-state model since we will be doing thing numerically anyways.}. \textit{Talk about the allosteric nature of the Lac repressor and its relationship to the gratuitous inducer IPTG...}
-
-%By working on the well studied Lac system, we can theoretically predict the channel capacity as a function of the biophysical parameters of repressor copy number, DNA affinity, and the mRNA production and degradation rates. This glimpse into the evolutionary landscape of the Lac repressor allows us to place the wild type Lac repressor in the context of the pressures acting upon it.
-
-
-\begin{figure}[h!]
-	\centering \includegraphics[scale=0.8]{experiment_setupV3}
-	\caption{
-		\captionStroke{Transcription regulation under different
-			environmental conditions.}
-		As environmental concentrations of the inducer IPTG
-	increase, more Lac repressor molecules within the cell will transition into
-	their allosterically inactivate state, where they are much less likely to bind
-	to DNA. Consequently, RNAP is more likely to bind to the operator which
-	increases the mRNA copy number. This mRNA is both translated into a reporter
-	protein and degraded by the cell. Variability in this process will create a
-	probability distribution for gene expression in the presence of different
-	levels of IPTG, with the mean gene expression increasing with IPTG
-	concentration. \talComment{I'm thinking the middle graphic should be something much nicer, like a diagram of RNAP binding to a promoter, with a repressor suppressing the system and IPTG suppressing the repressor, and the RNAP promoting mRNA which promotes protein expression with degradation}} \label{figExpSetup}
-\end{figure}
+capacity, \mrm{finding a good agreement between theory and experiment}.
