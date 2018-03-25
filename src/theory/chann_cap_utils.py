@@ -915,7 +915,7 @@ def p2_fn(x):
     return x[1]**2
 
 def p3_fn(x):
-    return x[1]**4
+    return x[1]**3
 
 # Cross correlations
 def mp_fn(x):
@@ -927,6 +927,9 @@ def m2p_fn(x):
 def mp2_fn(x):
     return x[0] * x[1]**2
 
+
+def feature_fn(x, x_expo):
+    return x[0]**x_expo[0] * x[1]**x_expo[1]
 
 # =============================================================================
 # moment_dynamics_numeric_protein
