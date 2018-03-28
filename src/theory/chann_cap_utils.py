@@ -3,7 +3,7 @@
 Title:
     chann_cap_utils
 Last update:
-    2018-03-20
+    2018-03-27
 Author(s):
     Manuel Razo-Mejia
 Purpose:
@@ -46,6 +46,8 @@ import seaborn as sns
 # =============================================================================
 # Generic themrodynamic functions
 # =============================================================================
+
+
 def p_act(C, ka, ki, epsilon=4.5, logC=False):
     '''
     Returns the probability of a lac repressor being in the active state, i.e.
@@ -73,11 +75,12 @@ def p_act(C, ka, ki, epsilon=4.5, logC=False):
         C = 10**C
 
     return (1 + C / ka)**2 / \
-            ((1 + C / ka)**2 + np.exp(-epsilon) * (1 + C / ki)**2)
+        ((1 + C / ka)**2 + np.exp(-epsilon) * (1 + C / ki)**2)
 
 # =============================================================================
 # chemical_master_eq_analytic_mRNA
 # =============================================================================
+
 
 def kon_fn(epsilon, k0=2.7E-3):
     '''
@@ -95,12 +98,14 @@ def kon_fn(epsilon, k0=2.7E-3):
 
 # =============================================================================
 
+
 # define a np.frompyfunc that allows us to evaluate the sympy.mp.math.hyp1f1
-np_log_hyp= np.frompyfunc(lambda x, y, z: \
-mpmath.ln(mpmath.hyp1f1(x, y, z, zeroprec=80)), 3, 1)
+np_log_hyp = np.frompyfunc(lambda x, y, z:
+                           mpmath.ln(mpmath.hyp1f1(x, y, z, zeroprec=80)), 3, 1)
+
 
 def log_p_m_mid_C(C, mRNA, rep, ki, ka, epsilon, kon, k0, gamma, r_gamma,
-                 logC=False):
+                  logC=False):
     '''
     Computes the log conditional probability lnP(m|C,R),
     i.e. the probability of having m mRNA molecules given
@@ -146,13 +151,13 @@ def log_p_m_mid_C(C, mRNA, rep, ki, ka, epsilon, kon, k0, gamma, r_gamma,
 
     # Compute the probability
     lnp = scipy.special.gammaln(kon / gamma + mRNA) \
-    - scipy.special.gammaln(mRNA + 1) \
-    - scipy.special.gammaln((koff + kon) / gamma + mRNA) \
-    + scipy.special.gammaln((koff + kon) / gamma) \
-    - scipy.special.gammaln(kon / gamma) \
-    + mRNA * np.log(r_gamma) \
-    + np_log_hyp(kon / gamma + mRNA,
-            (koff + kon) / gamma + mRNA, -r_gamma)
+        - scipy.special.gammaln(mRNA + 1) \
+        - scipy.special.gammaln((koff + kon) / gamma + mRNA) \
+        + scipy.special.gammaln((koff + kon) / gamma) \
+        - scipy.special.gammaln(kon / gamma) \
+        + mRNA * np.log(r_gamma) \
+        + np_log_hyp(kon / gamma + mRNA,
+                     (koff + kon) / gamma + mRNA, -r_gamma)
 
     return lnp.astype(float)
 
@@ -160,9 +165,11 @@ def log_p_m_mid_C(C, mRNA, rep, ki, ka, epsilon, kon, k0, gamma, r_gamma,
 # chemical_masater_eq_analytic_protein
 # =============================================================================
 
+
 # define a np.frompyfunc that allows us to evaluate the sympy.mp.math.hyp1f1
-np_log_gauss_hyp = np.frompyfunc(lambda a, b, c, z: \
-mpmath.ln(mpmath.hyp2f1(a, b, c, z,  maxprec=60)).real, 4, 1)
+np_log_gauss_hyp = np.frompyfunc(lambda a, b, c, z:
+                                 mpmath.ln(mpmath.hyp2f1(a, b, c, z,  maxprec=60)).real, 4, 1)
+
 
 def log_p_p_mid_C(C, protein, rep, ka, ki, epsilon, kon, k0, gamma_m, r_gamma_m,
                   gamma_p, r_gamma_p, logC=False):
@@ -214,8 +221,8 @@ def log_p_p_mid_C(C, protein, rep, ka, ki, epsilon, kon, k0, gamma_m, r_gamma_m,
     koff = k0 * rep * p_act(C, ka, ki, epsilon)
 
     # compute the variables needed for the distribution
-    a = r_gamma_m * gamma_m / gamma_p # r_m / gamma_p
-    b = r_gamma_p * gamma_p / gamma_m # r_p / gamma_m
+    a = r_gamma_m * gamma_m / gamma_p  # r_m / gamma_p
+    b = r_gamma_p * gamma_p / gamma_m  # r_p / gamma_m
     gamma = gamma_m / gamma_p
     Kon = kon / gamma_p
     Koff = koff / gamma_p
@@ -227,19 +234,20 @@ def log_p_p_mid_C(C, protein, rep, ka, ki, epsilon, kon, k0, gamma_m, r_gamma_m,
 
     # Compute the probability
     lnp = scipy.special.gammaln(alpha + protein) \
-    + scipy.special.gammaln(beta + protein) \
-    + scipy.special.gammaln(Kon + Koff) \
-    - scipy.special.gammaln(protein + 1) \
-    - scipy.special.gammaln(alpha) \
-    - scipy.special.gammaln(beta) \
-    - scipy.special.gammaln(Kon + Koff + protein) \
-    + protein * (np.log(b) - np.log(1 + b)) \
-    + alpha * np.log(1 - b / (1 + b)) \
-    + np_log_gauss_hyp(alpha + protein, Kon + Koff - beta,
-            Kon + Koff + protein, b / (1 + b))
+        + scipy.special.gammaln(beta + protein) \
+        + scipy.special.gammaln(Kon + Koff) \
+        - scipy.special.gammaln(protein + 1) \
+        - scipy.special.gammaln(alpha) \
+        - scipy.special.gammaln(beta) \
+        - scipy.special.gammaln(Kon + Koff + protein) \
+        + protein * (np.log(b) - np.log(1 + b)) \
+        + alpha * np.log(1 - b / (1 + b)) \
+        + np_log_gauss_hyp(alpha + protein, Kon + Koff - beta,
+                           Kon + Koff + protein, b / (1 + b))
     return lnp.astype(float)
 
 # ==============================================================================
+
 
 def log_p_p_mid_C_spline(C, p_range, step, rep, ka, ki, omega,
                          kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p,
@@ -311,11 +319,12 @@ def log_p_p_mid_C_spline(C, p_range, step, rep, ka, ki, omega,
             print('Did not pass the normalization test. Re-doing calculation')
             protein = np.arange(p_range[0], p_range[1])
             return log_p_p_mid_C(C, protein, rep, ka, ki, omega,
-                        kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p)
+                                 kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p)
     else:
         return lnp
 
 # ==============================================================================
+
 
 def log_p_p_mid_C_spline(C, p_range, step, rep, ka, ki, omega,
                          kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p,
@@ -370,7 +379,7 @@ def log_p_p_mid_C_spline(C, p_range, step, rep, ka, ki, omega,
     protein = np.append(protein, p_range[1])
     # Compute the probability
     lnp = log_p_p_mid_logC(C, protein, rep, ka, ki, omega,
-                        kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p)
+                           kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p)
 
     # Perform the cubic spline interpolation
     lnp_spline = scipy.interpolate.interp1d(protein, lnp, kind='cubic')
@@ -386,16 +395,18 @@ def log_p_p_mid_C_spline(C, p_range, step, rep, ka, ki, omega,
             print('Did not pass the normalization test. Re-doing calculation')
             protein = np.arange(p_range[0], p_range[1])
             return log_p_p_mid_C(C, protein, rep, ka, ki, omega,
-                        kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p)
+                                 kon, k0, gamma_m, r_gamma_m, gamma_p, r_gamma_p)
     else:
         return lnp
+
 
 # =============================================================================
 # chemical_master_mRNA_FISH_mcmc
 # =============================================================================
 # define a np.frompyfunc that allows us to evaluate the sympy.mp.math.hyp1f1
-np_log_hyp= np.frompyfunc(lambda x, y, z: \
-mpmath.ln(mpmath.hyp1f1(x, y, z, zeroprec=1000)), 3, 1)
+np_log_hyp = np.frompyfunc(lambda x, y, z:
+                           mpmath.ln(mpmath.hyp1f1(x, y, z, zeroprec=1000)), 3, 1)
+
 
 def log_p_m_unreg(mRNA, kp_on, kp_off, gm, rm):
     '''
@@ -424,13 +435,13 @@ def log_p_m_unreg(mRNA, kp_on, kp_off, gm, rm):
 
     # Compute the probability
     lnp = scipy.special.gammaln(kp_on / gm + mRNA) \
-    - scipy.special.gammaln(mRNA + 1) \
-    - scipy.special.gammaln((kp_off + kp_on) / gm + mRNA) \
-    + scipy.special.gammaln((kp_off + kp_on) / gm) \
-    - scipy.special.gammaln(kp_on / gm) \
-    + mRNA * np.log(rm / gm) \
-    + np_log_hyp(kp_on / gm + mRNA,
-            (kp_off + kp_on) / gm + mRNA, -rm / gm)
+        - scipy.special.gammaln(mRNA + 1) \
+        - scipy.special.gammaln((kp_off + kp_on) / gm + mRNA) \
+        + scipy.special.gammaln((kp_off + kp_on) / gm) \
+        - scipy.special.gammaln(kp_on / gm) \
+        + mRNA * np.log(rm / gm) \
+        + np_log_hyp(kp_on / gm + mRNA,
+                     (kp_off + kp_on) / gm + mRNA, -rm / gm)
 
     return lnp.astype(float)
 
@@ -484,6 +495,8 @@ with open('../../tmp/three_state_protein_lambdify.dill', 'rb') as file:
 # =============================================================================
 # MaxEnt_approx_mRNA
 # =============================================================================
+
+
 def kr_off_fun(eRA, k0, kp_on, kp_off, Nns=4.6E6):
     '''
     Returns the off rate of the repressor as a function of the stat. mech.
@@ -812,19 +825,20 @@ def maxent_reg_p_ss(constraint_dict, samplespace, C, rep, eRA,
     # Return probability distribution
     return max_ent_dist
 
-#============================================================================== 
+# ==============================================================================
 # MaxEnt_approx_joint
-#============================================================================== 
+# ==============================================================================
 
-def moment_ss_reg(moment_fun, C, rep, eRA, 
-                 k0=2.7E-3, kp_on=5.5, kp_off=28.9, rm=87.6, gm=1,
-                 rp=0.0975, gp=97.53,
-                 Nns=4.6E6, ka=139, ki=0.53, epsilon=4.5):
+
+def moment_ss_reg(moment_fun, C, rep, eRA,
+                  k0=2.7E-3, kp_on=5.5, kp_off=28.9, rm=87.6, gm=1,
+                  rp=0.0975, gp=97.53,
+                  Nns=4.6E6, ka=139, ki=0.53, epsilon=4.5):
     '''
     Computes the mRNA and/or protein steady state moments given a list
     of functions (moments) and all the chemical master equation
     parameters.
-    
+
     Parameters
     ----------
     moment_fun : list.
@@ -857,7 +871,7 @@ def moment_ss_reg(moment_fun, C, rep, eRA,
         in the MWC model of the lac repressor.
     epsilon : float.
         energetic barrier between the inactive and the active state.
-        
+
     Returns
     -------
     moments_num : array-like. len(C) x len(moments)
@@ -866,33 +880,33 @@ def moment_ss_reg(moment_fun, C, rep, eRA,
     '''
     # Convert C into np.array
     C = np.array(C)
-    
+
     # Calculate the repressor on rate including the MWC model
     kr_on = k0 * rep * p_act(C, ka, ki, epsilon)
-    
-    # Compute the repressor off-rate based on the on-rate and the 
+
+    # Compute the repressor off-rate based on the on-rate and the
     # binding energy
     kr_off = kr_off_fun(eRA, k0, kp_on, kp_off, Nns)
-    
+
     # Generate array with variables
     param = [kr_on, kr_off, kp_on, kp_off, rm, gm, rp, gp]
-    
+
     # Initialie array to save the moments
     moment_num = np.zeros(len(moment_fun))
-    
+
     # Loop through functions to compute moments
     for i, fun in enumerate(moment_fun):
         # Find the number of variables in function. mRNA functions have
         # 6 arguments while protein functions have 8.
         arg_num = fun.__code__.co_argcount
-        
+
         # Compute moment
         moment_num[i] = fun(*param[:arg_num])
-        
+
     # Return moments
     return moment_num
 
-#============================================================================== 
+# =============================================================================
 
 
 # Functions used with the maxentropy package to fit the Lagrange multipliers of
@@ -901,28 +915,38 @@ def moment_ss_reg(moment_fun, C, rep, eRA,
 def m1_fn(x):
     return x[0]
 
+
 def m2_fn(x):
     return x[0]**2
+
 
 def m3_fn(x):
     return x[0]**3
 
 # protein
+
+
 def p1_fn(x):
     return x[1]
 
+
 def p2_fn(x):
     return x[1]**2
+
 
 def p3_fn(x):
     return x[1]**3
 
 # Cross correlations
+
+
 def mp_fn(x):
     return x[0] * x[1]
 
+
 def m2p_fn(x):
     return x[0]**2 * x[1]
+
 
 def mp2_fn(x):
     return x[0] * x[1]**2
@@ -1133,14 +1157,15 @@ def dynamics_to_df(sol, t):
     for i, index in enumerate(idx):
         # Compute and save global moment
         mat[:, i+1] = np.sum(sol[:, int(index):int(index + sol.shape[1] / 10)],
-            axis=1)
+                             axis=1)
 
     return pd.DataFrame(mat, columns=names)
 
-# ============================================================================= 
+# =============================================================================
 
-def maxEnt_from_lagrange(mRNA, protein, lagrange, 
-                         exponents=[(1, 0), (2, 0), (3, 0), 
+
+def maxEnt_from_lagrange(mRNA, protein, lagrange,
+                         exponents=[(1, 0), (2, 0), (3, 0),
                                     (0, 1), (0, 2), (1, 1)], log=False):
     '''
     Computes the mRNA and protein joint distribution P(m, p) as approximated
@@ -1165,21 +1190,21 @@ def maxEnt_from_lagrange(mRNA, protein, lagrange,
     '''
     # Generate grid of points
     mm, pp = np.meshgrid(mRNA, protein)
-    
+
     # Initialize 3D array to save operations associated with each lagrange
     # multiplier
     operations = np.zeros([len(lagrange), len(protein), len(mRNA)])
-    
+
     # Compute operations associated with each Lagrange Multiplier
     for i, expo in enumerate(exponents):
         operations[i, :, :] = lagrange[i] * mm**expo[0] * pp**expo[1]
-    
+
     # check if the log probability should be returned
     if log:
         return np.sum(operations, axis=0) -\
-               sp.misc.logsumexp(np.sum(operations, axis=0))
+            sp.misc.logsumexp(np.sum(operations, axis=0))
     else:
-        return np.exp(np.sum(operations, axis=0) -\
+        return np.exp(np.sum(operations, axis=0) -
                       sp.misc.logsumexp(np.sum(operations, axis=0)))
 
 
@@ -1254,6 +1279,7 @@ def channel_capacity(QmC, epsilon=1E-3, info=1E4):
 
 # =============================================================================
 
+
 def theory_trans_matrix(df_prob, c, Rtot, tol=1E-20, clean=True, **kwargs):
     '''
     Function that builds the transition matrix Qg|c for a series of
@@ -1302,7 +1328,7 @@ def theory_trans_matrix(df_prob, c, Rtot, tol=1E-20, clean=True, **kwargs):
     # row of the Qg|c matrix
     for i, rep in enumerate(repressors):
         Qgc[i, :] =\
-        df_prob[df_prob.repressor == rep].sort_values(by='protein').prob
+            df_prob[df_prob.repressor == rep].sort_values(by='protein').prob
 
     # Conditional on whether or not to clean the matrix
     if clean:
@@ -1315,6 +1341,8 @@ def theory_trans_matrix(df_prob, c, Rtot, tol=1E-20, clean=True, **kwargs):
 # =============================================================================
 # Plotting style
 # =============================================================================
+
+
 def set_plotting_style():
     """
     Formats plotting enviroment to that used in Physical Biology of the Cell,
@@ -1325,7 +1353,7 @@ def set_plotting_style():
           'axes.labelsize': 16,
           'axes.titlesize': 18,
           'axes.facecolor': '#E3DCD0',
-#          'xtick.major' : 20,
+          #          'xtick.major' : 20,
           'xtick.labelsize': 13,
           'ytick.labelsize': 13,
           'font.family': 'Lucida Sans Unicode',
@@ -1345,6 +1373,8 @@ def set_plotting_style():
 # =============================================================================
 # Useful generic functions
 # =============================================================================
+
+
 def ecdf(data):
     """
     Computes the empirical cumulative distribution function (ECDF)
@@ -1364,6 +1394,7 @@ def ecdf(data):
     return np.sort(data), np.arange(len(data))/len(data)
 
 # =============================================================================
+
 
 def hpd(trace, mass_frac):
     """
@@ -1409,10 +1440,12 @@ def hpd(trace, mass_frac):
 # =============================================================================
 # Plotting functions
 # =============================================================================
+
+
 def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
                  mean_mark=True, marker_height=0.3,
                  color_bar=True, cbar_label='', binstep=1,
-                 figsize=(6,5), title='', xlabel='', xlim=None, ylim=None):
+                 figsize=(6, 5), title='', xlabel='', xlim=None, ylim=None):
     '''
     Custom plot of the PMF and the CDF of multiple distributions
     with a side legend.
@@ -1462,21 +1495,21 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
 
     # Initialize figure
     fig, ax = plt.subplots(2, 1, figsize=figsize, sharex=True)
-    ax[0].yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(\
+    ax[0].yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(
                                     useMathText=True,
                                     useOffset=False))
 
     # Loop through inducer concentrations
     for i, c in enumerate(legend_var):
         # PMF plot
-        ax[0].plot(x[0::binstep], px[i,0::binstep],
-                 label=r'${0:d}$'.format(c), drawstyle='steps',
-                  color='k')
+        ax[0].plot(x[0::binstep], px[i, 0::binstep],
+                   label=r'${0:d}$'.format(c), drawstyle='steps',
+                   color='k')
         # Fill between each histogram
-        ax[0].fill_between(x[0::binstep], px[i,0::binstep],
+        ax[0].fill_between(x[0::binstep], px[i, 0::binstep],
                            color=colors[i], alpha=0.8, step='pre')
         # CDF plot
-        ax[1].plot(x[0::binstep], np.cumsum(px[i,:])[0::binstep],
+        ax[1].plot(x[0::binstep], np.cumsum(px[i, :])[0::binstep],
                    drawstyle='steps',
                    color=colors[i], linewidth=2)
 
@@ -1485,7 +1518,7 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     ax[0].set_ylabel('probability')
     ax[0].margins(0.02)
     # Set scientific notation
-    ax[0].ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+    ax[0].ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
     ax[0].set_xlim(xlim)
     ax[0].set_ylim(ylim)
 
@@ -1503,8 +1536,8 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     # Plot a little triangle indicating the mean of each distribution
     mean_plot = ax[0].scatter(mean_dist, [marker_height] * len(mean_dist),
                               marker='v', s=200,
-                c=np.arange(len(mean_dist)), cmap=cmap,
-                edgecolor='k', linewidth=1.5)
+                              c=np.arange(len(mean_dist)), cmap=cmap,
+                              edgecolor='k', linewidth=1.5)
 
     # Generate a colorbar with the concentrations
     cbar_ax = fig.add_axes([0.95, 0.25, 0.03, 0.5])
@@ -1513,7 +1546,7 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     for j, c in enumerate(legend_var):
         cbar.ax.text(1, j / len(legend_var) + 1 / (2 * len(legend_var)),
                      c, ha='left', va='center',
-                     transform = cbar_ax.transAxes, fontsize=12)
+                     transform=cbar_ax.transAxes, fontsize=12)
     cbar.ax.get_yaxis().labelpad = 35
     cbar.set_label(r'{:s}'.format(cbar_label))
 
@@ -1522,7 +1555,7 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
 
     plt.subplots_adjust(hspace=0.06)
 
-#============================================================================== 
+#==============================================================================
 
 
 def joint_marginal_plot(x, y, Pxy,
@@ -1530,10 +1563,10 @@ def joint_marginal_plot(x, y, Pxy,
                         size=5.5, ratio=5, space=0.1,
                         marginal_color='black',
                         marginal_fill=sns.color_palette('colorblind',
-                            n_colors=1),
+                                                        n_colors=1),
                         marginal_alpha=0.8,
                         joint_cmap='Blues', include_cbar=True,
-                        cbar_label='probability', vmin=None, vmax=None): 
+                        cbar_label='probability', vmin=None, vmax=None):
     '''
     Plots the joint and marginal distributions like the seaborn jointplot.
 
@@ -1613,10 +1646,10 @@ def joint_marginal_plot(x, y, Pxy,
     # Plot marginals
     ax_marg_x.plot(x, Pxy.sum(axis=0), drawstyle='steps', color=marginal_color)
     ax_marg_x.fill_between(x, Pxy.sum(axis=0), alpha=marginal_alpha, step='pre',
-            color=marginal_fill)
+                           color=marginal_fill)
     ax_marg_y.plot(Pxy.sum(axis=1), y, drawstyle='steps', color=marginal_color)
     ax_marg_y.fill_between(Pxy.sum(axis=1), y, alpha=marginal_alpha, step='pre',
-            color=marginal_fill)
+                           color=marginal_fill)
 
     # Set title above the ax_arg_x plot
     ax_marg_x.set_title(title)
