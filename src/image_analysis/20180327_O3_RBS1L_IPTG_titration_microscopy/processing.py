@@ -32,7 +32,7 @@ im_utils.set_plotting_style()
 
 DATE = 20180327
 USERNAME = 'mrazomej'
-OPERATOR = 'O2'
+OPERATOR = 'O3'
 BINDING_ENERGY = -9.7
 REPRESSORS = (0, 0, 870)
 IPDIST = 0.160  # in units of µm per pixel
