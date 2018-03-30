@@ -1,34 +1,66 @@
-*.aux
-*.log
+#This file exists to stop the addition of forbidden files into the github
+#respository #Such forbidden files are images, movies, and various dotfiles
+#(such as .DS_store on mac). This .gitignore file will be common to all
+#repositories and should be the first file that is committed.
+
+#Everyone makes their own graphics path based on the location of Dropbox on their computer
+graphicspath.tex
+
+#Ignore trash dotfiles.
+*.DS_store
+
+#Ignore shortcuts (on Windows)
+*.lnk
+
+#Ignore latex garbage.
 *.swp
-*.pdf
+*.log
+*.aux
+*.bbl
+*.fls
+*.fdb_latexmk
+
+#Ignore images
 *.jpg
-*.DS_store
-*.fdb_latexmk
-*.fls
-*.ai
-*.blg
-*.run.xml
-*.dvi
-*.DS_store
-*.tex~*
-*.fdb_latexmk
-*.fls
-*.docx
 *.tif*
 *.eps
 *.ai
-tmp/
+*.svg
+*.bmp
+*.hdr
+
+#Ignore movies and audio
+*.mp4
+*.mov
+*.avi
+*.wav
+*.mp3
+
+#Ignore Microsoft, Apple, and PDF documents.
+*.ppt*
+*.doc*
+*.xsl*
+*.numbers
+*.pages
+*.key
+*.pdf
+
+#Ignore LaTeX helper files
+*.blg
+*.out
+*.synctex.gz
+
+#Ignore various code garbage.
+*.pyc
+*.ipynb_checkpoints*
 **/.ipynb_checkpoints/
+*pycache*
+
+
+# Local directories to ignore
+tmp/
 fig/
 output/
-*.out
-*.gz
-*.bbl
-graphicspath.tex
-*.lnk
-__pycache__/
-**/__pycache__/
 data/microscopy/
 data/csv_channcap_bootstrap/
 data/csv_protein_dist/
