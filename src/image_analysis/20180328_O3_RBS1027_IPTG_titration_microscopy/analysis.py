@@ -26,37 +26,37 @@ import scipy.ndimage
 # Set plotting style
 im_utils.set_plotting_style()
 
-#============================================================================== 
+# =============================================================================
 # METADATA
-#============================================================================== 
+# =============================================================================
 
-DATE = 20180327
+DATE = 20180328
 USERNAME = 'mrazomej'
 OPERATOR = 'O3'
-STRAIN = 'RBS1L'
+STRAIN = 'RBS1027'
 STRAINS = [STRAIN] + ['auto', 'delta']
-REPRESSOR = 870
+REPRESSOR = 130
 BINDING_ENERGY = -9.7
 
-#============================================================================== 
+# =============================================================================
 # Read data
-df_im = pd.read_csv('./outdir/' + str(DATE) + '_' + OPERATOR + '_' +\
-               STRAIN + '_raw_segmentation.csv')
+df_im = pd.read_csv('./outdir/' + str(DATE) + '_' + OPERATOR + '_' +
+                    STRAIN + '_raw_segmentation.csv')
 
-#============================================================================== 
+# =============================================================================
 # Group by strain
 df_group = df_im.groupby('rbs')
 
 # Plot area and eccentricity ECDF
-fig, ax = plt.subplots(1, 2, figsize=(8,4))
+fig, ax = plt.subplots(1, 2, figsize=(8, 4))
 for group, data in df_group:
     area_ecdf = im_utils.ecdf(df_im.area.sample(frac=0.3))
     ecc_ecdf = im_utils.ecdf(df_im.eccentricity.sample(frac=0.3))
     ax[0].plot(area_ecdf[0], area_ecdf[1], marker='.', linewidth=0,
-             label=group, alpha=0.5)
+               label=group, alpha=0.5)
     ax[1].plot(ecc_ecdf[0], ecc_ecdf[1], marker='.', linewidth=0,
-             label=group, alpha=0.5)
-    
+               label=group, alpha=0.5)
+
 # Format plots
 ax[0].legend(loc='lower right', title='strain')
 ax[0].set_xlabel(r'area ($\mu$m$^2$)')
@@ -70,28 +70,28 @@ ax[1].margins(0.02)
 plt.tight_layout()
 plt.savefig('./outdir/ecdf.png', bbox_inches='tight')
 
-#============================================================================== 
+# =============================================================================
 
 # Apply the area and eccentricity bounds.
 df_filt = df_im[(df_im.area > 0.5) & (df_im.area < 6.0) &
-                     (df_im.eccentricity > 0.8)]
+                (df_im.eccentricity > 0.8)]
 # Save file in the same directory as the summary plots
-df_filt.to_csv('./outdir/' +\
-               str(DATE) + '_' + OPERATOR + '_' +\
+df_filt.to_csv('./outdir/' +
+               str(DATE) + '_' + OPERATOR + '_' +
                STRAIN + '_IPTG_titration_microscopy.csv', index=False)
 
 # Export file to data directory including the comments
 filenames = ['./README.txt', './outdir/' +
-             str(DATE) + '_' + OPERATOR + '_' +\
+             str(DATE) + '_' + OPERATOR + '_' +
              STRAIN + '_IPTG_titration_microscopy.csv']
 
-with open('../../../data/csv_microscopy/' + str(DATE) + '_' + OPERATOR + '_' +\
-               STRAIN + '_IPTG_titration_microscopy.csv', 'w') as output:
+with open('../../../data/csv_microscopy/' + str(DATE) + '_' + OPERATOR + '_' +
+          STRAIN + '_IPTG_titration_microscopy.csv', 'w') as output:
     for fname in filenames:
         with open(fname) as infile:
             output.write(infile.read())
 
-#============================================================================== 
+# =============================================================================
 
 # Compute mean intensity for auto and delta strains
 mean_auto = df_filt[(df_filt.rbs == 'auto') &
@@ -101,11 +101,9 @@ mean_delta = df_filt[(df_filt.rbs == 'delta') &
 
 # Include the measurements done at 5000 µM IPTG
 mean_auto_induced = df_filt[(df_filt.rbs == 'auto') &
-                    (df_filt.IPTG_uM == 5000)].mean_intensity.mean()
+                            (df_filt.IPTG_uM == 5000)].mean_intensity.mean()
 mean_delta_induced = df_filt[(df_filt.rbs == 'delta') &
-                     (df_filt.IPTG_uM == 5000)].mean_intensity.mean()
-
-
+                             (df_filt.IPTG_uM == 5000)].mean_intensity.mean()
 
 
 # Group analysis strain by RBS
@@ -117,17 +115,17 @@ for group, data in df_group:
     fold_change = (data.mean_intensity.mean() - mean_auto) /\
                   (mean_delta - mean_auto)
     fold_change_induced = (data.mean_intensity.mean() - mean_auto_induced) /\
-                  (mean_delta_induced - mean_auto_induced)
+                          (mean_delta_induced - mean_auto_induced)
 
-    df_tmp =  pd.DataFrame([group, fold_change, fold_change_induced], 
+    df_tmp = pd.DataFrame([group, fold_change, fold_change_induced],
                 index=['IPTG', 'fold_change', 'fold_change_induced']).T
     df_fc = pd.concat([df_fc, df_tmp], axis=0)
 
-#============================================================================== 
+# =============================================================================
 
 # Compute the theoretical fold change
 iptg = np.logspace(-2, 4, 100)
-fc = im_utils.fold_change(iptg=iptg, ka=141.52, ki=0.56061, epsilon=4.5, 
+fc = im_utils.fold_change(iptg=iptg, ka=141.52, ki=0.56061, epsilon=4.5,
                           R=REPRESSOR,  epsilon_r=BINDING_ENERGY)
 
 # Plot the fold-change
@@ -145,7 +143,7 @@ plt.xlabel(r'IPTG ($\mu$M)')
 plt.ylabel(r'fold-change')
 plt.savefig('./outdir/fold_change.png', bbox_inches='tight')
 
-#============================================================================== 
+# =============================================================================
 
 # Plot nice histogram for each strain
 for strain in STRAINS:
