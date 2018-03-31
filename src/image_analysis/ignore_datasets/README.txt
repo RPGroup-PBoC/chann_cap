@@ -18,3 +18,9 @@ that happen with this is better to discard the dataset.
 - 20180328_O3_RBS1027_IPTG_titration_microscopy
 The strain didn't respond to IPTG. All the distributions overlap with each other
 so probably there was contamination with the Auto strain.
+
+- 20180330_O3_RBS1L_channel_capacity_experiment
+The Delta strain at 0 uM IPTG was contaminated with auto, and when setting the
+exposure with the Delta strain at 5000uM most of the other strains were oversaturated
+So all of the strains were not measured correctly with respect to Delta and
+therefore it doesn't pass our quality criteria
