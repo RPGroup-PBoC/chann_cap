@@ -42,17 +42,17 @@ df_im = pd.read_csv('./outdir/' + str(DATE) + '_' +
 df_im.head()
 # =============================================================================
 # Group by strain
-df_group =df_im.groupby('rbs')
+df_group = df_im.groupby('rbs')
 
 # Plot area and eccentricity ECDF
-fig, ax =plt.subplots(1, 2, figsize=(8,4))
+fig, ax = plt.subplots(1, 2, figsize=(8, 4))
 for group, data in df_group:
-    area_ecdf =im_utils.ecdf(df_im.area.sample(frac=0.3))
-    ecc_ecdf =im_utils.ecdf(df_im.eccentricity.sample(frac=0.3))
+    area_ecdf = im_utils.ecdf(df_im.area.sample(frac=0.3))
+    ecc_ecdf = im_utils.ecdf(df_im.eccentricity.sample(frac=0.3))
     ax[0].plot(area_ecdf[0], area_ecdf[1], marker='.', linewidth=0,
-             label=group, alpha=0.5)
+               label=group, alpha=0.5)
     ax[1].plot(ecc_ecdf[0], ecc_ecdf[1], marker='.', linewidth=0,
-             label=group, alpha=0.5)
+               label=group, alpha=0.5)
 
 # Format plots
 ax[0].legend(loc='lower right', title='strain')
@@ -88,11 +88,18 @@ with open('../../../data/csv_microscopy/' + str(DATE) +
 
 # =============================================================================
 
-# Plot nice histogram and ECDF of filtered data
-concentrations = df_filt.IPTG_uM.unique()
-colors = sns.color_palette("Blues_r", len(concentrations))
-
+# Plot nice histogram for each strain
 for strain in STRAINS:
+    # Extract the particular data for the strain
+    df_filt_strain = df_filt[df_filt['rbs'] == strain]
+
+    # List the unique concentrations for this strain
+    concentrations = df_filt_strain.IPTG_uM.unique()
+
+    # Set a color pallete for each concentration
+    colors = sns.color_palette("Blues_r", n_colors=len(concentrations))
+
+    # Initialize figure
     fig, ax = plt.subplots(2, 1, figsize=(6, 5), sharex=True)
 
     # Set the nice scientific notation for the y axis of the histograms
@@ -104,57 +111,71 @@ for strain in STRAINS:
                                  useOffset=False))
 
     # Group data frame by concentration
-    df_group = df_filt[df_filt.rbs ==strain].groupby('IPTG_uM')
+    df_group = df_filt_strain.groupby('IPTG_uM')
 
-    # initialize counter for colors
-    i = 0
+    # Initialize list to save mean fluorescence
     mean_fl = []
-    for c, data in df_group:
+
+    # Initialize list to save max probability
+    max_prob = []
+
+    for i, (c, data) in enumerate(df_group):
+        # Extract mean intensities
         mean_int = data.mean_intensity
+        # Save mean of mean intensities
         mean_fl.append(mean_int.mean())
         # Histogram plot
         n, bins, patches = ax[0].hist(mean_int, 30,
-                                    normed=1, histtype='stepfilled', alpha=0.4,
-                                    label=str(c)+ r' $\mu$M', facecolor=colors[i],
-                                   linewidth=1)
-        n, bins, patches =ax[0].hist(mean_int, 30,
-                                    normed=1, histtype='stepfilled',
-                                    label='', edgecolor='k',
-                                   linewidth=1.5, facecolor='none')
-        # ECDF Plot
-        x, y =im_utils.ecdf(mean_int)
-        ax[1].plot(x, y, '.', label=str(c)+ r' $\mu$M', color=colors[i])
+                                      normed=1, histtype='stepfilled',
+                                      alpha=0.4,
+                                      label=str(c) + r' $\mu$M',
+                                      facecolor=colors[i],
+                                      linewidth=1)
+        # Save max count
+        max_prob.append(max(n))
 
-        # Increase counter
-        i +=1
+        # add edges to the histograms
+        n, bins, patches = ax[0].hist(mean_int, 30,
+                                      normed=1, histtype='stepfilled',
+                                      label='', edgecolor='k',
+                                      linewidth=1.5, facecolor='none')
+        # ECDF Plot
+        x, y = im_utils.ecdf(mean_int)
+        ax[1].plot(x, y, '.', label=str(c) + r' $\mu$M', color=colors[i])
 
     # Declare color map for legend
-    cmap =plt.cm.get_cmap('Blues_r', len(concentrations))
-    bounds =np.linspace(0, len(concentrations), len(concentrations) + 1)
+    cmap = mpl.colors.ListedColormap(colors)
+    bounds = np.linspace(0, len(concentrations), len(concentrations) + 1)
 
-    # # Plot a little triangle indicating the mean of each distribution
-    mean_plot =ax[0].scatter(mean_fl, [0.0007] * len(mean_fl), marker='v', s=200,
-                c=np.arange(len(mean_fl)), cmap=cmap,
-                edgecolor='k',
-                linewidth=1.5)
+    # Plot a little triangle indicating the mean of each distribution
+    mean_plot = ax[0].scatter(mean_fl,
+                              [max(max_prob) * 1.1] * len(mean_fl),
+                              marker='v', s=200,
+                              c=np.arange(len(mean_fl)), cmap=cmap,
+                              edgecolor='k', linewidth=1.5)
+
     # Generate a colorbar with the concentrations
-    cbar_ax =fig.add_axes([0.95, 0.25, 0.03, 0.5])
-    cbar =fig.colorbar(mean_plot, cax=cbar_ax)
+    cbar_ax = fig.add_axes([0.95, 0.25, 0.03, 0.5])
+    cbar = fig.colorbar(mean_plot, cax=cbar_ax)
+    # Remove axis labels
     cbar.ax.get_yaxis().set_ticks([])
+
+    # Loop through concentrations and add my own labels
     for j, c in enumerate(concentrations):
-        if c ==0.1:
-            c =str(c)
+        if c == 0.1:
+            c = str(c)
         else:
-            c =str(int(c))
-        cbar.ax.text(1, j / len(concentrations) + 1 / (2 * len(concentrations)),
-                     c, ha='left', va='center',
-                     transform =cbar_ax.transAxes, fontsize=12)
-    cbar.ax.get_yaxis().labelpad =35
+            c = str(int(c))
+            cbar.ax.text(1, j / len(concentrations) +
+                         1 / (2 * len(concentrations)),
+                         c, ha='left', va='center',
+                         transform=cbar_ax.transAxes, fontsize=12)
+    cbar.ax.get_yaxis().labelpad = 35
     cbar.set_label(r'[inducer] ($\mu$M)')
 
-    ax[0].set_ylim(bottom=0, top=0.001)
+    ax[0].set_ylim(bottom=0, top=max(max_prob) * 1.2)
     ax[0].set_ylabel('probability')
-    ax[0].ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+    ax[0].ticklabel_format(style='sci', axis='y', scilimits=(0, 0))
 
     ax[1].margins(0.01)
     ax[1].set_xlabel('fluorescence (a.u.)')

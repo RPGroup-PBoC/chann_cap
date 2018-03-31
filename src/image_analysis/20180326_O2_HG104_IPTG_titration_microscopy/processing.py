@@ -26,9 +26,9 @@ import scipy.ndimage
 # Set plotting style
 im_utils.set_plotting_style()
 
-#============================================================================== 
+# =============================================================================
 # METADATA
-#============================================================================== 
+# =============================================================================
 
 DATE = 20180326
 USERNAME = 'mrazomej'
@@ -39,11 +39,11 @@ IPDIST = 0.160  # in units of µm per pixel
 STRAINS = ['auto', 'delta', 'HG104']
 IPTG_RANGE = (0, 0.1, 5, 10, 25, 50, 75, 100, 250, 500, 1000, 5000)
 # Extra feature because my mistake when naming files
-IPTG_NAMES = ('0', '0.1', '5', '10', '25', '50', '75', '100', '250', '500', 
+IPTG_NAMES = ('0', '0.1', '5', '10', '25', '50', '75', '100', '250', '500',
               '1000', '5000')
 IPTG_DICT = dict(zip(IPTG_NAMES, IPTG_RANGE))
 
-#============================================================================== 
+# =============================================================================
 
 # Define the data directory.
 data_dir = '../../../data/microscopy/' + str(DATE) + '/'
@@ -59,7 +59,7 @@ noise_profile = skimage.io.ImageCollection(noise_glob)
 # Need to split the noise profile image into the two channels
 noise_yfp = [noise_profile[i] for i, _ in enumerate(noise_profile)]
 
-# Generate averages and plot them. 
+# Generate averages and plot them.
 yfp_avg = im_utils.average_stack(yfp_profile)
 
 yfp_noise = im_utils.average_stack(noise_yfp)
@@ -74,7 +74,7 @@ with sns.axes_style('white'):
 plt.tight_layout()
 plt.savefig('./outdir/background_correction.png')
 
-#============================================================================== 
+# =============================================================================
 
 # Iterate through each strain and concentration to make the dataframes.
 dfs = []
@@ -87,37 +87,35 @@ for i, st in enumerate(STRAINS):
     for j, name in enumerate(IPTG_NAMES):
         iptg = IPTG_DICT[name]
         # Load the images
-        if (iptg==0) & (st != STRAINS[-1]):
-            images = glob.glob(data_dir + '*' + st + '_*/*.tif')
-            
-        else:
-            images = glob.glob(data_dir + '*' + st + '*_' + name +
+        images = glob.glob(data_dir + '*' + st + '*_' + name +
                            'uMIPTG*/*.ome.tif')
-            
-        if len(images) is not 0:
 
+        if len(images) is not 0:
+            print(name)
             ims = skimage.io.ImageCollection(images)
             # Select random image to print example segmentation
-            ex_no = np.random.choice(np.arange(0, len(images) - 1))    
+            ex_no = np.random.choice(np.arange(0, len(images) - 1))
             for z, x in enumerate(ims):
                 _, m, y = im_utils.ome_split(x)
                 y_flat = im_utils.generate_flatfield(y, yfp_noise, yfp_avg)
-    
+
                 # Segment the mCherry channel.
                 m_seg = im_utils.log_segmentation(m, label=True)
 
                 # Print example segmentation for the random image
-                if (st==ex_strain) & (iptg == ex_iptg) & (z == ex_no):
+                if (st == ex_strain) & (iptg == ex_iptg) & (z == ex_no):
                     merge = im_utils.example_segmentation(m_seg, _, 10/IPDIST)
-                    skimage.io.imsave('./outdir/example_segmentation.png', merge)
-    
-                 # Extract the measurements.
+                    skimage.io.imsave('./outdir/example_segmentation.png',
+                                      merge)
+
+                # Extract the measurements.
                 try:
-                    im_df =im_utils.props_to_df(m_seg, physical_distance=IPDIST,
+                    im_df = im_utils.props_to_df(m_seg,
+                                                 physical_distance=IPDIST,
                                                  intensity_image=y_flat)
                 except ValueError:
                     break
-    
+
                 # Add strain and  IPTG concentration information.
                 im_df.insert(0, 'IPTG_uM', iptg)
                 im_df.insert(0, 'repressors', REPRESSORS[i])
@@ -126,12 +124,11 @@ for i, st in enumerate(STRAINS):
                 im_df.insert(0, 'operator', OPERATOR)
                 im_df.insert(0, 'username', USERNAME)
                 im_df.insert(0, 'date', DATE)
-    
+
                 # Append the dataframe to the global list.
                 dfs.append(im_df)
 
 # Concatenate the dataframe
 df_im = pd.concat(dfs, axis=0)
-df_im.to_csv('./outdir/' + str(DATE) + '_' + OPERATOR + '_' +\
-               STRAINS[-1] + '_raw_segmentation.csv', index=False)
-
+df_im.to_csv('./outdir/' + str(DATE) + '_' + OPERATOR + '_' +
+             STRAINS[-1] + '_raw_segmentation.csv', index=False)

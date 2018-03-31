@@ -43,6 +43,7 @@ IPTG_NAMES = ('0', '0.1', '5', '10', '25', '50', '75', '100', '250', '500',
               '1000', '5000')
 IPTG_DICT = dict(zip(IPTG_NAMES, IPTG_RANGE))
 
+
 # =============================================================================
 
 # Define the data directory.
@@ -87,15 +88,11 @@ for i, st in enumerate(STRAINS):
     for j, name in enumerate(IPTG_NAMES):
         iptg = IPTG_DICT[name]
         # Load the images
-        if (iptg == 0) & (st != STRAINS[-1]):
-            images = glob.glob(data_dir + '*' + st + '_*/*.tif')
-
-        else:
-            images = glob.glob(data_dir + '*' + st + '*_' + name +
-                               'uMIPTG*/*.ome.tif')
+        images = glob.glob(data_dir + '*' + st + '*_' + name +
+                           'uMIPTG*/*.ome.tif')
 
         if len(images) is not 0:
-
+            print(name)
             ims = skimage.io.ImageCollection(images)
             # Select random image to print example segmentation
             ex_no = np.random.choice(np.arange(0, len(images) - 1))

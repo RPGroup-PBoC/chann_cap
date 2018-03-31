@@ -87,15 +87,11 @@ for i, st in enumerate(STRAINS):
     for j, name in enumerate(IPTG_NAMES):
         iptg = IPTG_DICT[name]
         # Load the images
-        if (iptg == 0) & (st != STRAINS[-1]):
-            images = glob.glob(data_dir + '*' + st + '_*/*.tif')
-
-        else:
-            images = glob.glob(data_dir + '*' + st + '*_' + name +
-                               'uMIPTG*/*.ome.tif')
+        images = glob.glob(data_dir + '*' + st + '*_' + name +
+                           'uMIPTG*/*.ome.tif')
 
         if len(images) is not 0:
-
+            print(name)
             ims = skimage.io.ImageCollection(images)
             # Select random image to print example segmentation
             ex_no = np.random.choice(np.arange(0, len(images) - 1))

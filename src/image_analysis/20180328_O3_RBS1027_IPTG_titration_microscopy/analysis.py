@@ -93,51 +93,69 @@ with open('../../../data/csv_microscopy/' + str(DATE) + '_' + OPERATOR + '_' +
 
 # =============================================================================
 
-# Compute mean intensity for auto and delta strains
-mean_auto = df_filt[(df_filt.rbs == 'auto') &
-                    (df_filt.IPTG_uM == 0)].mean_intensity.mean()
-mean_delta = df_filt[(df_filt.rbs == 'delta') &
-                     (df_filt.IPTG_uM == 0)].mean_intensity.mean()
-
-# Include the measurements done at 5000 µM IPTG
-mean_auto_induced = df_filt[(df_filt.rbs == 'auto') &
-                            (df_filt.IPTG_uM == 5000)].mean_intensity.mean()
-mean_delta_induced = df_filt[(df_filt.rbs == 'delta') &
-                             (df_filt.IPTG_uM == 5000)].mean_intensity.mean()
-
-
-# Group analysis strain by RBS
-df_group = df_filt[df_filt.rbs == STRAIN].groupby('IPTG_uM')
-
 # Initialize dataframe to save fold change
-df_fc = pd.DataFrame(columns=['IPTG', 'fold_change', 'fold_change_induced'])
-for group, data in df_group:
-    fold_change = (data.mean_intensity.mean() - mean_auto) /\
-                  (mean_delta - mean_auto)
-    fold_change_induced = (data.mean_intensity.mean() - mean_auto_induced) /\
-                          (mean_delta_induced - mean_auto_induced)
+df_fc = pd.DataFrame(columns=['IPTG', 'fold_change', 'auto_IPTG'])
 
-    df_tmp = pd.DataFrame([group, fold_change, fold_change_induced],
-                index=['IPTG', 'fold_change', 'fold_change_induced']).T
-    df_fc = pd.concat([df_fc, df_tmp], axis=0)
+# List the concentrations at which the Auto and Delta strain were measured
+auto_iptg = df_filt[(df_filt.rbs == 'auto')]['IPTG_uM'].unique()
+delta_iptg = df_filt[(df_filt.rbs == 'delta')]['IPTG_uM'].unique()
+fold_change_inducer = np.intersect1d(auto_iptg, delta_iptg)
+
+# Loop through each concentration at whic auto and delta were measured
+for c in fold_change_inducer:
+    # Extract the mean auto and mean delta
+    mean_auto = df_filt[(df_filt.rbs == 'auto') &
+                        (df_filt.IPTG_uM == c)].mean_intensity.mean()
+    mean_delta = df_filt[(df_filt.rbs == 'delta') &
+                         (df_filt.IPTG_uM == c)].mean_intensity.mean()
+
+    # Group analysis strain by RBS
+    df_group = df_filt[df_filt.rbs == STRAIN].groupby('IPTG_uM')
+
+    # Loop through each concentration in the experimental strain
+    for group, data in df_group:
+        # Compute the fold change
+        fold_change = (data.mean_intensity.mean() - mean_auto)\
+                              / (mean_delta - mean_auto)
+
+        # Append it to the data frame
+        df_tmp = pd.DataFrame([group, fold_change, c],
+                              index=['IPTG', 'fold_change', 'auto_IPTG']).T
+        df_fc = pd.concat([df_fc, df_tmp], axis=0)
 
 # =============================================================================
 
 # Compute the theoretical fold change
-iptg = np.logspace(-2, 4, 100)
+# Log scale
+iptg = np.logspace(-1, 4, 100)
 fc = im_utils.fold_change(iptg=iptg, ka=141.52, ki=0.56061, epsilon=4.5,
                           R=REPRESSOR,  epsilon_r=BINDING_ENERGY)
+# Linear scale
+iptg_lin = [0, 1E-1]
+fc_lin = im_utils.fold_change(iptg=iptg_lin, ka=141.52, ki=0.56061,
+                              epsilon=4.5,
+                              R=REPRESSOR,  epsilon_r=BINDING_ENERGY)
 
-# Plot the fold-change
+# Initialize figure
 plt.figure()
-plt.plot(iptg, fc, label='theoretical fold-change')
-plt.plot(df_fc.IPTG, df_fc.fold_change, marker='o', linewidth=0,
-         label='microscopy uninduced')
-plt.plot(df_fc.IPTG, df_fc.fold_change_induced, marker='v', linewidth=0,
-         label='microscopy induced')
+# Plot theoretical fold-change
+# Log scale
+plt.plot(iptg, fc, label='theoretical fold-change', color='black')
+plt.plot(iptg_lin, fc_lin, label='', linestyle='--', color='black')
 
-plt.xscale('log')
-plt.legend(loc=0)
+
+# Group experimental data by concentration at which auto and delta were
+# measured
+df_group = df_fc.groupby('auto_IPTG')
+
+# Loop through each concentration
+for group, data in df_group:
+    # Plot experimental fold-change
+    plt.plot(data.IPTG, data.fold_change, marker='v', linewidth=0,
+             label=r'$\Delta$ inducer {:.0f} $\mu$M'.format(group))
+
+plt.xscale('symlog', linthreshx=1E-1, linscalex=0.5)
+plt.legend(loc='lower right')
 plt.ylim([0, 1.2])
 plt.xlabel(r'IPTG ($\mu$M)')
 plt.ylabel(r'fold-change')

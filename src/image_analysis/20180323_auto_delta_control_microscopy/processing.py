@@ -30,42 +30,42 @@ im_utils.set_plotting_style()
 # METADATA
 # =============================================================================
 
-DATE =20180323
-USERNAME ='mrazomej'
-OPERATOR ='O2'
-BINDING_ENERGY =-13.9
-REPRESSORS =(0, 0, 11)
-IPDIST =0.160  # in units of µm per pixel
-STRAINS =['auto', 'delta']
-IPTG_RANGE =(0, 5, 25, 75, 250, 1000)
+DATE = 20180323
+USERNAME = 'mrazomej'
+OPERATOR = 'O2'
+BINDING_ENERGY = -13.9
+REPRESSORS = (0, 0, 11)
+IPDIST = 0.160  # in units of µm per pixel
+STRAINS = ['auto', 'delta']
+IPTG_RANGE = (0, 5, 25, 75, 250, 1000)
 # Extra feature in case there are errors in the concentration naming
-IPTG_NAMES =('0', '5', '25', '75', '250', '1000')
-IPTG_DICT =dict(zip(IPTG_NAMES, IPTG_RANGE))
+IPTG_NAMES = ('0', '5', '25', '75', '250', '1000')
+IPTG_DICT = dict(zip(IPTG_NAMES, IPTG_RANGE))
 
 # =============================================================================
 
 # Define the data directory.
-data_dir ='../../../data/microscopy/' + str(DATE) + '/'
+data_dir = '../../../data/microscopy/' + str(DATE) + '/'
 
 # Glob the profile and noise images.
-yfp_glob =glob.glob(data_dir + '*YFP_profile*/*.tif')
-noise_glob =glob.glob(data_dir + '*noise*/*.tif')
+yfp_glob = glob.glob(data_dir + '*YFP_profile*/*.tif')
+noise_glob = glob.glob(data_dir + '*noise*/*.tif')
 
 # Load the images as collections
-yfp_profile =skimage.io.ImageCollection(yfp_glob)
-noise_profile =skimage.io.ImageCollection(noise_glob)
+yfp_profile = skimage.io.ImageCollection(yfp_glob)
+noise_profile = skimage.io.ImageCollection(noise_glob)
 
 # Need to split the noise profile image into the two channels
-noise_yfp =[noise_profile[i] for i, _ in enumerate(noise_profile)]
+noise_yfp = [noise_profile[i] for i, _ in enumerate(noise_profile)]
 
 # Generate averages and plot them.
-yfp_avg =im_utils.average_stack(yfp_profile)
+yfp_avg = im_utils.average_stack(yfp_profile)
 
-yfp_noise =im_utils.average_stack(noise_yfp)
+yfp_noise = im_utils.average_stack(noise_yfp)
 
 with sns.axes_style('white'):
-    fig, ax = plt.subplots(1, 2, figsize=(6,3))
-    ax =ax.ravel()
+    fig, ax = plt.subplots(1, 2, figsize=(6, 3))
+    ax = ax.ravel()
     ax[0].imshow(yfp_avg, cmap=plt.cm.viridis)
     ax[0].set_title('yfp profile')
     ax[1].imshow(yfp_noise, cmap=plt.cm.Greens_r)
@@ -76,48 +76,47 @@ plt.savefig('./outdir/background_correction.png')
 # =============================================================================
 
 # Iterate through each strain and concentration to make the dataframes.
-dfs =[]
+dfs = []
 
 # Select random IPTG and random strain to print the example segmentation
-ex_iptg =np.random.choice(IPTG_RANGE)
-ex_strain =STRAINS[-1]
+ex_iptg = np.random.choice(IPTG_RANGE)
+ex_strain = STRAINS[-1]
 for i, st in enumerate(STRAINS):
     print(st)
     for j, name in enumerate(IPTG_NAMES):
-        iptg =IPTG_DICT[name]
+        iptg = IPTG_DICT[name]
         # Load the images
-        images =glob.glob(data_dir + '*' + st + '*_' + name +
+        images = glob.glob(data_dir + '*' + st + '*_' + name +
                            'uMIPTG*/*.ome.tif')
 
         if len(images) is not 0:
 
-            ims =skimage.io.ImageCollection(images)
+            ims = skimage.io.ImageCollection(images)
             # Select random image to print example segmentation
-            ex_no =np.random.choice(np.arange(0, len(images) - 1))
+            ex_no = np.random.choice(np.arange(0, len(images) - 1))
             for z, x in enumerate(ims):
-                _, m, y =im_utils.ome_split(x)
-                y_flat =im_utils.generate_flatfield(y, yfp_noise, yfp_avg)
+                _, m, y = im_utils.ome_split(x)
+                y_flat = im_utils.generate_flatfield(y, yfp_noise, yfp_avg)
 
                 # Segment the mCherry channel.
-                m_seg =im_utils.log_segmentation(m, label=True)
+                m_seg = im_utils.log_segmentation(m, label=True)
 
                 # Print example segmentation for the random image
-                if (st==ex_strain) & (iptg ==ex_iptg) & (z ==ex_no):
-                    merge =im_utils.example_segmentation(m_seg, _, 10/IPDIST)
-                    skimage.io.imsave('./outdir/example_segmentation.png', merge)
+                if (st == ex_strain) & (iptg == ex_iptg) & (z == ex_no):
+                    merge = im_utils.example_segmentation(m_seg, _, 10/IPDIST)
+                    skimage.io.imsave(
+                        './outdir/example_segmentation.png', merge)
 
                 # Extract the measurements.
                 try:
-                    im_df =im_utils.props_to_df(m_seg, physical_distance=IPDIST,
+                    im_df = im_utils.props_to_df(m_seg, physical_distance=IPDIST,
                                                  intensity_image=y_flat)
                 except ValueError:
                     break
 
                 # Add strain and  IPTG concentration information.
                 im_df.insert(0, 'IPTG_uM', iptg)
-                #im_df.insert(0, 'repressors', REPRESSORS[i])
                 im_df.insert(0, 'rbs', st)
-                #im_df.insert(0, 'binding_energy', BINDING_ENERGY)
                 im_df.insert(0, 'operator', OPERATOR)
                 im_df.insert(0, 'username', USERNAME)
                 im_df.insert(0, 'date', DATE)
@@ -126,6 +125,6 @@ for i, st in enumerate(STRAINS):
                 dfs.append(im_df)
 
 # Concatenate the dataframe
-df_im =pd.concat(dfs, axis=0)
-df_im.to_csv('./outdir/' + str(DATE) + '_' +\
-               'auto_delta_control' + '_raw_segmentation.csv', index=False)
+df_im = pd.concat(dfs, axis=0)
+df_im.to_csv('./outdir/' + str(DATE) + '_' +
+             'auto_delta_control' + '_raw_segmentation.csv', index=False)
