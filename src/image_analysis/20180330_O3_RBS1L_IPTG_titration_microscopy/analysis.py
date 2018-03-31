@@ -151,7 +151,7 @@ df_group = df_fc.groupby('auto_IPTG')
 # Loop through each concentration
 for group, data in df_group:
     # Plot experimental fold-change
-    plt.plot(df_fc.IPTG, data.fold_change, marker='v', linewidth=0,
+    plt.plot(data.IPTG, data.fold_change, marker='v', linewidth=0,
              label=r'$\Delta$ inducer {:.0f} $\mu$M'.format(group))
 
 plt.xscale('symlog', linthreshx=1E-1, linscalex=0.5)
