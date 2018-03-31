@@ -30,13 +30,13 @@ im_utils.set_plotting_style()
 # METADATA
 # =============================================================================
 
-DATE = 20161205
+DATE = 20161118
 USERNAME = 'mrazomej'
-OPERATOR = 'O3'
-STRAIN = 'RBS1L'
+OPERATOR = 'O2'
+STRAIN = 'RBS1027'
 STRAINS = [STRAIN] + ['auto', 'delta']
-REPRESSOR = 870
-BINDING_ENERGY = -9.7
+REPRESSOR = 130
+BINDING_ENERGY = -13.9
 
 
 # =============================================================================
