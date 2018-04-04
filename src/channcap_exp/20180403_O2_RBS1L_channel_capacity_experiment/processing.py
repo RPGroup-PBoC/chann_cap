@@ -65,7 +65,7 @@ df = df_micro[(df_micro.rbs != 'auto') & (df_micro.rbs != 'delta')]
 # =============================================================================
 # Compute channel capacity for experimental data
 # =============================================================================
-compute_exp = True
+compute_exp = False
 if compute_exp:
     def channcap_bs_parallel(b):
         # Initialize matrix to save bootstrap repeats
