@@ -40,11 +40,12 @@ OPERATOR = 'O1'
 STRAIN = 'HG104'
 REPRESSOR = 11
 BINDING_ENERGY = -15.3
+N_JOBS = 48
 
 # Determine the parameters for the bootstraping
 bins = np.floor(np.logspace(0, 4, 100))
 fracs = 1 / np.linspace(1 / 0.6, 1, 10)
-nreps = 25 # number of bootstrap samples per fraction
+nreps = 25  # number of bootstrap samples per fraction
 
 # =============================================================================
 
@@ -64,7 +65,7 @@ df = df_micro[(df_micro.rbs != 'auto') & (df_micro.rbs != 'delta')]
 # =============================================================================
 # Compute channel capacity for experimental data
 # =============================================================================
-compute_exp = False
+compute_exp = True
 if compute_exp:
     def channcap_bs_parallel(b):
         # Initialize matrix to save bootstrap repeats
@@ -72,13 +73,12 @@ if compute_exp:
         samp_sizes = np.zeros(len(fracs))
         for i, frac in enumerate(fracs):
             MI_bs[i, :], samp_sizes[i] = \
-                chann_cap.channcap_bootstrap(df,
-                                             bins=b, nrep=nreps, frac=frac)
+                chann_cap.channcap_bootstrap(df, bins=b, nrep=nreps, frac=frac)
         return (MI_bs, samp_sizes)
 
     # Perform the parallel computation
     print('Performing bootsrap estimates of channel capacity...')
-    channcap_list = Parallel(n_jobs=48)(delayed(channcap_bs_parallel)(b)
+    channcap_list = Parallel(n_jobs=N_JOBS)(delayed(channcap_bs_parallel)(b)
                                         for b in bins)
     print('Done performing calculations.')
 
@@ -89,12 +89,12 @@ if compute_exp:
     kwargs = dict((x, df[x].unique()[0]) for x in kwarg_list)
 
     # Convert the list into a tidy data frame
-    df_cc_bs = chann_cap.tidy_df_channcap_bs(channcap_list, fracs, bins,
-                                             **kwargs)
+    df_cc_bs = chann_cap.tidy_df_channcap_bs(
+        channcap_list, fracs, bins, **kwargs)
 
     # Save outcome
     filename = str(kwargs['date']) + '_' + kwargs['operator'] + '_' +\
-               kwargs['rbs'] + '_' + 'channcap_bootstrap.csv'
+        kwargs['rbs'] + '_' + 'channcap_bootstrap.csv'
     df_cc_bs.to_csv(outputdir + filename, index=False)
     print('Saved as dataframe.')
 
@@ -102,7 +102,7 @@ if compute_exp:
 # Extrapolate to N -> oo
 # =============================================================================
 filename = str(DATE) + '_' + OPERATOR + '_' +\
-               STRAIN + '_' + 'channcap_bootstrap.csv'
+    STRAIN + '_' + 'channcap_bootstrap.csv'
 
 df_cc_bs = pd.read_csv(outputdir + filename, header=0)
 
@@ -139,16 +139,15 @@ if compute_exp:
         samp_sizes = np.zeros(len(fracs))
         for i, frac in enumerate(fracs):
             MI_bs[i, :], samp_sizes[i] = \
-                chann_cap.channcap_bootstrap(df, bins=b,
-                                             nrep=nreps, frac=frac,
+                chann_cap.channcap_bootstrap(df, bins=b, nrep=nreps, frac=frac,
                                              **{'output_col': 'shuffled'})
         return (MI_bs, samp_sizes)
 
     # Perform the parallel computation
     print('Performing bootsrap estimates on random data')
-    channcap_list_shuff = Parallel(n_jobs=48)\
-                          (delayed(channcap_bs_parallel_shuff)(b)
-                           for b in bins)
+    channcap_list_shuff = \
+        Parallel(n_jobs=N_JOBS)(delayed(channcap_bs_parallel_shuff)(b)
+                                             for b in bins)
     print('Done performing calculations.')
 
     # Define the parameters to include in the data frame
@@ -161,7 +160,7 @@ if compute_exp:
                                                    bins, **kwargs)
     # Save outcome
     filename = str(kwargs['date']) + '_' + kwargs['operator'] + '_' +\
-                kwargs['rbs'] + '_' + 'channcap_bootstrap_shuffled.csv'
+        kwargs['rbs'] + '_' + 'channcap_bootstrap_shuffled.csv'
     df_cc_bs_shuff.to_csv(outputdir + filename, index=False)
     print('Saved as dataframe.')
 
@@ -170,7 +169,7 @@ if compute_exp:
 # =============================================================================
 
 filename = str(DATE) + '_' + OPERATOR + '_' +\
-               STRAIN + '_' + 'channcap_bootstrap_shuffled.csv'
+    STRAIN + '_' + 'channcap_bootstrap_shuffled.csv'
 
 df_cc_shuff = pd.read_csv(outputdir + filename, header=0)
 
