@@ -37,13 +37,13 @@ chann_cap.set_plotting_style()
 DATE = 20180416
 USERNAME = 'mrazomej'
 OPERATOR = 'O1'
-STRAIN = 'HG104'
+STRAIN = 'RBS1027'
 REPRESSOR = 130
 BINDING_ENERGY = -15.3
 N_JOBS = 48
 
 # Boolean indicating if the computation should be performed or not
-compute_exp = True
+compute_exp = False
 
 # Determine the parameters for the bootstraping
 bins = np.floor(np.logspace(0, 4, 100))
