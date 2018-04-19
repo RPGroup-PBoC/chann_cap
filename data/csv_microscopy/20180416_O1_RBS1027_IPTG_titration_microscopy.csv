@@ -2,11 +2,11 @@
 #Equipment : Artemis Nikon microscope
 #User : mrazomej
 #Description :
-#IPTG titration of the O1 - HG104 strain.
+#IPTG titration of the O1 - RBS1027 strain.
 #Strains :
 #> HG105 galK::25 / pZS3-mCherry (auto)
-#> HG105 galK::25-O2+11-YFP / pZS4-mCherry (delta)
-#> HG104 galK::25-O2+11-YFP; ybcN::3*1-RBS1027-lacI / pZS4-mCherry
+#> HG105 galK::25-O1+11-YFP / pZS4-mCherry (delta)
+#> HG105 galK::25-O1+11-YFP; ybcN::3*1-RBS1027-lacI / pZS4-mCherry
 #
 #The strains were grown overnight in tubes in 3 mL of LB + spec + kan.
 #Next morning they were diluted 1:1000 into 0.5 mL of M9 + 0.5% glucose
