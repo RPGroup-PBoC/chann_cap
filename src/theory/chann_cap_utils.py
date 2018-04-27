@@ -3,7 +3,7 @@
 Title:
     chann_cap_utils
 Last update:
-    2018-03-27
+    2018-04-26
 Author(s):
     Manuel Razo-Mejia
 Purpose:
@@ -1503,7 +1503,7 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     for i, c in enumerate(legend_var):
         # PMF plot
         ax[0].plot(x[0::binstep], px[i, 0::binstep],
-                   label=r'${0:d}$'.format(c), drawstyle='steps',
+                   label=str(c), drawstyle='steps',
                    color='k')
         # Fill between each histogram
         ax[0].fill_between(x[0::binstep], px[i, 0::binstep],
@@ -1534,7 +1534,7 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     # Compute mean mRAN copy number from distribution
     mean_dist = [np.sum(x * prob) for prob in px]
     # Plot a little triangle indicating the mean of each distribution
-    mean_plot = ax[0].scatter(mean_dist, [marker_height] * len(mean_dist),
+    mean_plot = ax[0].scatter(mean_dist, [np.max(px) * 1.1] * len(mean_dist),
                               marker='v', s=200,
                               c=np.arange(len(mean_dist)), cmap=cmap,
                               edgecolor='k', linewidth=1.5)
