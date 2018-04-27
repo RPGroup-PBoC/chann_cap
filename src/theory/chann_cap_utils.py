@@ -1443,7 +1443,7 @@ def hpd(trace, mass_frac):
 
 
 def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
-                 mean_mark=True, marker_height=0.3,
+                 mean_mark=True, marker_height=None,
                  color_bar=True, cbar_label='', binstep=1,
                  figsize=(6, 5), title='', xlabel='', xlim=None, ylim=None):
     '''
@@ -1534,7 +1534,11 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     # Compute mean mRAN copy number from distribution
     mean_dist = [np.sum(x * prob) for prob in px]
     # Plot a little triangle indicating the mean of each distribution
-    mean_plot = ax[0].scatter(mean_dist, [np.max(px) * 1.1] * len(mean_dist),
+    if marker_height is None:
+        height = np.max(px) * 1.1
+    else:
+        height = marker_height
+    mean_plot = ax[0].scatter(mean_dist, [height] * len(mean_dist),
                               marker='v', s=200,
                               c=np.arange(len(mean_dist)), cmap=cmap,
                               edgecolor='k', linewidth=1.5)
