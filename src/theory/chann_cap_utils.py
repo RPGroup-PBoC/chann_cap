@@ -3,7 +3,7 @@
 Title:
     chann_cap_utils
 Last update:
-    2018-04-26
+    2018-04-30
 Author(s):
     Manuel Razo-Mejia
 Purpose:
@@ -1444,6 +1444,7 @@ def hpd(trace, mass_frac):
 
 def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
                  mean_mark=True, marker_height=None,
+                 pmf_edgecolor='k', pmf_alpha=0.8,
                  color_bar=True, cbar_label='', binstep=1,
                  figsize=(6, 5), title='', xlabel='', xlim=None, ylim=None):
     '''
@@ -1469,6 +1470,10 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     marker_height : float.
         Height that all of the markers that point at the mean should
         have.
+    pmf_edgecolor : string or RGB color. Default : 'k'
+        Color for the edges of the histograms in the PMF plot.
+    pmf_alpha : float. [0, 1]
+        Alpha value for the histogram colors.
     color_bar : bool.
         Boolean indicating if a color bar should be added on the side
         to indicate the different variable between distributions.
@@ -1504,10 +1509,10 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
         # PMF plot
         ax[0].plot(x[0::binstep], px[i, 0::binstep],
                    label=str(c), drawstyle='steps',
-                   color='k')
+                   color=pmf_edgecolor[i])
         # Fill between each histogram
         ax[0].fill_between(x[0::binstep], px[i, 0::binstep],
-                           color=colors[i], alpha=0.8, step='pre')
+                           color=colors[i], alpha=pmf_alpha, step='pre')
         # CDF plot
         ax[1].plot(x[0::binstep], np.cumsum(px[i, :])[0::binstep],
                    drawstyle='steps',
@@ -1528,7 +1533,9 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     ax[1].margins(0.02)
 
     # Declare color map for legend
-    cmap = plt.cm.get_cmap(color_palette, len(legend_var))
+    # cmap = plt.cm.get_cmap(color_palette, len(legend_var))
+    cmap = mpl.colors.LinearSegmentedColormap.from_list('custom', colors,
+                                                        N=len(legend_var))
     bounds = np.linspace(0, len(legend_var), len(legend_var) + 1)
 
     # Compute mean mRAN copy number from distribution
