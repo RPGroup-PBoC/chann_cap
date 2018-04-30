@@ -48,11 +48,23 @@ for i, f in enumerate(files):
 # all(mat_content)
 
 # Define fields to be extracted from dictionaries
-fields = ['area_cells', 'spots_totals']
+fields = ['area_cells', 'spots_totals', 'num_intens_totals']
 
 # Initialize pandas DataFrame to collect all the data
 columns = ['date', 'experiment'] + fields
 df = pd.DataFrame(columns=columns)
+
+# Define calibration factors provided by Brewsterself.
+ssi = [0.226, 0.7391, 0.245, 0.245, 0.44, 0.135, 0.135, 0.25, .1677, 0.295,
+       0.257]
+# List the experiments in the EXACT ORDER that Brewster provided to match
+# the proper calibration factor with the experiment name
+exps = ['2011-12-20', '2011-12-12', '2011-11-19', '2011-11-12', '2011-09-20',
+        '2013-09-21', '2013-09-27', '2013-10-02', '2013-10-16', '2013-11-01',
+        '2014-01-10']
+# Generate dictionary to match experiment with their corresponding calibration
+# factors
+ssi_dict = dict(zip(exps, ssi))
 
 # %% Loop through mat files identifying the date and the "promoter condition"
 for i, f in enumerate(mat_files):
@@ -60,6 +72,10 @@ for i, f in enumerate(mat_files):
     split_str = f.split('/')
     # Find the date of this file
     date = list(compress(split_str, [x in dates for x in split_str]))
+
+    # Extract calibration factor
+    calib_factor = ssi_dict[date[0]]
+
     # Remove the dash symbol
     date = re.sub('-', '', date[0])
     # Find the position of the 'analysis_results' entry since the previous
@@ -78,5 +94,7 @@ for i, f in enumerate(mat_files):
     df_f['experiment'] = prom * len(df_f)
     # Append data to general DataFrame
     df = pd.concat([df, df_f], ignore_index=True)
+    # Add mRNA count based on correct calibration factors
+    df['mRNA_cell'] = (df['num_intens_totals'] / calib_factor).astype(int)
 
 df.to_csv('../../data/mRNA_FISH/Jones_Brewster_2014.csv')
