@@ -909,51 +909,130 @@ def moment_ss_reg(moment_fun, C, rep, eRA,
 # =============================================================================
 
 
-# Functions used with the maxentropy package to fit the Lagrange multipliers of
+# Function used with the maxentropy package to fit the Lagrange multipliers of
 # the MaxEnt distribution
-# mRNA
-def m1_fn(x):
-    return x[0]
-
-
-def m2_fn(x):
-    return x[0]**2
-
-
-def m3_fn(x):
-    return x[0]**3
-
-# protein
-
-
-def p1_fn(x):
-    return x[1]
-
-
-def p2_fn(x):
-    return x[1]**2
-
-
-def p3_fn(x):
-    return x[1]**3
-
-# Cross correlations
-
-
-def mp_fn(x):
-    return x[0] * x[1]
-
-
-def m2p_fn(x):
-    return x[0]**2 * x[1]
-
-
-def mp2_fn(x):
-    return x[0] * x[1]**2
-
 
 def feature_fn(x, x_expo):
     return x[0]**x_expo[0] * x[1]**x_expo[1]
+
+# =============================================================================
+
+
+def MaxEnt_bretthorst(constraints, features,
+                      algorithm='BFGS', tol=1E-4, paramtol=5E-5, maxiter=1000):
+    '''
+    Computes the maximum entropy distribution given a list of constraints and a
+    matrix with the features associated with each of the constraints using
+    the maxentropy package. In particular this function rescales the problem
+    according to the Bretthorst algorithm to fascilitate the gradient-based
+    convergence to the value of the Lagrange multipliers.
+
+    Parameters
+    ----------
+    constraints : array-like.
+        List of constraints (moments of the distribution).
+    features : 2D-array. shape = len(samplespace) x len(constraints)
+        List of "rules" used to compute the constraints from the sample space.
+        Each column has a rule associated and each row is the computation of
+        such rule over the sample space.
+        Example:
+            If the ith rule is of the form m**x * p**y, then the ith column
+            of features takes every possible pair (m, p) and computes such
+            sample space.
+    algorithm : string. Default = 'BFGS'
+        Algorithm to be used by the maxentropy package.
+        See maxentropy.BaseModel for more information.
+    tol : float.
+        Tolerance criteria for the convergence of the algorithm.
+        See maxentropy.BaseModel for more information.
+    paramtol : float.
+        Tolerance criteria for the convergence of the parameters.
+        See maxentropy.BaseModel for more information.
+    maxiter : float.
+        Maximum number of iterations on the optimization procedure.
+        See maxentropy.BaseModel for more information.
+
+    Returns
+    -------
+    Lagrange : array-like. lenght = len(constraints)
+        List of Lagrange multipliers associated with each of the constraints.
+    '''
+    # Define a dummy samplespace that we don't need since we are giving the
+    # matrix of pre-computed features, but the maxentropy package still
+    # requires it.
+    samplespace = np.zeros(np.max(features.shape))
+
+    # # First rescaling # #
+
+    # Compute the factor to be used to re-scale the problem
+    rescale_factor = np.sqrt(np.sum(features**2, axis=1))
+
+    # Re-scale the features
+    features_rescale = np.divide(features.T, rescale_factor).T
+
+    # Re-scale constraints
+    constraints_rescale = constraints / rescale_factor
+
+    # # Orthogonalization # #
+
+    # Compute the matrix from which the eigenvectors must be extracted
+    features_mat = np.dot(features_rescale, features_rescale.T)
+
+    # Compute the eigenvectors of the matrix
+    trans_eigvals, trans_eigvects = np.linalg.eig(features_mat)
+
+    # Transform the features with the matrix of eigenvectors
+    features_trans = np.dot(trans_eigvects, features_rescale)
+
+    # Transform the features with the constraints of eigenvectors
+    constraints_trans = np.dot(trans_eigvects, constraints_rescale)
+
+    # # Second rescaling # #
+
+    # Find the absolute value of the smallest constraint that will be used
+    # to rescale again the problem
+    scale_min = np.min(np.abs(constraints_trans))
+
+    # Scale by dividing by this minimum value to have features and
+    # constraints close to 1
+    features_trans_scale = features_trans / scale_min
+    constraints_trans_scale = constraints_trans / scale_min
+
+    # # Computing the MaxEnt distribution # #
+
+    # Define the minimum entropy
+    model = MinDivergenceModel(features_trans_scale, samplespace)
+
+    # Set model features
+    model.algorithm = algorithm
+    model.tol = tol
+    model.paramstol = paramtol
+    model.maxiter = maxiter
+    model.callingback = True  # TBH I don't know what this does but it is needed
+                              # for the damn thing to work
+
+    # Change the dimensionality of the array
+    # step required by the maxentropy package.
+    X = np.reshape(constraints_trans_scale, (1, -1))
+
+    # Fit the model
+    model.fit(X)
+
+    # # Transform back the Lagrange multipliers # #
+
+    # Extract params
+    params = model.params
+
+    # peroform first rescaling
+    params = params / scale_min
+
+    # Transform back from the orthogonalization
+    params = np.dot(np.linalg.inv(trans_eigvects), params)
+
+    # Perform second rescaling
+    params = params / rescale_factor
+
+    return params
 
 # =============================================================================
 # moment_dynamics_numeric_protein
@@ -1461,17 +1540,20 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     legend_var : array-like. 1 X M.
         Value of the changing variable between different distributions
         being plotted
-    colors : str.
+    colors : str or list.
         Color palete from the seaborn options to use for the different
         distributions.
+        The user can feed the name of a seaborn color palette or a list of
+        RGB colors that would like to use as color palette.
     mean_mark : bool.
         Boolean indicating if a marker should be placed to point at
         the mean of each distribution. Default=True
     marker_height : float.
         Height that all of the markers that point at the mean should
         have.
-    pmf_edgecolor : string or RGB color. Default : 'k'
+    pmf_edgecolor : string or RGB colors. Default : 'k'
         Color for the edges of the histograms in the PMF plot.
+        If a single entry is listed, this color is used for all PMF edges.
     pmf_alpha : float. [0, 1]
         Alpha value for the histogram colors.
     color_bar : bool.
@@ -1495,9 +1577,15 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
         Limits on the y-axis for the PMF. The CDF goes from 0 to 1 by
         definition.
     '''
+    # Determine if user gave the name of a color palette or a list of colors
+    if type(color_palette) == str:
+        colors = sns.color_palette(color_palette, n_colors=len(legend_var))
+    else:
+        colors = list(color_palette)
 
-    colors = sns.color_palette(color_palette, n_colors=len(legend_var))
-
+    # Determine if a single or multiple colors were listed for pmf_edgecolor
+    if len(pmf_edgecolor) == 1:
+        pmf_edgecolor = [pmf_edgecolor] * len(legend_var)
     # Initialize figure
     fig, ax = plt.subplots(2, 1, figsize=figsize, sharex=True)
     ax[0].yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(
