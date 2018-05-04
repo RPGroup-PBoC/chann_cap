@@ -20,34 +20,57 @@
 \usepackage{xparse}
 
 % Equation referencing
-\DeclareDocumentCommand \eref{oooo}
-{\IfNoValueTF{#2}{Eq.~(\ref{#1})}{\IfNoValueTF{#3}{Eqs.~(\ref{#1}) and
-(\ref{#2})}{\IfNoValueTF{#4}{Eqs.~(\ref{#1})-(\ref{#3})}{Eqs.~(\ref{#1})-(\ref{#4})}}}}
-
+\newcommand{\eref}[1]{Eq.~\ref{#1}}
+% \DeclareDocumentCommand \eref{oooo}{\IfNoValueTF{#2}{Eq.~(\ref{#1})}
+% {\IfNoValueTF{#3}{Eqs.~(\ref{#1}) and (\ref{#2})}
+% {\IfNoValueTF{#4} {Eqs.~(\ref{#1})-(\ref{#3})}
+% {Eqs.~(\ref{#1})-(\ref{#4})}}}}
+%
 % Figure referencing
-\DeclareDocumentCommand \fref{ooo}
-{\IfNoValueTF{#2}{Fig.~\ref{#1}}{\IfNoValueTF{#3}{Figs.~\ref{#1} and
-\ref{#2}}{Figs.~\ref{#1}-\ref{#3}}}}
+\newcommand{\fref}[1]{Fig.~\ref{#1}}
+% \DeclareDocumentCommand \fref{ooo}
+% {\IfNoValueTF{#2}{Fig.~\ref{#1}}{\IfNoValueTF{#3}{Figs.~\ref{#1} and
+% \ref{#2}}{Figs.~\ref{#1}-\ref{#3}}}}
 
 % Letters for figure sub-parts
 \newcommand{\letter}[1]{#1} % For main text. Ex: As shown in Fig. 12A
 \newcommand{\letterParen}[1]{(#1)} % For captions. Ex: (A) Low limit and (B) high limit
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Personalized functions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\kpon}{k^{(p)}_{\text{on}}}
+\newcommand{\kpoff}{k^{(p)}_{\text{off}}}
+\newcommand{\kron}{k^{(r)}_{\text{on}}}
+\newcommand{\kroff}{k^{(r)}_{\text{off}}}
+\newcommand{\gm}{\gamma _m}
+\newcommand{\gp}{\gamma _p}
+\newcommand{\ee}[1]{\left\langle #1 \right\rangle}
+\newcommand{\bb}[1]{\mathbf{#1}}
+\newcommand{\dt}[1]{{\partial{#1} \over \partial t}}
+\newcommand{\PP}{\bb{P}}
+\newcommand{\Km}{\bb{K}}
+\newcommand{\Rm}{\bb{R}_m}
+\newcommand{\Gm}{\bb{\Gamma}_m}
+\newcommand{\Rp}{\bb{R}_p}
+\newcommand{\Gp}{\bb{\Gamma}_p}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Begin document
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{\textbf{First-principles prediction of the information processing
 capacity of a simple genetic circuit}}
-\author{Manuel Razo and Rob Phillips}
+\author{Manuel Razo-Mejia and Rob Phillips}
 \date{\today}
 
 \begin{document}
 \maketitle
-	\input{section_00_introduction}
+	% \input{section_00_introduction}
 	% \input{section_01}
 	% \input{section_02}
 	% \input{appendix_two_stage_dist.tex}
 	% \input{appendix_method_characteristics.tex}
+	\input{section_XX_model.tex}
 %	\input{section_99_ToDo}
 	% Bibliography
 	\bibliographystyle{unsrt}
