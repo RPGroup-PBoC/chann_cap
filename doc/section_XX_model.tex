@@ -302,7 +302,7 @@ Assuming a mean life-time for mRNA of $\approx$ 5 min (from this
 we have an mRNA degradation rate of $\gm \approx 2.84 \times 10^{-3} s^{-1}$.
 Using this value gives the following values for the inferred rates: $\kpon =
 0.012_{-0.001}^{+0.002} s^{-1}$, $\kpoff = {0.06}_ {-0.02}^{+0.15} s^{-1}$, and
-$r_m = 0.301_{-0.09}^{+0.5} s^{-1}$. \mrm{This is where a statement should be
+$r_m = 0.3_{-0.09}^{+0.5} s^{-1}$. \mrm{This is where a statement should be
 done with respect to known values in the literature}
 
 \fref{fig_lacUV5_theory_data} shows the result of substituting these parameter
@@ -328,10 +328,111 @@ bacteria is the fact that depending on the position relative to the chromosome
 replication origin, and the growth rate, cells can have multiple copies of a
 gene. Genes closer to the replication origin will have on average higher gene
 copy number compare to genes at the opposite end. For the locus in which our
-reporter construct is located (\textit{galK}) we expect to have ≈ 1.66 copies of
-the gene at a doubling time of 1 hour. This implies that the cells spend 2/3 of
-the cell cycle with two copies of the promoter and the rest with a single copy.
+reporter construct is located (\textit{galK}) we expect to have $\approx$ 1.66
+copies of the gene at a doubling time of 1 hour \mrm{this should cite Rob's
+reference for the transcription book figure I got this from}. This implies that
+the cells spend 2/3 of the cell cycle with two copies of the promoter and the
+rest with a single copy.
 
-To account for this variability in gene copy
+To account for this variability in gene copy we extend the model to account for
+this difference assuming that when cells have two copies of the promoter the
+production rate is $2 r_m$ compared to the rate $r_m$ for a single copy. Then
+the probability of observing certain mRNA copy $m$ is given by
+\begin{equation}
+  P(m) = f \cdot P(m \mid \text{one promoter}) +
+  (1 - f) \cdot P(m \mid \text{two promoters}),
+  \label{eq_prob_multipromoter}
+\end{equation}
+where $f = 1/3$ is the fraction of the cell cycle that cells spend with a single
+copy of the promoter. Both terms $P(m \mid \text{promoter copy})$ are given by
+\eref{eq_two_state_mRNA} witht the only difference being the rate $r_m$. It is
+important to acknowledge that \eref{eq_prob_multipromoter} assumes that once the
+cell replicates the promoter the time scale in which the mRNA count relaxes to
+the new equilibrium is shorter than the time that the cells spend in this
+two-promoter state.
 
-Since for this data there is no labeling of the locus Jones et al. used area as a proxy for stage in the cell cycle. Following their procedure we will find the area threshold that sorts cells between having one or two copies of the promoter.
+In order to repeat the Bayesian inference assuming this model we need to split
+our data in two sets -- cells with a single copy of the promoter and cells with
+two copies of the promoter. Since for the single molecule mRNA FISH data there
+is no labeling of the locus Jones et al. used area as a proxy for stage in the
+cell cycle \cite{Jones2014a}. Following their procedure we computed the area
+threshold that sorts cells between having one or two copies of the promoter.
+\fref{fig_cell_area} shows the separation of these two groups based on area.
+
+\begin{figure}[h!]
+	\centering \includegraphics[width=0.5\columnwidth]
+  {../fig/chemical_master_mRNA_FISH/area_division.pdf}
+	\caption{\textbf{Separation of cells based on cell size.} Using the area as
+  a proxy for state on the cell cycle, cells can be sorted into two groups --
+  small cells (with one promoter copy) and large cells (with two promoter
+  copies). The vertical black line delimits the threshold that places 2/3 of
+  the cells on the large cell group and the rest on the small cell group.}
+  \label{fig_cell_area}
+\end{figure}
+
+To confirm that this sorting of cells by area gives a distinction in the mRNA
+count \fref{fig_mRNA_by_size} shows the distribution of both groups. As expected
+larger cells have a higher mRNA copy number on average.
+
+\begin{figure}[h!]
+	\centering \includegraphics[width=0.5\columnwidth]
+  {../fig/chemical_master_mRNA_FISH/lacUV5_mRNA_size_PMF_CDF.pdf}
+	\caption{\textbf{mRNA distribution for small and large cells.} (A)
+  probability mass function and (B) cumulative distribution function of the
+  small and large cells as determined in \fref{fig_cell_area}. The triangles
+  above histograms in (A) indicate the mean mRNA copy number for each group.}
+  \label{fig_mRNA_by_size}
+\end{figure}
+
+We modify \eref{eq_bayes_sample} to account for the two separate groups of
+cells. Let $N_s$ be the number of cells in the small size group and $N_l$ the
+number of cells in the large size group. Then the posterior distribution for the
+parameters is of the form
+\begin{equation}
+  \small
+P(\kpon, \kpoff, r_m \mid \{m_i\}) \propto
+  \prod_{i=1}^{N_s} f \cdot P(m_i \mid \kpon, \kpoff, r_m)
+  \prod_{j=1}^{N_l} (1 - f) \cdot P(m_j \mid \kpon, \kpoff, 2 \cdot r_m)
+  P(\kpon, \kpoff, r_m).
+  \label{eq_bayes_sample_double}
+\end{equation}
+
+Sampling \eref{eq_bayes_sample_double} with MCMC and using again the mRNA mean
+lifetime of 350 seconds gives the following values for the parameters: $\kpon =
+0.017_{-0.001}^{+0.002} s^{-1}$, $\kpoff = {0.24}_ {-0.11}^{+0.46} s^{-1}$, and
+$r_m = 0.5_{-0.2}^{+0.8} s^{-1}$. \mrm{again need to compare with what is
+known about these rates.}. \fref{fig_lacUV5_theory_data_double} shows the result
+of applying \eref{eq_prob_multipromoter} with these parameters.
+
+\begin{figure}[h!]
+	\centering \includegraphics[width=0.5\columnwidth]
+  {../fig/chemical_master_mRNA_FISH/lacUV5_two_state_mcmc_multi_copy.pdf}
+	\caption{\textbf{Experimental vs. theoretical distribution of mRNA per cell
+  using parameters for single and multi promoter model} Purple dotted curve
+  shows the result of using \eref{eq_prob_multipromoter} witht the parameters
+  inferred by sampling \eref{eq_bayes_sample_double}. For comparison orange
+  dotted line shows the model from \fref{fig_lacUV5_theory_data}. Blue bars are
+  the same data as \fref{fig_lacUV5_FISH} from \cite{Jones2014a}.}
+  \label{fig_lacUV5_theory_data_double}
+\end{figure}
+
+\section{Repressor rates from three-state regulated promoter.}
+
+Having determined the RNAP rates we now proceed to determine the repressor rates
+$\kron$ and $\kroff$. The value of these rates is constrained by what we know
+from equilibrium models \cite{Phillips2015}. Garcia \& Phillips
+\cite{Garcia2011c} defined the fold-change in gene expression as
+\begin{equation}
+  \foldchange = {\text{gene expression}(R > 0) \over
+                 \text{gene expression}(R = 0)},
+\end{equation}
+where $R$ is the number of transcriptional repressors per cell. Basically the
+fold-change is the expression level in the presence of the repressor divided by
+the expression level in the absence of regulation. In the language of
+statistical mechanics this expression is of the form \cite{Garcia2011c}
+\begin{equation}
+  \foldchange = \left( 1 + {R \over \Nns} e^{-\beta\eR} \right)^{-1},
+\end{equation}
+where $\Nns$ is the number of non-specific binding sites in the genome (taken
+as the size of the \textit{E. coli} genome $4.6\times 10^6$), $\eR$ is the
+repressor-DNA binding energy and $\beta \equiv {1 \over k_BT}$.
