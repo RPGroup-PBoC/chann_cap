@@ -272,12 +272,12 @@ out of the posterior distribution in \eref{eq_bayes_sample}.
 \fref{fig_mcmc_rnap} shows the MCMC samples of the posterior distribution. We
 see that for the case of the $\kpon$ parameter there is a single symmetric peak.
 $\kpoff$ and $r_m$ have a rather long tail towards large values. As a matter of
-fact, the 2D projection of $\kpoff$ vs $r_m$ shows that the model is degenerate,
-meaning that the two parameters are highly correlated. What this implies is that
-one could change the value of $\kpoff$, and then compensate by a change on $r_m$
-in order to maintain the shape of the mRNA distribution. Having used the prior
-knowledge on the equilibrium picture of the RNAP binding allowed us to get at a
-rather constrained parameter value for these rates.
+fact, the 2D projection of $\kpoff$ vs $r_m$ shows that the model is sloppy,
+meaning that the two parameters are highly correlated \cite{Transtrum2015}. What
+this implies is that one could change the value of $\kpoff$, and then compensate
+by a change on $r_m$ in order to maintain the shape of the mRNA distribution.
+Having used the prior knowledge on the equilibrium picture of the RNAP binding
+allowed us to get at a rather constrained parameter value for these rates.
 
 \begin{figure}[h!]
 	\centering \includegraphics[width=0.5\columnwidth]
@@ -420,19 +420,107 @@ of applying \eref{eq_prob_multipromoter} with these parameters.
 
 Having determined the RNAP rates we now proceed to determine the repressor rates
 $\kron$ and $\kroff$. The value of these rates is constrained by what we know
-from equilibrium models \cite{Phillips2015}. Garcia \& Phillips
-\cite{Garcia2011c} defined the fold-change in gene expression as
+from equilibrium models \cite{Phillips2015}. Equilibrium models work in the
+thermodynamic limit of large number of particles, giving no information about
+large deviations from them mean when the molecule count is small. Nevertheless
+both, equilibrium and kinetic languages should make the same predictions when it
+comes to the mean of the distribution. Over the last decade there has been a lot
+of effort in developing equilibrium models for gene expression regulation
+\cite{Buchler2003,Vilar2011,Bintu2005a}. In particular our group has
+extensively characterized the simple repression motif using this formalism
+\cite{Garcia2011c,Brewster2014,Razo-Mejia2018}.
+
+The dialogue between theory and experiments has lead to simplified expressions
+that capture the phenomenology of the gene expression response as a function of
+natural variables such as molecule count and affinities between molecular
+players. A particularly interesting cuantity is called the fold-change in gene
+expression. Garcia \& Phillips \cite{Garcia2011c} defined this quantity as
 \begin{equation}
-  \foldchange = {\text{gene expression}(R > 0) \over
-                 \text{gene expression}(R = 0)},
+  \foldchange = {\ee{\text{gene expression}(R > 0)} \over
+                 \ee{\text{gene expression}(R = 0)}},
 \end{equation}
 where $R$ is the number of transcriptional repressors per cell. Basically the
-fold-change is the expression level in the presence of the repressor divided by
-the expression level in the absence of regulation. In the language of
-statistical mechanics this expression is of the form \cite{Garcia2011c}
+fold-change is the mean expression level in the presence of the repressor
+divided by the expression level in the absence of regulation. In the language of
+statistical mechanics this quantity is of the form \cite{Garcia2011c}
 \begin{equation}
   \foldchange = \left( 1 + {R \over \Nns} e^{-\beta\eR} \right)^{-1},
+  \label{eq_fc_thermo}
 \end{equation}
 where $\Nns$ is the number of non-specific binding sites in the genome (taken
 as the size of the \textit{E. coli} genome $4.6\times 10^6$), $\eR$ is the
 repressor-DNA binding energy and $\beta \equiv {1 \over k_BT}$.
+
+To compute the fold-change in the chemical master equation language we compute
+the first moment of the steady sate mRNA distribution $\ee{m}$ for both, the
+three-state promoter ($R>0$) and the two-state promoter case ($R=0$)
+\mrm{See section XX for moment derivation}. The latter gives
+\begin{equation}
+  \ee{m (R = 0)} = {r_m \over \gm} {\kpon \over \kpon + \kpoff}.
+\end{equation}
+The three-state promoter has a steady-state mean mRNA copy number of the form
+\begin{equation}
+  \ee{m (R > 0)} = {r_m \over \gm} {\kroff\kron
+  \over \kpoff\kroff + \kpoff\kron + \kroff\kpon}.
+\end{equation}
+Computing the fold-change then gives
+\begin{equation}
+  \foldchange = {\ee{m (R > 0)} \over \ee{m (R = 0)}} =
+  {\kroff \left( \kpoff + \kpon \right) \over
+  \kpoff\kron + \kroff \left( \kpoff + \kpon \right)}.
+  \label{eq_fold_change_cme}
+\end{equation}
+
+Given that the number of repressors per cell $R$ is an experimental variable
+that we can control, we assume that the rate at which the promoter transitions
+form the empty state to the repressor bound state $\kron$ is given by the
+concentration of repressors $[R]$ times a diffusion limited rate $k_o$
+\cite{Jones2014a}.  For the diffusion limited constant $k_o$ we use the value
+inferred by Elf et al. \cite{Elf2007}. In this work they image individual
+\textit{lac} repressors and measured both the diffusion constant and the
+residence time once the repressor is bound. As in \cite{Jones2014a} we take this
+value to be $k_o = 2.7 \times 10^{-3} (\text{s nM})^{-1}$. With this in hand we
+can rewrite
+\eref{eq_fold_change_cme} as
+\begin{equation}
+  \foldchange = \left( 1 + {k_0 [R] \over \kroff}
+                {\kpon \over \kpon + \kpoff} \right)^{-1}.
+  \label{eq_fc_kinetic}
+\end{equation}
+
+We note that both \eref{eq_fc_thermo} and \eref{eq_fc_kinetic} have the same
+functional form. Therefore if both languages predict the same output for the
+mean gene expression level, it must be true that
+\begin{equation}
+  {k_o [R] \over \kroff}{\kpon \over \kpon + \kpoff} =
+  {R \over \Nns} e^{-\beta\eR}.
+\end{equation}
+Solving for $\kroff$ gives
+\begin{equation}
+  \kroff = {k_o [R] \Nns e^{\beta\eR} \over R}{\kpon \over \kpon + \kpoff}.
+  \label{eq_kroff_complete}
+\end{equation}
+
+In order for the units to cancel properly the repressor concentration has to be
+given in nM rather than absolute count. If we consider that the repressor
+concentration is equal to
+\begin{equation}
+[R] = \frac{R}{V_{cell}}\cdot \frac{1}{Av},
+\end{equation}
+where $R$ is the absolute repressor copy number per cell, $V_{cell}$ is the cell
+volume and $Av$ is Avogadro's number. The \textit{E. coli} cell volume is in the
+order of 1 fL = $10^{-15}$ L, and Avogadro's number is $6.022 \times 10^{23}$.
+If we further include the conversion factor to turn M into nM we find that
+\begin{equation}
+[R] = {R \over 10^{-15} L} \cdot {1 \over 6.022 \times 10^{23}}
+\cdot {10^9 \text{ nmol} \over 1 \text{ mol}} \approx 1.66 \times R.
+\end{equation}
+Using this we simplify \eref{eq_kroff_complete} as
+\begin{equation}
+  \kroff = 1.66 \cdot k_o \cdot \Nns e^{\beta\eR}
+   \cdot {\kpon \over \kpon + \kpoff}.
+  \label{eq_kroff}
+\end{equation}
+What \eref{eq_kroff} shows is the direct relationship that must be true if the
+equilibrium model must be self consistent with the non-equilibrium kinetic
+picture.
