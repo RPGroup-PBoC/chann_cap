@@ -3,7 +3,7 @@
 Title:
     chann_cap_utils
 Last update:
-    2018-04-30
+    2018-05-04
 Author(s):
     Manuel Razo-Mejia
 Purpose:
@@ -76,6 +76,43 @@ def p_act(C, ka, ki, epsilon=4.5, logC=False):
 
     return (1 + C / ka)**2 / \
         ((1 + C / ka)**2 + np.exp(-epsilon) * (1 + C / ki)**2)
+
+def fold_change_statmech(C, R, eRA, ka, ki, Nns=4.6E6, epsilon=4.5,
+                         logC=False):
+    '''
+    Computes the gene expression fold-change as expressed in the simple
+    repression thermodynamic model of gene expression as a function of
+    repressor copy number, repressor-DNA binding energy, and MWC parameters.
+
+    Parameters
+    ----------
+    C : array-like.
+        concentration(s) of ligand at which evaluate the function.
+    R : array-like.
+        repressor copy number per cell
+    eRA : array-like.
+        repressor-DNA binding energy
+    ka, ki : float.
+        dissociation constants for the active and inactive states respectively
+        in the MWC model of the lac repressor.
+    Nns : float. Default = 4.6E6
+        number of non-specific binding sites in the bacterial genome.
+    epsilon : float.
+        energetic barrier between the inactive and the active state.
+    logC : Bool.
+        boolean indicating if the concentration is given in log scale
+
+    Returns
+    -------
+    p_act : float.
+        The probability of the repressor being in the active state.
+    '''
+    C = np.array(C)
+    if logC:
+        C = 10**C
+
+    return (1 + R / Nns * p_act(C, ka, ki, epsilon, logC) * np.exp(-eRA))**-1
+
 
 # =============================================================================
 # chemical_master_eq_analytic_mRNA
@@ -891,17 +928,20 @@ def moment_ss_reg(moment_fun, C, rep, eRA,
     # Generate array with variables
     param = [kr_on, kr_off, kp_on, kp_off, rm, gm, rp, gp]
 
-    # Initialie array to save the moments
-    moment_num = np.zeros(len(moment_fun))
+    if len(moment_fun) > 1:
+        # Initialie array to save the moments
+        moment_num = np.zeros(len(moment_fun))
 
-    # Loop through functions to compute moments
-    for i, fun in enumerate(moment_fun):
-        # Find the number of variables in function. mRNA functions have
-        # 6 arguments while protein functions have 8.
-        arg_num = fun.__code__.co_argcount
+        # Loop through functions to compute moments
+        for i, fun in enumerate(moment_fun):
+            # Find the number of variables in function. mRNA functions have
+            # 6 arguments while protein functions have 8.
+            arg_num = fun.__code__.co_argcount
 
-        # Compute moment
-        moment_num[i] = fun(*param[:arg_num])
+            # Compute moment
+            moment_num[i] = fun(*param[:arg_num])
+    else:
+        moment_num = moment_fun[0](*param)
 
     # Return moments
     return moment_num
