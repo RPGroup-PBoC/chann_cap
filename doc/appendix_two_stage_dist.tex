@@ -56,7 +56,7 @@ r_p m \left[ P_{m, p-1}(t) - P_{m, p}(t) \right]\\
   \end{aligned}
 \end{equation}
 
-\manuelComment{Eq. 1 of the paper.}
+\mrm{Eq. 1 of the paper.}
 
 Let us now divide by the slowest rate, i.e. $\gamma_p$
 \begin{equation}
@@ -76,7 +76,7 @@ We now introduce the following variables:
   \gamma \equiv \frac{\gamma_m}{\gamma_p}\\
   \tau \equiv \gamma_p \cdot t
 \end{align}
-Substituting these variables into \eref[eq_cme_over_gammap] we obtain
+Substituting these variables into \eref{eq_cme_over_gammap} we obtain
 \begin{equation}
 \begin{aligned}
 \frac{\partial P_{m,p}}{\partial \tau} =
@@ -107,7 +107,7 @@ P_{m, p} =
 \sum_{p=0}^{\infty} s^m z^p \frac{\partial}{\partial \tau} P_{m, p}.
 \label{eq_dF_dtau}
 \end{equation}
-We now substitute \eref[eq_cme_tau] into \eref[eq_dF_dtau]
+We now substitute \eref{eq_cme_tau} into \eref{eq_dF_dtau}
 \begin{equation}
 \begin{aligned}
 \frac{\partial F}{\partial \tau} =
@@ -130,7 +130,7 @@ the terms in parenthesis as
 \label{eq_split_sum}
 \end{equation}
 We can now factorize $s^{-1}$ from the first term on the left hand side of
-\eref[eq_split_sum] and redefine the variable to sum over.
+\eref{eq_split_sum} and redefine the variable to sum over.
 \begin{equation}
 \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m z^p \left( P_{m+1, p} - P_{m, p}
 \right) =
@@ -146,7 +146,7 @@ write it as
 p}
 \end{equation}
 
-With this identity we can rewrite \eref[eq_dF_dtau_complete] as
+With this identity we can rewrite \eref{eq_dF_dtau_complete} as
 \begin{equation}
 \begin{aligned}
 \frac{\partial F}{\partial \tau} =
@@ -175,7 +175,7 @@ s \frac{\partial}{\partial s}\left( \sum_{m=0}^{\infty} \sum_{p=0}^{\infty} s^m 
 s \frac{\partial}{\partial s}F.
 \end{equation}
 
-Using this identity in \eref[eq_dF_dtau_identity] allow us to remove all the
+Using this identity in \eref{eq_dF_dtau_identity} allow us to remove all the
 sums, obtaining a single PDE of the form
 \begin{equation}
 \frac{\partial F}{\partial \tau} =
@@ -201,12 +201,12 @@ for each mRNA and protein copy number to a single PDE. We now have to find a
 solution for this equation and then infer back the probability distribution
 given the definition of the generating function.
 
-We now note a pattern in \eref[eq_df_dtau_PDE]. If we define $u \equiv s - 1$ and $v \equiv z - 1$, which satisfy
+We now note a pattern in \eref{eq_df_dtau_PDE}. If we define $u \equiv s - 1$ and $v \equiv z - 1$, which satisfy
 \begin{align}
   \frac{\partial}{\partial s} = \frac{\partial}{\partial u},\\
   \frac{\partial}{\partial z} = \frac{\partial}{\partial v},
 \end{align}
-we can rewrite \eref[eq_df_dtau_PDE] as
+we can rewrite \eref{eq_df_dtau_PDE} as
 \begin{equation}
   \frac{\partial F}{\partial \tau} =
   a u F
@@ -223,12 +223,12 @@ We now divide by $v$ and rearrange terms obtaining
   = a \frac{u}{v} F,
   \label{eq_swain_2}
 \end{equation}
-\manuelComment{which is Eq. (2) in \cite{Shahrezaei2008}.}
+\mrm{which is Eq. (2) in \cite{Shahrezaei2008}.}
 
-\eref[eq_swain_2] is a semi-linear PDE that can be solved using the method of
+\eref{eq_swain_2} is a semi-linear PDE that can be solved using the method of
 the characteristics (this method is described in the Appendix
 \ref{seq_method_characteristics}). In order to apply this method we write
-\eref[eq_swain_2] as
+\eref{eq_swain_2} as
 \begin{equation}
   A(v, u, \tau) \frac{\partial F}{\partial v}
   + B(v, u, \tau) \frac{\partial F}{\partial u}
@@ -256,7 +256,7 @@ parameter $r$. This allow us to write the equality
   {{dF \over dr} \over f(v, u, \tau, F)}.
   \label{eq_lagrange_charpit}
 \end{equation}
-Substituting \eref[eq_coef_definition] into \eref[eq_lagrange_charpit] gives
+Substituting \eref{eq_coef_definition} into \eref{eq_lagrange_charpit} gives
 \begin{equation}
   {{dv \over dr} \over 1} =
   {{du \over dr} \over - \gamma \left[ b (1 + u) - \frac{u}{v} \right]} =
@@ -282,7 +282,7 @@ equations can be written as a system of ODEs as
 Once we find the system of ODEs that integrate the variables along the
 characteristic line we can try to solve this system in order to find the general
 integral surface that solves the PDE. The initial conditions for the system are
-given by $\tau = 0$, $u = u_0$, $v = v_0$. Let's start with \eref[eq_ODE_1].
+given by $\tau = 0$, $u = u_0$, $v = v_0$. Let's start with \eref{eq_ODE_1}.
 For this equation we use separation of variables which simply gives
 \begin{equation}
   {\partial v \over \partial r} = 1 \Rightarrow
@@ -291,12 +291,12 @@ For this equation we use separation of variables which simply gives
 \end{equation}
 where $C_1$ is an integration constant.
 
-For \eref[eq_ODE_3] we can write
+For \eref{eq_ODE_3} we can write
 \begin{equation}
   {\partial \tau \over \partial r} = {1 \over v} \Rightarrow
   {\partial r \over \partial \tau} = v.
 \end{equation}
-If we now substitute \eref[eq_ODE_sol_1] we find
+If we now substitute \eref{eq_ODE_sol_1} we find
 \begin{equation}
   {\partial r \over \partial \tau} = r - C_1.
 \end{equation}
@@ -315,7 +315,7 @@ where $C_2'$ is an integration constant. If we now solve for $r$ we find
 \end{equation}
 where $C_2 \equiv e^{C_2'}$.
 
-If we substitute \eref[eq_ODE_sol_3] back on \eref[eq_ODE_sol_1] we obtain a
+If we substitute \eref{eq_ODE_sol_3} back on \eref{eq_ODE_sol_1} we obtain a
 functional relationship between $v$ and $\tau$ of the form
 \begin{equation}
   C_2 e^{\tau} + C_1 = v + C_1 \Rightarrow
@@ -329,7 +329,7 @@ therefore the functional relationship between $\tau$ and $v$ is of the form
   \label{eq_v_tau_relation}
 \end{equation}
 
-Using \eref[eq_ODE_1] and \eref[eq_ODE_2] we can compute
+Using \eref{eq_ODE_1} and \eref{eq_ODE_2} we can compute
 $\partial u / \partial v$ as
 \begin{equation}
   {\partial u \over \partial v} =
@@ -348,7 +348,7 @@ Grouping terms with respect to $u$ gives
   {du \over dv} + \left( \gamma b - {\gamma \over v} \right) u = - \gamma b.
   \label{eq_dudv}
 \end{equation}
-\eref[eq_dudv] can be solved by the integrating factor method. In this case
+\eref{eq_dudv} can be solved by the integrating factor method. In this case
 the integrating factor is given by
 \begin{equation}
   e^{\int \gamma \left( b - {1 \over v} \right) dv} =
@@ -356,7 +356,7 @@ the integrating factor is given by
   \label{eq_dudv_integ_factor}
 \end{equation}
 
-Multiplying both sides of \eref[eq_dudv] by \eref[eq_dudv_integ_factor] we find
+Multiplying both sides of \eref{eq_dudv} by \eref{eq_dudv_integ_factor} we find
 that the left hand side is transformed into the derivative of the integrating
 factor times $u$, i.e.
 \begin{equation}
@@ -375,14 +375,14 @@ where $C$ is an integrating constant. Solving for $u$ we find
   \gamma b \int dv {e^{\gamma b v} \over v^{\gamma}} \right].
   \label{eq_implicit_sol_u}
 \end{equation}
-\manuelComment{Eq. (26)}
+\mrm{Eq. (26)}
 
 To solve the integral we expand the exponential as a Taylor series, i.e.
 \begin{equation}
   e^{-\gamma b v} = \sum_{n=0}^{\infty} {\left( \gamma b v \right)^n \over n!}.
 \end{equation}
 
-Using this on the integral in \eref[eq_implicit_sol_u] gives
+Using this on the integral in \eref{eq_implicit_sol_u} gives
 \begin{equation}
   \int dv {e^{\gamma b v} \over v^{\gamma}} =
   \int dv {1 \over v^{\gamma}}
@@ -400,7 +400,7 @@ obtain
   \label{eq_integral_implicit_sol_u}
 \end{equation}
 
-Substituting \eref[eq_integral_implicit_sol_u] into \eref[eq_implicit_sol_u]
+Substituting \eref{eq_integral_implicit_sol_u} into \eref{eq_implicit_sol_u}
 gives
 \begin{equation}
   u(v) = v^\gamma e^{-\gamma b v}
@@ -414,7 +414,7 @@ This can be simplified to obtain
   n! \left( n - \gamma + 1 \right)} \right].
   \label{eq_SI_27_uofv}
 \end{equation}
-\manuelComment{Eq (27) in the SI.}
+\mrm{Eq (27) in the SI.}
 
 The question now becomes how can we evaluate the sum
 \begin{equation}
@@ -441,7 +441,7 @@ by
 \label{eq_ratio_series}
 \end{equation}
 From this ratio we can see that since we assumed that $\gamma \gg 1$ we can
-discard the second term on the right hand side of \eref[eq_ratio_series] since
+discard the second term on the right hand side of \eref{eq_ratio_series} since
 \begin{equation}
 {(n - \gamma + 1) \over (n - \gamma + 2)} \approx 1.
 \end{equation}
@@ -547,7 +547,7 @@ $n!$ of the form
              \sqrt{2 \pi \gamma b v}, \;\;
              \text{for} \; (\gamma b v) \rightarrow \infty.
 \end{equation}
-\manuelComment{Eq (28) in the SI}
+\mrm{Eq (28) in the SI}
 
 So far the Laplace approximation for sums allowed us to find the leading terms
 of the sum to then have an approximation for the $n!$ term. We can now
@@ -599,9 +599,9 @@ have
 \begin{equation}
   S(\gamma b v) \approx {b v e^{\gamma b v} \over b v - 1}.
 \end{equation}
-\manuelComment{Eq (29) in the SI.}
+\mrm{Eq (29) in the SI.}
 
-With this rather convoluted result we can go back to \eref[eq_SI_27_uofv] to
+With this rather convoluted result we can go back to \eref{eq_SI_27_uofv} to
 write
 \begin{align}
   u(v) &= e^{-\gamma b v} \left[ C v^{\gamma}
@@ -616,7 +616,7 @@ Simplifying terms we have
   - {b v \over b v - 1}
   \label{eq_SI_30_uofv}
 \end{equation}
-\manuelComment{Eq (30) in the SI.}
+\mrm{Eq (30) in the SI.}
 
 To obtain the value of the integration constant $C$ we use the initial
 conditions $u(0) = u_o$ and $v(0) = v_o$. This gives us
@@ -629,7 +629,7 @@ Solving for $C$ gives
   C = \left[ u_o - {b v_o \over b v_o - 1} \right] v_o^{-\gamma} e^{\gamma b v}.
 \end{equation}
 
-That means that \eref[eq_SI_30_uofv] is given by
+That means that \eref{eq_SI_30_uofv} is given by
 \begin{align}
   u(v) &= \left[ u_o - {b v_o \over b v_o - 1} \right]
   v_o^{-\gamma} e^{\gamma b v_o} v^{\gamma} e^{-\gamma b v}
@@ -641,20 +641,20 @@ That means that \eref[eq_SI_30_uofv] is given by
   \label{eq_uofv_with_C}
 \end{align}
 
-Recall that \eref[eq_v_tau_relation] tells us the relationship between $v$ and
+Recall that \eref{eq_v_tau_relation} tells us the relationship between $v$ and
 $\tau$, i.e. $v = v_o e^{\tau}$. This means that since $\tau > 0$ then
 $v = v_o e^{\tau} > v_o$, therefore since the first term of
-\eref[eq_uofv_with_C] is dominated by the exponential, and
+\eref{eq_uofv_with_C} is dominated by the exponential, and
 $e^{\gamma b (v_o - v)}$ quickly converges to zero for large $\gamma$ we can
-approximate \eref[eq_uofv_with_C] as
+approximate \eref{eq_uofv_with_C} as
 \begin{equation}
   u(v) \approx {b v \over 1 - b v}.
   \label{eq_SI_31_uofv}
 \end{equation}
-\manuelComment{Eq (30) in the SI and (5) in the main text.}
-Interestingly since in the generating function \eref[eq_generating_function]
+\mrm{Eq (30) in the SI and (5) in the main text.}
+Interestingly since in the generating function \eref{eq_generating_function}
 $u$ was indirectly related to mRNA copy number and $v$ to protein,
-\eref[eq_SI_31_uofv] implies that since $u$ quickly converges to a fixed
+\eref{eq_SI_31_uofv} implies that since $u$ quickly converges to a fixed
 function of $v$, for most of the protein lifetime the mRNA is at steady state.
 
 \subsection{Finding the generating function}
@@ -710,7 +710,7 @@ at time $\tau = 0$, we would have that
   &= \sum_{p=0}^{\infty} \delta (p - k) z^p = z^k.
 \end{align}
 This initial condition doesn't sum over mRNA, because as explained before for
-\eref[eq_SI_31_uofv], for most of the protein lifetime the mRNA is in steady
+\eref{eq_SI_31_uofv}, for most of the protein lifetime the mRNA is in steady
 state. Formally this initial condition is valid for times of order
 ${\gamma_p \over \gamma_m} = \gamma^{-1}$. Now $z = 1 + v$, therefore
 $F(\tau = 0) = (1 - v_o)^k$. Using this initial condition we have
@@ -721,7 +721,7 @@ Solving for $C'$ gives
 \begin{equation}
   C' = \ln (1 + v_o)^k + a \ln (1 - b v_o).
 \end{equation}
-Therefore substituting this in \eref[eq_lnF_constant] gives
+Therefore substituting this in \eref{eq_lnF_constant} gives
 \begin{align}
   \ln F &= a \ln \left( {1 - b v_o \over 1 - b v} \right)^a
   + \ln (1 + v_o)^k,\\
@@ -737,8 +737,8 @@ This gives us the generating function of the form
 
 We would like to write the generating function as a function of the original
 variable $z$ and $\tau$. This is done by recalling that we defined $z = 1 + v$,
-in combination with \eref[eq_v_tau_relation] gives $v_o = (z - 1) e^{-\tau}$.
-Using this on \eref[eq_generating_function_onv] gives
+in combination with \eref{eq_v_tau_relation} gives $v_o = (z - 1) e^{-\tau}$.
+Using this on \eref{eq_generating_function_onv} gives
 \begin{equation}
   F = \left( {1 - b (z - 1) e^{-\tau}
   \over
@@ -746,7 +746,7 @@ Using this on \eref[eq_generating_function_onv] gives
   } \right)^a
   \left[ 1 + (z - 1) e^{-\tau} \right]^k.
 \end{equation}
-\manuelComment{Eq (35) in the SI.}
+\mrm{Eq (35) in the SI.}
 
 If we set $k = 0$ we get
 \begin{equation}
@@ -756,13 +756,13 @@ If we set $k = 0$ we get
   } \right)^a.
   \label{eq_generating_function_onz}
 \end{equation}
-\manuelComment{Eq (7) in the main text.}
+\mrm{Eq (7) in the main text.}
 
 \subsection{Deriving the probability distribution for proteins}
 
 Given that we know the generating function we can backtrack the entire
 distribution. The difficulty resides in being able to write
-\eref[eq_generating_function_onz] in the standard form
+\eref{eq_generating_function_onz} in the standard form
 \begin{equation}
   F = \sum_{p} z^p P_p.
 \end{equation}
@@ -773,7 +773,7 @@ probability we can compute
   \right\rvert_{z=0}
   \label{eq_prob_from_generating}
 \end{equation}
-So let's rewrite \eref[eq_generating_function_onz] in a more convenient form
+So let's rewrite \eref{eq_generating_function_onz} in a more convenient form
 \begin{equation}
   F = \left( {1 + b (1 - z) e^{-\tau}
   \over
@@ -805,7 +805,7 @@ $z$ term. This means we can write
   \left( 1 - {b z \over e^{\tau} + b} \right)^{-a}
   }. \label{eq_generating_final}
 \end{align}
-\manuelComment{Eq. (36) in the SI.}
+\mrm{Eq. (36) in the SI.}
 
 There are two identities that Shahrezaei \& Swain quote for the following steps.
 The first one is given by
@@ -853,10 +853,10 @@ Therefore for the $n^{\text{th}}$ derivative it must be true that
 \begin{equation}
     \left. {\partial ^n \over \partial z^n}
     \left[ 1 - q z \right]^{-a} \right\vert _{z=0} =
-    {\Gamma(a + n) \over \Gamma(a)} q^n. \blacksquare
+    {\Gamma(a + n) \over \Gamma(a)} q^n.
     \label{eq_derivative_identity}
 \end{equation}
-\manuelComment{Eq (37) in the SI.}
+\mrm{Eq (37) in the SI.}
 
 The second identity the authors quote is more convoluted. It could be proof by
 induction but it would be a really long proof. For convenience we will quote
@@ -869,12 +869,12 @@ of functions is given by
   {\partial^k \over \partial z^k} y(z)^j
   \label{eq_derivative_ratio}
 \end{equation}
-\manuelComment{Eq (39) in SI.}
+\mrm{Eq (39) in SI.}
 
-\eref[eq_prob_from_generating] gives us the recipe for how to compute any
+\eref{eq_prob_from_generating} gives us the recipe for how to compute any
 probability from the generating function we derived in
-\eref[eq_generating_final]. To use \eref[eq_derivative_ratio] we define from
-\eref[eq_generating_final]
+\eref{eq_generating_final}. To use \eref{eq_derivative_ratio} we define from
+\eref{eq_generating_final}
 \begin{equation}
   x(z) = \left( 1 - {b z \over 1 + b} \right)^{-a},
 \end{equation}
@@ -882,8 +882,8 @@ and
 \begin{equation}
   y(z) = \left( 1 - {b z \over e^{\tau} + b} \right)^{-a}.
 \end{equation}
-With these definitions in hand we use \eref[eq_prob_from_generating] along with
-\eref[eq_derivative_ratio] to compute
+With these definitions in hand we use \eref{eq_prob_from_generating} along with
+\eref{eq_derivative_ratio} to compute
 \begin{equation}
   \scriptscriptstyle
   P_p = \left. {1 \over p!} \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
@@ -895,7 +895,7 @@ With these definitions in hand we use \eref[eq_prob_from_generating] along with
   \left[ \left( 1 - {b z \over e^\tau + b}  \right)^{-a} \right]^j
   \right]\right\vert _{z=0}.
 \end{equation}
-Using \eref[eq_derivative_identity] we can rewrite the derivatives as
+Using \eref{eq_derivative_identity} we can rewrite the derivatives as
 \begin{equation}
   \scriptstyle
   P_p = \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
@@ -904,14 +904,14 @@ Using \eref[eq_derivative_identity] we can rewrite the derivatives as
   \sum_{j=0}^k {(-1)^j (k + 1) \over (j + 1)! (p - k)! (k - j)!} \cdot
   {\Gamma(aj + k) \over \Gamma(aj)} \left( {b \over e^\tau + b} \right)^k
 \end{equation}
-\manuelComment{Eq (39) in SI.}
+\mrm{Eq (39) in SI.}
 
 For the second sum the authors quote the following identity
 \begin{equation}
   \sum_{j=0}^k {(-1)^j \Gamma(aj + k) \over (j + 1)! \Gamma(aj) (k - j)!} =
   {(-1)^k \Gamma(a + 1) \over \Gamma(a - k + 1) (k + 1)!}.
 \end{equation}
-\manuelComment{Eq (40) in SI. I tried really hard deriving this result, but I
+\mrm{Eq (40) in SI. I tried really hard deriving this result, but I
 couldn't figure it out. Nevertheless computationally it can be shown to be true
 for several values of $k$.}
 
@@ -933,7 +933,7 @@ This can be further simplified to
   \left( {1 + b \over e^\tau + b} \right)^k.
   \label{eq_dist_nohyper}
 \end{equation}
-\manuelComment{Eq (41) in the SI. Shahrezaei and Swain missed one factor of
+\mrm{Eq (41) in the SI. Shahrezaei and Swain missed one factor of
 $a$ since $\Gamma(a + 1) / \Gamma(a) = a$, but the error doesn't propagate to
 the other equations.}
 
@@ -1014,9 +1014,9 @@ $\cos(\pi k) = (-1)^k$, it must be true that for $a \notin \mathbb{N}$
            {(-1)^k \sin(\pi (-a)) \over \sin(\pi (-a))},\\
          &= (-1)^k {\Gamma(a + 1) \over \Gamma(a - k + 1)}.
 \end{align}
-\manuelComment{Eq (43) in SI}.
+\mrm{Eq (43) in SI}.
 
-From \eref[eq_dist_nohyper] we can rewrite the term inside the sum as a
+From \eref{eq_dist_nohyper} we can rewrite the term inside the sum as a
 hypergeometric function by rewriting $\Gamma(a - k + n) =
 \Gamma(a + n - 1 - k + 1)$. This means that if we carefully look at the elements
 of the sum we can rewrite it as a hypergeometric function like
@@ -1052,7 +1052,7 @@ Therefore the sum can be simply written as
   {}_2F_1 \left( -p, -a, 1 - a - n, {1 + b \over e^\tau + b} \right)
 \end{equation}
 
-This relationship means that we can rewrite \eref[eq_dist_nohyper] as
+This relationship means that we can rewrite \eref{eq_dist_nohyper} as
 \begin{equation}
   P_p = \left( {1 + b e^{-\tau} \over 1 + b} \right)^a
   \left( {b \over 1 + b} \right)^p
@@ -1061,7 +1061,7 @@ This relationship means that we can rewrite \eref[eq_dist_nohyper] as
 \end{equation}
 This is the final expression for the protein distribution valid for
 $\Gamma \gg 1$ and $\tau \gg \Gamma^{-1}$.
-\manuelComment{Eq (44) in SI and (8) in main text.}
+\mrm{Eq (44) in SI and (8) in main text.}
 
 \subsection{Steady State Distribution}
 To compute the steady state distribution we take the limit when
@@ -1073,7 +1073,7 @@ This means that we have
   \left( 1 - {b \over 1 + b}  \right)^a
   \left( {b \over 1 + b} \right)^p.
 \end{equation}
-\manuelComment{Eq (9) in main text.}
+\mrm{Eq (9) in main text.}
 
 This is a negative binomial distribution with mean
 \begin{equation}
