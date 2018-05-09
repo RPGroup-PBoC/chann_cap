@@ -3,7 +3,7 @@
 Title:
     chann_cap_utils
 Last update:
-    2018-05-04
+    2018-05-07
 Author(s):
     Manuel Razo-Mejia
 Purpose:
@@ -1075,6 +1075,53 @@ def MaxEnt_bretthorst(constraints, features,
     return params
 
 # =============================================================================
+
+
+def maxEnt_from_lagrange(mRNA, protein, lagrange,
+                         exponents=[(1, 0), (2, 0), (3, 0),
+                                    (0, 1), (0, 2), (1, 1)], log=False):
+    '''
+    Computes the mRNA and protein joint distribution P(m, p) as approximated
+    by the MaxEnt methodology given a set of Lagrange multipliers.
+    Parameters
+    ----------
+    mRNA, protein : array-like.
+        Sample space for both the mRNA and the protein.
+    lagrange : array-like.
+        Array containing the value of the Lagrange multipliers associated
+        with each of the constraints.
+    exponents : list. leng(exponents) == len(lagrange)
+        List containing the exponents associated with each constraint.
+        For example a constraint of the form <m**3> has an entry (3, 0)
+        while a constraint of the form <m * p> has an entry (1, 1).
+    log : bool. Default = False
+        Boolean indicating if the log probability should be returned.
+    Returns
+    -------
+    Pmp : 2D-array. len(mRNA) x len(protein)
+        2D MaxEnt distribution.
+    '''
+    # Generate grid of points
+    mm, pp = np.meshgrid(mRNA, protein)
+
+    # Initialize 3D array to save operations associated with each lagrange
+    # multiplier
+    operations = np.zeros([len(lagrange), len(protein), len(mRNA)])
+
+    # Compute operations associated with each Lagrange Multiplier
+    for i, expo in enumerate(exponents):
+        operations[i, :, :] = lagrange[i] * mm**expo[0] * pp**expo[1]
+
+    # check if the log probability should be returned
+    if log:
+        return np.sum(operations, axis=0) -\
+            sp.misc.logsumexp(np.sum(operations, axis=0))
+    else:
+        return np.exp(np.sum(operations, axis=0) -
+                      sp.misc.logsumexp(np.sum(operations, axis=0)))
+
+
+# =============================================================================
 # moment_dynamics_numeric_protein
 # =============================================================================
 
@@ -1281,55 +1328,9 @@ def dynamics_to_df(sol, t):
     return pd.DataFrame(mat, columns=names)
 
 # =============================================================================
-
-
-def maxEnt_from_lagrange(mRNA, protein, lagrange,
-                         exponents=[(1, 0), (2, 0), (3, 0),
-                                    (0, 1), (0, 2), (1, 1)], log=False):
-    '''
-    Computes the mRNA and protein joint distribution P(m, p) as approximated
-    by the MaxEnt methodology given a set of Lagrange multipliers.
-    Parameters
-    ----------
-    mRNA, protein : array-like.
-        Sample space for both the mRNA and the protein.
-    lagrange : array-like.
-        Array containing the value of the Lagrange multipliers associated
-        with each of the constraints.
-    exponents : list. leng(exponents) == len(lagrange)
-        List containing the exponents associated with each constraint.
-        For example a constraint of the form <m**3> has an entry (3, 0)
-        while a constraint of the form <m * p> has an entry (1, 1).
-    log : bool. Default = False
-        Boolean indicating if the log probability should be returned.
-    Returns
-    -------
-    Pmp : 2D-array. len(mRNA) x len(protein)
-        2D MaxEnt distribution.
-    '''
-    # Generate grid of points
-    mm, pp = np.meshgrid(mRNA, protein)
-
-    # Initialize 3D array to save operations associated with each lagrange
-    # multiplier
-    operations = np.zeros([len(lagrange), len(protein), len(mRNA)])
-
-    # Compute operations associated with each Lagrange Multiplier
-    for i, expo in enumerate(exponents):
-        operations[i, :, :] = lagrange[i] * mm**expo[0] * pp**expo[1]
-
-    # check if the log probability should be returned
-    if log:
-        return np.sum(operations, axis=0) -\
-            sp.misc.logsumexp(np.sum(operations, axis=0))
-    else:
-        return np.exp(np.sum(operations, axis=0) -
-                      sp.misc.logsumexp(np.sum(operations, axis=0)))
-
-
-# =============================================================================
 # blahut_arimoto_channel_capacity
 # =============================================================================
+
 
 def channel_capacity(QmC, epsilon=1E-3, info=1E4):
     '''
