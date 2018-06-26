@@ -534,7 +534,7 @@ with open('../../tmp/three_state_protein_lambdify.dill', 'rb') as file:
 # =============================================================================
 
 
-def kr_off_fun(eRA, k0, kp_on, kp_off, Nns=4.6E6, Vcell=3):
+def kr_off_fun(eRA, k0, kp_on, kp_off, Nns=4.6E6, Vcell=2.15):
     '''
     Returns the off rate of the repressor as a function of the stat. mech.
     binding energy and the RNAP on and off rates
