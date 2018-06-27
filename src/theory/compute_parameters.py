@@ -110,6 +110,7 @@ kpoff_hpd = chann_cap.hpd(df_mcmc.iloc[:, 1], 0.95)
 rm_hpd = chann_cap.hpd(df_mcmc.iloc[:, 2], 0.95)
 
 # Print results
+print('Two-promoter model')
 print("""
 The most probable parameters for the model
 ------------------------------------------
@@ -145,11 +146,14 @@ rm = {6:.1f} -{7:0.1f} +{8:0.1f} s^-1
 energies = {'Oid': -17, 'O1': -15.3, 'O2': -13.9, 'O3': -9.7}
 
 # Compute the rates for each repressor
-kr_offs = {key: chann_cap.kr_off_fun(value, k0, kpon_double, kpoff_double,
-                                     Vcell) for key, value in energies.items()}
+kr_offs = {key: chann_cap.kr_off_fun(value, k0, kpon, kpoff,
+                                     Vcell=Vcell) for key, value in
+                                     energies.items()}
 
-
-chann_cap.kr_off_fun(-13.9, k0, kpon_double, kpoff_double, Vcell)
-
-1 / Vcell / .6022 * k0 * 4.6E6 * np.exp(-13.9) * \
-        kpoff_double / (kpoff_double + kpon_double)
+# Print repressor rates
+print("""
+The most probable parameters for the repressor in seconds^-1
+------------------------------------------------------------
+""")
+for key, value in kr_offs.items():
+    print('kr_off {0:s} = {1:.5f} s^-1'.format(key, value))
