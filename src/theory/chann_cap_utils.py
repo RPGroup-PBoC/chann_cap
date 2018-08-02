@@ -1331,6 +1331,367 @@ def dynamics_to_df(sol, t):
     return pd.DataFrame(mat, columns=names)
 
 # =============================================================================
+# moment_dynamics_cell_division
+# =============================================================================
+
+def dpdt_init(mp, t, m_fix, Kmat, Rm, Gm, Rp, Gp):
+    '''
+    function to integrate all mRNA and protein moment dynamics
+    using scipy.integrate.odeint
+    Parameters
+    ----------
+    m : array-like.
+        Array containing all moments (mRNA, protein and cross correlations)
+        Unregulated
+        mp[0] = m2_P (RNAP bound)
+        mp[1] = m2_P (Empty promoter)
+        mp[2] = m3_P (RNAP bound)
+        mp[3] = m3_P (Empty promoter)
+        mp[4] = p1_P (RNAP bound)
+        mp[5] = p1_P (Empty promoter)
+        mp[6] = mp_P (RNAP bound)
+        mp[7] = mp_P (Empty promoter)
+        mp[8] = p2_P (RNAP bound)
+        mp[9] = p2_P (Empty promoter)
+        mp[10] = m2p_P (RNAP bound)
+        mp[11] = m2p_P (Empty promoter)
+        mp[12] = mp2_P (RNAP bound)
+        mp[13] = mp2_P (Empty promoter)
+        mp[14] = p3_P (RNAP bound)
+        mp[15] = p3_P (Empty promoter)
+        ---------
+        Regulated:
+        mp[0] = m2_P (RNAP bound)
+        mp[1] = m2_E (Empty promoter)
+        mp[2] = m2_R (Repressor bound)
+        mp[3] = m3_P (RNAP bound)
+        mp[4] = m3_E (Empty promoter)
+        mp[5] = m3_R (Repressor bound)
+        mp[6] = p1_P (RNAP bound)
+        mp[7] = p1_E (Empty promoter)
+        mp[8] = p1_R (Repressor bound)
+        mp[9] = mp_P (RNAP bound)
+        mp[10] = mp_E (Empty promoter)
+        mp[11] = mp_R (Repressor bound)
+        mp[12] = p2_P (RNAP bound)
+        mp[13] = p2_E (Empty promoter)
+        mp[14] = p2_R (Repressor bound)
+        mp[15] = m2p_P (RNAP bound)
+        mp[16] = m2p_E (Empty promoter)
+        mp[17] = m2p_R (Repressor bound)
+        mp[18] = mp2_P (RNAP bound)
+        mp[19] = mp2_E (Empty promoter)
+        mp[20] = mp2_R (Repressor bound)
+        mp[21] = p3_P (RNAP bound)
+        mp[22] = p3_E (Empty promoter)
+        mp[23] = p3_R (Repressor bound)
+    t : array-like.
+        Time array
+    m_fix : array-like.
+        Array containing the zerot and first moment
+        of the states of the promoter that will remain fixed.
+        Unregulated
+        m_fix[0] = m0_P (RNAP bound)
+        m_fix[1] = m0_E (Empty promoter)
+        m_fix[2] = m1_P (RNAP bound)
+        m_fix[3] = m1_E (Empty promoter)
+    ---------
+    Regulated:
+        m_fix[0] = m0_P (RNAP bound)
+        m_fix[1] = m0_E (Empty promoter)
+        m_fix[2] = m0_R (Repressor bound)
+        m_fix[3] = m1_P (RNAP bound)
+        m_fix[4] = m1_E (Empty promoter)
+        m_fix[5] = m1_R (Repressor bound)
+    Kmat : array-like.
+        Matrix containing the transition rates between the promoter states.
+    Rm : array-like.
+        Matrix containing the mRNA production rate at each of the states.
+    Gm : array-like.
+        Matrix containing the mRNA degradation rate at each of the states.
+    Rp : array-like.
+        Matrix containing the protein production rate at each of the states.
+    Gp : array-like.
+        Matrix containing the protein degradation rate at each of the states.
+
+    Returns
+    -------
+    dynamics of all mRNA and protein moments
+    '''
+    # Obtain the zeroth and first moment based on the size
+    # of the Kmat matrix
+    if Kmat.shape[0] == 2:
+        m0 = m_fix[0:2]
+        m1 = m_fix[2:4]
+        p1 = m_fix[4::]
+
+        m2 = mp[0:2]
+        m3 = mp[2:4]
+        mp1 = mp[4:6]
+        p2 = mp[6:8]
+        m2p = mp[8:10]
+        mp2 = mp[10:12]
+        p3 = mp[12::]
+    elif Kmat.shape[0] == 3:
+        m0 = m_fix[0:3]
+        m1= m_fix[3:6]
+        p1 = m_fix[6::]
+
+        m2 = mp[0:3]
+        m3 = mp[3:6]
+        mp1 = mp[6:9]
+        p2 = mp[9:12]
+        m2p = mp[12:15]
+        mp2 = mp[15:18]
+        p3 = mp[18::]
+
+    # Initialize array to save all dynamics
+    dmpdt = np.array([])
+
+    # Compute the moment equations for the:
+    #=== mRNA ===#
+    # <m2>
+    dm2dt_eq = np.dot((Kmat - 2 * Gm), m2) + np.dot((2 * Rm + Gm), m1) +\
+        np.dot(Rm, m0)
+    dmpdt = np.append(dmpdt, dm2dt_eq)
+    # <m3>
+    dm3dt_eq = np.dot((Kmat - 3 * Gm), m3) +\
+        np.dot((3 * Rm + 3 * Gm), m2) +\
+        np.dot((3 * Rm - Gm), m1) +\
+        np.dot(Rm, m0)
+    dmpdt = np.append(dmpdt, dm3dt_eq)
+    #=== protein and correlations ===#
+    # <mp>
+    dmpdt_eq = np.dot((Kmat - Gm - Gp), mp1) +\
+        np.dot(Rm, p1) +\
+        np.dot(Rp, m2)
+    dmpdt = np.append(dmpdt, dmpdt_eq)
+    # <p2>
+    dp2dt_eq = np.dot((Kmat - 2 * Gp), p2) +\
+        np.dot(Gp, p1) +\
+        np.dot(Rp, m1) +\
+        np.dot((2 * Rp), mp1)
+    dmpdt = np.append(dmpdt, dp2dt_eq)
+    # <m2p>
+    dm2pdt_eq = np.dot((Kmat - 2 * Gm - Gp), m2p) +\
+        np.dot(Rm, p1) +\
+        np.dot((2 * Rm + Gm), mp1) +\
+        np.dot(Rp, m3)
+    dmpdt = np.append(dmpdt, dm2pdt_eq)
+    # <mp2>
+    dmp2dt_eq = np.dot((Kmat - Gm - 2 * Gp), mp2) +\
+        np.dot(Rm, p2) +\
+        np.dot((2 * Rp), m2p) +\
+        np.dot(Rp, m2) +\
+        np.dot(Gp, mp1)
+    dmpdt = np.append(dmpdt, dmp2dt_eq)
+    # <p3>
+    dp3dt_eq = np.dot((Kmat - 3 * Gp), p3) +\
+        np.dot((3 * Gp), p2) -\
+        np.dot(Gp, p1) +\
+        np.dot((3 * Rp), mp2) +\
+        np.dot((3 * Rp), mp1) +\
+        np.dot(Rp, m1)
+    dmpdt = np.append(dmpdt, dp3dt_eq)
+
+    return dmpdt
+
+# =============================================================================
+
+
+def dpdt_cycles(mp, t_single, t_double, n_cycles,
+                Kmat, Rm, Gm, Rp, Gp, n_steps=1000, t_ss=10000,
+                moments=[(0, 0),
+                         (1, 0), (2, 0), (3, 0),
+                         (0, 1), (1, 1), (0, 2),
+                         (2, 1), (1, 2), (0, 3)],
+                states=['P', 'E']):
+    '''
+    Function that integrates the mRNA moments over several cell cycles.
+    Parameters
+    ----------
+    mp : array-like.
+        Array containing the zeroth, first, second and third moment
+        of the states of the promoter.
+        Unregulated
+        mp[0] = m0_P (RNAP bound)
+        mp[1] = m0_E (Empty promoter)
+        mp[2] = m1_P (RNAP bound)
+        mp[3] = m1_P (Empty promoter)
+        mp[4] = m2_P (RNAP bound)
+        mp[5] = m2_P (Empty promoter)
+        mp[6] = m3_P (RNAP bound)
+        mp[7] = m3_P (Empty promoter)
+        mp[8] = p1_P (RNAP bound)
+        mp[9] = p1_P (Empty promoter)
+        mp[10] = mp_P (RNAP bound)
+        mp[11] = mp_P (Empty promoter)
+        mp[12] = p2_P (RNAP bound)
+        mp[13] = p2_P (Empty promoter)
+        mp[14] = m2p_P (RNAP bound)
+        mp[15] = m2p_P (Empty promoter)
+        mp[16] = mp2_P (RNAP bound)
+        mp[17] = mp2_P (Empty promoter)
+        mp[18] = p3_P (RNAP bound)
+        mp[19] = p3_P (Empty promoter)
+        ---------
+        Regulated:
+        mp[0] = m0_P (RNAP bound)
+        mp[1] = m0_E (Empty promoter)
+        mp[2] = m0_R (Repressor bound)
+        mp[3] = m1_P (RNAP bound)
+        mp[4] = m1_E (Empty promoter)
+        mp[5] = m1_R (Repressor bound)
+        mp[6] = m2_P (RNAP bound)
+        mp[7] = m2_E (Empty promoter)
+        mp[8] = m2_R (Repressor bound)
+        mp[9] = m3_P (RNAP bound)
+        mp[10] = m3_E (Empty promoter)
+        mp[11] = m3_R (Repressor bound)
+        mp[12] = p1_P (RNAP bound)
+        mp[13] = p1_E (Empty promoter)
+        mp[14] = p1_R (Repressor bound)
+        mp[15] = mp_P (RNAP bound)
+        mp[16] = mp_E (Empty promoter)
+        mp[17] = mp_R (Repressor bound)
+        mp[18] = p2_P (RNAP bound)
+        mp[19] = p2_E (Empty promoter)
+        mp[20] = p2_R (Repressor bound)
+        mp[21] = m2p_P (RNAP bound)
+        mp[22] = m2p_E (Empty promoter)
+        mp[23] = m2p_R (Repressor bound)
+        mp[24] = mp2_P (RNAP bound)
+        mp[25] = mp2_E (Empty promoter)
+        mp[26] = mp2_R (Repressor bound)
+        mp[27] = p3_P (RNAP bound)
+        mp[28] = p3_E (Empty promoter)
+        mp[29] = p3_R (Repressor bound)
+    t_single : float.
+        Time [in 1/mRNA degradation rate units] that cells spend
+        with a single promoter copy
+    t_double : float.
+        Time [in 1/mRNA degradation rate units] that cells spend
+        with a two promoter copies.
+    n_cycles : int.
+        Number of cell cycles to integrate for. A cell cycle is defined
+        as t_single + t_double.
+    Kmat : array-like.
+        Matrix containing the transition rates between the promoter states.
+    Rm : array-like.
+        Matrix containing the production rate at each of the states.
+    Gm : array-like.
+        Matrix containing the degradation rate at each of the states.
+    Rp : array-like.
+        Matrix containing the protein production rate at each of the states.
+    Gp : array-like.
+        Matrix containing the protein degradation rate at each of the
+        states.
+    n_steps : int. Default = 300.
+        Number of steps to use for the numerical integration.
+    t_ss : float.
+        Time to integrate for after cell division to compute the steady
+        state value of higher moments.
+    moments : list.
+        List of moment exponents. For example if the first mRNA moment
+        will be listed then the entry should be (1, 0). If the third
+        protein moment will be computed then it should contain (0, 3).
+        These should be given in the same order as the moment dynamics
+        are returned by the funciton dpdt since they will serve to
+        build the names of the columns in the data frame.
+    states : list.
+        String list containing the name of the promoter states. For example
+        for a 3 promoter state this should be ['P', 'E', 'R'] for the RNAP
+        bound state, the empty state and the repressor bound state
+        respectively. These should also be given in the order that the
+        matrices contain each of the states.
+
+    Returns
+    -------
+    mRNA moment dynamics over cell cycles
+    '''
+    # Initialize names for moments in data frame
+    names = ['m' + str(m[0]) + 'p' + str(m[1]) + st for m in moments
+             for st in states]
+
+    # Initialize data frame
+    df = pd.DataFrame(columns=['time', 'state', 'cycle'] + names)
+
+    # Initilaize global time
+    t_sim = 0
+    # Loop through cycles
+    for cyc in range(n_cycles):
+        # == Single promoter == #
+        # Define time array
+        t = np.linspace(0, t_single, n_steps)
+
+        # Integrate moment equations
+        m = sp.integrate.odeint(dpdt, mp, t,
+                                args=(Kmat, Rm, Gm, Rp, Gp))
+
+        # Generate data frame
+        df_m = pd.DataFrame(m, columns=names)
+        # Append time, state and cycle
+        df_m = df_m.assign(time=t + t_sim)
+        df_m = df_m.assign(state=['single'] * m.shape[0])
+        df_m = df_m.assign(cycle=[cyc] * m.shape[0])
+
+        # Append results to global data frame
+        df = df.append(df_m, ignore_index=True, sort=False)
+
+        # Update global time
+        t_sim = t_sim + t[-1]
+
+        # == Two promoters == #
+
+        # Define initial conditions as last point of single promoter state
+        mp = m[-1, :]
+
+        # Define time array
+        t = np.linspace(0, t_double, n_steps)
+
+        # Integrate moment equations
+        m = sp.integrate.odeint(dpdt, mp, t,
+                                args=(Kmat, 2 * Rm, Gm, Rp, Gp))
+
+        # Generate data frame
+        df_m = pd.DataFrame(m, columns=names)
+        # Append time, state and cycle
+        df_m = df_m.assign(time=t + t_sim)
+        df_m = df_m.assign(state=['double'] * m.shape[0])
+        df_m = df_m.assign(cycle=[cyc] * m.shape[0])
+
+        # Append results to global data frame
+        df = df.append(df_m, ignore_index=True, sort=False)
+
+        # Update global time
+        t_sim = t_sim + t[-1]
+
+        # == Cell division == #
+
+        # Define time array
+        t = np.linspace(0, t_ss, n_steps)
+
+        # Define initial conditions as last point of single promoter state
+        m_fix = m[-1, 0:(Kmat.shape[0]*2)]
+        m_fix = np.append(m_fix, m[-1, (Kmat.shape[0]*4):(Kmat.shape[0]*5)])
+        # Divide mean mRNA and protein by half
+        m_fix[(Kmat.shape[0])::] = m_fix[(Kmat.shape[0])::] / 2
+        # Set initial condiitons for higher moments.
+        mp = m[-1, (Kmat.shape[0]*2):(Kmat.shape[0]*4)]
+        mp = np.append(mp, m[-1, (Kmat.shape[0]*5)::])
+
+        # Define initial conditions for moments after cell division
+        m = sp.integrate.odeint(dpdt_init, mp, t,
+                             args=(m_fix, Kmat, Rm, Gm, Rp, Gp))
+
+        # Append initial conditions in the right order (slightly tricky)
+        mp = m_fix[0:(Kmat.shape[0]*2)]  # Zeroth and first mRNA moment
+        mp = np.append(mp, m[-1, 0:(Kmat.shape[0]*2)])  # Higher mRNA moments
+        mp = np.append(mp, m_fix[(Kmat.shape[0]*2)::])  # first protein moment
+        mp = np.append(mp, m[-1, Kmat.shape[0]*2::])  # All other moments
+
+    return df
+# =============================================================================
 # blahut_arimoto_channel_capacity
 # =============================================================================
 
