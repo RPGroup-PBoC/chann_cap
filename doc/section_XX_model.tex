@@ -136,17 +136,15 @@ constraint the repressor rates $\kron$ and $\kroff$. These repressor rates are
 obtained using information from mean gene expression measuremnts from bulk LacZ
 colorimetric assays \cite{Garcia2011c}, and single molecule microscopy
 \cite{Elf2007}. We also expand our model to include the allosteric nature of the
-repressor protein, taking advantage of simple repression video microscopy
-measurements done in the context of multiple promoter copies \cite{Brewster2014}
-and flow-cytometry measurements of the mean response of the system to different
-levels of induction \cite{Razo-Mejia2018}.
+repressor protein, taking advantage of video microscopy measurements done in the
+context of multiple promoter copies \cite{Brewster2014} and flow-cytometry
+measurements of the mean response of the system to different levels of induction
+\cite{Razo-Mejia2018}.
 
 \subsection{RNAP rates from unregulated two-state promoter}
 
 We begin our parameter inference problem with the RNAP rates $\kpon$ and
-$\kpoff$, as well as the mRNA production rate $r_m$. For this we think about an
-unregulated promoter at the mRNA level where the gene coding for the
-transcriptional repressor has been removed from the genome. In this case there
+$\kpoff$, as well as the mRNA production rate $r_m$. In this case there
 are only two states  available to the promoter -- the empty state $E$ and the
 RNAP bound state $P$. That means that the third PDE for $P_R(m)$ is removed from
 the system. This particular two-state promoter system at this mRNA level has
@@ -166,24 +164,24 @@ state mRNA distribution $P(m) \equiv P_E(m) + P_P(m)$ is of the form
 where $\Gamma(\cdot)$ is the gamma function, and $F_1^1$ is the confluent
 hypergeometric function of the first kind. This rather convoluted expression
 will aid us to find parameter values for the rates. The inferred rates $\kpon$,
-$\kpoff$ and $r_m$ will be in units of the mRNA degradation rate $\gm$. This is
-because the model in \eref{eq_two_state_mRNA} is homogeneous in time, meaning
-that if one divided all rates by a constant it would be equivalent to
+$\kpoff$ and $r_m$ are expressed in units of the mRNA degradation rate $\gm$.
+This is because the model in \eref{eq_two_state_mRNA} is homogeneous in time,
+meaning that if one divided all rates by a constant it would be equivalent to
 multiplying the time scale of the problem by the same constant.
 
 \subsubsection{Bayesian parameter inference of RNAP rates}
 
 In order to make progress at inferring these parameters from experimental data
-we use the single-molecule mRNA FISH data from Brewster et al.
-\cite{Brewster2014}. \fref{fig_lacUV5_FISH} shows the mRNA per cell distribution
-for the \textit{lacUV5} promoter. This promoter, being rather strong has a mean
-copy number of $\ee{m} \approx 18$ mRNA/cell.
+we use the single-molecule mRNA FISH data from Jones et al. \cite{Jones2014a}.
+\fref{fig_lacUV5_FISH} shows the mRNA per cell distribution for the
+\textit{lacUV5} promoter. This promoter, being rather strong has a mean copy
+number of $\ee{m} \approx 18$ mRNA/cell.
 
 \begin{figure}[h!]
 	\centering \includegraphics[width=0.5\columnwidth]
   {../fig/chemical_master_mRNA_FISH/lacUV5_smFISH_data.pdf}
 	\caption{\textbf{\textit{lacUV5} mRNA per cell distribution.} Data from
-	\cite{Brewster2014} of the unregulated \textit{lacUV5} promoter as inferred
+	\cite{Jones2014a} of the unregulated \textit{lacUV5} promoter as inferred
 	from single molecule mRNA FISH.}
   \label{fig_lacUV5_FISH}
 \end{figure}
@@ -206,22 +204,23 @@ We assume that each cell is independent of each other such that we can rewrite
   \label{eq_bayes_sample}
 \end{equation}
 Where the likelihood term $P(m_i \mid \kpon, \kpoff, r_m)$ is exactly given by
-\eref{eq_two_state_mRNA}.
+\eref{eq_two_state_mRNA} with $\gm = 1$.
 
 \paragraph{Constraining the rates given prior thermodynamic knowledge.}
 
 One of the advantages of Bayesian analysis is that we can include all the prior
 knowledge on the parameters when inferring the rates. Basic features such as the
 fact that the rates have to be strictly positive will constraint the values that
-these parameters can take. But in this particular case we know more than the
+these parameters can take. In this particular case we know more than the
 simple constraint of non-negative values. The expression of an unregulated
 promoter has been studied from a thermodynamic perspective \cite{Brewster2012}.
 Since these equilibrium models work in the thermodynamic limit of large particle
-number, they are not useful to inform us about large deviations from the mean.
-Nevertheless at the mean value both, the kinetic language and the equilibrium
-language must agree. That means that we can use what we know about the mean gene
-expression, and how this is related to parameters such as molecule copy numbers
-and binding affinities, to constraint the values that these rates can take.
+number they are not useful to inform us about large deviations from the expected
+value. Nevertheless at the mean value both, the kinetic language and the
+equilibrium language must agree. That means that we can use what we know about
+the mean gene expression, and how this is related to parameters such as molecule
+copy numbers and binding affinities, to constraint the values that these rates
+can take.
 
 In the case of this two-state promoter it can be shown that the mean number of
 mRNA is given by \cite{Phillips2015}
@@ -277,7 +276,7 @@ meaning that the two parameters are highly correlated \cite{Transtrum2015}. What
 this implies is that one could change the value of $\kpoff$, and then compensate
 by a change on $r_m$ in order to maintain the shape of the mRNA distribution.
 Having used the prior knowledge on the equilibrium picture of the RNAP binding
-allowed us to get at a rather constrained parameter value for these rates.
+allowed us to get at a more constrained parameter value for these rates.
 
 \begin{figure}[h!]
 	\centering \includegraphics[width=0.5\columnwidth]
@@ -349,24 +348,37 @@ copy of the promoter. Both terms $P(m \mid \text{promoter copy})$ are given by
 important to acknowledge that \eref{eq_prob_multipromoter} assumes that once the
 cell replicates the promoter the time scale in which the mRNA count relaxes to
 the new equilibrium is shorter than the time that the cells spend in this
-two-promoter state.
+two-promoter state. This approximation should be valid for a short lived mRNA
+molecule, but the same will not be applicable for proteins whose degradation
+rate is comparable to the cell cycle length.
 
 In order to repeat the Bayesian inference assuming this model we need to split
 our data in two sets -- cells with a single copy of the promoter and cells with
 two copies of the promoter. Since for the single molecule mRNA FISH data there
 is no labeling of the locus Jones et al. used area as a proxy for stage in the
-cell cycle \cite{Jones2014a}. Following their procedure we computed the area
-threshold that sorts cells between having one or two copies of the promoter.
-\fref{fig_cell_area} shows the separation of these two groups based on area.
+cell cycle \cite{Jones2014a}. What that means is that by sorting cells by size
+they considered the low 33th percentile as cells with a single promoter copy,
+with  the rest being cells with two copies of the promoter. This approach
+ignores that cells are not uniformly distributed along the cell cycle. As first
+discussed in \cite{Powell1956} populations of cells in a log-phase are
+exponentially distributed along the cell cycle. This distribution is of the form
+\begin{equation}
+P(a) = (\ln 2) \cdot 2^{1 - a},
+\label{eq_cell_cycle_dist}
+\end{equation}
+where $a \in [0, 1]$ is the stage of the cell cycle, with $a = 0$ being the
+start of the cycle and $a = 1$ being the division. \fref{fig_cell_area} shows
+the separation of the two groups based on area where \eref{eq_cell_cycle_dist}
+was used to weigh the distribution along the cell cycle.
 
 \begin{figure}[h!]
 	\centering \includegraphics[width=0.5\columnwidth]
-  {../fig/chemical_master_mRNA_FISH/area_division.pdf}
+  {../fig/chemical_master_mRNA_FISH/area_division_expo.pdf}
 	\caption{\textbf{Separation of cells based on cell size.} Using the area as
   a proxy for state on the cell cycle, cells can be sorted into two groups --
   small cells (with one promoter copy) and large cells (with two promoter
-  copies). The vertical black line delimits the threshold that places 2/3 of
-  the cells on the large cell group and the rest on the small cell group.}
+  copies). The vertical black line delimits the threshold that divides both
+  groups as weighted by \eref{eq_cell_cycle_dist}.}
   \label{fig_cell_area}
 \end{figure}
 
@@ -420,21 +432,19 @@ of applying \eref{eq_prob_multipromoter} with these parameters.
 
 Having determined the RNAP rates we now proceed to determine the repressor rates
 $\kron$ and $\kroff$. The value of these rates is constrained by what we know
-from equilibrium models \cite{Phillips2015}. Equilibrium models work in the
-thermodynamic limit of large number of particles, giving no information about
-large deviations from them mean when the molecule count is small. Nevertheless
-both, equilibrium and kinetic languages should make the same predictions when it
-comes to the mean of the distribution. Over the last decade there has been a lot
-of effort in developing equilibrium models for gene expression regulation
-\cite{Buchler2003,Vilar2011,Bintu2005a}. In particular our group has
-extensively characterized the simple repression motif using this formalism
+from equilibrium models \cite{Phillips2015}. For this we again exploit the
+feature that only at the mean both, the kinetic language and the thermodynamic
+language should have equivalent predictions. Over the last decade there has been
+a lot of effort in developing equilibrium models for gene expression regulation
+\cite{Buchler2003,Vilar2011,Bintu2005a}. In particular our group has extensively
+characterized the simple repression motif using this formalism
 \cite{Garcia2011c,Brewster2014,Razo-Mejia2018}.
 
 The dialogue between theory and experiments has lead to simplified expressions
 that capture the phenomenology of the gene expression response as a function of
 natural variables such as molecule count and affinities between molecular
-players. A particularly interesting cuantity is called the fold-change in gene
-expression. Garcia \& Phillips \cite{Garcia2011c} defined this quantity as
+players. A particularly interesting quantity defined by Garcia \& Phillips
+\cite{Garcia2011c} as the fold-change in gene expression is given by
 \begin{equation}
   \foldchange = {\ee{\text{gene expression}(R > 0)} \over
                  \ee{\text{gene expression}(R = 0)}},
@@ -476,11 +486,8 @@ that we can control, we assume that the rate at which the promoter transitions
 form the empty state to the repressor bound state $\kron$ is given by the
 concentration of repressors $[R]$ times a diffusion limited rate $k_o$
 \cite{Jones2014a}.  For the diffusion limited constant $k_o$ we use the value
-inferred by Elf et al. \cite{Elf2007}. In this work they image individual
-\textit{lac} repressors and measured both the diffusion constant and the
-residence time once the repressor is bound. As in \cite{Jones2014a} we take this
-value to be $k_o = 2.7 \times 10^{-3} (\text{s nM})^{-1}$. With this in hand we
-can rewrite
+used by Jones et al. \cite{Jones2014a} \mrm{Find real reference for this value
+that Brewster never gave me.}. With this in hand we can rewrite
 \eref{eq_fold_change_cme} as
 \begin{equation}
   \foldchange = \left( 1 + {k_0 [R] \over \kroff}
@@ -509,15 +516,16 @@ concentration is equal to
 \end{equation}
 where $R$ is the absolute repressor copy number per cell, $V_{cell}$ is the cell
 volume and $Av$ is Avogadro's number. The \textit{E. coli} cell volume is in the
-order of 1 fL = $10^{-15}$ L, and Avogadro's number is $6.022 \times 10^{23}$.
-If we further include the conversion factor to turn M into nM we find that
+order of 2.1 fL = $10^{-15}$ L \mrm{get reference from Nathan}, and Avogadro's
+number is $6.022 \times 10^{23}$. If we further include the conversion factor to
+turn M into nM we find that
 \begin{equation}
-[R] = {R \over 10^{-15} L} \cdot {1 \over 6.022 \times 10^{23}}
+[R] = {R \over 2.1 \times 10^{-15} L} \cdot {1 \over 6.022 \times 10^{23}}
 \cdot {10^9 \text{ nmol} \over 1 \text{ mol}} \approx 1.66 \times R.
 \end{equation}
 Using this we simplify \eref{eq_kroff_complete} as
 \begin{equation}
-  \kroff = 1.66 \cdot k_o \cdot \Nns e^{\beta\eR}
+  \kroff = 0.8 \cdot k_o \cdot \Nns e^{\beta\eR}
    \cdot {\kpon \over \kpon + \kpoff}.
   \label{eq_kroff}
 \end{equation}
