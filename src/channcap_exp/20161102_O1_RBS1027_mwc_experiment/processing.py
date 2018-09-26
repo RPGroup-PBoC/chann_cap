@@ -8,7 +8,6 @@ import itertools
 
 # Our numerical workhorses
 import numpy as np
-from sympy import mpmath
 import scipy.optimize
 import scipy.special
 import scipy.integrate
@@ -26,8 +25,8 @@ import matplotlib as mpl
 import seaborn as sns
 
 # Import the utils for this project
-sys.path.insert(0, '../../theory/')
-import chann_cap_utils as chann_cap
+sys.path.insert(0, '../')
+import channcap_exp_utils as chann_cap
 
 chann_cap.set_plotting_style()
 
@@ -41,6 +40,10 @@ OPERATOR = 'O1'
 STRAIN = 'RBS1027'
 REPRESSOR = 130
 BINDING_ENERGY = -15.3
+N_JOBS = 48
+
+# Boolean indicating if the computation should be performed or not
+compute_exp = True
 
 # Determine the parameters for the bootstraping
 bins = np.floor(np.logspace(0, 4, 100))
@@ -54,6 +57,8 @@ df_micro = pd.read_csv('../../../data/csv_microscopy/mwc_data/' + \
         str(DATE) + '_' + OPERATOR + '_' + STRAIN + \
         '_IPTG_titration_microscopy.csv', header=0, comment='#') 
 
+# Include absolute intensity column
+df_micro.loc[:, 'intensity'] = df_micro['mean_intensity'] * df_micro['area']
 
 #============================================================================== 
 
@@ -65,7 +70,6 @@ df = df_micro[(df_micro.rbs != 'auto') & (df_micro.rbs != 'delta')]
 #============================================================================== 
 # Compute channel capacity for experimental data
 #============================================================================== 
-compute_exp = False
 if compute_exp:
     def channcap_bs_parallel(b):
         # Initialize matrix to save bootstrap repeats
@@ -73,12 +77,14 @@ if compute_exp:
         samp_sizes = np.zeros(len(fracs))
         for i, frac in enumerate(fracs):
             MI_bs[i, :], samp_sizes[i] = chann_cap.channcap_bootstrap(df, bins=b,
-                                                        nrep=nreps, frac=frac)
+                                                        nrep=nreps, frac=frac,
+					     **{'output_col': 'intensity'})
+
         return (MI_bs, samp_sizes)
 
     # Perform the parallel computation
     print('Performing bootsrap estimates of channel capacity...')
-    channcap_list = Parallel(n_jobs=48)(delayed(channcap_bs_parallel)(b) \
+    channcap_list = Parallel(n_jobs=N_JOBS)(delayed(channcap_bs_parallel)(b) \
                                         for b in bins)
     print('Done performing calculations.')
 
@@ -126,12 +132,9 @@ df_cc[['date', 'bins']] = df_cc[['date', 'bins']].astype(int)
 #============================================================================== 
 # Computing the channel capacity for randomized data
 #============================================================================== 
-
-compute_shuff = False
-
-if compute_shuff:
+if compute_exp:
     print('shuffling mean_intensity data')
-    df = df.assign(shuffled=df.mean_intensity.sample(frac=1).values)
+    df = df.assign(shuffled=df.intensity.sample(frac=1).values)
 
     # Define the parallel function to run
     def channcap_bs_parallel_shuff(b):
@@ -146,7 +149,7 @@ if compute_shuff:
 
     # Perform the parallel computation
     print('Performing bootsrap estimates on random data')
-    channcap_list_shuff = Parallel(n_jobs=48)\
+    channcap_list_shuff = Parallel(n_jobs=N_JOBS)\
                           (delayed(channcap_bs_parallel_shuff)(b) \
                                         for b in bins)
     print('Done performing calculations.')
