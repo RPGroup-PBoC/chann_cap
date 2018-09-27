@@ -42,6 +42,7 @@ REPRESSOR = 11
 BINDING_ENERGY = -13.9
 N_JOBS = 48
 
+compute_exp = True
 # Determine the parameters for the bootstraping
 bins = np.floor(np.logspace(0, 4, 100))
 fracs = 1 / np.linspace(1 / 0.6, 1, 10)
@@ -80,7 +81,7 @@ if compute_exp:
 
     # Perform the parallel computation
     print('Performing bootsrap estimates of channel capacity...')
-    channcap_list = Parallel(n_jobs=48)(delayed(channcap_bs_parallel)(b) \
+    channcap_list = Parallel(n_jobs=N_JOBS)(delayed(channcap_bs_parallel)(b) \
                                         for b in bins)
     print('Done performing calculations.')
 
@@ -146,7 +147,7 @@ if compute_exp:
 
     # Perform the parallel computation
     print('Performing bootsrap estimates on random data')
-    channcap_list_shuff = Parallel(n_jobs=7)\
+    channcap_list_shuff = Parallel(n_jobs=N_JOBS)\
                           (delayed(channcap_bs_parallel_shuff)(b) \
                                         for b in bins)
     print('Done performing calculations.')

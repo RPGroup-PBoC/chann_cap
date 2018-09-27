@@ -76,7 +76,7 @@ if compute_exp:
         MI_bs = np.zeros([len(fracs), nreps])
         samp_sizes = np.zeros(len(fracs))
         for i, frac in enumerate(fracs):
-        MI_bs[i, :], samp_sizes[i] = \
+        	MI_bs[i, :], samp_sizes[i] = \
                 chann_cap.channcap_bootstrap(df, bins=b, nrep=nreps, frac=frac,
 		                      			     **{'output_col': 'intensity'})
         return (MI_bs, samp_sizes)

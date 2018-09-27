@@ -57,6 +57,8 @@ df_micro = pd.read_csv('../../../data/csv_microscopy/' + \
         str(DATE) + '_' + OPERATOR + '_' + STRAIN + \
         '_IPTG_titration_microscopy.csv', header=0, comment='#') 
 
+# Include absolute intensity column
+df_micro.loc[:, 'intensity'] = df_micro['mean_intensity'] * df_micro['area']
 
 #============================================================================== 
 
@@ -150,7 +152,7 @@ if compute_exp:
 
     # Perform the parallel computation
     print('Performing bootsrap estimates on random data')
-    channcap_list_shuff = Parallel(n_jobs=JOBS)\
+    channcap_list_shuff = Parallel(n_jobs=N_JOBS)\
                           (delayed(channcap_bs_parallel_shuff)(b) \
                                         for b in bins)
     print('Done performing calculations.')
