@@ -43,7 +43,7 @@ BINDING_ENERGY = -15.3
 N_JOBS = 48
 
 # Boolean indicating if the computation should be performed or not
-compute_exp = False
+compute_exp = True
 
 # Determine the parameters for the bootstraping
 bins = np.floor(np.logspace(0, 4, 100))
@@ -57,6 +57,9 @@ df_micro = pd.read_csv('../../../data/csv_microscopy/' +
                        str(DATE) + '_' + OPERATOR + '_' + STRAIN +
                        '_IPTG_titration_microscopy.csv', header=0, comment='#')
 
+
+# Include absolute intensity column
+df_micro.loc[:, 'intensity'] = df_micro['mean_intensity'] * df_micro['area']
 
 # =============================================================================
 
@@ -75,7 +78,8 @@ if compute_exp:
         samp_sizes = np.zeros(len(fracs))
         for i, frac in enumerate(fracs):
             MI_bs[i, :], samp_sizes[i] = \
-                chann_cap.channcap_bootstrap(df, bins=b, nrep=nreps, frac=frac)
+                chann_cap.channcap_bootstrap(df, bins=b, nrep=nreps, frac=frac,
+					     **{'output_col': 'intensity'})
         return (MI_bs, samp_sizes)
 
     # Perform the parallel computation
@@ -132,7 +136,7 @@ df_cc[['date', 'bins']] = df_cc[['date', 'bins']].astype(int)
 
 if compute_exp:
     print('shuffling mean_intensity data')
-    df = df.assign(shuffled=df.mean_intensity.sample(frac=1).values)
+    df = df.assign(shuffled=df.intensity.sample(frac=1).values)
 
     # Define the parallel function to run
     def channcap_bs_parallel_shuff(b):
