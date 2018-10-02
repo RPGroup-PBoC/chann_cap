@@ -1833,13 +1833,14 @@ def set_plotting_style():
     2nd edition. To format all plots within a script, simply execute
     `mwc_induction_utils.set_plotting_style() in the preamble.
     """
-    rc = {'lines.linewidth': 2,
+    rc = {'lines.linewidth': 1.75,
           'axes.labelsize': 8,
           'axes.titlesize': 9,
           'axes.facecolor': '#E3DCD0',
-          #          'xtick.major' : 20,
           'xtick.labelsize': 7,
           'ytick.labelsize': 7,
+          'xtick.major.pad': -5,
+          'ytick.major.pad': -5,
           'font.family': 'Lucida Sans Unicode',
           'grid.linestyle': ':',
           'grid.linewidth': 1.5,
