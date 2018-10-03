@@ -175,7 +175,7 @@ of the promoter is to block the RNAP from binding to the promoter, we assume
 that only $\pbound$ depends on the repressor copy number $R$. Therefore when
 computing the fold-change in gene expression we  are left with
 \begin{equation}
-  \foldchange = {\ee{m_{ss}}(R \neq 0) \over \ee{m_{ss}}(R = 0)}
+  \foldchange = {\ee{m}_{ss}(R \neq 0) \over \ee{m}_{ss}(R = 0)}
               = {\pbound (R \neq 0) \over \pbound (R = 0)}.
 \end{equation}
 And as derived elsewhere this is of the form \cite{Garcia2011c}
@@ -183,7 +183,7 @@ And as derived elsewhere this is of the form \cite{Garcia2011c}
   \foldchange = \left(1 + {R \over \Nns}e^{-\beta \eR}  \right)^{-1},
   \label{eq_fold_change_thermo}
 \end{equation}
-where $\eR$ is the binding energy of the repressor to its binding site, and
+where $\beta \equiv k_BT^{-1}$, $\eR$ is the repress-DNA binding energy, and
 $\Nns$ is the number of non-specific binding sites.
 
 To arrive to \eref{eq_fold_change_thermo} considering both mRNA or protein we
@@ -191,23 +191,20 @@ ignore the physiological changes that happen along the cell cycle. One of the
 most important being the variability in gene copy number that we are exploring
 in this section. It is therefore worth thinking about whether or not the dynamic
 picture exemplified in \fref{fig_first_mom_cycles} can be reconciled with the
-predictions done by \eref{eq_fold_change_thermo}. To this end we calculated
-the mean mRNA and protein along the cell cycle for both the two- (unregulated)
-and three-state (regulated) promoter for the different repressor copy numbers
-that were determined for the strains used in \cite{Garcia2011c}.
+predictions done by \eref{eq_fold_change_thermo}.
 
 \subsubsection{Steady state under the kinetic picture}
 
 For our kinetic picture with changes over the cell cycle the mRNA (or protein)
 moment is computed as the integral defined in \eref{eq_moment_avg}.
-\fref{fig_first_mom_cycles}(A) suggests that we could approximate the integral
-as the sum of the steady state value of the single-promoter state and the steady
-state value of the two-promoters state weighted by their respective
-probabilities. This is because by construction the relaxation to steady state
-happens at a faster time scale compared with the length of each of the stages
-along the cell cycle. In other words if $\ee{m}_i$ is the steady state value
-for the state with $i$ promoters, then we can approximate the average mRNA copy
-number as
+\fref{fig_first_mom_cycles}(A) suggests that for the mRNA at least we could
+approximate the integral as the sum of the steady state value of the
+single-promoter state and the steady state value of the two-promoters state
+weighted by their respective probabilities. This is because by construction the
+relaxation to steady state happens at a faster time scale compared with the
+length of each of the stages along the cell cycle. In other words if $\ee{m}_i$
+is the steady state value for the state with $i$ promoters, then we can
+approximate the average mRNA copy number as
 \begin{equation}
   \ee{m} \approx \ee{m}_1 \int_0^{f} P(a)da +
                  \ee{m}_2 \int_f^{1} P(a)da,
@@ -228,7 +225,7 @@ For both, the unregulated and the regulated promoter it can be shown that
 $\ee{m}_2 = 2 \ee{m}_1$. Therefore \eref{eq_mRNA_mean_simplified} can be written
 as
 \begin{equation}
-  \ee{m} = (2 - f) \ee{m}_1.
+  \ee{m} \approx (2 - f) \ee{m}_1.
 \end{equation}
 Therefore the fold-change is given by
 \begin{equation}
@@ -254,20 +251,48 @@ solid lines are directly computed from \eref{eq_fold_change_thermo}, while the
 hollow triangles and the solid circles, representing the fold-change in mRNA and
 protein respectively were computed by numerically integrating the moment
 equations for both the two- and the three-state promoter (See
-\fref{fig_first_mom_cycles}} for the unregulated case) and then averaging the
+\fref{fig_first_mom_cycles} for the unregulated case) and then averaging the
 time series accounting for the probability of cells being at each stage of the
-cell cycle as defined by \eref{eq_moment_avg}.
+cell cycle as defined in \eref{eq_moment_avg}. The systematic deviations between
+both models are a consequence of the previously mentioned assumptions. But these
+differences are within what we can resolve experimentally with this system
+\cite{Garcia2011c, Brewster2014, Barnes2018, Razo-Mejia2018}.
+
+For completeness \fref{fig_IPTG_titration} compares the kinetic and equilibrium
+models for the extended model of \cite{Razo-Mejia2018} in which the inducer
+concentration enters to the equation. The solid line is directly computed from
+Eq. 5 of \cite{Razo-Mejia2018}. The hollow triangles and solid points follow the
+same procedure as for \fref{fig_lacI_titration}, where the only effect that the
+inducer is assume to have in the kinetics is an effective change in the number
+of active repressors, affecting therefore $\kron$. Again the systematic
+deviations due to our simplified assumptions fall within the experimental
+resolution of the system.
 
 \begin{figure}[h!]
 	\centering \includegraphics
   {../fig/moment_dynamics_numeric/lacI_titration.pdf}
-	\caption{\textbf{Comparison of the equilibrium and kinetic models.} The
-  equilibrium model (solid lines) and the kinetic model with variation over the
-  cell cycle (solid circles and white triangles) predictions are compared for
-  varying repressor copy numbers and operator binding energy. The equilibrium
-  model is directly computed from \eref{eq_fold_change_thermo} while the
-  kinetic model is computed by numerically integrating the moment equations
-  over several cell cycles, and then averaging over the extend of the cell
-  cycle as defined in \eref{eq_moment_avg}.}
+	\caption{\textbf{Comparison of the equilibrium and kinetic reressor titration
+	predictions.} The equilibrium model (solid lines) and the kinetic model with
+	variation over the cell cycle (solid circles and white triangles) predictions
+	are compared for varying repressor copy numbers and operator binding energy.
+	The equilibrium model is directly computed from \eref{eq_fold_change_thermo}
+	while the kinetic model is computed by numerically integrating the moment
+	equations over several cell cycles, and then averaging over the extend of the
+	cell cycle as defined in \eref{eq_moment_avg}.}
   \label{fig_lacI_titration}
+\end{figure}
+
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/moment_dynamics_numeric/IPTG_titration.pdf}
+	\caption{\textbf{Comparison of the equilibrium and kinetic inducer titration
+	predictions.} The equilibrium model (solid lines) and the kinetic model with
+	variation over the cell cycle (solid circles and white triangles) predictions
+	are compared for varying repressor copy numbers and inducer concentrations.
+	The equilibrium model is directly computed as Eq. 5 of reference
+	\cite{Razo-Mejia2018} while the kinetic model is computed by numerically
+	integrating the moment equations over several cell cycles, and then averaging
+	over the extend of the cell cycle as defined in \eref{eq_moment_avg}.}
+  \label{fig_IPTG_titration}
 \end{figure}
