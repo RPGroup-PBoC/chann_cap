@@ -75,7 +75,7 @@ halving the number of attempts does not translate to halving the second moment.
 Given this non-linear transformation between moments, we concluded that the
 easiest way to converge to the value of higher moments after cell division was
 to simply integrate the moment equations keeping the first moments fixed until
-higher moments relaxed to a steady state given this constrained conditions.
+higher moments relaxed to a steady state given these constrained conditions.
 
 \fref{fig_first_mom_cycles} shows how the first moment of both mRNA and protein
 changes over several cell cycles. The mRNA seems to quickly relax to the steady
@@ -139,3 +139,135 @@ If we map each time point in the cell cycle into a fraction we can use
   \label{eq_moment_avg}
 \end{equation}
 We perform this integral numerically for all moments using Simpson's rule.
+
+\subsection{Reproducing the equilibrium picture}
+
+Given the large variability of the first moments depicted in
+\fref{fig_first_mom_cycles} it is worth considering why a simplistic equilibrium
+picture has shown to be very successful in predicting the mean expression level
+under diverse conditions \cite{Garcia2011c, Brewster2014, Barnes2018,
+Razo-Mejia2018}. In this section we compare the simple repression thermodynamic
+model with this dynamical picture of the cell cycle. But first it is worth
+recapping the assumptions that go into the equilibrium model.
+
+\subsubsection{Steady state under the equilibrium picture}
+
+Since our equilibrium model only work for the thermodynamic limit of large
+number of particles, using this theoretical framework we are only allowed to
+describe the dynamics of the first moment \cite{Phillips2015}. Again without
+loss of generality let's only focus on the mRNA first moment $\ee{m}$. The same
+principles apply if we think about the protein first moment. We can write a
+dynamical system of the form
+\begin{equation}
+  {d \ee{m} \over dt} = r_m \cdot \pbound - \gm \ee{m},
+\end{equation}
+where as before $r_m$ and $\gm$ are the mRNA production and degradation rates
+respectively, and $\pbound$ is the probability of finding the RNAP
+bound to the promoter \cite{Bintu2005a}. This dynamical system is predicted to
+have a single stable fixed point that we can find by computing the steady state.
+When we solve for $\ee{m}$ at steady state we find
+\begin{equation}
+  \ee{m}_{ss} = {r_m \over \gm} \pbound.
+\end{equation}
+
+Since we assume that the only effect that the repressor has over the regulation
+of the promoter is to block the RNAP from binding to the promoter, we assume
+that only $\pbound$ depends on the repressor copy number $R$. Therefore when
+computing the fold-change in gene expression we  are left with
+\begin{equation}
+  \foldchange = {\ee{m_{ss}}(R \neq 0) \over \ee{m_{ss}}(R = 0)}
+              = {\pbound (R \neq 0) \over \pbound (R = 0)}.
+\end{equation}
+And as derived elsewhere this is of the form \cite{Garcia2011c}
+\begin{equation}
+  \foldchange = \left(1 + {R \over \Nns}e^{-\beta \eR}  \right)^{-1},
+  \label{eq_fold_change_thermo}
+\end{equation}
+where $\eR$ is the binding energy of the repressor to its binding site, and
+$\Nns$ is the number of non-specific binding sites.
+
+To arrive to \eref{eq_fold_change_thermo} considering both mRNA or protein we
+ignore the physiological changes that happen along the cell cycle. One of the
+most important being the variability in gene copy number that we are exploring
+in this section. It is therefore worth thinking about whether or not the dynamic
+picture exemplified in \fref{fig_first_mom_cycles} can be reconciled with the
+predictions done by \eref{eq_fold_change_thermo}. To this end we calculated
+the mean mRNA and protein along the cell cycle for both the two- (unregulated)
+and three-state (regulated) promoter for the different repressor copy numbers
+that were determined for the strains used in \cite{Garcia2011c}.
+
+\subsubsection{Steady state under the kinetic picture}
+
+For our kinetic picture with changes over the cell cycle the mRNA (or protein)
+moment is computed as the integral defined in \eref{eq_moment_avg}.
+\fref{fig_first_mom_cycles}(A) suggests that we could approximate the integral
+as the sum of the steady state value of the single-promoter state and the steady
+state value of the two-promoters state weighted by their respective
+probabilities. This is because by construction the relaxation to steady state
+happens at a faster time scale compared with the length of each of the stages
+along the cell cycle. In other words if $\ee{m}_i$ is the steady state value
+for the state with $i$ promoters, then we can approximate the average mRNA copy
+number as
+\begin{equation}
+  \ee{m} \approx \ee{m}_1 \int_0^{f} P(a)da +
+                 \ee{m}_2 \int_f^{1} P(a)da,
+\end{equation}
+where $f$ is the fraction of the cell cycle that cells spend with a single
+promoter. Since the steady state values $\ee{m}_i$ do not depend on the stage
+of the cell cycle, we were able to take them out of the integral. We can further
+simplify this equation by pretending that $P(a)$ is uniform, obtaining
+\begin{equation}
+  \ee{m} \approx f \cdot \ee{m}_1 + (1 - f) \ee{m}_2.
+  \label{eq_mRNA_mean_simplified}
+\end{equation}
+These simplifications will generate discrepancies between the equilibrium and
+kinetic results, but as we will show bellow, these errors are within our
+experimental resolution.
+
+For both, the unregulated and the regulated promoter it can be shown that
+$\ee{m}_2 = 2 \ee{m}_1$. Therefore \eref{eq_mRNA_mean_simplified} can be written
+as
+\begin{equation}
+  \ee{m} = (2 - f) \ee{m}_1.
+\end{equation}
+Therefore the fold-change is given by
+\begin{equation}
+  \foldchange = {(2 - f) \ee{m}_1(R \neq 0) \over (2 - f) \ee{m}_1(R = 0)}.
+\end{equation}
+This equation implicitly ignores the changes in the repressor copy number as
+cells progress through the cell cycle. This again is another simplifying
+assumption that will generate discrepancies between the thermodynamic and the
+kinetic results.
+
+Having the dependence on the cell cycle cancel out we arrive to the same
+expression as the one defined in \mrm{ref section on parameters}
+\begin{equation}
+  \foldchange = \left[ 1 + {\kron \over \kroff}
+                \left( {\kpoff \over \kpon + \kpoff} \right)\right]^{-1}.
+\end{equation}
+Therefore we can constraint the ratio ${\kron \over \kroff}$ given the
+parameters determined for the equilibrium picture.
+
+\fref{fig_lacI_titration} compares the predictions of both theoretical
+frameworks for varying repressor copy numbers and repressor-DNA affinities. The
+solid lines are directly computed from \eref{eq_fold_change_thermo}, while the
+hollow triangles and the solid circles, representing the fold-change in mRNA and
+protein respectively were computed by numerically integrating the moment
+equations for both the two- and the three-state promoter (See
+\fref{fig_first_mom_cycles}} for the unregulated case) and then averaging the
+time series accounting for the probability of cells being at each stage of the
+cell cycle as defined by \eref{eq_moment_avg}.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/moment_dynamics_numeric/lacI_titration.pdf}
+	\caption{\textbf{Comparison of the equilibrium and kinetic models.} The
+  equilibrium model (solid lines) and the kinetic model with variation over the
+  cell cycle (solid circles and white triangles) predictions are compared for
+  varying repressor copy numbers and operator binding energy. The equilibrium
+  model is directly computed from \eref{eq_fold_change_thermo} while the
+  kinetic model is computed by numerically integrating the moment equations
+  over several cell cycles, and then averaging over the extend of the cell
+  cycle as defined in \eref{eq_moment_avg}.}
+  \label{fig_lacI_titration}
+\end{figure}
