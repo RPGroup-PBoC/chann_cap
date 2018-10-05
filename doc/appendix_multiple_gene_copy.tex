@@ -24,22 +24,23 @@ experience these changes in gene copy number differently from each other.
 For our specific locus ({\it galK}) and a doubling time of $\approx$ 100 min,
 cells have on average 1.4 copies of the reporter gene during the cell cycle.
 What this means is that cells spend 60\% of the time having one copy of the gene
-and 40\% of the time with two copies. Our model needs to account for this
-variability in gene copy number along the cell cycle. To do so we numerically
-integrate the moment equations derived in \mrm{reference moment derivation
-section} for a time $t = [0, t_s]$ with an mRNA production rate $r_m$, where
-$t_s$ is the time point at which the replication fork reaches our specific
-locus. For the remaining time before the cell division $t = [t_s, t_d]$ that the
-cell spends with two promoters, we assume that the only parameter that changes
-is the mRNA production rate from $r_m$ to $2 r_m$. This simplifying assumption
-ignores potential changes in protein translation rate $r_p$ or changes in the
-repressor copy number that would be reflected in changes on the repressor on
-rate $\kron$.
+and 40\% of the time with two copies. To account for this variability in gene
+copy number along the cell cycle we numerically integrate the moment equations
+derived in \mrm{reference moment derivation section} for a time $t = [0, t_s]$
+with an mRNA production rate $r_m$, where $t_s$ is the time point at which the
+replication fork reaches our specific locus. For the remaining time before the
+cell division $t = [t_s, t_d]$ that the cell spends with two promoters, we
+assume that the only parameter that changes is the mRNA production rate from
+$r_m$ to $2 r_m$. This simplifying assumption ignores potential changes in
+protein translation rate $r_p$ or changes in the repressor copy number that
+would be reflected in changes on the repressor on rate $\kron$.
 
 \subsubsection{Initial conditions for numerical integration}
 
 In order to define the initial conditions for the numerical integration for each
 of the cell cycle stages we follow a simple procedure:
+\mrm{These are rather technical details. But I'm just dumping all of what I did
+without thinking where will this end.}
 \begin{enumerate}
   \item Initialize the zeroth moment, i.e. the probability of the promoter of
   being on each of the two (unregulated) or three (regulated) states at any
@@ -47,7 +48,7 @@ of the cell cycle stages we follow a simple procedure:
   up to one.
   \item Integrate moment equations for a long time using parameters
   corresponding to a single promoter. This will set the initial conditions to
-  be used for the single promoter case
+  be used for the single promoter case.
   \item Integrate the moment equations for a time $t = [0, t_s]$ using the
   initial conditions determined in the previous step.
   \item Update parameters to the ones corresponding to two promoter copies.
@@ -63,38 +64,39 @@ of the cell cycle stages we follow a simple procedure:
 \end{enumerate}
 
 Step 7 in our procedure to determine initial conditions serves as a way to
-determine how higher moments change as the cells divide. Only the first moments
-of both mRNA and protein can simply be halved after cell division, but it is
-less clear how higher moments of the distribution change as cells half their
-content. To visualize why this is not a trivial step let's consider a binomially
-distributed variable $X \sim \text{Bin}(N, p)$. For the first moment, given by
-$\ee{X} = Np$ is easy to see that upon halving the number of trials $N$, the new
-first moment would simply be $\ee{X}_{\text{new}} = {N \over 2} p$. But for the
-second moment given by $\ee{X^2} = Np - Np^2 + N^2p^2$ it is obvious that
-halving the number of attempts does not translate to halving the second moment.
-Given this non-linear transformation between moments, we concluded that the
-easiest way to converge to the value of higher moments after cell division was
-to simply integrate the moment equations keeping the first moments fixed until
-higher moments relaxed to a steady state given these constrained conditions.
+determine how higher moments change after the cell divides. Only the first
+moments of both mRNA and protein can simply be halved after cell division, but
+it is less clear how higher moments of the distribution change as cells half
+their content. To visualize why this is not a trivial step let's consider a
+binomially distributed variable $X \sim \text{Bin}(N, p)$. For the first moment,
+given by $\ee{X} = Np$ is easy to see that upon halving the number of trials
+$N$, the new first moment would simply be $\ee{X}_{\text{new}} = {N \over 2} p$.
+But for the second moment given by $\ee{X^2} = Np - Np^2 + N^2p^2$ it is obvious
+that halving the number of attempts does not translate to halving the second
+moment. Given this non-linear transformation between moments, we concluded that
+the easiest way to converge to the value of higher moments after cell division
+was to simply integrate the moment equations keeping the first moments fixed
+until higher moments relaxed to a steady state given these constrained
+conditions.
 
 \fref{fig_first_mom_cycles} shows how the first moment of both mRNA and protein
 changes over several cell cycles. The mRNA seems to quickly relax to the steady
 state corresponding to the parameters for both a single and two promoter copies.
-This is expected since the parameters for the mRNA production were determined
-in the first place under this assumption (See \mrm{cite mRNA MCMC section}). On
-the other hand given that this relaxation time is determined by the degradation
-rate the protein doesn't reach such steady state for either case. Interestingly
-Once a couple of cell cycles have passed the cells seem to have a reproducible
-trajectory over cell cycles. We call this a dynamic steady-state for the
-protein.
+This is expected since the parameters for the mRNA production were determined in
+the first place under this assumption (See \mrm{cite mRNA MCMC section}). On the
+other hand given that this relaxation time is determined by the degradation rate
+the protein doesn't reach such steady state for either promoter state.
+Interestingly once a couple of cell cycles have passed the first moment seems to
+have a reproducible trajectory over cell cycles. We call this a dynamic
+steady-state for the protein.
 
 \begin{figure}[h!]
 	\centering \includegraphics
   {../fig/moment_dynamics_numeric/first_mom_cycles.pdf}
 	\caption{\textbf{First moment dynamics over cell the cell cycle.}(A) mean
-	mRNA and (B) mean protein copy number as the cell cycle progresses. The light
+	mRNA and (B) mean protein copy number as the cell cycle progresses. The dark
 	shaded region delimits the fraction of the cell cycle that cells spend with  a
-	single copy of the promoter. The dark shaded region delimits the fraction of
+	single copy of the promoter. The light shaded region delimits the fraction of
 	the cell cycle that cells spend with two copies of the promoter. For a 100
   min doubling time at the {\it galK} locus cells spend 60\% of the time with
   one copy of the promoter and the rest with two copies.}
@@ -150,13 +152,13 @@ Razo-Mejia2018}. In this section we compare the simple repression thermodynamic
 model with this dynamical picture of the cell cycle. But first it is worth
 recapping the assumptions that go into the equilibrium model.
 
-\subsubsection{Steady state under the equilibrium picture}
+\subsubsection{Steady state under the equilibrium model}
 
 Since our equilibrium model only work for the thermodynamic limit of large
 number of particles, using this theoretical framework we are only allowed to
 describe the dynamics of the first moment \cite{Phillips2015}. Again without
 loss of generality let's only focus on the mRNA first moment $\ee{m}$. The same
-principles apply if we think about the protein first moment. We can write a
+principles apply if we consider the protein first moment. We can write a
 dynamical system of the form
 \begin{equation}
   {d \ee{m} \over dt} = r_m \cdot \pbound - \gm \ee{m},
@@ -193,10 +195,10 @@ in this section. It is therefore worth thinking about whether or not the dynamic
 picture exemplified in \fref{fig_first_mom_cycles} can be reconciled with the
 predictions done by \eref{eq_fold_change_thermo}.
 
-\subsubsection{Steady state under the kinetic picture}
+\subsubsection{Steady state under the kinetic model}
 
 For our kinetic picture with changes over the cell cycle the mRNA (or protein)
-moment is computed as the integral defined in \eref{eq_moment_avg}.
+first moment is computed as the integral defined in \eref{eq_moment_avg}.
 \fref{fig_first_mom_cycles}(A) suggests that for the mRNA at least we could
 approximate the integral as the sum of the steady state value of the
 single-promoter state and the steady state value of the two-promoters state
@@ -214,7 +216,7 @@ promoter. Since the steady state values $\ee{m}_i$ do not depend on the stage
 of the cell cycle, we were able to take them out of the integral. We can further
 simplify this equation by pretending that $P(a)$ is uniform, obtaining
 \begin{equation}
-  \ee{m} \approx f \cdot \ee{m}_1 + (1 - f) \ee{m}_2.
+  \ee{m} \approx f \cdot \ee{m}_1 + (1 - f) \cdot \ee{m}_2.
   \label{eq_mRNA_mean_simplified}
 \end{equation}
 These simplifications will generate discrepancies between the equilibrium and
@@ -241,9 +243,13 @@ expression as the one defined in \mrm{ref section on parameters}
 \begin{equation}
   \foldchange = \left[ 1 + {\kron \over \kroff}
                 \left( {\kpoff \over \kpon + \kpoff} \right)\right]^{-1}.
+  \label{eq_fold_change_kinetic}
 \end{equation}
-Therefore we can constraint the ratio ${\kron \over \kroff}$ given the
-parameters determined for the equilibrium picture.
+Given that the functional form of \eref{eq_fold_change_kinetic} and
+\eref{eq_fold_change_thermo} is the same, and we know all of the parameters
+related to the RNAP kinetics from an independent dataset (See \mrm{reference
+section on parameter inference}) we can constraint the ratio ${\kron \over
+\kroff}$ given the parameters determined for the equilibrium model.
 
 \fref{fig_lacI_titration} compares the predictions of both theoretical
 frameworks for varying repressor copy numbers and repressor-DNA affinities. The
@@ -260,7 +266,7 @@ differences are within what we can resolve experimentally with this system
 
 For completeness \fref{fig_IPTG_titration} compares the kinetic and equilibrium
 models for the extended model of \cite{Razo-Mejia2018} in which the inducer
-concentration enters to the equation. The solid line is directly computed from
+concentration enters into the equation. The solid line is directly computed from
 Eq. 5 of \cite{Razo-Mejia2018}. The hollow triangles and solid points follow the
 same procedure as for \fref{fig_lacI_titration}, where the only effect that the
 inducer is assume to have in the kinetics is an effective change in the number
@@ -295,4 +301,150 @@ resolution of the system.
 	integrating the moment equations over several cell cycles, and then averaging
 	over the extend of the cell cycle as defined in \eref{eq_moment_avg}.}
   \label{fig_IPTG_titration}
+\end{figure}
+
+\subsection{Comparison between single- and multi-promoter kinetic model}
+
+After these calculations it is worth questioning whether the inclusion of this
+extra layer of complexity is reflected on significant changes with respect to
+the simpler picture of a kinetic model that ignores the gene copy number
+variability during the cell cycle. To this end we systematically computed the
+average moments for varying repressor copy number and repressor-DNA affinities.
+We then compare these results with the moments obtained from a single-promoter
+model and their corresponding parameters (See \mrm{cite section on parameter
+inference}).
+
+\fref{fig_lacI_titration} and \fref{fig_IPTG_titration} both suggest that since
+the dynamic kinetic model can reproduce the results of the equilibrium model at
+the first moment level it must then by definition be able to reproduce the
+results of the single-promoter model at this level (See \mrm{ref FISH mcmc
+section}). The interesting comparison comes with higher moments. A useful metric
+to consider for gene expression variability is the noise in gene expression
+$\eta$ \cite{Shahrezaei2008}. This  quantity, defined as the standard deviation
+divided by the mean, is a dimensionless quantification of how much variability
+there is with respect to the mean of a distribution. As we will show below this
+quantity has the advantage compared to the also commonly used metric known as
+the Fano factor (variance / mean) in the sense that for experimentally
+determined expression levels in fluorescent arbitrary units the noise $\eta$ is
+a dimensionless quantity while the Fano factor is not.
+
+\fref{fig_noise_comparison} shows the comparison of the predicted protein noise
+between  the single- (dashed lines) and the multi-promoter model (solid lines)
+for different operators and repressor copy numbers. A striking difference
+between both is that the single-promoter model predicts that as the mean
+expression  level increases, the standard deviation grows much slower than the
+mean, giving a very small noise. In comparison the multi-promoter model has a
+much higher floor for the lowest value of the noise, reflecting the expected
+result that the variability in gene copy number along the cell cycle should
+increase the cell-to-cell variability in gene expression \cite{Peterson2015,
+Jones2014a}
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/moment_dynamics_numeric/noise_comparison.pdf}
+	\caption{\textbf{Comparison of the predicted protein noise between a single-
+	and a multi-promoter kinetic model.} Comparison of the noise $\eta$
+	(standard deviation/mean) between a kinetic model that considers a single
+	promoter at all times (dashed line) and the multi-promoter model developed
+	in this section (solid line) for different repressor operators. (A) Operator
+	O1,  $\eR = -15.3 \; k_BT$, (B) O2, $\eR = -13.9 \; k_BT$, (C) O3, $\eR =
+	-9.7 \; k_BT$}
+  \label{fig_noise_comparison}
+\end{figure}
+
+\subsection{Comparison with experimental data}
+
+Having shown that the kinetic model presented in this section can reproduce the
+results from the equilibrium picture at the mean level (See
+\fref{fig_lacI_titration} and \fref{fig_IPTG_titration}), but changes the
+prediction for the cell-to-cell variability as quantified by the noise $\eta$
+(See \fref{fig_noise_comparison}), we can asses whether or not this model is
+able to predict experimental measurements of the noise. For this we take the
+single cell intensity measurements (See \mrm{reference microscopy section}) to
+compute the noise at the protein level.
+
+As mentioned before this metric has the advantage over the Fano factor that for
+fluorescent arbitrary units (a.u.) the noise $\eta$ is a dimensionless quantity.
+To see why consider that the noise is defined as
+\begin{equation}
+\eta \equiv \frac{\sqrt{\left\langle p^2 \right\rangle -
+                        \left\langle p \right\rangle^2}}
+                        {\left\langle p \right\rangle}.
+    \label{eq_noise_protein}
+\end{equation}
+We assume that the intensity level of a cell $I$ is linearly proportional to
+the absolute protein count, i.e.
+\begin{equation}
+I = \alpha p,
+\label{eq_calibration_factor}
+\end{equation}
+where $\alpha$ is the proportionality constant between a.u. and protein absolute
+number $p$. Substituting this definition on \eref{eq_noise_protein} gives
+\begin{equation}
+  \eta = {\sqrt{\ee{(\alpha I)^2} - \ee{\alpha I}^2} \over
+                \ee{\alpha I}}.
+\end{equation}
+
+Since $\alpha$ is a constant it can be taken out of the average operator
+$\ee{\cdot}$, obtaining
+\begin{equation}
+  \eta = {\sqrt{\alpha^2 \left(\ee{I^2} -
+                \ee{I}^2 \right)} \over
+                \alpha \ee{I}}
+       = {\sqrt{\left(\ee{I^2} - \ee{I}^2 \right)} \over
+                \ee{I}}.
+\end{equation}
+
+Notice that in \eref{eq_calibration_factor} the linear proportionality between
+intensity and protein count has no intercept. This ignores the autofluorescence
+that cells without reporter would generate. To account for this in practice to
+compute the noise from experimental intensity measurements we compute
+\begin{equation}
+\eta = {\sqrt{\left(\ee{(I - \ee{I_\text{auto}})^2} -
+                    \ee{I - \ee{I_\text{auto}}}^2 \right)} \over
+                \ee{I - \ee{I_\text{auto}}}}.
+\end{equation}
+where $I$ is the intensity of the objective strain and $\ee{I_\text{auto}}$ is
+the mean autofluorescence intensity.
+
+\fref{fig_noise_delta} shows the comparison between theoretical predictions and
+experimental measurements for the unregulated promoter. We can see that the
+single-promoter model that ignores gene copy number variability greatly
+underestimates the measured noise at the protein level despite the fact that it
+can greatly reproduce the noise at the mRNA level (See \mrm{ref FISH MCMC
+section}). On the other hand the zero parameter fit prediction from the
+multi-promoter level presented in this section has a much better agreement with
+the experimental values. This indicates that changes in gene copy number along
+the cell cycle are important contributors to the cell-to-cell variability.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/moment_dynamics_numeric/noise_delta_microscopy.pdf}
+	\caption{\textbf{Protein noise of the unregulated promoter.} Comparison of the
+	experimental noise $\eta$ for different operators with the theoretical
+  predictions for the single-promoter (gray dashed line) and the
+  multi-promoter model (black dashed line).}
+  \label{fig_noise_delta}
+\end{figure}
+
+To further test the model predictive power we compare the predictions for the
+three-state regulated promoter. \fref{fig_noise_reg} shows the theoretical
+predictions for the single- and the multi-promoter model for varying repressor
+copy numbers and repressor-DNA binding affinities as a function of the inducer
+concentration. We can see again that the zero-parameter fit multi-promoter model
+has a good agreement with the experimental data, while the single-promoter model
+underestimates the noise. \mrm{Here it should be strongly emphasized that the
+data was absolutely not used at any point to generate the predictions. These
+are 100\% parameter free predictions. A remarkable test of the validity of the
+Aztec pyramid idea in my mind.}
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/moment_dynamics_numeric/noise_comparison_exp.pdf}
+	\caption{\textbf{Protein noise of the regulated promoter.} Comparison of the
+	experimental noise $\eta$ for different operators ((A) O1,  $\eR = -15.3 \;
+	k_BT$, (B) O2, $\eR = -13.9 \; k_BT$, (C) O3, $\eR = -9.7 \; k_BT$) with the
+	theoretical predictions for the single-promoter (dashed lines) and the
+  multi-promoter model (solid lines).}
+  \label{fig_noise_reg}
 \end{figure}
