@@ -1839,8 +1839,6 @@ def set_plotting_style():
           'axes.facecolor': '#E3DCD0',
           'xtick.labelsize': 7,
           'ytick.labelsize': 7,
-          'xtick.major.pad': -5,
-          'ytick.major.pad': -5,
           'font.family': 'Lucida Sans Unicode',
           'grid.linestyle': ':',
           'grid.linewidth': 1.5,
@@ -1850,6 +1848,8 @@ def set_plotting_style():
           'legend.frameon': True,
           'legend.fontsize': 8}
     plt.rc('text.latex', preamble=r'\usepackage{sfmath}')
+    plt.rc('xtick.major', pad=-1)
+    plt.rc('ytick.major', pad=-1)
     plt.rc('mathtext', fontset='stixsans', sf='sans')
     sns.set_style('darkgrid', rc=rc)
     sns.set_palette("colorblind", color_codes=True)
