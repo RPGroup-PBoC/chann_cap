@@ -1,0 +1,312 @@
+\section{Maximum entropy approximation of distributions}
+
+On the one hand the solution of chemical master equations like the one proposed
+in \mrm{ref model section} present a had mathematical challenge. As presented in
+\mrm{ref FISH  mcmc section} Peccoud \& Ycart derived a closed-form solution for
+the two-state promoter at the mRNA level \cite{Peccoud1995}. In an impressive
+display of mathematical skills Shahrezaei \& Swain were able to derive an
+approximate solution for the one- (not considered in this work) and two-state
+promoter master equation at the protein level \cite{Shahrezaei2008}.
+Nevertheless both of these solutions do not give instantaneous insights about
+the distributions as they involved complicated terms such as confluent
+hypergeometric functions.
+
+On the other hand there has been a great deal of work to generate methods that
+can approximate the solution of these discrete states Markovian models
+\cite{Ale2013, Andreychenko2017, Frohlich2016, Schnoerr2017, Smadbeck2013,
+Hasenauer2014, Dinh2016}. In particular for master equations like the one that
+concerns us here whose moments can be easily computed, the moment expansion
+method provides a simple method to approximate the full joint distribution of
+mRNA and protein \cite{Smadbeck2013}. In this section we will explain the
+principles behind this method and show the implementation for our particular
+study case.
+
+\subsection{The MaxEnt principle}
+
+The principle of maximum entropy (MaxEnt) first proposed by E. T. Jaynes in 1957
+tackles the question of given limited information what is the least biased
+inference one can make about a particular probability distribution
+\cite{Jaynes1957}. In particular Jaynes used this principle to show the
+correspondence between statistical mechanics and information theory,
+demonstrating for example that the Boltzmann distribution is the probability
+distribution that maximizes Shannon's entropy subject to a constraint that the
+average energy of the system is fixed.
+
+To illustrate the principle let us focus on a single variable distribution
+$P_X(x)$. The $n^{\text{th}}$ moment of the distribution for a discrete set of
+possible values of $x$ is given by
+\begin{equation}
+  \ee{x^n} \equiv \sum_x x^n P_X(x).
+  \label{eq_mom_ref}
+\end{equation}
+
+Now assume that we have knowledge of the first $m$ moments $\bb{\ee{x}}_m = (
+\ee{x}, \ee{x^2}, \ldots, \ee{x^m} )$. The question is then how can we use this
+information to build an estimator $P_H(x \mid \bb{\ee{x}}_m)$ of the
+distribution
+such that
+\begin{equation}
+  \lim_{m \rightarrow \infty} P_H(x \mid \bb{\ee{x}}_m) \rightarrow P_X(x),
+\end{equation}
+i.e. that the more moments we add to our approximation, the more the estimator
+distribution converges to the real distribution.
+
+The MaxEnt principle tells us that our best guess for this estimator is to build
+it on the base of maximizing the Shannon entropy constrained by the information
+we have about these $m$ moments. The maximization Shannon's entropy guarantees
+that we are less committed to information that we do not posses. The Shannon
+entropy for a single variable discrete distribution is given by
+\begin{equation}
+  H(x) \equiv - \sum_x P_X(x) \log P_X(x).
+\end{equation}
+
+For an optimization problem subject to constraints we use the method of Lagrange
+multipliers. For this we define the Lagrangian $\mathcal{L}(x)$ as
+\begin{equation}
+  \mathcal{L}(x) \equiv H(x) - \sum_{i=0}^m
+  \left[ \lambda_i \left( \ee{x^i} - \sum_x x^i P_X(x) \right) \right],
+\end{equation}
+where $\lambda_i$ is the Lagrange multiplier associated with the $i^\th$
+moment. The inclusion of the zeroth moment is an additional constraint to
+guarantee the normalization of the resulting distribution.
+
+To find the best guess for the estimator distribution we solve the constrained
+optimization problem. Since $P_X(x)$ has a finite set of discrete values if
+we take take the derivative of the Lagrangian with respect to $P_X(x)$ what it
+implies is that we chose a particular value of $X = x$. Therefore from the sum
+over all possible $x$ values only a single term survives. With this in mind we
+take the derivative of the Lagrangian obtaining
+\begin{equation}
+  {d\mathcal{L} \over d P_X(x)} = -\log P_X(x) - 1 -
+  \sum_{i=0}^m \lambda_i x^i.
+\end{equation}
+
+Equating this derivative to zero and solving for the distribution (that we now
+start calling $P_H(x)$, our MaxEnt estimator) gives
+\begin{equation}
+  P_H(x) = \exp \left(- 1 - \sum_{i=0}^m \lambda_i x^i \right)
+         ={1 \over \mathcal{Z}}
+         \exp \left( - \sum_{i=1}^m \lambda_i x^i \right),
+  \label{eq_maxEnt}
+\end{equation}
+where $\mathcal{Z}$ is the normalization constant given by
+\begin{equation}
+  \mathcal{Z} \equiv \exp\left( 1 + \lambda_0 \right) =
+  \sum_x \exp \left( - \sum_{i=1}^m \lambda_i x^i \right).
+\end{equation}
+
+\eref{eq_maxEnt} is the general form of the MaxEnt distribution for a univariate
+distribution. The computational challenge then consists in finding numerical
+values for the Lagrange multipliers $\{ \lambda_i \}$ such that $P_H(x)$
+satisfies our constraints. In other words the Lagrange multipliers weight the
+contribution of each term in the exponent such that when computing any of the
+moments. Mathematically what this means is that $P_H(x)$ must satisfy
+\begin{equation}
+  \sum_x x^i P_H(x) =
+  \sum_x {x^i \over \mathcal{Z}}
+  \exp \left( - \sum_{i=1}^m \lambda_i x^i \right) = \ee{x^i}.
+\end{equation}
+
+As an example of how to apply the MaxEnt principle let us use the classic
+example of a six-face die. If we are only told that after a large number of die
+rolls the mean value of the face is $\ee{x} = 4.5$ (note that a fair die has a
+mean of $3.5$), what would the least biased guess fot the distribution look
+like? The MaxEnt principle tells us that our best guess would be of the form
+\begin{equation}
+  P_H(x) = {1 \over \mathcal{Z}} \exp \left( \lambda x \right).
+\end{equation}
+Using the Python maxentropy package we can easily find the numerical value of
+the Lagrange multiplier $\lambda$  that satisfies our constraint.
+\fref{fig_maxent_die} shows two two examples of distributions that satisfy the
+constraint. Panel (A) shows a distribution consistent with the 4.5 average where
+both 4 and 5 are equally likely. Nevertheless in the information we got about
+the nature of the die it was never stated that some of the faces were forbidden.
+In that sense the distribution is committing to information about the process
+that we do not posses. Panel (B) by contrast shows the MaxEnt distribution that
+satisfies this constraint. Since this distribution maximizes Shannon's entropy
+it is guaranteed to be the least biased distribution given the available
+information.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/MaxEnt_approx_joint/biased_die_dist.pdf}
+	\caption{\textbf{Maximum entropy distribution of six-face die.} (A)biased
+  distribution consistent with the constraint $\ee{x} = 4.5$. (B) MaxEnt
+  distribution also consistent with the constraint.}
+  \label{fig_maxent_die}
+\end{figure}
+
+\subsubsection{The mRNA and protein joint distribution}
+
+The MaxEnt principle can easily be extended to multivariate distributions. For
+our particular case we are interested in the mRNA and protein joint distribution
+$P(m, p)$. The definition of a moment $\ee{m^x p^y}$ is a natural extension of
+\eref{eq_mom_ref} of the form
+\begin{equation}
+  \ee{m^x p^y} = \sum_m \sum_p m^x p^y P(m, p).
+\end{equation}
+
+As a consequence the MaxEnt joint distribution $P_H(m, p)$ is of the form
+\begin{equation}
+  P_H(m, p) = {1 \over \mathcal{Z}}
+              \exp \left( - \sum_{(x,y)} \lambda_{(x,y)} m^x p^y \right),
+  \label{eq_maxEnt_joint}
+\end{equation}
+where $\lambda_{(x,y)}$ is the Lagrange multiplier associated with the moment
+$\ee{m^x p^y}$, and again $\mathcal{Z}$ is the normalization constant given by
+\begin{equation}
+  \mathcal{Z} = \sum_m \sum_p
+              \exp \left( - \sum_{(x, y)} \lambda_{(x, y)} m^x p^y \right).
+\end{equation}
+Note that the sum in the exponent is taken over all available $(x, y)$ pairs
+that define the moment constraints for the distribution.
+
+\subsection{The Bretthorst rescaling algorithm}
+
+The determination of the Lagrange multipliers suffer from a numerical under and
+overflow problem due to the difference in magnitude between the constraints.
+This becomes a problem when higher moments are taken into account. The resulting
+numerical values for the Lagrange multipliers end up being separated by several
+orders of magnitude. For routines such as Newton-Raphson or other minimization
+algorithms that can be used to find these Lagrange multipliers these different
+scales become problematic.
+
+To get around this problem we implemented a variation to the algorithm due to G.
+Larry Bretthorst, E.T. Jaynes' last student. With a very simple argument he
+shows that linearly rescaling the constraints, the Lagrange multipliers and the
+``rules'' for how to compute each of the moments, i.e. each of the individual
+products that go into the moment calculation, should converge to the same MaxEnt
+distribution. In order to see this let's consider again an univariate
+distribution $P_X(x)$ that we are trying to reconstruct given the first two
+moments. The MaxEnt distribution can be written as
+\begin{equation}
+  P_H(x) = {1 \over \mathcal{Z}}
+  \exp \left(- \lambda_1 x - \lambda_2 x^2 \right) =
+  {1 \over \mathcal{Z}}
+  \exp \left(- \lambda_1 x \right) \exp \left( - \lambda_2 x^2 \right).
+\end{equation}
+We can always rescale the terms in any way and obtain the same result. Let's say
+that for some reason we want to rescale the quadratic terms by a factor $a$. We
+can define a new Lagrange multiplier $\lambda_2' \equiv {\lambda_2 \over a}$
+that compensates for the rescaling of the terms, obtaining
+\begin{equation}
+  P_H(x) = {1 \over \mathcal{Z}}
+  \exp \left(- \lambda_1 x \right) \exp \left( - \lambda_2' ax^2 \right).
+\end{equation}
+Computationally it might be more efficient to find the numerical value of
+$\lambda_2'$ rather than $\lambda_2$ maybe because it is of the same order of
+magnitude as $\lambda_1$. Then we can always multiply $\lambda_2'$ by $a$ to
+obtain back the constraint for our quadratic term. What this means is that that
+we can always rescale the MaxEnt problem to make it numerically more stable,
+then we can rescale back to obtain the value of the Lagrange multipliers.
+
+Bretthorst algorithm goes even further by further transforming the constraints
+and the variables to make the constraints orthogonal, making the computation
+much more effective. We now explain the implementation of the algorithm to our
+joint distribution of interest $P(m, p)$.
+
+\subsubsection{Algorithm implementation}
+
+Let the matrix $\bb{A}$ contain all the rules used to compute the moments that
+serve as constraints, where each entry is of the form
+\begin{equation}
+  A_{ij} = m_i^{x_j} \cdot p_i^{y_j},
+\end{equation}
+i.e. the $i^\th$ entry of our sample space consisting of of the product of all
+possible pairs ($m, p$) elevated to the appropriate powers $x$ and $y$
+associated with the $j^{\text{th}}$ constraint. Let also $\bb{v}$ be a vector
+containing all the constraints with each entry of the form
+\begin{equation}
+  v_j = \ee{m^{x_j} p^{y_j}}.
+\end{equation}
+
+That means that the Lagrangian $\mathcal{L}$ to be used for this constrained
+maximization problem takes the form
+\begin{equation}
+  \mathcal{L} = -\sum_i P_i \ln P_i - \lambda_0 \left( 1 - \sum_i P_i \right)
+  + \sum_{j>0} \lambda_j \left( v_j - \sum_i A_{ij} P_i \right),
+\end{equation}
+where $\lambda_0$ is the Lagrange multiplier associated with the normalization
+constraint, and $\lambda_j$ is the Lagrange multiplier associated with the
+$j^\th$ constraint.
+
+With this notation in hand we now proceed to rescale the problem. The first
+step consists of rescaling the rules to compute the entries of matrix $\bb{A}$
+as
+\begin{equation}
+  A_{ij}' = {A_{ij} \over G_j},
+\end{equation}
+where $G_j$ serves to normalize the moments such that all the Lagrange
+multipliers are of the same order of magnitude. This normalization satisfies
+\begin{equation}
+G_j^2 = \sum_i A_{ij}^2,
+\end{equation}
+or in terms of our particular problem
+\begin{equation}
+G_j = \sum_m \sum_p \left( m^{x_j} p^{y_j} \right)^2.
+\end{equation}
+
+Since we rescale the rules to compute the constraints, the constraints must
+also be rescaled simply as
+\begin{equation}
+v_j' = \ee{m^{x_j} p^{y_j}}' = {\ee{m^{x_j} p^{y_j}} \over G_j}.
+\end{equation}
+
+The Lagrange multipliers must compensate this rescaling since at the end of the
+day the probability must add up to the same value. Therefore we rescale the
+$\lambda$ terms as as
+\begin{equation}
+\lambda_j' = \lambda_j G_j.
+\end{equation}
+
+This rescaling by itself would already improve the algorithm convergence since
+now all the Lagrange multipliers would not have drastically different values.
+Bretthorst proposes another linear transformation to make the optimization
+routine even more efficient. For this he proposes making orthogonal constraints
+that make Newton-Raphson and similar routines converge faster. The
+transformation is as follows
+\begin{equation}
+  A_{ik}'' = \sum_j {e}_{jk} A_{ij}',
+\end{equation}
+for the entires of matrix $\bb{A}$, and
+\begin{equation}
+  v_k'' = \sum_j {e}_{jk} u_j',
+\end{equation}
+for entires of the constraint vector $\bb{v}$, finally
+\begin{equation}
+  \lambda_k'' = \sum_j {e}_{jk} \beta_j,
+\end{equation}
+for the Lagrange multipliers. Here ${e}_{jk}$ is the $j^\th$ component
+of the $k^\th$ eigenvector of the matrix $\bb{E}$ with entries
+\begin{equation}
+  {E}_{kj} = \sum_i {A}_{ik}' {A}_{ij}'.
+\end{equation}
+
+This transformation guarantees that the matrix $\bb{A}''$ has the property
+\begin{equation}
+  \sum_i A_{ij}'' A_{jk}'' = \beta_j \delta_{jk},
+\end{equation}
+where $\beta_j$ is the $j^\th$ eigenvalue of the matrix $\bb{E}$ and
+$\delta_{jk}$ is the delta function. What this means is that, as desired, the
+constraints are orthogonal to each other, improving the algorithm convergence
+speed.
+
+\subsection{Predicting distributions for simple repression constructs}
+
+Having explained the theoretical background behind the MaxEnt approximation we
+now use it to predict gene expression distributions
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/MaxEnt_approx_joint/CDF_grid.pdf}
+	\caption{\textbf{Maximum entropy cumulative distributions for simple
+  repression constructs.} Cumulative distribution functions for different
+  biophysical parameters. From left to right the repressor-DNA affinity
+  decreases as defined by the three lacI operators O1 ($-15.3 \; k_BT$), O2 ($
+  -13.9 \; k_BT$), and O3 ($-9.7 \; k_BT$). From top to bottom the mean
+  repressor copy number per cell increases. The twelve curves on each plot
+  represent the twelve IPTG concentrations used in the experiments with higher
+  concentrations represented by lighter colors (See \mrm{ref methods} for
+  inducer concentrations).}
+  \label{fig_CDF_grid}
+\end{figure}
