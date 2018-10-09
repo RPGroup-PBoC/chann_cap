@@ -43,7 +43,7 @@ BINDING_ENERGY = -13.9
 N_JOBS = 48
 
 # Boolean indicating if the computation should be performed or not
-compute_exp = True
+compute_exp = False
 
 # Determine the parameters for the bootstraping
 bins = np.floor(np.logspace(0, 4, 100))
