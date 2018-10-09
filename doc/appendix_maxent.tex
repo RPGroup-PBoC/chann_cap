@@ -1,14 +1,14 @@
 \section{Maximum entropy approximation of distributions}
 
 On the one hand the solution of chemical master equations like the one proposed
-in \mrm{ref model section} present a had mathematical challenge. As presented in
-\mrm{ref FISH  mcmc section} Peccoud \& Ycart derived a closed-form solution for
-the two-state promoter at the mRNA level \cite{Peccoud1995}. In an impressive
-display of mathematical skills Shahrezaei \& Swain were able to derive an
-approximate solution for the one- (not considered in this work) and two-state
-promoter master equation at the protein level \cite{Shahrezaei2008}.
+in \mrm{ref model section} represent a had mathematical challenge. As presented
+in \mrm{ref FISH  mcmc section} Peccoud \& Ycart derived a closed-form solution
+for the two-state promoter at the mRNA level \cite{Peccoud1995}. In an
+impressive display of mathematical skills Shahrezaei \& Swain were able to
+derive an approximate solution for the one- (not considered in this work) and
+two-state promoter master equation at the protein level \cite{Shahrezaei2008}.
 Nevertheless both of these solutions do not give instantaneous insights about
-the distributions as they involved complicated terms such as confluent
+the distributions as they involve complicated terms such as confluent
 hypergeometric functions.
 
 On the other hand there has been a great deal of work to generate methods that
@@ -32,9 +32,9 @@ demonstrating for example that the Boltzmann distribution is the probability
 distribution that maximizes Shannon's entropy subject to a constraint that the
 average energy of the system is fixed.
 
-To illustrate the principle let us focus on a single variable distribution
-$P_X(x)$. The $n^{\text{th}}$ moment of the distribution for a discrete set of
-possible values of $x$ is given by
+To illustrate the principle let us focus on a univariate distribution $P_X(x)$.
+The $n^{\text{th}}$ moment of the distribution for a discrete set of possible
+values of $x$ is given by
 \begin{equation}
   \ee{x^n} \equiv \sum_x x^n P_X(x).
   \label{eq_mom_ref}
@@ -52,16 +52,17 @@ i.e. that the more moments we add to our approximation, the more the estimator
 distribution converges to the real distribution.
 
 The MaxEnt principle tells us that our best guess for this estimator is to build
-it on the base of maximizing the Shannon entropy constrained by the information
-we have about these $m$ moments. The maximization Shannon's entropy guarantees
-that we are less committed to information that we do not posses. The Shannon
-entropy for a single variable discrete distribution is given by
+it on the base of maximizing the Shannon entropy, constrained by the information
+we have about these $m$ moments. The maximization of Shannon's entropy
+guarantees that we are the least committed possible to information that we do
+not posses. The Shannon entropy for an univariate discrete distribution is
+given by
 \begin{equation}
   H(x) \equiv - \sum_x P_X(x) \log P_X(x).
 \end{equation}
 
-For an optimization problem subject to constraints we use the method of Lagrange
-multipliers. For this we define the Lagrangian $\mathcal{L}(x)$ as
+For an optimization problem subject to constraints we make use of the method of
+the Lagrange multipliers. For this we define the Lagrangian $\mathcal{L}(x)$ as
 \begin{equation}
   \mathcal{L}(x) \equiv H(x) - \sum_{i=0}^m
   \left[ \lambda_i \left( \ee{x^i} - \sum_x x^i P_X(x) \right) \right],
@@ -70,12 +71,11 @@ where $\lambda_i$ is the Lagrange multiplier associated with the $i^\th$
 moment. The inclusion of the zeroth moment is an additional constraint to
 guarantee the normalization of the resulting distribution.
 
-To find the best guess for the estimator distribution we solve the constrained
-optimization problem. Since $P_X(x)$ has a finite set of discrete values if
-we take take the derivative of the Lagrangian with respect to $P_X(x)$ what it
-implies is that we chose a particular value of $X = x$. Therefore from the sum
-over all possible $x$ values only a single term survives. With this in mind we
-take the derivative of the Lagrangian obtaining
+Since $P_X(x)$ has a finite set of discrete values if we take the derivative of
+the Lagrangian with respect to $P_X(x)$ what this implies is that we chose a
+particular value of $X = x$. Therefore from the sum over all possible $x$ values
+only a single term survives. With this in mind we take the derivative of the
+Lagrangian obtaining
 \begin{equation}
   {d\mathcal{L} \over d P_X(x)} = -\log P_X(x) - 1 -
   \sum_{i=0}^m \lambda_i x^i.
@@ -89,7 +89,8 @@ start calling $P_H(x)$, our MaxEnt estimator) gives
          \exp \left( - \sum_{i=1}^m \lambda_i x^i \right),
   \label{eq_maxEnt}
 \end{equation}
-where $\mathcal{Z}$ is the normalization constant given by
+where $\mathcal{Z}$ is the normalization constant that can be obtained by
+substituting this solution into the normalization constraint. This results in
 \begin{equation}
   \mathcal{Z} \equiv \exp\left( 1 + \lambda_0 \right) =
   \sum_x \exp \left( - \sum_{i=1}^m \lambda_i x^i \right).
@@ -98,25 +99,26 @@ where $\mathcal{Z}$ is the normalization constant given by
 \eref{eq_maxEnt} is the general form of the MaxEnt distribution for a univariate
 distribution. The computational challenge then consists in finding numerical
 values for the Lagrange multipliers $\{ \lambda_i \}$ such that $P_H(x)$
-satisfies our constraints. In other words the Lagrange multipliers weight the
+satisfies our constraints. In other words, the Lagrange multipliers weight the
 contribution of each term in the exponent such that when computing any of the
-moments. Mathematically what this means is that $P_H(x)$ must satisfy
+moments we recover the value of our constraint. Mathematically what this means
+is that $P_H(x)$ must satisfy
 \begin{equation}
-  \sum_x x^i P_H(x) =
-  \sum_x {x^i \over \mathcal{Z}}
-  \exp \left( - \sum_{i=1}^m \lambda_i x^i \right) = \ee{x^i}.
+  \sum_x x^n P_H(x) =
+  \sum_x {x^n \over \mathcal{Z}}
+  \exp \left( - \sum_{i=1}^m \lambda_i x^i \right) = \ee{x^n}.
 \end{equation}
 
 As an example of how to apply the MaxEnt principle let us use the classic
-example of a six-face die. If we are only told that after a large number of die
+problem of a six-face die. If we are only told that after a large number of die
 rolls the mean value of the face is $\ee{x} = 4.5$ (note that a fair die has a
 mean of $3.5$), what would the least biased guess fot the distribution look
 like? The MaxEnt principle tells us that our best guess would be of the form
 \begin{equation}
   P_H(x) = {1 \over \mathcal{Z}} \exp \left( \lambda x \right).
 \end{equation}
-Using the Python maxentropy package we can easily find the numerical value of
-the Lagrange multiplier $\lambda$  that satisfies our constraint.
+Using any numerical minimization package we can easily find the numerical value
+of the Lagrange multiplier $\lambda$  that satisfies our constraint.
 \fref{fig_maxent_die} shows two two examples of distributions that satisfy the
 constraint. Panel (A) shows a distribution consistent with the 4.5 average where
 both 4 and 5 are equally likely. Nevertheless in the information we got about
@@ -172,8 +174,8 @@ algorithms that can be used to find these Lagrange multipliers these different
 scales become problematic.
 
 To get around this problem we implemented a variation to the algorithm due to G.
-Larry Bretthorst, E.T. Jaynes' last student. With a very simple argument he
-shows that linearly rescaling the constraints, the Lagrange multipliers and the
+Larry Bretthorst, E.T. Jaynes' last student. With a very simple argument we can
+show that linearly rescaling the constraints, the Lagrange multipliers and the
 ``rules'' for how to compute each of the moments, i.e. each of the individual
 products that go into the moment calculation, should converge to the same MaxEnt
 distribution. In order to see this let's consider again an univariate
@@ -223,7 +225,7 @@ containing all the constraints with each entry of the form
 That means that the Lagrangian $\mathcal{L}$ to be used for this constrained
 maximization problem takes the form
 \begin{equation}
-  \mathcal{L} = -\sum_i P_i \ln P_i - \lambda_0 \left( 1 - \sum_i P_i \right)
+  \mathcal{L} = -\sum_i P_i \ln P_i + \lambda_0 \left( 1 - \sum_i P_i \right)
   + \sum_{j>0} \lambda_j \left( v_j - \sum_i A_{ij} P_i \right),
 \end{equation}
 where $\lambda_0$ is the Lagrange multiplier associated with the normalization
@@ -243,7 +245,7 @@ G_j^2 = \sum_i A_{ij}^2,
 \end{equation}
 or in terms of our particular problem
 \begin{equation}
-G_j = \sum_m \sum_p \left( m^{x_j} p^{y_j} \right)^2.
+G_j^2 = \sum_m \sum_p \left( m^{x_j} p^{y_j} \right)^2.
 \end{equation}
 
 Since we rescale the rules to compute the constraints, the constraints must
@@ -254,7 +256,7 @@ v_j' = \ee{m^{x_j} p^{y_j}}' = {\ee{m^{x_j} p^{y_j}} \over G_j}.
 
 The Lagrange multipliers must compensate this rescaling since at the end of the
 day the probability must add up to the same value. Therefore we rescale the
-$\lambda$ terms as as
+$\lambda_j$ terms as as
 \begin{equation}
 \lambda_j' = \lambda_j G_j.
 \end{equation}
@@ -262,9 +264,9 @@ $\lambda$ terms as as
 This rescaling by itself would already improve the algorithm convergence since
 now all the Lagrange multipliers would not have drastically different values.
 Bretthorst proposes another linear transformation to make the optimization
-routine even more efficient. For this he proposes making orthogonal constraints
-that make Newton-Raphson and similar routines converge faster. The
-transformation is as follows
+routine even more efficient. For this we generate orthogonal constraints that
+make Newton-Raphson and similar routines converge faster. The transformation is
+as follows
 \begin{equation}
   A_{ik}'' = \sum_j {e}_{jk} A_{ij}',
 \end{equation}
@@ -293,20 +295,47 @@ speed.
 
 \subsection{Predicting distributions for simple repression constructs}
 
-Having explained the theoretical background behind the MaxEnt approximation we
-now use it to predict gene expression distributions
+Having explained the theoretical background along with the practical
+difficulties and a workaround strategy proposed by Bretthorst we implemented
+the inference using the moments obtained from averaging over the variability
+along the cell cycle (See \mrm{ref section no multiple gene copies}).
+\fref{fig_pmf_mRNA} and \fref{fig_pmf_protein} present these inferences for
+both mRNA and protein levels respectively for different values of the
+repressor-DNA binding energy and repressor copy numbers per cell. From these
+plots we can easily appreciate that despite the fact that the mean of each
+distribution changes as the induction level changes, there is a lot of overlap
+between distributions. This as a consequence means that at the single cell level
+cells cannot perfectly resolve between different inputs. The influence of the
+biophysical parameters is interesting to explore. For the upper right corner
+where cells have a very weak binding site and a small amount of repressors, all
+of the inducer concentrations basically overlap for the most part, giving cells
+very little capacity of resolving different inputs. As the number of repressors
+per cell or the reprssor-DNA interaction increases, the different distributions
+start to overlap less, allowing cells to extract more information about the
+inputs.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/MaxEnt_approx_joint/CDF_grid.pdf}
-	\caption{\textbf{Maximum entropy cumulative distributions for simple
-  repression constructs.} Cumulative distribution functions for different
-  biophysical parameters. From left to right the repressor-DNA affinity
-  decreases as defined by the three lacI operators O1 ($-15.3 \; k_BT$), O2 ($
-  -13.9 \; k_BT$), and O3 ($-9.7 \; k_BT$). From top to bottom the mean
-  repressor copy number per cell increases. The twelve curves on each plot
-  represent the twelve IPTG concentrations used in the experiments with higher
-  concentrations represented by lighter colors (See \mrm{ref methods} for
-  inducer concentrations).}
-  \label{fig_CDF_grid}
+  {../fig/MaxEnt_approx_joint/PMF_grid_joyplot_mRNA.pdf}
+	\caption{\textbf{Maximum entropy mRNA distributions for simple repression
+	constructs.} mRNA distributions for different biophysical parameters. From
+	left to right the repressor-DNA affinity decreases as defined by the three
+	lacI operators O1 ($-15.3 \; k_BT$), O2 ($ -13.9 \; k_BT$), and O3 ($-9.7 \;
+	k_BT$). From top to bottom the mean repressor copy number per cell increases.
+	The twelve curves on each plot represent the twelve IPTG concentrations used
+	in the experiments with higher concentrations represented by lighter colors.}
+  \label{fig_pmf_mRNA}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/MaxEnt_approx_joint/PMF_grid_joyplot_protein.pdf}
+	\caption{\textbf{Maximum entropy protein distributions for simple repression
+	constructs.} Protein distributions for different biophysical parameters. From
+	left to right the repressor-DNA affinity decreases as defined by the three
+	lacI operators O1 ($-15.3 \; k_BT$), O2 ($ -13.9 \; k_BT$), and O3 ($-9.7 \;
+	k_BT$). From top to bottom the mean repressor copy number per cell increases.
+	The twelve curves on each plot represent the twelve IPTG concentrations used
+	in the experiments with higher concentrations represented by lighter colors.}
+  \label{fig_pmf_protein}
 \end{figure}
