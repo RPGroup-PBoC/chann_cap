@@ -484,52 +484,6 @@ def log_p_m_unreg(mRNA, kp_on, kp_off, gm, rm):
 
 
 # =============================================================================
-# chemical_master_moments_mRNA
-# =============================================================================
-# Import two-state mRNA moments
-# Parameters are feed in the following order:
-# (kp_on, kp_off, rm, gm)
-with open('../../tmp/two_state_mRNA_lambdify.dill', 'rb') as file:
-    first_unreg_m = dill.load(file)
-    second_unreg_m = dill.load(file)
-    third_unreg_m = dill.load(file)
-
-
-# Import two-state mRNA moments
-# Parameters are feed in the following order:
-# (kr_on, kr_off, kp_on, kp_off, rm, gm)
-with open('../../tmp/three_state_mRNA_lambdify.dill', 'rb') as file:
-    first_reg_m = dill.load(file)
-    second_reg_m = dill.load(file)
-    third_reg_m = dill.load(file)
-
-
-# =============================================================================
-# chemical_master_moments_protein
-# =============================================================================
-# Import two-state protein moments
-# Parameters are feed in the following order:
-# (kp_on, kp_off, rm, gm, rp, gp)
-with open('../../tmp/two_state_protein_lambdify.dill', 'rb') as file:
-    first_unreg_p = dill.load(file)
-    second_unreg_p = dill.load(file)
-    third_unreg_p = dill.load(file)
-    mp_unreg_p = dill.load(file)
-    m2p_unreg_p = dill.load(file)
-    mp2_unreg_p = dill.load(file)
-
-# Import two-state protein moments
-# Parameters are feed in the following order:
-# (kr_on, kr_off, kp_on, kp_off, rm, gm, rp, gp)
-with open('../../tmp/three_state_protein_lambdify.dill', 'rb') as file:
-    first_reg_p = dill.load(file)
-    second_reg_p = dill.load(file)
-    third_reg_p = dill.load(file)
-    mp_reg_p = dill.load(file)
-    m2p_reg_p = dill.load(file)
-    mp2_reg_p = dill.load(file)
-
-# =============================================================================
 # MaxEnt_approx_mRNA
 # =============================================================================
 
@@ -1691,6 +1645,56 @@ def dpdt_cycles(mp, t_single, t_double, n_cycles,
         mp = np.append(mp, m[-1, Kmat.shape[0]*2::])  # All other moments
 
     return df
+
+
+# =============================================================================
+# moment_dynamics_system
+# =============================================================================
+
+def dmomdt(A_mat, expo, t, mom_init, states=['E', 'P', 'R']):
+    '''
+    Function to integrate 
+    dµ/dt = Aµ
+    for any matrix A using the scipy.integrate.odeint
+    function
+    
+    Parameters
+    ----------
+    A_mat : 2D-array
+        Square matrix defining the moment dynamics
+    expo : array-like
+        List containing the moments involved in the 
+        dynamics defined by A
+    t : array-like
+        Time array in seconds
+    mom_init : array-like. lenth = A_mat.shape[1]
+    states : list with strings. Default = ['E', 'P', 'R']
+        List containing the name of the promoter states
+    Returns
+    -------
+    Tidy dataframe containing the moment dynamics
+    '''
+    # Define a lambda function to feed to odeint that returns
+    # the right-hand side of the moment dynamics
+    def dt(mom, time):
+        return np.dot(A_mat, mom)
+    
+    # Integrate dynamics
+    mom_dynamics = sp.integrate.odeint(dt, mom_init, t)
+
+    ## Save results in tidy dataframe  ##
+    # Define names of columns
+    names = ['m{0:d}p{1:d}'.format(*x) + s for x in expo 
+             for s in states]
+
+    # Save as data frame
+    df = pd.DataFrame(mom_dynamics, columns=names)
+    # Add time column
+    df = df.assign(t_sec = t, t_min = t / 60)
+    
+    return df
+
+
 # =============================================================================
 # blahut_arimoto_channel_capacity
 # =============================================================================
