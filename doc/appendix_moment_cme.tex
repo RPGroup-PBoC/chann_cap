@@ -11,7 +11,7 @@ form
     \dt{\PP(m, p)} &= \Km \PP(m, p)
     - \Rm \PP(m, p) + \Rm \PP(m-1, p)
     - m \Gm \PP(m, p) + (m + 1) \Gm \PP(m + 1, p)\\
-    &- m \Rp \PP(m, p) + m \Rp \PP(m, p)
+    &- m \Rp \PP(m, p) + m \Rp \PP(m, p - 1)
     - p \Gp \PP(m, p) + (p + 1) \Gp \PP(m, p + 1),
   \end{aligned}
   \label{eq_cme_matrix}
@@ -28,9 +28,8 @@ and a vector with three entries for the regulated promoter
 
 Without lost of generality here we will focus on the three-state regulated
 promoter. The computation of the moments for the two-state promoter follows the
-exact same procedure, only that the definition of the matrices change.
-For \eref{eq_cme_matrix} we have defined the following matrices:
-
+exact same procedure, having only the definition of the matrices change. For
+\eref{eq_cme_matrix} we have defined the following matrices:
 The promoter state transition matrix
 $\Km$
 \begin{align}
@@ -86,5 +85,288 @@ To compute any moment of our chemical master equation let us define a vector
   \ee{\bb{m^x p^y}} \equiv (\ee{m^x p^y}_E, \ee{m^x p^y}_P, \ee{m^x p^y}_R)^T,
 \end{equation}
 where $\ee{m^x p^y}_S$ is the expected value of $m^x p^y$ in state $S \in
-\{E, P, R\}$. In other words, just as we defined the vector $\PP(m, x)$, here
+\{E, P, R\}$. In other words, just as we defined the vector $\PP(m, p)$, here
 we define a vector to collect the expected value of each of the promoter states.
+
+By definition any of these moments $\ee{m^x p^y}_S$ is computed as
+\begin{equation}
+  \ee{m^x p^y}_S \equiv \sum_{m=0}^\infty \sum_{p=0}^\infty m^x p^y P_S(m, p).
+  \label{eq_mom_def}
+\end{equation}
+To simplify the notation let $\sum_x \equiv \sum_{x=1}^\infty$. Since we are
+working with three PDE, one for each state, let us define the following
+operation:
+\begin{equation}
+  \ee{\bb{m^x p^y}} =
+  \smp m^x p^y \PP(m, p) \equiv
+  \begin{bmatrix}
+    \smp m^x p^y P_E(m, p)\\
+    \smp m^x p^y P_P(m, p)\\
+    \smp m^x p^y P_R(m, p)\\
+  \end{bmatrix}.
+\end{equation}
+
+\subsubsection{Computing the general moment PDE}
+
+With this in hand we can then apply this sum over $m$ and $p$ to the PDE in
+\eref{eq_cme_matrix}. For the left-hand side we have
+\begin{equation}
+  \smp m^x p^y \dt{\PP(m, p)} = \dt{}\left[ \smp m^x p^y \PP(m, p) \right],
+  \label{eq_sum_mom}
+\end{equation}
+where we made use of the linearity property of the derivative to switch the
+order between the sum and the derivative. Notice that the right-hand side of
+\eref{eq_sum_mom} contains the definition of a moment from \eref{eq_mom_def}.
+That means that we can rewrite it as
+\begin{equation}
+  \dt{}\left[ \smp m^x p^y \PP(m, p) \right] = \dt{\bb{\ee{m^x p^y}}}.
+\end{equation}
+
+Distributing the sum on the right-hand
+side of \eref{eq_cme_matrix} gives
+\begin{equation}
+  \begin{aligned}
+    \dt{\bb{\ee{m^x p^y}}} &=
+    \Km \smp m^x p^y \PP(m, p)\\
+    &- \Rm \smp m^x p^y \PP(m, p) + \Rm \smp m^x p^y \PP(m-1, p)\\
+    &- \Gm \smp (m) m^x p^y \PP(m, p) + \Gm \smp (m + 1) m^x p^y \PP(m + 1, p)\\
+    &- \Rp \smp (m) m^x p^y \PP(m, p) + \Rp \smp (m) m^x p^y \PP(m, p - 1)\\
+    &- \Gp \smp (p) m^x p^y \PP(m, p) + \Gp \smp (p + 1) m^x p^y \PP(m, p + 1).
+  \end{aligned}
+  \label{eq_master_sum}
+\end{equation}
+
+Let's look at each term on the right-hand side individually. For the terms in
+\eref{eq_master_sum} involving $\PP(m, p)$ we can again use \eref{eq_mom_def}
+to rewrite them in a more compact form. This means that we can rewrite the
+state transition term as
+\begin{equation}
+  \Km \smp m^x p^y \PP(m, p) = \Km \bb{\ee{m^x p^y}}.
+\end{equation}
+The mRNA production term involving $\PP(m, p)$ can be rewritten as
+\begin{equation}
+  \Rm \smp m^x p^y \PP(m, p) = \Rm \bb{\ee{m^x p^y}}.
+\end{equation}
+In the same way the mRNA degradation term gives
+\begin{equation}
+  \Gm \smp (m) m^x p^y \PP(m, p) = \Gm \bb{\ee{m^{(x + 1)} p^y}}.
+\end{equation}
+As for the protein production and degradation terms involving $\PP(m, p)$ we
+have
+\begin{equation}
+  \Rp \smp (m) m^x p^y \PP(m, p) = \Rp \bb{\ee{m^{(x + 1)} p^y}},
+\end{equation}
+and
+\begin{equation}
+  \Gp \smp (p) m^x p^y \PP(m, p) = \Gp \bb{\ee{m^x p^{(y + 1)}}},
+\end{equation}
+respectively.
+
+For the sums terms in \eref{eq_master_sum} involving $\PP(m \pm 1, p)$ or
+$\PP(m, p \pm 1)$ we can reindex the sum to work around this mismatch. To be
+more specific let's again look at each term case by case. For the mRNA
+production term involving $\PP(m-1, p)$ we define $m' \equiv m - 1$. Using this
+we write
+\begin{equation}
+  \Rm \smp m^x p^y \PP(m-1, p) =
+  \Rm \sum_{m' = -1}^\infty \sum_p (m' + 1)^x p^y \PP(m', p).
+\end{equation}
+Since having negative numbers of mRNA of protein doesn't make physical sense
+we have that $\PP(-1, p) = 0$. Therefore we can rewrite the sum starting from 0
+rather than from -1, obtaining
+\begin{equation}
+  \Rm \sum_{m' = -1}^\infty \sum_p (m' + 1)^x p^y \PP(m', p) =
+  \Rm \sum_{m'=0}^\infty \sum_p (m' + 1)^x p^y \PP(m', p).
+  \label{eq_reindex}
+\end{equation}
+\mrm{In my experience a lot of people have a problem with simply substituting
+back $m'$ with $m$ for the final step. PBoC doesn't give a detailed
+justification for this either, so I've tried explaining this in a clear way in
+what follows, but it is far from perfect.}.
+Recall that our distribution $\PP(m, p)$ takes as numerical inputs $m$ and $p$
+and returns a probability associated with such a molecule count.  Nevertheless
+$m$ and $p$ themselves are dimensionless quantities that serve as indexes of how
+many molecules are in the cell. So our distribution doesn't care if the variable
+is called $m$ or $m'$; for a specific number, let's say $m = 5$, or $m' = 5$,
+$\PP(5, p)$ will return the same result. What that means is that the variable
+name is somehow arbitrary, and the right-hand side of \eref{eq_reindex} can be
+written as
+\begin{equation}
+  \Rm \sum_{m'=0}^\infty \sum_p (m' + 1)^x p^y \PP(m', p) =
+  \Rm \bb{\ee{(m+1)^x p^y}},
+\end{equation}
+since the left-hand side corresponds to the definition of a moment.
+
+For the mRNA degradation term involving $\PP(m + 1, p)$ we follow a similar
+procedure in which we define $m' = m + 1$ to obtain
+\begin{equation}
+  \Gm \smp (m + 1) m^x p^y \PP(m + 1, p) =
+  \Gm \sum_{m' = 1}^\infty m' (m' - 1)^x p^y \PP(m', p).
+\end{equation}
+In this case since the term on the right-hand side of the equation is multiplied
+by $m'$, starting the sum over $m'$ from 0 rather than from 1 will not affect
+the result since this factor will not contribute to the total sum. Nevertheless
+this is useful since our definition of a moment from \eref{eq_mom_def} requires
+the sum to start at zero. This means that we can rewrite this term as
+\begin{equation}
+  \Gm \sum_{m' = 1}^\infty m' \sum_p (m' - 1)^x p^y \PP(m', p) =
+  \Gm \sum_{m' = 0}^\infty m' \sum_p (m' - 1)^x p^y \PP(m', p).
+\end{equation}
+Here again we can change the arbitrary label $m'$ back to $m$ obtaining
+\begin{equation}
+  \Gm \sum_{m' = 0}^\infty m' \sum_p (m' - 1)^x p^y \PP(m', p) =
+  \Gm \bb{\ee{m (m - 1)^x p^y}}.
+\end{equation}
+
+The protein production term involving $\PP(m, p - 1)$ can be reindexed defining
+$p' \equiv p - 1$. This gives
+\begin{equation}
+  \Rp \smp (m) m^x p^y \PP(m, p - 1) =
+  \Rp \sum_m \sum_{p'=-1}^\infty m^{(x + 1)} (p + 1)^y \PP(m, p').
+\end{equation}
+We use again the fact that negative molecule copy numbers are assigned with
+probability zero to begin the sum from 0 rather than -1 and the arbitrary nature
+of the label $p'$ to write
+\begin{equation}
+  \Rp \sum_m \sum_{p'=0}^\infty m^{(x + 1)} (p + 1)^y \PP(m, p') =
+  \Rp \bb{\ee{m^{(x + 1)} (p + 1)^y}}.
+\end{equation}
+
+Finally we take care of the protein degradation term involving $\PP(m, p + 1)$.
+As before we define $p' = p + 1$ and substitute this to obtain
+\begin{equation}
+  \Gp \smp (p + 1) m^x p^y \PP(m, p + 1) =
+  \Gp \sum_m \sum_{p'=1}^\infty (p') m^x (p' - 1)^y \PP(m, p').
+\end{equation}
+Just as with the mRNA degradation term having a term $p'$  inside the sum allow
+us to start the sum over $p'$ from 0 rather than 1. We can therefore write
+\begin{equation}
+  \Gp \sum_m \sum_{p'=0}^\infty (p') m^x (p' - 1)^y \PP(m, p') =
+  \Gp \bb{\ee{m^x p (p - 1)^y}}.
+\end{equation}
+
+Putting all these terms together we can write the general moment PDE. This is
+of the form
+\begin{equation}
+  \begin{aligned}
+    \dt{\bb{\ee{m^x p^y}}} &=
+    \Km \bb{\ee{m^x p^y}}\\
+    &- \Rm \bb{\ee{m^x p^y}} + \Rm \bb{\ee{(m+1)^x p^y}}\\
+    &- \Gm \bb{\ee{m^{(x + 1)} p^y}} + \Gm \bb{\ee{m (m - 1)^x p^y}}\\
+    &- \Rp \bb{\ee{m^{(x + 1)} p^y}} + \Rp \bb{\ee{m^{(x + 1)} (p + 1)^y}}\\
+    &- \Gp \bb{\ee{m^x p^{(y + 1)}}} + \Gp \bb{\ee{m^x p (p - 1)^y}}.
+  \end{aligned}
+  \label{eq_mom_pde}
+\end{equation}
+
+\subsection{Moment closure of the simple-repression distribution}
+
+A very interesting and useful feature of \eref{eq_mom_pde} is that for a given
+value of $x$ and $y$ the moments $\bb{ee{m^x p^y}}$ is only a function of lower
+moments. Specifically $\bb{\ee{m^x p^y}}$ is a function of moments
+$\bb{\ee{m^{x'} p^{y'}}}$ that satisfy two conditions:
+\begin{equation}
+  \begin{aligned}
+    &1) y' \leq y,\\
+  &2) x' + y' \leq x + y.
+  \end{aligned}
+  \label{eq_mom_conditions}
+\end{equation}
+
+To prove this we factorize \eref{eq_mom_pde} as
+\begin{equation}
+  \begin{aligned}
+    \dt{\bb{\ee{m^x p^y}}} &=
+    \Km \bb{\ee{m^x p^y}}\\
+    &+ \Rm \bb{\ee{p^y \left[ (m + 1)^x -m^x \right]}}\\
+    &+ \Gm \bb{\ee{m p^y \left[ (m - 1)^x - m^x \right]}}\\
+    &+ \Rp \bb{\ee{m^{(x + 1)} \left[ (p + 1)^y - p^y \right]}}\\
+    &+ y,
+    \label{eq_mom_pde_factorized}
+  \end{aligned}
+\end{equation}
+where the factorization is valid given the linearity of expected values. The
+objective now is to find for each term which is the highest moment once the
+binomial is expanded. Take for example a simple case in which we want to find
+the mRNA second moment. We then set $x = 2$ and $y = 0$.
+\eref{eq_mom_pde_factorized} then becomes
+\begin{equation}
+  \begin{aligned}
+    \dt{\bb{\ee{m^2 p^0}}} &=
+    \Km \bb{\ee{m^2 p^0}}\\
+    &+ \Rm \bb{\ee{p^0 \left[ (m + 1)^2 - m^2 \right]}}\\
+    &+ \Gm \bb{\ee{m p^0 \left[ (m - 1)^2 - m^2 \right]}}\\
+    &+ \Rp \bb{\ee{m^{(2 + 1)} \left[ (p + 1)^0 - p^0 \right]}}\\
+    &+ \Gp \bb{\ee{m^2 p \left[ (p - 1)^0 - p^0 \right]}}.
+  \end{aligned}
+\end{equation}
+Simplifying this equation gives
+\begin{equation}
+    \dt{\bb{\ee{m^2}}} =
+    \Km \bb{\ee{m^2}}
+    + \Rm \bb{\ee{\left[ 2m + 1 \right]}}
+    + \Gm \bb{\ee{\left[- 2m^2 + m \right]}}.
+    \label{eq_second_mom_mRNA}
+\end{equation}
+
+\eref{eq_second_mom_mRNA} satisfies both of our conditions. Since we set $y$ to
+be zero, non of the terms depend on any moment that involves the protein number,
+therefore $y' \leq y$, and the highest moment in \eref{eq_second_mom_mRNA} also
+satisfies $x' + y' \leq x + y$ since the second moment of mRNA doesn't depend
+on any moment higher than $\bb{\ee{m^2}}$. To demonstrate this is true for any
+$x$ and $y$ we now simplify \eref{eq_mom_pde_factorized} making use of the
+binomial expansion
+\begin{equation}
+  (z \pm 1)^n = \sum_{k=0}^n {n \choose k} (\pm 1)^{k} z^{n-k}.
+\end{equation}
+Just as before let's look at each term individually. For the mRNA production
+term we have
+\begin{equation}
+  \Rm \bb{\ee{p^y \left[ (m + 1)^x -m^x \right]}} =
+  \Rm \bb{\ee{p^y \left[ \sum_{k=0}^x {x \choose k} m^{x-k} - m^x \right]}}.
+\end{equation}
+Since on the right-hand side when $k=0$ the term is cancelled we can simplify
+this to
+\begin{equation}
+  \Rm \bb{\ee{p^y \left[ (m + 1)^x -m^x \right]}} =
+  \Rm \bb{\ee{p^y \left[ \sum_{k=1}^x {x \choose k} m^{x-k} \right]}}.
+\end{equation}
+Once the sum is expanded we can see that the highest moment in this sum is given
+by $\bb{\ee{m^{(x-1)} p^y}}$ which satisfies both of our conditions. For the
+mRNA degradation term we similarly have
+\begin{equation}
+  \Gm \bb{\ee{m p^y \left[ (m - 1)^x - m^x \right]}} =
+  \Gm \bb{\ee{m p^y \left[ \sum_{k=0}^x {x \choose k}(-1)^k m^{x-k} -
+                          m^x \right]}}.
+\end{equation}
+Simplifying terms we obtain
+\begin{equation}
+  \Gm \bb{\ee{m p^y \left[ \sum_{k=0}^x {x \choose k}(-1)^k m^{x-k} -
+                          m^x \right]}} =
+  \Gm \bb{\ee{p^y \left[ \sum_{k=1}^x {x \choose k}(-1)^k m^{x+1-k} \right]}}.
+\end{equation}
+For this case we have that the largest moment is therefore $\bb{\ee{p^y m^x}}$
+which again satisfies our conditions. The protein production term gives
+\begin{equation}
+  \Rp \bb{\ee{m^{(x + 1)} \left[ (p + 1)^y - p^y \right]}} =
+  \Rp \bb{\ee{m^{(x + 1)} \left[ \sum_{k=0}^y {y \choose k} (-1)^k p^{y-k}
+                                - p^y \right]}}.
+\end{equation}
+Upon simplification we obtain
+\begin{equation}
+  \Rp \bb{\ee{m^{(x + 1)} \left[ \sum_{k=0}^y {y \choose k} (-1)^k p^{y-k}
+                                - p^y \right]}} =
+  \Rp \bb{\ee{m^{(x + 1)} \left[ \sum_{k=1}^y {y \choose k}(-1)^k p^{y-k}
+  \right]}}.
+\end{equation}
+Here the largest moment is given by $\bb{\ee{m^{x+1} p^{y-1}}}$, that again
+satisfies both of our conditions. For the last term having to do with protein
+degradation we have
+\begin{equation}
+  Rp \bb{\ee{m^{(x + 1)} \left[ (p + 1)^y - p^y \right]}} =
+  Rp \bb{\ee{m^{(x + 1)} \left[ \sum_{k=1}^y {y \choose k} (-1^k) p^{y - k}
+  \right]}}.
+\end{equation}
+The largest moment involved in this term is therefore $\bb{\ee{m^x p^{y-1}}}$.
+Having showed that the four terms involved in our general moment equation depend
+on lower moments that satisfy \eref{eq_mom_conditions}
