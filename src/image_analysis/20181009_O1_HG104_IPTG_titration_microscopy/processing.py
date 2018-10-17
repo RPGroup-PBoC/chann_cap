@@ -30,19 +30,7 @@ im_utils.set_plotting_style()
 # METADATA
 # =============================================================================
 
-DATE = 20181009
-USERNAME = 'mrazomej'
-OPERATOR = 'O1'
-BINDING_ENERGY = -15.3
-REPRESSORS = (0, 0, 11)
-IPDIST = 0.160  # in units of µm per pixel
-STRAINS = ['auto', 'delta', 'HG104']
-IPTG_RANGE = (0, 0.1, 5, 10, 25, 50, 75, 100, 250, 500, 1000, 5000)
-# Extra feature because my mistake when naming files
-IPTG_NAMES = ('0', '0.1', '5', '10', '25', '50', '75', '100', '250', '500',
-              '1000', '5000')
-IPTG_DICT = dict(zip(IPTG_NAMES, IPTG_RANGE))
-
+from metadata import *
 
 # =============================================================================
 

@@ -5,8 +5,8 @@ status: accepted
 # Description
 IPTG titration of the O3 - RBS1L strain.
 
-| | | |
-|-|-|-|
+| | |
+|-|-|
 | __Date__ | 2016-12-05 |
 | __Equipment__ | Artemis Nikon Microscope |
 | __User__ | mrazomej |

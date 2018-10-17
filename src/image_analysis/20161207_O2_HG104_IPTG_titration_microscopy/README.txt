@@ -5,8 +5,8 @@
 # # Description
 # IPTG titration of the O2 - HG104 strain.
 # 
-# | | | |
-# |-|-|-|
+# | | |
+# |-|-|
 # | __Date__ | 2016-12-04 |
 # | __Equipment__ | Artemis Nikon Microscope |
 # | __User__ | mrazomej |

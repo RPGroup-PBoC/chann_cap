@@ -5,8 +5,8 @@ status: accepted
 # Description
 IPTG titration of the O2 - RBS1027 strain.
 
-| | | |
-|-|-|-|
+| | |
+|-|-|
 | __Date__ | 2016-12-03 |
 | __Equipment__ | Artemis Nikon Microscope |
 | __User__ | mrazomej |

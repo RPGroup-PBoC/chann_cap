@@ -30,29 +30,19 @@ im_utils.set_plotting_style()
 # METADATA
 # =============================================================================
 
-DATE = 20181004
-USERNAME = 'mrazomej'
-OPERATOR = 'O2'
-STRAIN = 'RBS1027'
-STRAINS = [STRAIN] + ['auto', 'delta']
-REPRESSOR = 260
-BINDING_ENERGY = -13.9
-
+from metadata import *
 
 # =============================================================================
 # Read data
 df_im = pd.read_csv('./outdir/' + str(DATE) + '_' + OPERATOR + '_' +
                     STRAIN + '_raw_segmentation.csv')
 
-# Include absolute intensity
-df_im['intensity'] = df_im['area'] * df_im['mean_intensity']
-
 # =============================================================================
 # Group by strain
 df_group = df_im.groupby('rbs')
 
 # Plot area and eccentricity ECDF
-fig, ax = plt.subplots(1, 2, figsize=(8, 4))
+fig, ax = plt.subplots(1, 2, figsize=(5, 3))
 for group, data in df_group:
     area_ecdf = im_utils.ecdf(df_im.area.sample(frac=0.3))
     ecc_ecdf = im_utils.ecdf(df_im.eccentricity.sample(frac=0.3))
@@ -79,6 +69,9 @@ plt.savefig('./outdir/ecdf.png', bbox_inches='tight')
 # Apply the area and eccentricity bounds.
 df_filt = df_im[(df_im.area > 0.5) & (df_im.area < 6.0) &
                 (df_im.eccentricity > 0.8)]
+# Add column of absolute intensity
+df_filt.loc[:, 'intensity'] = df_filt.area * df_filt.mean_intensity
+
 # Save file in the same directory as the summary plots
 df_filt.to_csv('./outdir/' +
                str(DATE) + '_' + OPERATOR + '_' +
@@ -132,16 +125,16 @@ for c in fold_change_inducer:
 # Compute the theoretical fold change
 # Log scale
 iptg = np.logspace(-1, 4, 100)
-fc = im_utils.fold_change(iptg=iptg, ka=139.9, ki=0.53, epsilon=4.5,
+fc = im_utils.fold_change(iptg=iptg, ka=141.52, ki=0.56061, epsilon=4.5,
                           R=REPRESSOR,  epsilon_r=BINDING_ENERGY)
 # Linear scale
 iptg_lin = [0, 1E-1]
-fc_lin = im_utils.fold_change(iptg=iptg_lin, ka=139.9, ki=0.53,
+fc_lin = im_utils.fold_change(iptg=iptg_lin, ka=141.52, ki=0.56061,
                               epsilon=4.5,
                               R=REPRESSOR,  epsilon_r=BINDING_ENERGY)
 
 # Initialize figure
-plt.figure()
+plt.figure(figsize=(4, 3))
 # Plot theoretical fold-change
 # Log scale
 plt.plot(iptg, fc, label='theoretical fold-change', color='black')
@@ -159,8 +152,8 @@ for group, data in df_group:
              label=r'$\Delta$ inducer {:.0f} $\mu$M'.format(group))
 
 plt.xscale('symlog', linthreshx=1E-1, linscalex=0.5)
-plt.legend(loc=0)
-plt.ylim([0, 1.2])
+plt.legend(loc='upper left')
+plt.ylim(bottom=0)
 plt.xlabel(r'IPTG ($\mu$M)')
 plt.ylabel(r'fold-change')
 plt.savefig('./outdir/fold_change.png', bbox_inches='tight')
@@ -179,7 +172,7 @@ for strain in STRAINS:
     colors = sns.color_palette("Blues_r", n_colors=len(concentrations))
 
     # Initialize figure
-    fig, ax = plt.subplots(2, 1, figsize=(6, 5), sharex=True)
+    fig, ax = plt.subplots(2, 1, figsize=(5, 5), sharex=True)
 
     # Set the nice scientific notation for the y axis of the histograms
     ax[0].yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(
@@ -205,7 +198,7 @@ for strain in STRAINS:
         mean_fl.append(mean_int.mean())
         # Histogram plot
         n, bins, patches = ax[0].hist(mean_int, 30,
-                                      normed=1, histtype='stepfilled',
+                                      density=1, histtype='stepfilled',
                                       alpha=0.4,
                                       label=str(c) + r' $\mu$M',
                                       facecolor=colors[i],
@@ -215,7 +208,7 @@ for strain in STRAINS:
 
         # add edges to the histograms
         n, bins, patches = ax[0].hist(mean_int, 30,
-                                      normed=1, histtype='stepfilled',
+                                      density=1, histtype='stepfilled',
                                       label='', edgecolor='k',
                                       linewidth=1.5, facecolor='none')
         # ECDF Plot
@@ -263,5 +256,8 @@ for strain in STRAINS:
     plt.figtext(0.0, .9, 'A', fontsize=20)
     plt.figtext(0.0, .46, 'B', fontsize=20)
 
+    # Change strain name to have same name for all strains
+    if strain == STRAIN:
+        strain = 'exp'
     plt.subplots_adjust(hspace=0.06)
     plt.savefig('./outdir/' + strain + '_fluor_ecdf.png', bbox_inches='tight')

@@ -310,7 +310,8 @@ def props_to_df(mask, physical_distance=1, intensity_image=None):
 
     # Iterate through and extract the props.
     props = skimage.measure.regionprops(mask,
-                                        intensity_image=intensity_image)
+                                        intensity_image=intensity_image,
+                                        coordinates='xy')
     for i, p in enumerate(props):
         extracted = []
         for val in measurements:
@@ -334,12 +335,13 @@ def set_plotting_style():
     2nd edition. To format all plots within a script, simply execute
     `mwc_induction_utils.set_plotting_style() in the preamble.
     """
-    rc = {'lines.linewidth': 2,
-          'axes.labelsize': 16,
-          'axes.titlesize': 18,
+    
+    rc = {'lines.linewidth': 1.75,
+          'axes.labelsize': 8,
+          'axes.titlesize': 9,
           'axes.facecolor': '#E3DCD0',
-          'xtick.labelsize': 13,
-          'ytick.labelsize': 13,
+          'xtick.labelsize': 7,
+          'ytick.labelsize': 7,
           'font.family': 'Lucida Sans Unicode',
           'grid.linestyle': ':',
           'grid.linewidth': 1.5,
@@ -347,8 +349,11 @@ def set_plotting_style():
           'mathtext.fontset': 'stixsans',
           'mathtext.sf': 'sans',
           'legend.frameon': True,
-          'legend.fontsize': 11}
+          'legend.fontsize': 8,
+          'figure.figsize': (4, 3)}
     plt.rc('text.latex', preamble=r'\usepackage{sfmath}')
+    plt.rc('xtick.major', pad=-1)
+    plt.rc('ytick.major', pad=-1)
     plt.rc('mathtext', fontset='stixsans', sf='sans')
     sns.set_style('darkgrid', rc=rc)
     sns.set_palette("colorblind", color_codes=True)
@@ -411,7 +416,7 @@ def p_act(C, ka, ki, epsilon=4.5, logC=False):
 #============================================================================== 
 
 def fold_change(iptg, ka, ki, epsilon, R, epsilon_r,
-                    quaternary_state=2, nonspec_sites=4.6E6):
+                    quaternary_state=1, nonspec_sites=4.6E6):
     '''
     Returns the gene expression fold change according to the
     thermodynamic model with the extension that takes into account the
