@@ -47,20 +47,20 @@ The pads looked great. Overall the experiment ran without any problem.
 
 ** Example segmentation **
 
-![](outdir/example_segmentation.png =100x100)
+![](outdir/example_segmentation.png)
 
 ** ECDF (auto) **
 
-![](outdir/auto_fluor_ecdf.png =100x100)
+![](outdir/auto_fluor_ecdf.png)
 
 ** ECDF (∆lacI) **
 
-![](outdir/delta_fluor_ecdf.png =100x100)
+![](outdir/delta_fluor_ecdf.png)
 
 ** ECDF (RBS1027) **
 
-![](outdir/RBS1027_fluor_ecdf.png =100x100)
+![](outdir/RBS1027_fluor_ecdf.png)
 
 ** fold-change **
 
-![](outdir/fold_change.png =100x100)
+![](outdir/fold_change.png)

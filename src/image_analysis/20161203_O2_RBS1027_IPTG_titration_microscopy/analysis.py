@@ -49,7 +49,7 @@ df_im = pd.read_csv('./outdir/' + str(DATE) + '_' + OPERATOR + '_' +
 df_group = df_im.groupby('rbs')
 
 # Plot area and eccentricity ECDF
-fig, ax = plt.subplots(1, 2, figsize=(8, 4))
+fig, ax = plt.subplots(1, 2, figsize=(7, 3))
 for group, data in df_group:
     area_ecdf = im_utils.ecdf(df_im.area.sample(frac=0.3))
     ecc_ecdf = im_utils.ecdf(df_im.eccentricity.sample(frac=0.3))
@@ -176,7 +176,7 @@ for strain in STRAINS:
     colors = sns.color_palette("Blues_r", n_colors=len(concentrations))
 
     # Initialize figure
-    fig, ax = plt.subplots(2, 1, figsize=(6, 5), sharex=True)
+    fig, ax = plt.subplots(2, 1, figsize=(5, 5), sharex=True)
 
     # Set the nice scientific notation for the y axis of the histograms
     ax[0].yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(
@@ -260,5 +260,8 @@ for strain in STRAINS:
     plt.figtext(0.0, .9, 'A', fontsize=20)
     plt.figtext(0.0, .46, 'B', fontsize=20)
 
+    # Change strain name to have same name for all strains
+    if strain == STRAIN:
+        strain = 'exp'
     plt.subplots_adjust(hspace=0.06)
     plt.savefig('./outdir/' + strain + '_fluor_ecdf.png', bbox_inches='tight')
