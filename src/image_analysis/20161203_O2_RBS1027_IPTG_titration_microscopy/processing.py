@@ -30,14 +30,7 @@ im_utils.set_plotting_style()
 # METADATA
 #============================================================================== 
 
-DATE = 20161203
-USERNAME = 'mrazomej'
-OPERATOR = 'O2'
-BINDING_ENERGY = -13.9
-REPRESSORS = (0, 0, 260)
-IPDIST = 0.160  # in units of µm per pixel
-STRAINS = ['auto', 'delta', 'RBS1027']
-IPTG_RANGE = (0, 0.1, 5, 10, 25, 50, 75, 100, 250, 500, 1000, 5000)
+from metadata import *
 
 #============================================================================== 
 

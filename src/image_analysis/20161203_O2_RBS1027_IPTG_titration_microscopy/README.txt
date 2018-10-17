@@ -42,20 +42,26 @@
 # 
 # ## Notes & Observations
 # The pads looked great. Overall the experiment ran without any problem.
+# The bright-field images were all saturated so they appear as all black.
 # 
 # ## Analysis files
 # 
-# ** Example segmentation **
+# **Example segmentation**
+# 
 # ![](outdir/example_segmentation.png)
 # 
-# ** ECDF (auto) **
+# **ECDF (auto)**
+# 
 # ![](outdir/auto_fluor_ecdf.png)
 # 
-# ** ECDF (∆lacI) **
+# **ECDF (∆lacI)**
+# 
 # ![](outdir/delta_fluor_ecdf.png)
 # 
-# ** ECDF (RBS1027) **
-# ![](outdir/RBS1027_fluor_ecdf.png)
+# **ECDF (RBS1027)**
 # 
-# ** fold-change **
+# ![](outdir/exp_fluor_ecdf.png)
+# 
+# **fold-change**
+# 
 # ![](outdir/fold_change.png)

@@ -30,14 +30,7 @@ im_utils.set_plotting_style()
 # METADATA
 # =============================================================================
 
-DATE = 20161203
-USERNAME = 'mrazomej'
-OPERATOR = 'O2'
-STRAIN = 'RBS1027'
-STRAINS = [STRAIN] + ['auto', 'delta']
-REPRESSOR = 260
-BINDING_ENERGY = -13.9
-
+from metadata import *
 
 # =============================================================================
 # Read data
@@ -156,7 +149,7 @@ for group, data in df_group:
              label=r'$\Delta$ inducer {:.0f} $\mu$M'.format(group))
 
 plt.xscale('symlog', linthreshx=1E-1, linscalex=0.5)
-plt.legend(loc='lower right')
+plt.legend(loc='upper left')
 plt.ylim([0, 1.2])
 plt.xlabel(r'IPTG ($\mu$M)')
 plt.ylabel(r'fold-change')
@@ -202,7 +195,7 @@ for strain in STRAINS:
         mean_fl.append(mean_int.mean())
         # Histogram plot
         n, bins, patches = ax[0].hist(mean_int, 30,
-                                      normed=1, histtype='stepfilled',
+                                      density=1, histtype='stepfilled',
                                       alpha=0.4,
                                       label=str(c) + r' $\mu$M',
                                       facecolor=colors[i],
@@ -212,7 +205,7 @@ for strain in STRAINS:
 
         # add edges to the histograms
         n, bins, patches = ax[0].hist(mean_int, 30,
-                                      normed=1, histtype='stepfilled',
+                                      density=1, histtype='stepfilled',
                                       label='', edgecolor='k',
                                       linewidth=1.5, facecolor='none')
         # ECDF Plot
