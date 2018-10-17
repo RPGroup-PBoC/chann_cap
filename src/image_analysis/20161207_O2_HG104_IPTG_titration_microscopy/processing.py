@@ -30,18 +30,7 @@ im_utils.set_plotting_style()
 # METADATA
 #============================================================================== 
 
-DATE = 20161207
-USERNAME = 'mrazomej'
-OPERATOR = 'O2'
-BINDING_ENERGY = -13.9
-REPRESSORS = (0, 0, 11)
-IPDIST = 0.160  # in units of µm per pixel
-STRAINS = ['auto', 'delta', 'HG104']
-IPTG_RANGE = (0, 0.1, 5, 10, 25, 50, 75, 100, 250, 500, 1000, 5000)
-# Extra feature because my mistake when naming files
-IPTG_NAMES = ('0', '0.1', '5', '10', '25', '50', '100', '100real', '250', '500', 
-              '1000', '5000')
-IPTG_DICT = dict(zip(IPTG_NAMES, IPTG_RANGE))
+from metadata import *
 
 #============================================================================== 
 
@@ -71,11 +60,11 @@ with sns.axes_style('white'):
     ax = ax.ravel()
     ax[0].imshow(yfp_avg, cmap=plt.cm.viridis)
     ax[0].set_title('yfp profile')
+    ax[1].axis('off')
     ax[2].imshow(yfp_noise, cmap=plt.cm.Greens_r)
     ax[2].set_title('yfp noise')
     ax[3].imshow(rfp_noise, cmap=plt.cm.Reds_r)
     ax[3].set_title('rfp noise')
-    ax[1].axis('off')
 plt.tight_layout()
 plt.savefig('./outdir/background_correction.png')
 
@@ -87,6 +76,7 @@ dfs = []
 # Select random IPTG and random strain to print the example segmentation
 ex_iptg = np.random.choice(IPTG_RANGE)
 ex_strain = STRAINS[-1]
+
 for i, st in enumerate(STRAINS):
     print(st)
     for j, name in enumerate(IPTG_NAMES):
@@ -96,14 +86,14 @@ for i, st in enumerate(STRAINS):
             images = glob.glob(data_dir + '*' + st + '_*/*.tif')
             
         else:
-            images = glob.glob(data_dir + '*' + st + '*_' + name +
+            images = glob.glob(data_dir + '*' + st + '*_' + str(iptg) +
                            'uMIPTG*/*.ome.tif')
             
         if len(images) is not 0:
-
             ims = skimage.io.ImageCollection(images)
             # Select random image to print example segmentation
             ex_no = np.random.choice(np.arange(0, len(images) - 1))    
+    
             for z, x in enumerate(ims):
                 _, m, y = im_utils.ome_split(x)
                 y_flat = im_utils.generate_flatfield(y, yfp_noise, yfp_avg)
@@ -115,7 +105,7 @@ for i, st in enumerate(STRAINS):
                 if (st==ex_strain) & (iptg == ex_iptg) & (z == ex_no):
                     merge = im_utils.example_segmentation(m_seg, _, 10/IPDIST)
                     skimage.io.imsave('./outdir/example_segmentation.png', merge)
-    
+
                 # Extract the measurements.
                 im_df = im_utils.props_to_df(m_seg, physical_distance=IPDIST,
                                         intensity_image=y_flat)

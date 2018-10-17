@@ -69,6 +69,9 @@ plt.savefig('./outdir/ecdf.png', bbox_inches='tight')
 # Apply the area and eccentricity bounds.
 df_filt = df_im[(df_im.area > 0.5) & (df_im.area < 6.0) &
                 (df_im.eccentricity > 0.8)]
+# Add column of absolute intensity
+df_filt.loc[:, 'intensity'] = df_filt.area * df_filt.mean_intensity
+
 # Save file in the same directory as the summary plots
 df_filt.to_csv('./outdir/' +
                str(DATE) + '_' + OPERATOR + '_' +
@@ -99,9 +102,9 @@ fold_change_inducer = np.intersect1d(auto_iptg, delta_iptg)
 for c in fold_change_inducer:
     # Extract the mean auto and mean delta
     mean_auto = df_filt[(df_filt.rbs == 'auto') &
-                        (df_filt.IPTG_uM == c)].mean_intensity.mean()
+                        (df_filt.IPTG_uM == c)].intensity.mean()
     mean_delta = df_filt[(df_filt.rbs == 'delta') &
-                         (df_filt.IPTG_uM == c)].mean_intensity.mean()
+                         (df_filt.IPTG_uM == c)].intensity.mean()
 
     # Group analysis strain by RBS
     df_group = df_filt[df_filt.rbs == STRAIN].groupby('IPTG_uM')
@@ -109,7 +112,7 @@ for c in fold_change_inducer:
     # Loop through each concentration in the experimental strain
     for group, data in df_group:
         # Compute the fold change
-        fold_change = (data.mean_intensity.mean() - mean_auto)\
+        fold_change = (data.intensity.mean() - mean_auto)\
                               / (mean_delta - mean_auto)
 
         # Append it to the data frame
@@ -190,7 +193,7 @@ for strain in STRAINS:
 
     for i, (c, data) in enumerate(df_group):
         # Extract mean intensities
-        mean_int = data.mean_intensity
+        mean_int = data.intensity
         # Save mean of mean intensities
         mean_fl.append(mean_int.mean())
         # Histogram plot
