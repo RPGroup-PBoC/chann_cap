@@ -49,7 +49,7 @@ df_im = pd.read_csv('./outdir/' + str(DATE) + '_' + OPERATOR + '_' +
 df_group = df_im.groupby('rbs')
 
 # Plot area and eccentricity ECDF
-fig, ax = plt.subplots(1, 2, figsize=(7, 3))
+fig, ax = plt.subplots(1, 2, figsize=(5, 3))
 for group, data in df_group:
     area_ecdf = im_utils.ecdf(df_im.area.sample(frac=0.3))
     ecc_ecdf = im_utils.ecdf(df_im.eccentricity.sample(frac=0.3))
@@ -138,7 +138,7 @@ fc_lin = im_utils.fold_change(iptg=iptg_lin, ka=141.52, ki=0.56061,
                               R=REPRESSOR,  epsilon_r=BINDING_ENERGY)
 
 # Initialize figure
-plt.figure()
+plt.figure(figsize=(4, 3))
 # Plot theoretical fold-change
 # Log scale
 plt.plot(iptg, fc, label='theoretical fold-change', color='black')
