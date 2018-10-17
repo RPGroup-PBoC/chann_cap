@@ -1,13 +1,14 @@
 # ---
-# status: accepted
+# status: rejected
+# reason: All of the fold-change measurements are systematically above the theoretical prediction.
 # ---
 # 
 # # Description
-# IPTG titration of the O3 - RBS1L strain.
+# IPTG titration of the O2 - HG104 strain.
 # 
 # | | |
 # |-|-|
-# | __Date__ | 2016-12-05 |
+# | __Date__ | 2016-12-04 |
 # | __Equipment__ | Artemis Nikon Microscope |
 # | __User__ | mrazomej |
 # 
@@ -15,8 +16,8 @@
 # | Genotype | plasmid | Host Strain | Shorthand |
 # | :------- | :------ | :---------- | :-------- |
 # | `galK<>25` | `pZS3-mCherry` | HG105 | `auto` |
-# | `galK<>25-O3+11-YFP` | `pZS3-mCherry` | HG105 | `delta` |
-# | `galK<>25-O3+11-YFP; ybcN<>4*RBS1L-lacI` | `pZS3-mCherry` | HG105 | `RBS1L` |
+# | `galK<>25-O2+11-YFP` | `pZS3-mCherry` | HG105 | `delta` |
+# | `galK<>25-O2+11-YFP | `pZS3-mCherry` | HG104 | `HG104` |
 # 
 # ## Titration series
 # | Inducer | Concentration |
@@ -29,7 +30,7 @@
 # * Exposure time:
 # 1. Brightfield : 10 ms
 # 2. mCherry : 15 ms
-# 3. YFP : 8 ms
+# 3. YFP : 12 ms
 # 
 # ## Experimental protocol
 # 
@@ -41,9 +42,14 @@
 # using 2% agar pads also of M9 media.
 # 
 # ## Notes & Observations
-# The strains overgrew for about 25 min.
-# I couldn't really find that many cells in the autofluorescence pad.
-# The agar pads were prepared 3 hours before hand and kept covered in the cold room.
+# 
+# This time I marked the positions and then took the images all together.
+# Doing it this way reduced my experimental time for about 40 min.
+# Unfortunately I forgot both the YFP profile and the camera noise images
+# So I'll take them from 20161204.
+# I got confused with the naming of the images so the images with
+# 100uM title are actually the 75uM ones, and the ones with 100realuM are
+# the actual 100uM images.
 # 
 # ## Analysis files
 # 
@@ -59,7 +65,7 @@
 # 
 # ![](outdir/delta_fluor_ecdf.png)
 # 
-# **ECDF (experimental strain)**
+# **ECDF (RBS1027)**
 # 
 # ![](outdir/exp_fluor_ecdf.png)
 # 

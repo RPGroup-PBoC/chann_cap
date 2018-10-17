@@ -1,5 +1,6 @@
 ---
-status: accepted
+status: rejected
+reason: All of the fold-change measurements are systematically above the theoretical prediction.
 ---
 
 # Description
@@ -7,7 +8,7 @@ IPTG titration of the O2 - HG104 strain.
 
 | | |
 |-|-|
-| __Date__ | 2018-03-21 |
+| __Date__ | 2016-12-04 |
 | __Equipment__ | Artemis Nikon Microscope |
 | __User__ | mrazomej |
 
@@ -27,9 +28,9 @@ IPTG titration of the O2 - HG104 strain.
 
 * 100x Oil objective
 * Exposure time:
-1. Brightfield : 2 ms
-2. mCherry : 18 ms
-3. YFP : 13 ms
+1. Brightfield : 10 ms
+2. mCherry : 15 ms
+3. YFP : 12 ms
 
 ## Experimental protocol
 
@@ -41,10 +42,14 @@ After 8 hours the cells were diluted 1:10 into M9 + glucose and imaged
 using 2% agar pads also of M9 media.
 
 ## Notes & Observations
-The 75uM is labeled as 100uM because of my distraction, and the 100uM is
-therefore called 100realuMIPTG.
-It was hard to get 30 images for the last 2 concentrations so there are
-less pictures for these concentrations.
+
+This time I marked the positions and then took the images all together.
+Doing it this way reduced my experimental time for about 40 min.
+Unfortunately I forgot both the YFP profile and the camera noise images
+So I'll take them from 20161204.
+I got confused with the naming of the images so the images with
+100uM title are actually the 75uM ones, and the ones with 100realuM are
+the actual 100uM images.
 
 ## Analysis files
 
