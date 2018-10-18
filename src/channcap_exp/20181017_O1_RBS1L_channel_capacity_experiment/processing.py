@@ -34,13 +34,9 @@ chann_cap.set_plotting_style()
 # METADATA
 # =============================================================================
 
-DATE = 20181009
-USERNAME = 'mrazomej'
-OPERATOR = 'O1'
-STRAIN = 'HG104'
-REPRESSOR = 22
-BINDING_ENERGY = -15.3
-N_JOBS = 48
+from metadata import *
+
+N_JOBS = 6
 
 # Boolean indicating if the computation should be performed or not
 compute_exp = False
@@ -56,9 +52,6 @@ nreps = 25  # number of bootstrap samples per fraction
 df_micro = pd.read_csv('../../../data/csv_microscopy/' +
                        str(DATE) + '_' + OPERATOR + '_' + STRAIN +
                        '_IPTG_titration_microscopy.csv', header=0, comment='#')
-
-# Include absolute intensity column
-df_micro.loc[:, 'intensity'] = df_micro['mean_intensity'] * df_micro['area']
 
 # =============================================================================
 
@@ -133,6 +126,7 @@ df_cc[['date', 'bins']] = df_cc[['date', 'bins']].astype(int)
 # Computing the channel capacity for randomized data
 # =============================================================================
 
+compute_exp = True
 if compute_exp:
     print('shuffling  data')
     df = df.assign(shuffled=df.intensity.sample(frac=1).values)
