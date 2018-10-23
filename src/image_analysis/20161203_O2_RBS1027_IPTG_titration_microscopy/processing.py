@@ -8,8 +8,9 @@ import scipy.special
 
 # Import the project utils
 import sys
-sys.path.insert(0, '../')
-import image_analysis_utils as im_utils
+sys.path.insert(0, '../../../')
+import ccutils.image as im_utils
+import ccutils.viz as viz_utils
 
 # Useful plotting libraries
 import matplotlib.pyplot as plt
@@ -24,7 +25,7 @@ import skimage.segmentation
 import scipy.ndimage
 
 # Set plotting style
-im_utils.set_plotting_style()
+viz_utils.set_plotting_style()
 
 #============================================================================== 
 # METADATA

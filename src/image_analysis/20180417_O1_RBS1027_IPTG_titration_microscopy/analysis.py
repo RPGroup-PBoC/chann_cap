@@ -8,8 +8,8 @@ import scipy.special
 
 # Import the project utils
 import sys
-sys.path.insert(0, '../')
-import image_analysis_utils as im_utils
+sys.path.insert(0, '../../../')
+import ccutils
 
 # Useful plotting libraries
 import matplotlib.pyplot as plt
@@ -24,7 +24,7 @@ import skimage.segmentation
 import scipy.ndimage
 
 # Set plotting style
-im_utils.set_plotting_style()
+ccutils.viz.set_plotting_style()
 
 # =============================================================================
 # METADATA
@@ -44,8 +44,8 @@ df_group = df_im.groupby('rbs')
 # Plot area and eccentricity ECDF
 fig, ax = plt.subplots(1, 2, figsize=(5, 3))
 for group, data in df_group:
-    area_ecdf = im_utils.ecdf(df_im.area.sample(frac=0.3))
-    ecc_ecdf = im_utils.ecdf(df_im.eccentricity.sample(frac=0.3))
+    area_ecdf = ccutils.stats.ecdf(df_im.area.sample(frac=0.3))
+    ecc_ecdf = ccutils.stats.ecdf(df_im.eccentricity.sample(frac=0.3))
     ax[0].plot(area_ecdf[0], area_ecdf[1], marker='.', linewidth=0,
                label=group, alpha=0.5)
     ax[1].plot(ecc_ecdf[0], ecc_ecdf[1], marker='.', linewidth=0,
@@ -125,13 +125,14 @@ for c in fold_change_inducer:
 # Compute the theoretical fold change
 # Log scale
 iptg = np.logspace(-1, 4, 100)
-fc = im_utils.fold_change(iptg=iptg, ka=141.52, ki=0.56061, epsilon=4.5,
-                          R=REPRESSOR,  epsilon_r=BINDING_ENERGY)
+fc = ccutils.model.fold_change_statmech(C=iptg, ka=141.52, ki=0.56061,
+                                        epsilon=4.5,
+                                        R=REPRESSOR,  eRA=BINDING_ENERGY)
 # Linear scale
 iptg_lin = [0, 1E-1]
-fc_lin = im_utils.fold_change(iptg=iptg_lin, ka=141.52, ki=0.56061,
+fc_lin = ccutils.model.fold_change_statmech(C=iptg_lin, ka=141.52, ki=0.56061,
                               epsilon=4.5,
-                              R=REPRESSOR,  epsilon_r=BINDING_ENERGY)
+                              R=REPRESSOR,  eRA=BINDING_ENERGY)
 
 # Initialize figure
 plt.figure(figsize=(4, 3))
@@ -212,7 +213,7 @@ for strain in STRAINS:
                                       label='', edgecolor='k',
                                       linewidth=1.5, facecolor='none')
         # ECDF Plot
-        x, y = im_utils.ecdf(mean_int)
+        x, y = ccutils.stats.ecdf(mean_int)
         ax[1].plot(x, y, '.', label=str(c) + r' $\mu$M', color=colors[i])
 
     # Declare color map for legend
