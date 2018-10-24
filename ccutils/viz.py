@@ -6,6 +6,8 @@ import matplotlib as mpl
 # Seaborn, useful for graphics
 import seaborn as sns
 
+import numpy as np
+
 """
 Title:
     viz.py
@@ -43,17 +45,17 @@ def set_plotting_style():
     plt.rc('xtick.major', pad=-1)
     plt.rc('ytick.major', pad=-1)
     plt.rc('mathtext', fontset='stixsans', sf='sans')
+    plt.rc('figure', figsize=[4.0, 3.0])
     sns.set_style('darkgrid', rc=rc)
     sns.set_palette("colorblind", color_codes=True)
     sns.set_context('notebook', rc=rc)
-
 
 # Plotting the standard PMF CDF plot
 def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
                  mean_mark=True, marker_height=None,
                  pmf_edgecolor='k', pmf_alpha=0.8,
                  color_bar=True, cbar_label='', binstep=1,
-                 figsize=(6, 5), title='', xlabel='', xlim=None, ylim=None):
+                 figsize=(4, 4), title='', xlabel='', xlim=None, ylim=None):
     '''
     Custom plot of the PMF and the CDF of multiple distributions
     with a side legend.
