@@ -3,7 +3,7 @@
 # ---
 # 
 # # Description
-# IPTG titration of the O1 - HG104 strain.
+# IPTG titration of the O2 - HG104 strain.
 # 
 # | | |
 # |-|-|
@@ -15,8 +15,8 @@
 # | Genotype | plasmid | Host Strain | Shorthand |
 # | :------- | :------ | :---------- | :-------- |
 # | `galK<>25` | `pZS3-mCherry` | HG105 | `auto` |
-# | `galK<>25-O1+11-YFP` | `pZS3-mCherry` | HG105 | `delta` |
-# | `galK<>25-O1+11-YFP | `pZS3-mCherry` | HG104 | `RBS1L` |
+# | `galK<>25-O2+11-YFP` | `pZS3-mCherry` | HG105 | `delta` |
+# | `galK<>25-O2+11-YFP | `pZS3-mCherry` | HG104 | `RBS1L` |
 # 
 # ## Titration series
 # | Inducer | Concentration |
