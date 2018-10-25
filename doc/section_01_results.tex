@@ -1,0 +1,100 @@
+\section{Results}
+
+\subsection{Minimal model of transcriptional regulation}
+
+We begin by defining the simple repression genetic circuit to be used throughout
+this work. As a trackable circuit for which we have control over the parameters
+both theoretically and experimentally we chose the commonly found simple
+repression architecture \cite{Rydenfelt2014}. This circuit consists of a single
+promoter with an RNA-polymerase (RNAP) binding site and a single binding site
+for a transcriptional repressor \cite{Garcia2011c}. As in many examples
+throughout biology, the repressor is assumed to be allosteric in nature, meaning
+that it can exist in two conformations, one in which the repressor is able to
+bind to the specific binding site (active state) and one in which it cannot bind
+the specific binding site (inactive state). The environmental signaling is
+assumed to happen via passive import of an extracellular inducer that binds the
+repressor, shifting the equilibrium between both conformations of the repressor
+\cite{Razo-Mejia2018}. In previous publications we have extensively
+characterized the mean response of this circuit under different conditions using
+equilibrium based models \mrm{cite aztec pyramid}. In this work we build upon
+these models to characterize the full distribution of gene expression as
+parameters such as repressor copy number and its affinity for the DNA are
+systematically varied.
+
+Given the discrete nature of molecular species count inside cells, chemical
+master equations have emerged as a useful tool to model the inherent probability
+distribution of these counts \cite{Sanchez2013}. In \fref{fig2_minimal_model}(A)
+we show the minimal model to and the necessary set of parameters needed to
+predict mRNA and protein distribution. Specifically we assume a three-state
+model where the promoter can be found 1) with RNAP bound ($P$ state), 2) empty
+($E$ state) and 3) with the repressor bound ($R$ state). These three states
+generate a system of coupled partial differential equations for each of the
+three state distributions $P_P(m, p)$, $P_E(m, p)$ and $P_R(m, p)$, where $m$
+and $p$ are the mRNA and protein count per cell, respectively. Given the rates
+shown in \fref{fig2_minimal_model}(A) let us define the system of PDEs for a
+specific $m$ and $p$. For the RNAP bound state we have
+\mrmr{not sure if I will have space to display these extensive equations. Maybe
+this is an SI thing and here I can write only the matrix notation form?}
+\begin{equation}
+  \begin{aligned}
+    \dt{P_P(m, p)} &=
+    - \overbrace{\kpoff P_P(m, p)}^{P \rightarrow E} % P -> E
+    + \overbrace{\kpon P_E(m, p)}^{E \rightarrow P}\\ % E -> P
+    &+ \overbrace{r_m P_p(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
+    - \overbrace{r_m P_p(m, p)}^{m \rightarrow m+1}% m -> m+1
+    + \overbrace{\gm (m + 1) P_P(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
+    - \overbrace{\gm m P_P(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
+    &+ \overbrace{r_p m P_P(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
+    - \overbrace{r_p m P_P(m, p)}^{p \rightarrow p+1} % p -> p+1
+    + \overbrace{\gp (p + 1) P_P(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
+    - \overbrace{\gp p P_P(m, p)}^{p \rightarrow p-1}. % p -> p-1
+  \end{aligned}
+\end{equation}
+For the empty state $E$ we have
+\begin{equation}
+  \begin{aligned}
+    \dt{P_E(m, p)} &=
+    \overbrace{\kpoff P_P(m, p)}^{P \rightarrow E} % P -> E
+    - \overbrace{\kpon P_E(m, p)}^{E \rightarrow P} % E -> P
+    + \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
+    - \overbrace{\kron P_E(m, p)}^{E \rightarrow R}\\ % E -> R
+    &+ \overbrace{\gm (m + 1) P_E(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
+    - \overbrace{\gm m P_E(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
+    &+ \overbrace{r_p m P_E(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
+    - \overbrace{r_p m P_E(m, p)}^{p \rightarrow p+1} % p -> p+1
+    + \overbrace{\gp (p + 1) P_E(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
+    - \overbrace{\gp p P_E(m, p)}^{p \rightarrow p-1}. % p -> p-1
+  \end{aligned}
+\end{equation}
+And finally for the repressor bound state $R$ we have
+\begin{equation}
+  \begin{aligned}
+    \dt{P_R(m, p)} &=
+    - \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
+    + \overbrace{\kron P_E(m, p)}^{E \rightarrow R}\\ % E -> R
+    &+ \overbrace{\gm (m + 1) P_R(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
+    - \overbrace{\gm m P_R(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
+    &+ \overbrace{r_p m P_R(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
+    - \overbrace{r_p m P_R(m, p)}^{p \rightarrow p+1} % p -> p+1
+    + \overbrace{\gp (p + 1) P_R(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
+    - \overbrace{\gp p P_R(m, p)}^{p \rightarrow p-1}. % p -> p-1
+  \end{aligned}
+\end{equation}
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {./fig/main/parameter_inference_v03.pdf}
+	\caption{\textbf{Minimal kinetic model of transcriptional regulation for a
+	simple repression architecture.} (A) Three-state stochastic model of
+	transcriptional regulation by a repressor. The regulation of the repressor is
+	assumed to happen via steric hindrance with the RNAP, not allowing the
+	promoter state in which both, the repressor and the RNAP are bound
+	simultaneously. All parameters highlighted with color boxes were determined
+	with published datasets based on the same genetic circuit. (B) Data sets used
+	to infer the parameter values. From left to right Garcia \& Phillips
+	\cite{Garcia2011c} is used to determine $\kroff$ and $\kron$, Brewster et al.
+	\cite{Brewster2014} is used to determine $\eAI$ and $\kron$ Razo-Mejia et al.
+	\cite{Razo-Mejia2018} is used to determine $K_A$, $K_I$, and $\kron$ and Jones
+	et al. is used to determine $r_m$, $\kpon$, and $\kpoff$.}
+  \label{fig2_minimal_model}
+\end{figure}
