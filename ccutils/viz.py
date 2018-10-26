@@ -37,17 +37,14 @@ def set_plotting_style():
           'grid.linestyle': '-',
           'grid.linewidth': 0.5,
           'grid.color': '#ffffff',
-          'mathtext.fontset': 'stixsans',
-          'mathtext.sf': 'sans',
-          'legend.frameon': True,
           'legend.fontsize': 8}
     plt.rc('text.latex', preamble=r'\usepackage{sfmath}')
     plt.rc('xtick.major', pad=-1)
     plt.rc('ytick.major', pad=-1)
-    plt.rc('mathtext', fontset='stixsans', sf='sans')
+    plt.rc('mathtext', fontset='stixsans', sf='sansserif')
     plt.rc('figure', figsize=[4.0, 3.0])
     plt.rc('svg', fonttype='none')
-    plt.rc('legend', title_fontsize='8')
+    plt.rc('legend', title_fontsize='8', frameon=False)
     sns.set_style('darkgrid', rc=rc)
     sns.set_palette("colorblind", color_codes=True)
     sns.set_context('notebook', rc=rc)
