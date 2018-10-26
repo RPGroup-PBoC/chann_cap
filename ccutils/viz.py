@@ -47,6 +47,7 @@ def set_plotting_style():
     plt.rc('mathtext', fontset='stixsans', sf='sans')
     plt.rc('figure', figsize=[4.0, 3.0])
     plt.rc('svg', fonttype='none')
+    plt.rc('legend', title_fontsize='8')
     sns.set_style('darkgrid', rc=rc)
     sns.set_palette("colorblind", color_codes=True)
     sns.set_context('notebook', rc=rc)

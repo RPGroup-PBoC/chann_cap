@@ -14,6 +14,7 @@ Purpose:
 
 import numpy as np
 import pandas as pd
+import scipy as sp
 
 # Import library to perform maximum entropy fits
 from maxentropy.skmaxent import FeatureTransformer, MinDivergenceModel
