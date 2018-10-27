@@ -36,7 +36,7 @@ IPTG titration of the O2 - HG104 strain.
 The strains were grown overnight in tubes in 3 mL of LB + spec + kan.
 Next morning they were diluted 1:1000 into 0.5 mL of M9 + 0.5% glucose
 in deep 96-well plates.
-The auto and delta strains were grown without IPTG.
+The auto and delta strains were grown with 5000 uM and without IPTG.
 After 8 hours the cells were diluted 1:3 into 1X PBS buffer and imaged
 using 2% agar pads also of 1X PBS buffer.
 

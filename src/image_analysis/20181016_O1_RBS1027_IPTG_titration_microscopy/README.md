@@ -36,7 +36,7 @@ IPTG titration of the O1 - RBS1027 strain.
 The strains were grown overnight in tubes in 3 mL of LB + spec + kan.
 Next morning they were diluted 1:1000 into 0.5 mL of M9 + 0.5% glucose
 in deep 96-well plates.
-The auto and delta strains were grown without IPTG.
+The auto and delta strains were grown with 500 uM and without IPTG.
 After 8 hours the cells were diluted 1:10 into M9 + glucose and imaged
 using 2% agar pads also of M9 media.
 
