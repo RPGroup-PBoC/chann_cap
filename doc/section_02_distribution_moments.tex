@@ -1,12 +1,11 @@
-\section{Computing the moments of the mRNA and protein distributions}
+\subsection{Computing the moments of the mRNA and protein distributions}
 
 Solving chemical master equations represent a challenge that is still an active
 area of mathematical research \cite{Dinh2016}. One approach is to find schemes
-to approximate the distribution with several published methods that vary in
-mathematical and computational sophistication. One such method, the maximum
-entropy (MaxEnt) approach, makes use of the moments of the distribution to
-approximate the full distribution. In this section we will demonstrate an
-iterative algorithm to compute the mRNA and protein joint distribution moments.
+to approximate the distribution. One such scheme, the maximum entropy (MaxEnt)
+approach, makes use of the moments of the distribution to approximate the full
+distribution. In this section we will demonstrate an iterative algorithm to
+compute the mRNA and protein joint distribution moments.
 
 \mrm{Note that in the previous section I will have already written the master
 equation in matrix notation.}
@@ -68,7 +67,9 @@ Given this definition we can define the general moment dynamics as
 \label{eq_mom_dynamics}
 \end{equation}
 where $\bb{A}$ is a square matrix that contains all the connections in the
-network, i.e. the numeric coefficients that relate each of the moments. In the
-next section we will use \eref{eq_mom_dynamics} to numerically integrate the
+network, i.e. the numeric coefficients that relate each of the moments. We can
+then use \eref{eq_gral_mom} to build matrix $\bb{A}$ by iteratively substituting
+values for the exponents $x$ and $y$ up to a specified value. In the next
+section we will use \eref{eq_mom_dynamics} to numerically integrate the
 dynamical equations for our moments of interest as cells progress through the
 cell cycle.

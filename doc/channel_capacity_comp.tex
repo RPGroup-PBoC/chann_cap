@@ -39,24 +39,40 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Personalized functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Rates
 \newcommand{\kpon}{k^{(p)}_{\text{on}}}
 \newcommand{\kpoff}{k^{(p)}_{\text{off}}}
 \newcommand{\kron}{k^{(r)}_{\text{on}}}
 \newcommand{\kroff}{k^{(r)}_{\text{off}}}
 \newcommand{\gm}{\gamma _m}
 \newcommand{\gp}{\gamma _p}
-\newcommand{\ee}[1]{\left\langle #1 \right\rangle}
-\newcommand{\bb}[1]{\mathbf{#1}}
-\newcommand{\dt}[1]{{\partial{#1} \over \partial t}}
-\newcommand{\PP}{\bb{P}}
+% Matrices
 \newcommand{\Km}{\bb{K}}
 \newcommand{\Rm}{\bb{R}_m}
 \newcommand{\Gm}{\bb{\Gamma}_m}
 \newcommand{\Rp}{\bb{R}_p}
 \newcommand{\Gp}{\bb{\Gamma}_p}
+% Expected value
+\newcommand{\ee}[1]{\left\langle #1 \right\rangle}
+% Bold math
+\newcommand{\bb}[1]{\mathbf{#1}}
+% Time derivative
+\newcommand{\dt}[1]{{d{#1} \over dt}}
+\newcommand{\ddt}[1]{{\partial{#1} \over \partial t}}
+% Sum over m and p
+\newcommand{\smp}{\sum_m \sum_p}
+% Bold P (for distribution vector)
+\newcommand{\PP}{\bb{P}}
+% Thermodynamic variables
 \newcommand{\foldchange}{\text{fold-change}}
 \newcommand{\Nns}{N_\text{NS}}
 \newcommand{\eR}{\Delta\varepsilon_r}
+\newcommand{\eAI}{\Delta\varepsilon_{AI}}
+\newcommand{\pbound}{p_{_\text{bound}}}
+
+\let\oldth\th
+\renewcommand\th{\text{th}}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Begin document
@@ -68,10 +84,15 @@ capacity of a simple genetic circuit}}
 
 \begin{document}
 \maketitle
+	\input{abstract}
 	\input{section_00_introduction}
-	\input{section_XX_model.tex}
-	% \input{section_01}
-	% \input{section_02}
+	\input{section_01_minimal_model.tex}
+	\input{section_02_distribution_moments.tex}
+	\input{section_03_cell_cycle.tex}
+	% \input{section_XX_model.tex}
+	% \input{appendix_moment_cme.tex}
+	% \input{appendix_multiple_gene_copy.tex}
+	% \input{appendix_maxent.tex}
 	% \input{appendix_two_stage_dist.tex}
 	% \input{appendix_method_characteristics.tex}
 %	\input{section_99_ToDo}
