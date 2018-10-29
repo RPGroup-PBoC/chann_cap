@@ -27,7 +27,7 @@ def set_plotting_style():
     2nd edition. To format all plots within a script, simply execute
     `mwc_induction_utils.set_plotting_style() in the preamble.
     """
-    rc = {'lines.linewidth': 1.75,
+    rc = {'lines.linewidth': 1.25,
           'axes.labelsize': 8,
           'axes.titlesize': 9,
           'axes.facecolor': '#E3DCD0',
@@ -44,7 +44,8 @@ def set_plotting_style():
     plt.rc('mathtext', fontset='stixsans', sf='sansserif')
     plt.rc('figure', figsize=[4.0, 3.0])
     plt.rc('svg', fonttype='none')
-    plt.rc('legend', title_fontsize='8', frameon=False)
+    plt.rc('legend', title_fontsize='8', frameon=True, 
+           facecolor='#E3DCD0', framealpha=1)
     sns.set_style('darkgrid', rc=rc)
     sns.set_palette("colorblind", color_codes=True)
     sns.set_context('notebook', rc=rc)
