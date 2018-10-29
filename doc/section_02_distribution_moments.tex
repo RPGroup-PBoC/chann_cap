@@ -1,18 +1,18 @@
-\section{Computing the distribution moments}
+\section{Computing the moments of the mRNA and protein distributions}
 
 Solving chemical master equations represent a challenge that is still an active
-area of mathematical research \cite{Dinh2016}. Methods to approximate the
-distribution vary in mathematical and computational sophistication. One of such
-methods, the maximum entropy (MaxEnt) approach makes use of the distribution
-moments to approximate the full distribution. In this section we will
-demonstrate an iterative algorithm to compute the mRNA and protein joint
-distribution moments.
+area of mathematical research \cite{Dinh2016}. One approach is to find schemes
+to approximate the distribution with several published methods that vary in
+mathematical and computational sophistication. One such method, the maximum
+entropy (MaxEnt) approach, makes use of the moments of the distribution to
+approximate the full distribution. In this section we will demonstrate an
+iterative algorithm to compute the mRNA and protein joint distribution moments.
 
 \mrm{Note that in the previous section I will have already written the master
 equation in matrix notation.}
 Our simple repression kinetic model depicted in \fref{fig2_minimal_model}(A)
-consists on a infinite system of ODEs for each possible pair $m, p$. To
-compute any moment of our chemical master equation let us define a vector
+consists on an infinite system of ODEs for each possible pair $m, p$. To
+compute any moment of our chemical master equation we define a vector
 \begin{equation}
 	\ee{\bb{m^x p^y}} \equiv (\ee{m^x p^y}_E, \ee{m^x p^y}_P, \ee{m^x p^y}_R)^T,
 \end{equation}
@@ -26,9 +26,9 @@ computed as
   \label{eq_mom_def}
 \end{equation}
 
-Summing over all possible $m$ and $p$ values on \mrm{ref chem eq in matrix
-notation} and further simplifying results in a single ODE for all moments of the
-form
+Summing over all possible $m$ and $p$ values in \mrm{ref chem eq in matrix
+notation} results in a ODE for any moment of the form \mrm{See appendix XX for
+full derivation}
 \begin{equation}
   \begin{aligned}
     \dt{\bb{\ee{m^x p^y}}} &=
@@ -40,23 +40,23 @@ form
     \label{eq_gral_mom}
   \end{aligned}
 \end{equation}
-\mrm{See appendix XX for details on simplification.}
 
 Given that all transitions in our stochastic model are first order reactions,
-\eref{eq_gral_mom} has no moment-closure problem. What this means is that
-moments only depend on lower moments \mrm{See appendix XX for full proof}. This
-feature of our model implies for example that the second moment of the protein
-distribution $\ee{p^2}$ depends only on the first two moments of the mRNA
-distribution $\ee{m}$, and $\ee{m^2}$, the first protein moment $\ee{p}$  and
-the cross-correlation term $\ee{mp}$. We can therefore define $\bb{\mu}$ to be a
-vector containing all moments up to $\bb{\ee{m^x p^y}}$ for all promoter states.
-This is
+\eref{eq_gral_mom} has no moment-closure problem. What this means is that the
+dynamical equation for a given moment only depend on lower moments \mrm{See
+appendix XX for full proof}. This feature of our model implies for example that
+the second moment of the protein distribution $\ee{p^2}$ depends only on the
+first two moments of the mRNA distribution $\ee{m}$, and $\ee{m^2}$, the first
+protein moment $\ee{p}$  and the cross-correlation term $\ee{mp}$. We can
+therefore define $\bb{\mu}$ to be a vector containing all moments up to
+$\bb{\ee{m^x p^y}}$ for all promoter states. This is
 \begin{equation}
 \bb{\mu} = \left[ \bb{\ee{m^0 p^0}},
 								  \bb{\ee{m^1 p^0}},
 									\ldots \bb{\ee{m^x p^y}} \right]^T.
 \end{equation}
-Explicitly for the three-state promoter this vector looks like
+Explicitly for the three-state promoter model depicted in
+\fref{fig2_minimal_model}(A) this vector looks like
 \begin{equation}
 	\bb{\mu} = \left[ \ee{m^0 p^0}_E, \ee{m^0 p^0}_P, \ee{m^0 p^0}_R, \ldots
                  \ee{m^x p^y}_E, \ee{m^x p^y}_P, \ee{m^x p^y}_R \right]^T.
@@ -70,4 +70,5 @@ Given this definition we can define the general moment dynamics as
 where $\bb{A}$ is a square matrix that contains all the connections in the
 network, i.e. the numeric coefficients that relate each of the moments. In the
 next section we will use \eref{eq_mom_dynamics} to numerically integrate the
-distribution moments as cells progress through the cell cycle.
+dynamical equations for our moments of interest as cells progress through the
+cell cycle.
