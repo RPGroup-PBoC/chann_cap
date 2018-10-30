@@ -1,0 +1,51 @@
+\subsection*{Maximum Entropy approximation}
+
+Having numerically computed the moments of the mRNA and protein distributions as
+cells progress through the cell cycle we now proceed to approximately
+reconstruct the full distributions given this limited information. As hinted in
+\secref{sec_moments} the maximum entropy (MaxEnt) principle, first proposed by
+E.T. Jaynes in 1957, approximates the entire distribution by maximizing the
+Shannon entropy subject to constraints given by the values of the moments of the
+distribution \cite{Jaynes1957}. This procedure leads to a Boltzmann distribution
+of the form \mrm{See appendix XX for full derivation.}
+\begin{equation}
+  P_H(m, p) = {1 \over \mathcal{Z}}
+              \exp \left( - \sum_{(x,y)} \lambda_{(x,y)} m^x p^y \right),
+  \label{eq_maxEnt_joint}
+\end{equation}
+where $\lambda_{(x,y)}$ is the Lagrange multiplier associated with the
+constraint set by the moment $\ee{m^x p^y}$, and $\mathcal{Z}$ is a
+normalization constant. The more moments $\ee{m^x p^y}$ included as constraints,
+the more accurate the approximation on \eref{eq_maxEnt_joint} becomes.
+
+The computational challenge then becomes a minimization routine in which the
+values for the Lagrange multipliers $\lambda_{(x,y)}$ that are consistent with
+the constraints set by the moments values $\ee{m^x p^y}$ need to be found.
+\mrm{Appendix XX} details our implementation of a robust algorithm to find such
+values. \fref{fig4_maxent} shows example predicted protein distributions for a
+suite of different parameters and signals. As repressor-DNA binding affinity
+(columns in \fref{fig4_maxent}) and repressor copy number (rows in
+\fref{fig4_maxent}) are varied, the responses to different signals (i.e. inducer
+concentrations) overlap with different degrees. For example the upper right
+corner frame with a weak binding site ($\eR = -9.7 \; k_BT$) and a low repressor
+copy number (22 repressors per cell) has virtually identical distributions
+regardless of the input inducer concentration. As the number of repressors is
+increased along the rows, the degree of overlap between distributions changes.
+On the opposite extreme the lower left panel shows a strong binding site ($\eR =
+-15.3 \; k_BT$) and a high repressor copy number (1740 repressors per cell)
+shows overlap between distributions due to the lack of ability of the system to
+respond to the inducer given the high degree of repression. In the following
+section we formalize the notion of overlap and distinguishability from an
+information theoretic perspective via the channel capacity.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {./fig/main/PMF_grid_joyplot_protein.pdf}
+	\caption{\textbf{MaxEnt protein distributions for varying physical
+	parameters.} Protein distributions under different inducer (IPTG)
+	concentrations for different combinations of repressor-DNA affinities
+	(columns) and repressor copy numbers (rows). The moments used to constraint
+  the distributions were computed by integrating \eref{eq_gral_mom} as cells
+  progressed through the cell cycle as described in \secref{sec_cell_cycle}.}
+  \label{fig4_maxent}
+\end{figure}
