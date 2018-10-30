@@ -18,7 +18,8 @@ graphicspath.tex
 *.aux
 *.bbl
 *.fls
-*.fdb_latexmk
+*.fdb_latexmkTrue
+*.dvi
 
 #Ignore images
 *.jpg
