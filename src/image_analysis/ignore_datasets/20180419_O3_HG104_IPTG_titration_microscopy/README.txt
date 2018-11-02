@@ -1,5 +1,8 @@
 # ---
-# status: accepted
+# status: rejected
+# reason: The fold-change for one of the ∆lacI strains goes way above the
+# expected values reaching up to 1.6. That is an excesive amount that doesn't
+# pass the stringent smell test.
 # ---
 # 
 # # Description
