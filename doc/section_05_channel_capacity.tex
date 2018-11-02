@@ -1,0 +1,47 @@
+\subsection*{Theoretical prediction of the channel capacity}
+
+As a useful measure of the ability of the genetic circuit to infer the
+environmental state, i.e. the inducer concentration, we turn to the channel
+capacity. The channel capacity is defined as the maximum mutual information
+between input and output, maximized over all possible input distributions.
+Putting this into mathematical terms let us define $c$ as the inducer
+concentration. $P(c)$ represents the distribution of inducer and $P(p \mid c)$
+the distribution of protein counts given a fixed inducer concentration. The
+channel capacity is then given by
+\begin{equation}
+  C \equiv \sup_{P(c)} I(p; c);
+\end{equation}
+where $I(p; c)$, the mutual information between protein count and inducer
+concentration is given by \cite{Shannon1948}
+\begin{equation}
+  I(p; c) = \sum_c P(c) \sum_p P(p \mid c) \log_2 {P(p \mid c) \over P(p)}.
+\end{equation}
+
+If used as a metric of how reliable is a signaling system on inferring the state
+of the external signal, the channel capacity, when measured in bits, is commonly
+interpreted as the logarithm of the number of states that the signaling system
+can properly resolve. So for example a signaling system with a channel capacity
+of $C$ bits is interpreted as being able to resolve $2^C$ states. We caution
+against the use of this interpretation as channel capacities with fractional
+values are allowed. We prefer the Bayesian interpretation that the mutual
+information, and as a consequence the channel capacity, quantifies the
+improvement in the inference of the input when utilizing the output compared to
+just using the prior distribution of the input by itself \cite{Voliotis2014,
+Bowsher2014}. Under this interpretation a channel capacity of a fractional bit
+still quantifies an improvement of the ability of the signaling system to infer
+the value of the extracellular signal.
+\mrm{I'll probably need to write an appendix on this very interesting point.}
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {./fig/main/theory_vs_data_channel_capacity.pdf}
+	\caption{\textbf{Comparison of theoretical and experimental channel
+  capacity.} The channel capacity as inferred using the Blahut-Arimoto
+  algorithm \cite{Blahut1972} for varying number of repressors and
+  repressor-DNA affinities. All inferences were performed using 12 IPTG
+  concentrations as detailed in the Methods. Solid lines represent
+  zero-parameter fit predictions done with MaxEnt distributions as the ones
+  showed in \fref{fig4_maxent}. Dots represent inferences made from single cell
+  fluorescence distributions (See Methods for further details).}
+  \label{fig5_channcap}
+\end{figure}

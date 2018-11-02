@@ -1,11 +1,6 @@
 % Preamble
 \input{./TeX_preamble.tex}
 
-% import macro for the figures path % this will not be synchronized to the
-% GitHub repository since each collaborator will adapt it to his/her own
-% directory structure
-\input{graphicspath.tex}
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Begin packages
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -31,6 +26,9 @@
 % \DeclareDocumentCommand \fref{ooo}
 % {\IfNoValueTF{#2}{Fig.~\ref{#1}}{\IfNoValueTF{#3}{Figs.~\ref{#1} and
 % \ref{#2}}{Figs.~\ref{#1}-\ref{#3}}}}
+
+% Section referencing
+\newcommand{\secref}[1]{Section~\ref{#1}}
 
 % Letters for figure sub-parts
 \newcommand{\letter}[1]{#1} % For main text. Ex: As shown in Fig. 12A
@@ -79,16 +77,31 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \title{\textbf{First-principles prediction of the information processing
 capacity of a simple genetic circuit}}
-\author{Manuel Razo-Mejia and Rob Phillips}
+\author[1]{Manuel Razo-Mejia}
+\author[1, 2, 3, *]{Rob Phillips}
+\affil[1]{Division of Biology and Biological Engineering, California Institute
+of Technology, Pasadena, CA 91125, USA}
+\affil[2]{Department of Physics, California Institute of Technology, Pasadena,
+CA 91125, USA}
+\affil[3]{Department of Applied Physics, California Institute of Technology,
+Pasadena, CA 91125, USA}
+\affil[*]{Correspondence: phillips@pboc.caltech.edu}
+
 \date{\today}
+
+\setcounter{Maxaffil}{0}
+% Set affiliations in small font
+\renewcommand\Affilfont{\itshape\small}
 
 \begin{document}
 \maketitle
-	\input{abstract}
-	\input{section_00_introduction}
-	\input{section_01_minimal_model.tex}
-	\input{section_02_distribution_moments.tex}
-	\input{section_03_cell_cycle.tex}
+	% \input{abstract}
+	% \input{section_00_introduction}
+	% \input{section_01_minimal_model.tex}
+	% \input{section_02_distribution_moments.tex}
+	% \input{section_03_cell_cycle.tex}
+	\input{section_04_maxent.tex}
+	% \input{section_05_channel_capacity.tex}
 	% \input{section_XX_model.tex}
 	% \input{appendix_moment_cme.tex}
 	% \input{appendix_multiple_gene_copy.tex}

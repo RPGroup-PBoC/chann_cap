@@ -11,7 +11,7 @@ iterative algorithm to compute the mRNA and protein distribution moments.
 \mrm{Note that in the previous section I will have already written the master
 equation in matrix notation.}
 Our simple repression kinetic model depicted in \fref{fig2_minimal_model}(A)
-consists on an infinite system of ODEs for each possible pair $m, p$. To
+consists of an infinite system of ODEs for each possible pair $m, p$. To
 compute any moment of our chemical master equation we define a vector
 \begin{equation}
 	\ee{\bb{m^x p^y}} \equiv (\ee{m^x p^y}_E, \ee{m^x p^y}_P, \ee{m^x p^y}_R)^T,
@@ -43,7 +43,7 @@ full derivation}
 
 Given that all transitions in our stochastic model are first order reactions,
 \eref{eq_gral_mom} has no moment-closure problem. What this means is that the
-dynamical equation for a given moment only depend on lower moments \mrm{See
+dynamical equation for a given moment only depends on lower moments \mrm{See
 appendix XX for full proof}. This feature of our model implies for example that
 the second moment of the protein distribution $\ee{p^2}$ depends only on the
 first two moments of the mRNA distribution $\ee{m}$, and $\ee{m^2}$, the first
@@ -56,7 +56,7 @@ $\bb{\ee{m^x p^y}}$ for all promoter states. This is
 									\ldots \bb{\ee{m^x p^y}} \right]^T.
 \end{equation}
 Explicitly for the three-state promoter model depicted in
-\fref{fig2_minimal_model}(A) this vector looks like
+\fref{fig2_minimal_model}(A) this vector takes the form
 \begin{equation}
 	\bb{\mu} = \left[ \ee{m^0 p^0}_E, \ee{m^0 p^0}_P, \ee{m^0 p^0}_R, \ldots
                  \ee{m^x p^y}_E, \ee{m^x p^y}_P, \ee{m^x p^y}_R \right]^T.
@@ -69,8 +69,8 @@ Given this definition we can define the general moment dynamics as
 \end{equation}
 where $\bb{A}$ is a square matrix that contains all the connections in the
 network, i.e. the numeric coefficients that relate each of the moments. We can
-then use \eref{eq_gral_mom} to build matrix $\bb{A}$ by iteratively substituting
-values for the exponents $x$ and $y$ up to a specified value. In the next
-section we will use \eref{eq_mom_dynamics} to numerically integrate the
+then use \eref{eq_gral_mom} to build the matrix $\bb{A}$ by iteratively
+substituting values for the exponents $x$ and $y$ up to a specified value. In
+the next section we will use \eref{eq_mom_dynamics} to numerically integrate the
 dynamical equations for our moments of interest as cells progress through the
 cell cycle.

@@ -7,8 +7,8 @@ hinted in \secref{sec_moments} the maximum entropy (MaxEnt) principle, first
 proposed by E.T. Jaynes in 1957, approximates the entire distribution by
 maximizing the Shannon entropy subject to constraints given by, among other
 quantities, the values of the moments of the distribution \cite{Jaynes1957}.
-This procedure leads to a Boltzmann distribution of the form \mrm{See appendix
-XX for full derivation.}
+This procedure leads to a distribution of the form
+\mrm{See appendix XX for full derivation.}
 \begin{equation}
   P_H(m, p) = {1 \over \mathcal{Z}}
               \exp \left( - \sum_{(x,y)} \lambda_{(x,y)} m^x p^y \right),
@@ -17,7 +17,8 @@ XX for full derivation.}
 where $\lambda_{(x,y)}$ is the Lagrange multiplier associated with the
 constraint set by the moment $\ee{m^x p^y}$, and $\mathcal{Z}$ is a
 normalization constant. The more moments $\ee{m^x p^y}$ included as constraints,
-the more accurate the approximation of \eref{eq_maxEnt_joint} becomes.
+the more accurate the approximation resulting from \eref{eq_maxEnt_joint}
+becomes.
 
 The computational challenge then becomes a minimization routine in which the
 values for the Lagrange multipliers $\lambda_{(x,y)}$ that are consistent with
@@ -28,7 +29,7 @@ reconstructed using six moments of the protein distribution for a suite of
 different biophysical parameters and environmental inducer concentrations. As
 repressor-DNA binding affinity (columns in \fref{fig4_maxent}) and repressor
 copy number (rows in \fref{fig4_maxent}) are varied, the responses to different
-signals (i.e. inducer concentrations) overlap with different degrees. For
+signals (i.e. inducer concentrations) overlap to varying degrees. For
 example the upper right corner frame with a weak binding site ($\eR = -9.7 \;
 k_BT$) and a low repressor copy number (22 repressors per cell) has virtually
 identical distributions regardless of the input inducer concentration. This
@@ -41,14 +42,14 @@ repressor copy number (1740 repressors per cell) shows overlap between
 distributions due to the lack of ability of the system to respond to the inducer
 given the high degree of repression, giving again little ability for the cells
 to resolve the inputs. In the following section we formalize the notion of how
-well can cells resolve different inputs from an information theoretic
+well cells can resolve different inputs from an information theoretic
 perspective via the channel capacity.
 
 \begin{figure}[h!]
 	\centering \includegraphics
   {./fig/main/PMF_grid_joyplot_protein.pdf}
 	\caption{\textbf{MaxEnt protein distributions for varying physical
-	parameters.} Protein distributions under different inducer (IPTG)
+	parameters.} Predicted protein distributions under different inducer (IPTG)
 	concentrations for different combinations of repressor-DNA affinities
 	(columns) and repressor copy numbers (rows). The first six moments of the
 	protein distribution used to constrain the MaxEnt approximation were computed
