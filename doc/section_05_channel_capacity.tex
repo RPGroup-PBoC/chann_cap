@@ -1,15 +1,16 @@
 \subsection*{Theoretical prediction of the channel capacity}
 
-As a useful measure of the ability of the genetic circuit to infer the
-environmental state, i.e. the inducer concentration, we turn to the channel
-capacity. The channel capacity is defined as the maximum mutual information
-between input and output, maximized over all possible input distributions.
-Putting this into mathematical terms let us define $c$ as the inducer
-concentration. $P(c)$ represents the distribution of inducer and $P(p \mid c)$
-the distribution of protein counts given a fixed inducer concentration. The
-channel capacity is then given by
+As a useful measure of the ability of the genetic circuit to allow the cell
+infer the environmental state, i.e. the inducer concentration, we turn to the
+channel capacity. The channel capacity is defined as the maximum mutual
+information between input and output, maximized over all possible input
+distributions. Putting this into mathematical terms let us define $c$ as the
+inducer concentration. $P(c)$ represents the distribution of inducer and $P(p
+\mid c)$ the distribution of protein counts given a fixed inducer concentration.
+The channel capacity is then given by
 \begin{equation}
-  C \equiv \sup_{P(c)} I(p; c);
+  C \equiv \max_{P(c)} I(p; c),
+  \label{eq_chann_cap}
 \end{equation}
 where $I(p; c)$, the mutual information between protein count and inducer
 concentration is given by \cite{Shannon1948}
@@ -17,7 +18,7 @@ concentration is given by \cite{Shannon1948}
   I(p; c) = \sum_c P(c) \sum_p P(p \mid c) \log_2 {P(p \mid c) \over P(p)}.
 \end{equation}
 
-If used as a metric of how reliable is a signaling system on inferring the state
+If used as a metric of how reliably a signaling system can infer the state
 of the external signal, the channel capacity, when measured in bits, is commonly
 interpreted as the logarithm of the number of states that the signaling system
 can properly resolve. So for example a signaling system with a channel capacity
@@ -26,22 +27,51 @@ against the use of this interpretation as channel capacities with fractional
 values are allowed. We prefer the Bayesian interpretation that the mutual
 information, and as a consequence the channel capacity, quantifies the
 improvement in the inference of the input when utilizing the output compared to
-just using the prior distribution of the input by itself \cite{Voliotis2014,
-Bowsher2014}. Under this interpretation a channel capacity of a fractional bit
-still quantifies an improvement of the ability of the signaling system to infer
-the value of the extracellular signal.
-\mrm{I'll probably need to write an appendix on this very interesting point.}
+just using the prior distribution of the input by itself for prediction
+\cite{Voliotis2014, Bowsher2014}. Under this interpretation a channel capacity
+of a fractional bit still quantifies an improvement of the ability of the
+signaling system to infer the value of the extracellular signal compared to
+having no sensing system at all.
+
+Computing the channel capacity as defined in \eref{eq_chann_cap} implies
+optimizing over an infinite space of distributions possible $P(c)$. For special
+cases in which the noise is small compared to the dynamic range, approximate
+analytical equations have been derived \cite{Tkacik2008a}. But given the high
+cell-to-cell variability that our model predicts, the conditions of the
+so-called small noise approximation are not satisfied. We therefore appeal to
+a numerical solution known as the Blahut-Arimoto algorithm \cite{Blahut1972}.
+This algorithm starting on any (discrete) distribution $P(C)$ converges to the
+distribution at channel capacity by iteratively applying a series of simple
+operations. \fref{fig5_channcap} shows zero-parameter fit predictions of the
+channel capacity as a function of the number of repressors for different
+repressor-DNA affinities (solid lines). These predictions are contrasted with
+experimental determinations of the channel capacity as inferred from single-cell
+fluorescence intensity distributions taken over 12 different concentrations of
+inducer \mrm{See Methods for further details}.
+
+\fref{fig5_channcap} has interesting features that are worth highlighting. On
+one extreme for cells with no transcription factors there is no information
+processing potential as this simple genetic circuit would be constitutively
+expressed regardless of the environmental state. As cells increase the
+transcription factor copy number, the channel capacity increases until it
+reaches a maximum to then fall back down at high repressor copy number since the
+promoter would be permanently repressed \mrm{See Fig. SXX}. The steepness of the
+increment in channel capacity as well as the height of the maximum expression
+highly depend on the repressor-DNA affinity. For strong binding sites (blue
+curve in \fref{fig5_channcap}) there is a quick increment in the channel
+capacity, but the maximum value reached is smaller compared to a weak binding
+site (green curve in \fref{fig5_channcap}).
 
 \begin{figure}[h!]
 	\centering \includegraphics
   {./fig/main/theory_vs_data_channel_capacity.pdf}
-	\caption{\textbf{Comparison of theoretical and experimental channel
-  capacity.} The channel capacity as inferred using the Blahut-Arimoto
-  algorithm \cite{Blahut1972} for varying number of repressors and
-  repressor-DNA affinities. All inferences were performed using 12 IPTG
-  concentrations as detailed in the Methods. Solid lines represent
-  zero-parameter fit predictions done with MaxEnt distributions as the ones
-  showed in \fref{fig4_maxent}. Dots represent inferences made from single cell
-  fluorescence distributions (See Methods for further details).}
+	\caption{\textbf{Comparison of theoretical and experimental channel capacity.}
+	The channel capacity as inferred using the Blahut-Arimoto algorithm
+	\cite{Blahut1972} for varying number of repressors and repressor-DNA
+	affinities. All inferences were performed using 12 IPTG concentrations as
+	detailed in the Methods. Solid lines represent zero-parameter fit predictions
+	done with MaxEnt distributions as the ones showed in \fref{fig4_maxent}. Dots
+	represent inferences made from single cell fluorescence distributions (See
+	Methods for further details).}
   \label{fig5_channcap}
 \end{figure}
