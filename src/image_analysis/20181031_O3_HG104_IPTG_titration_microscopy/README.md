@@ -7,7 +7,7 @@ IPTG titration of the O3 - HG104 strain.
 
 | | |
 |-|-|
-| __Date__ | 2018-10-25 |
+| __Date__ | 2018-10-31 |
 | __Equipment__ | Artemis Nikon Microscope |
 | __User__ | mrazomej |
 
