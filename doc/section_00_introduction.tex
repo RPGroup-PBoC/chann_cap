@@ -1,79 +1,93 @@
-As living organisms thrive in some given environment, they are faced with
-constant changes in their surroundings. From abiotic conditions to biological
-interactions, living organisms of all types sense and respond to external
-signals. At the molecular level where signal transduction unfolds
-mechanistically, there are physical constraints on the accuracy and precision of
-these responses given by the intrinsic stochastic fluctuations
-\cite{Nemenman2010}. This means that two genetically identical cells exposed to
-the same stimulus will not have an identical response \cite{Eldar2010}.
-
-The implications of this biological noise is that cells do not have an infinite
-resolution to distinguish signals and as a consequence there is a one-to-many
-mapping between inputs and outputs. The question then becomes how to analyze
-this probabilistic rather than deterministic relationship between inputs and
-outputs? The abstract answer to this question was worked out in 1948 by Claude
-Shannon who, in his seminal work, founded the field of information theory
-\cite{Shannon1948}. Shannon developed a general framework for how to analyze
-information transmission through noisy communication channels. In his work,
-Shannon showed that the only quantity that satisfies simple conditions of what a
-metric for information should be, was of the same functional form as the
-thermodynamic entropy -- thereby naming it the same \cite{MacKay2003}. He also
-gave a definition, based on this information entropy, for the relationship
-between inputs and outputs known as the mutual information \mrm{see Appendix XX
-for details on these metrics}.
-
-It is natural to think that under certain scenarios living organisms that can
-better resolve signals might have an evolutionary advantage, making it more
-likely that their offspring will have a higher fitness value \cite{Taylor2007a}.
-In recent years there has been a growing interest in understanding the
-theoretical limits on cellular information processing \cite{Bialek2005,
-Gregor2007}, and in quantifying how close evolution has pushed cellular
-signaling pathways to these theoretical limits \cite{Tkacik2008, Dubuis2013,
-Petkova2016}. While these studies have treated the signaling pathway as a
-``black box'' explicitly ignoring all the molecular interactions taking place in
-them, other studies have explored the role that molecular players and regulatory
-architectures have on these information processing tasks \cite{Rieckh2014,
-Ziv2007, Voliotis2014, Tostevin2009, Tkacik2011, Tkacik2008a, Tabbaa2014}.
-Despite the great advancement in our understanding of the information
-processing capabilities of molecular mechanisms, the field still lacks a
-rigorous experimental test of these ideas with precision measurements.
-
-On the other hand, over the last decade the dialogue between theory and
-experiments in gene regulation has led to predictive power not only over the
-mean, but the noise in gene expression as a function of relevant parameters such
-as regulatory protein copy numbers, affinity of these proteins to the DNA
-promoter, as well as the extracellular concentrations of inducer
-molecules \cite{Garcia2011c, Jones2014a, Brewster2014, Razo-Mejia2018} \mrm{Too
-self referential so far. Include Ido, maybe Al Sanchez. It must be
-experiment-theory contrasting though!}. These models based on equilibrium and
-non-equilibrium statistical physics have reached a predictive accuracy level
-such that for simple cases it is now possible to design input-output functions
-\cite{Brewster2012, Barnes2018}. This opens the possibility to exploit these
-predictive models to tackle the question of how much information can genetic
-circuits process.
-
-In this work we follow the same philosophy of theory-experiment dialogue to
-predict from first principles the effect that biophysical parameters such as
-transcription factor copy number and protein-DNA affinity have on the
-information processing capacity of a simple genetic circuit. Specifically we use
-a master-equation-based model to construct the protein copy number distribution
-(output) as a function of an extracellular inducer concentration (input) for
-different combinations of transcription factor copy numbers and binding sites.
-We then compute the channel capacity, i.e. the maximum information that can be
-processed by this gene regulatory architecture. All parameters used for our
-model were inferred from a series of studies that span several experimental
-techniques \cite{Garcia2011c, Brewster2012, Jones2014a, Brewster2014,
-Razo-Mejia2018} \mrm{see Appendix XX Parameter inference}, allowing us to
-perform zero-parameter fit predictions of this non-trivial quantity.
-\mrm{Aztec pyramid reference}
+% As living organisms thrive in some given environment, they are faced with
+% constant changes in their surroundings. From abiotic conditions to biological
+% interactions, living organisms of all types sense and respond to external
+% signals. At the molecular level where signal transduction unfolds
+% mechanistically, there are physical constraints on the accuracy and precision of
+% these responses given by the intrinsic stochastic fluctuations
+% \cite{Nemenman2010}. This means that two genetically identical cells exposed to
+% the same stimulus will not have an identical response \cite{Eldar2010}.
+%
+% The implications of this biological noise is that cells do not have an infinite
+% resolution to distinguish signals and as a consequence there is a one-to-many
+% mapping between inputs and outputs. The question then becomes how to analyze
+% this probabilistic rather than deterministic relationship between inputs and
+% outputs? The abstract answer to this question was worked out in 1948 by Claude
+% Shannon who, in his seminal work, founded the field of information theory
+% \cite{Shannon1948}. Shannon developed a general framework for how to analyze
+% information transmission through noisy communication channels. In his work,
+% Shannon showed that the only quantity that satisfies simple conditions of what a
+% metric for information should be, was of the same functional form as the
+% thermodynamic entropy -- thereby naming it the same \cite{MacKay2003}. He also
+% gave a definition, based on this information entropy, for the relationship
+% between inputs and outputs known as the mutual information \mrm{see Appendix XX
+% for details on these metrics}.
+%
+% It is natural to think that under certain scenarios living organisms that can
+% better resolve signals might have an evolutionary advantage, making it more
+% likely that their offspring will have a higher fitness value \cite{Taylor2007a}.
+% In recent years there has been a growing interest in understanding the
+% theoretical limits on cellular information processing \cite{Bialek2005,
+% Gregor2007}, and in quantifying how close evolution has pushed cellular
+% signaling pathways to these theoretical limits \cite{Tkacik2008, Dubuis2013,
+% Petkova2016}. While these studies have treated the signaling pathway as a
+% ``black box'' explicitly ignoring all the molecular interactions taking place in
+% them, other studies have explored the role that molecular players and regulatory
+% architectures have on these information processing tasks \cite{Rieckh2014,
+% Ziv2007, Voliotis2014, Tostevin2009, Tkacik2011, Tkacik2008a, Tabbaa2014}.
+% Despite the great advancement in our understanding of the information
+% processing capabilities of molecular mechanisms, the field still lacks a
+% rigorous experimental test of these ideas with precision measurements.
+%
+% On the other hand, over the last decade the dialogue between theory and
+% experiments in gene regulation has led to predictive power not only over the
+% mean, but the noise in gene expression as a function of relevant parameters such
+% as regulatory protein copy numbers, affinity of these proteins to the DNA
+% promoter, as well as the extracellular concentrations of inducer
+% molecules \cite{Garcia2011c, Jones2014a, Brewster2014, Razo-Mejia2018} \mrm{Too
+% self referential so far. Include Ido, maybe Al Sanchez. It must be
+% experiment-theory contrasting though!}. These models based on equilibrium and
+% non-equilibrium statistical physics have reached a predictive accuracy level
+% such that for simple cases it is now possible to design input-output functions
+% \cite{Brewster2012, Barnes2018}. This opens the possibility to exploit these
+% predictive models to tackle the question of how much information can genetic
+% circuits process.
+%
+% In this work we follow the same philosophy of theory-experiment dialogue to
+% predict from first principles the effect that biophysical parameters such as
+% transcription factor copy number and protein-DNA affinity have on the
+% information processing capacity of a simple genetic circuit. Specifically we use
+% a master-equation-based model to construct the protein copy number distribution
+% (output) as a function of an extracellular inducer concentration (input) for
+% different combinations of transcription factor copy numbers and binding sites.
+% We then compute the channel capacity, i.e. the maximum information that can be
+% processed by this gene regulatory architecture. All parameters used for our
+% model were inferred from a series of studies that span several experimental
+% techniques \cite{Garcia2011c, Brewster2012, Jones2014a, Brewster2014,
+% Razo-Mejia2018} \mrm{see Appendix XX Parameter inference}, allowing us to
+% perform zero-parameter fit predictions of this non-trivial quantity.
+% \mrm{Aztec pyramid reference}
 
 These predictions are then contrasted with experimental data, where the channel
 capacity is inferred from single-cell fluorescence distributions taken at
 different concentrations of inducer for cells with previously characterized
 biophysical parameters \cite{Garcia2011c, Razo-Mejia2018}. We find that our
-parameter free predictions closely match the experiments.
-\mrm{need to work on a more impactful last paragraph.}
-\rp{Yes. How about saying you quantify the resolution limit of cellular sensing
-or something along those lines?}
+parameter free predictions closely match the experiments. \mrm{In this sense we
+demonstrate how our zero-parameter fit minimal model can be used to quantify
+the resolution with which cells can resolve the environmental state using a
+simple but commonly found genetic circuit.}
 
-\rp{End intro with paragraph on organization of reminder of paper.}
+The reminder of the paper is organized as follows. In \secref{sec_model} we
+define the minimal theoretical model and parameter inference for a simple
+repression genetic circuit. \secref{sec_moments} computes the moments of the
+mRNA and protein distributions from this minimal model. In
+\secref{sec_cell_cycle} we explore the consequences of variability in gene copy
+number along the cell cycle. In this section we compare experimental and
+theoretical quantities related to the moments of the distribution. Specifically
+the predictions for the fold-change in gene expression (mean relative expression
+with respect to an unregulated promoter) and the gene expression noise (standard
+deviation over mean). \secref{sec_maxent} follows with reconstruction of the
+full mRNA and protein distribution from the moments using the maximum entropy
+principle. Finally \secref{sec_channcap} uses the distributions from
+\secref{sec_maxent} to compute the maximum amount of information that the
+genetic circuit can process. Here we again contrast our zero-parameter fit
+predictions with experimental inferences of the channel capacity.
