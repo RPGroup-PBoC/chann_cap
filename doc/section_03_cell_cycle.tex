@@ -15,14 +15,14 @@ for our experimental measurements ({\it galK}) are highlighted.
 Since this change in gene copy number has been shown to have an effect on
 cell-to-cell variability in gene expression \cite{Jones2014a, Peterson2015}, we
 now extend our minimal model to account for these changes in gene copy number
-during the cell cycle.  We assume that the only difference between the
+during the cell cycle.  We reason that the only difference between the
 single-copy state and the two-copies states of the cell is a doubling of the
 mRNA production rate $r_m$. In particular the RNAP rates $\kpon$ and $\kpoff$
-and the mRNA production rate $r_m$ inferred in section \mrm{param section}
+and the mRNA production rate $r_m$ inferred in \secref{sec_model}
 assume that cells spend a fraction $f$ of the cell cycle  with one copy of the
 promoter (mRNA production rate $r_m$) and a fraction $(1-f)$ of the cell cycle
 with two copies of the promoter (mRNA production rate $2 r_m$). This inference
-was performed assuming that at each cell state the mRNA level immediately
+was performed considering that at each cell state the mRNA level immediately
 reaches the steady state value for the corresponding mRNA production rate. The
 steady state assumption is justified since the timescale to reach this steady
 state depends only on the degradation rate $\gm$, which for the mRNA  is much
@@ -31,26 +31,75 @@ experimental conditions). Appendix \mrm{ref appendix for parameter inference}
 shows that  a two-state promoter model is able to capture the experimental data
 from single molecule mRNA counts of an unregulated promoter.
 
-Given that we assume that the protein degradation rate $\gp$ is set by the cell
-division time, we cannot assume that the protein count reaches the corresponding
-steady state value for each stage in the cell cycle. In other words, cells do
-not spend long enough with two copies of the promoter for the protein to reach
-the steady state value corresponding to a transcription rate of $2 r_m$.
-We therefore use the dynamical equations developed in \mrm{ref moments section}
-to numerically integrate the moments of the distribution dynamics with the
-corresponding parameters for each phase of the cell cycle.
+Given that the protein degradation rate $\gp$ in our model is set by the cell
+division time, we cannot consider that the protein count reaches the
+corresponding steady state value for each stage in the cell cycle. In other
+words, cells do not spend long enough with two copies of the promoter for the
+protein to reach the steady state value corresponding to a transcription rate of
+$2 r_m$. We therefore use the dynamical equations developed in
+\secref{sec_moments} to numerically integrate the moments of the distribution
+dynamics with the corresponding parameters for each phase of the cell cycle.
 \fref{fig3_cell_cycle}(B) shows an example corresponding to the mean mRNA level
 (upper panel) and the mean protein level (lower panel) for the case of the
 two-state unregulated promoter. Since we inferred the RNAP rate parameters
-assuming that mRNA reaches steady state at each stage, we see that the numerical
-integration of the equations are consistent with the assumption of having the
-mRNA reach a stable value at each stage (See \fref{fig3_cell_cycle}(B) upper
-panel). On the other hand the mean protein level does not reach a stable value
-at each of the cellular stages. Nevertheless it is interesting to observe that
-after a couple of cell cycles the trajectory from cycle to cycle follows a
-repetitive pattern (See \fref{fig3_cell_cycle}(B) lower panel).
+considering that mRNA reaches steady state at each stage, we see that the
+numerical integration of the equations are consistent with the assumption of
+having the mRNA reach a stable value at each stage (See
+\fref{fig3_cell_cycle}(B) upper panel). On the other hand the mean protein level
+does not reach a stable value at each of the cellular stages. Nevertheless it is
+interesting to observe that after a couple of cell cycles the trajectory from
+cycle to cycle follows a repetitive pattern (See \fref{fig3_cell_cycle}(B) lower
+panel).
 
-\rp{Figure 2(C) not discussed. Is it really part of  Figure 2?}
+To test the effects of including this gene copy number variability in our
+model we compare the numerical results with experimental determinations of
+relevant quantities related to the mean protein copy number and the cell-to-cell
+variability. Specifically as detailed in \mrm{Methods} we obtained single-cell
+fluorescence distributions of different strains under twelve different inducer
+concentrations. The strains imaged spanned three orders of magnitude in
+repressor copy number and variable repressor-DNA affinities. Since these
+bacterial cells were not synchronized, we reason that cells were sampled in any
+stage of the cell cycle. Therefore when computing statistics from the data such
+as the mean fluorescence value, in reality we are averaging over the cell
+cycle. In other words, as depicted in \fref{fig3_cell_cycle}(B) quantities such
+as the mean protein copy number change over time, i.e. $\ee{p} \equiv
+\ee{p(t)}$. This means that obtaining the mean of a population of unsynchronized
+cells is equivalent to averaging this mean protein copy number over the span of
+the cell cycle. Mathematically this is expressed as
+\begin{equation}
+	\ee{p}_c = \int_{t_o}^{t_d} \ee{p(t)} P(t) dt,
+	\label{eq_time_avg}
+\end{equation}
+where $\ee{p}_c$ represents the average protein copy number over a cell cycle,
+$t_o$ represents the start of the cell cycle after the cell divided, $t_d$
+represents the time of cell division, and $P(t)$ represents the probability of
+any cell being at time $t \in [t_o, t_d]$ of their cell cycle. We do not
+consider cells uniformly distributed along the cell cycle since it is known that
+cells follow an exponential distribution, having more younger than older cells
+at any time point \cite{Powell1956}. All computations hereafter are therefore
+done by applying an averaging like the one in \eref{eq_time_avg} for the span
+of a cell cycle.
+
+\fref{fig3_cell_cycle}(C) compares zero-parameter fit predictions (solid lines)
+with experimentally determined quantities. The upper row shows the
+non-dimensional \mrm{adimensional?} quantity defined as the fold-change in gene
+expression \cite{Garcia2011c}. This fold-change is defined as the relative mean
+expression level with respect to an unregulated promoter. For protein this is
+\begin{equation}
+	\foldchange = {\ee{p(R \neq 0)}_c \over \ee{p(R = 0)}_c},
+\end{equation}
+where $\ee{p(R \neq 0)}_c$ represents the mean protein count for a cell with
+non-zero repressor copy number $R$ count, and $\ee{p(R = 0)}_c$ represents the
+equivalent for a strain with no repressors present. The experimental points were
+determined from the fluorescent intensities of cells with varying repressor copy
+number and a $\Delta lacI$ strain with no repressor gene present \mrm{See image
+analysis appendix for further details}. The lower row shows the noise in gene
+expression $\eta$ defined as the standard deviation over the mean. The good
+correspondence between the theoretical predictions and the experimental data
+could only be achieved when considering the gene copy number variability treated
+in this section \mrm{See Appendix XX for comparison with single-copy
+predictions}
+
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -67,9 +116,6 @@ repetitive pattern (See \fref{fig3_cell_cycle}(B) lower panel).
 	lines) and experimental data (circles) of the fold-change (upper row) and
 	noise $\nu$ (lower row) for different repressor binding sites with different
 	affinities and different repressor copy numbers per cell. White dots on the
-	lower row are plotted on a different scale for visual clarity. \mrm{I need to
-	discuss this with you Rob. It has to do with being 100\% honest by showing all
-	of the data, but not letting some outliers with known pathologies distract the
-	reader from the main point.}}
+	lower row are plotted on a different scale for visual clarity.}
   \label{fig3_cell_cycle}
 \end{figure}
