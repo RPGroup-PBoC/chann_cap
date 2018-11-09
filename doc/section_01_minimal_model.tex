@@ -1,86 +1,85 @@
-\section*{Results}
+\section{Results}
 
-\subsection*{Minimal model of transcriptional regulation}
-\label{sec_model}
+\subsection{Minimal model of transcriptional regulation}\label{sec_model}
 
-% We begin by defining the simple repression genetic circuit to be used throughout
-% this work. As a tractable circuit for which we have control over the parameters
-% both theoretically and experimentally we chose the so-called simple  repression
-% motif, a common regulatory scheme among prokaryotes \cite{Rydenfelt2014}. This
-% circuit consists of a single promoter with an RNA-polymerase (RNAP) binding site
-% and a single binding site for a transcriptional repressor \cite{Garcia2011c}.
-% The regulation due to the repressor occurs via exclusion of the RNAP from its
-% binding site when the repressor is bound, decreasing the likelihood of having a
-% transcription event. As in many examples throughout biology, we consider an
-% allosteric repressor, meaning that it can exist in two conformations, one in
-% which the repressor is able to bind to the specific binding site (active state)
-% and one in which it cannot bind the specific binding site (inactive state). The
-% environmental signaling occurs via passive import of an extracellular inducer
-% that binds the repressor, shifting the equilibrium between the two conformations
-% of the repressor \cite{Razo-Mejia2018}. In previous publications we have
-% extensively characterized the mean response of this circuit under different
-% conditions using equilibrium based models \mrm{cite aztec pyramid}. In this work
-% we build upon these models to characterize the full distribution of gene
-% expression as parameters such as repressor copy number and its affinity for the
-% DNA are systematically varied.
-%
-% Given the discrete nature of molecular species count inside cells, chemical
-% master equations have emerged as a useful tool to model the inherent probability
-% distribution of these counts \cite{Sanchez2013}. In \fref{fig2_minimal_model}(A)
-% we show the minimal model and the necessary set of parameters needed to predict
-% mRNA and protein distributions. Specifically, we assume a three-state model
-% where the promoter can be found 1) with RNAP bound ($P$ state), 2) empty ($E$
-% state) and 3) with the repressor bound ($R$ state). These three states generate
-% a system of coupled differential equations for each of the three state
-% distributions $P_P(m, p)$, $P_E(m, p)$ and $P_R(m, p)$, where $m$ and $p$ are
-% the mRNA and protein count per cell, respectively. Given the rates shown in
-% \fref{fig2_minimal_model}(A) we define the system of ODEs for a specific $m$
-% and $p$. For the RNAP bound state we have
-% \begin{equation}
-%   \begin{aligned}
-%     \dt{P_P(m, p)} &=
-%     - \overbrace{\kpoff P_P(m, p)}^{P \rightarrow E} % P -> E
-%     + \overbrace{\kpon P_E(m, p)}^{E \rightarrow P}\\ % E -> P
-%     &+ \overbrace{r_m P_p(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
-%     - \overbrace{r_m P_p(m, p)}^{m \rightarrow m+1}% m -> m+1
-%     + \overbrace{\gm (m + 1) P_P(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
-%     - \overbrace{\gm m P_P(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
-%     &+ \overbrace{r_p m P_P(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
-%     - \overbrace{r_p m P_P(m, p)}^{p \rightarrow p+1} % p -> p+1
-%     + \overbrace{\gp (p + 1) P_P(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
-%     - \overbrace{\gp p P_P(m, p)}^{p \rightarrow p-1}. % p -> p-1
-%   \end{aligned}
-% \end{equation}
-% For the empty state $E$ we have
-% \begin{equation}
-%   \begin{aligned}
-%     \dt{P_E(m, p)} &=
-%     \overbrace{\kpoff P_P(m, p)}^{P \rightarrow E} % P -> E
-%     - \overbrace{\kpon P_E(m, p)}^{E \rightarrow P} % E -> P
-%     + \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
-%     - \overbrace{\kron P_E(m, p)}^{E \rightarrow R}\\ % E -> R
-%     &+ \overbrace{\gm (m + 1) P_E(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
-%     - \overbrace{\gm m P_E(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
-%     &+ \overbrace{r_p m P_E(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
-%     - \overbrace{r_p m P_E(m, p)}^{p \rightarrow p+1} % p -> p+1
-%     + \overbrace{\gp (p + 1) P_E(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
-%     - \overbrace{\gp p P_E(m, p)}^{p \rightarrow p-1}. % p -> p-1
-%   \end{aligned}
-% \end{equation}
-% And finally, for the repressor bound state $R$ we have
-% \begin{equation}
-%   \begin{aligned}
-%     \dt{P_R(m, p)} &=
-%     - \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
-%     + \overbrace{\kron P_E(m, p)}^{E \rightarrow R}\\ % E -> R
-%     &+ \overbrace{\gm (m + 1) P_R(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
-%     - \overbrace{\gm m P_R(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
-%     &+ \overbrace{r_p m P_R(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
-%     - \overbrace{r_p m P_R(m, p)}^{p \rightarrow p+1} % p -> p+1
-%     + \overbrace{\gp (p + 1) P_R(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
-%     - \overbrace{\gp p P_R(m, p)}^{p \rightarrow p-1}. % p -> p-1
-%   \end{aligned}
-% \end{equation}
+We begin by defining the simple repression genetic circuit to be used throughout
+this work. As a tractable circuit for which we have control over the parameters
+both theoretically and experimentally we chose the so-called simple  repression
+motif, a common regulatory scheme among prokaryotes \cite{Rydenfelt2014}. This
+circuit consists of a single promoter with an RNA-polymerase (RNAP) binding site
+and a single binding site for a transcriptional repressor \cite{Garcia2011c}.
+The regulation due to the repressor occurs via exclusion of the RNAP from its
+binding site when the repressor is bound, decreasing the likelihood of having a
+transcription event. As in many examples throughout biology, we consider an
+allosteric repressor, meaning that it can exist in two conformations, one in
+which the repressor is able to bind to the specific binding site (active state)
+and one in which it cannot bind the specific binding site (inactive state). The
+environmental signaling occurs via passive import of an extracellular inducer
+that binds the repressor, shifting the equilibrium between the two conformations
+of the repressor \cite{Razo-Mejia2018}. In previous publications we have
+extensively characterized the mean response of this circuit under different
+conditions using equilibrium based models \mrm{cite aztec pyramid}. In this work
+we build upon these models to characterize the full distribution of gene
+expression as parameters such as repressor copy number and its affinity for the
+DNA are systematically varied.
+
+Given the discrete nature of molecular species count inside cells, chemical
+master equations have emerged as a useful tool to model the inherent probability
+distribution of these counts \cite{Sanchez2013}. In \fref{fig2_minimal_model}(A)
+we show the minimal model and the necessary set of parameters needed to predict
+mRNA and protein distributions. Specifically, we assume a three-state model
+where the promoter can be found 1) with RNAP bound ($P$ state), 2) empty ($E$
+state) and 3) with the repressor bound ($R$ state). These three states generate
+a system of coupled differential equations for each of the three state
+distributions $P_P(m, p)$, $P_E(m, p)$ and $P_R(m, p)$, where $m$ and $p$ are
+the mRNA and protein count per cell, respectively. Given the rates shown in
+\fref{fig2_minimal_model}(A) we define the system of ODEs for a specific $m$
+and $p$. For the RNAP bound state we have
+\begin{equation}
+  \begin{aligned}
+    \dt{P_P(m, p)} &=
+    - \overbrace{\kpoff P_P(m, p)}^{P \rightarrow E} % P -> E
+    + \overbrace{\kpon P_E(m, p)}^{E \rightarrow P}\\ % E -> P
+    &+ \overbrace{r_m P_p(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
+    - \overbrace{r_m P_p(m, p)}^{m \rightarrow m+1}% m -> m+1
+    + \overbrace{\gm (m + 1) P_P(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
+    - \overbrace{\gm m P_P(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
+    &+ \overbrace{r_p m P_P(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
+    - \overbrace{r_p m P_P(m, p)}^{p \rightarrow p+1} % p -> p+1
+    + \overbrace{\gp (p + 1) P_P(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
+    - \overbrace{\gp p P_P(m, p)}^{p \rightarrow p-1}. % p -> p-1
+  \end{aligned}
+\end{equation}
+For the empty state $E$ we have
+\begin{equation}
+  \begin{aligned}
+    \dt{P_E(m, p)} &=
+    \overbrace{\kpoff P_P(m, p)}^{P \rightarrow E} % P -> E
+    - \overbrace{\kpon P_E(m, p)}^{E \rightarrow P} % E -> P
+    + \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
+    - \overbrace{\kron P_E(m, p)}^{E \rightarrow R}\\ % E -> R
+    &+ \overbrace{\gm (m + 1) P_E(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
+    - \overbrace{\gm m P_E(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
+    &+ \overbrace{r_p m P_E(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
+    - \overbrace{r_p m P_E(m, p)}^{p \rightarrow p+1} % p -> p+1
+    + \overbrace{\gp (p + 1) P_E(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
+    - \overbrace{\gp p P_E(m, p)}^{p \rightarrow p-1}. % p -> p-1
+  \end{aligned}
+\end{equation}
+And finally, for the repressor bound state $R$ we have
+\begin{equation}
+  \begin{aligned}
+    \dt{P_R(m, p)} &=
+    - \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
+    + \overbrace{\kron P_E(m, p)}^{E \rightarrow R}\\ % E -> R
+    &+ \overbrace{\gm (m + 1) P_R(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
+    - \overbrace{\gm m P_R(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
+    &+ \overbrace{r_p m P_R(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
+    - \overbrace{r_p m P_R(m, p)}^{p \rightarrow p+1} % p -> p+1
+    + \overbrace{\gp (p + 1) P_R(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
+    - \overbrace{\gp p P_R(m, p)}^{p \rightarrow p-1}. % p -> p-1
+  \end{aligned}
+\end{equation}
 
 It is convenient to rewrite these equations in a compact matrix notation
 \cite{Sanchez2013}. For this we define the vector $\PP(m, p)$ as
@@ -103,7 +102,7 @@ mRNA production and degradation matrices, respectively, and $\Rp$ and $\Gp$ are
 the protein production and degradation matrices respectively \mrm{See Appendix
 XX for full definition of these matrices}.
 
-\subsection*{Inferring parameters from published data sets}
+\subsection{Inferring parameters from published data sets}
 
 A decade of research in our group has characterized the simple repression motif
 with an ever expanding scope to learn the physics of this genetic circuit

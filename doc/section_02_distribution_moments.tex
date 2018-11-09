@@ -1,4 +1,4 @@
-\subsection*{Computing the moments of the mRNA and protein distributions}
+\subsection{Computing the moments of the mRNA and protein distributions}
 \label{sec_moments}
 
 Solving chemical master equations represent a challenge that is still an active
@@ -8,8 +8,6 @@ entropy (MaxEnt) approach, makes use of the moments of the distribution to
 approximate the full distribution. In this section we will demonstrate an
 iterative algorithm to compute the mRNA and protein distribution moments.
 
-\mrm{Note that in the previous section I will have already written the master
-equation in matrix notation.}
 Our simple repression kinetic model depicted in \fref{fig2_minimal_model}(A)
 consists of an infinite system of ODEs for each possible pair $m, p$. To
 compute any moment of our chemical master equation we define a vector
@@ -26,9 +24,8 @@ computed as
   \label{eq_mom_def}
 \end{equation}
 
-Summing over all possible $m$ and $p$ values in \mrm{ref chem eq in matrix
-notation} results in a ODE for any moment of the form \mrm{See appendix XX for
-full derivation}
+Summing over all possible $m$ and $p$ values in \eref{eq_cme_matrix} results in
+a ODE for any moment of the form \mrm{See appendix XX for full derivation}
 \begin{equation}
   \begin{aligned}
     \dt{\bb{\ee{m^x p^y}}} &=
@@ -64,7 +61,7 @@ Explicitly for the three-state promoter model depicted in
 
 Given this definition we can define the general moment dynamics as
 \begin{equation}
-\dt{\mu} = \bb{A \mu},
+\dt{\boldsymbol{\mu}} = \bb{A} \boldsymbol{\mu},
 \label{eq_mom_dynamics}
 \end{equation}
 where $\bb{A}$ is a square matrix that contains all the connections in the
