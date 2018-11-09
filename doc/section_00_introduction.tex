@@ -1,8 +1,9 @@
 As living organisms thrive in some given environment, they are faced with
 constant changes in their surroundings. From abiotic conditions to biological
-interactions, living organisms of all types sense and respond to external
-signals as depicted in \fref{fig1_intro}(A) for a bacterial cell sensing a
-chemical concentration. At the molecular level where signal transduction unfolds
+interactions such as cell-to-cell communication in a tissue or a bacterial
+biofilm, living organisms of all types sense and respond to external signals as
+depicted in \fref{fig1_intro}(A) for a bacterial cell sensing a chemical
+concentration. At the molecular level where signal transduction unfolds
 mechanistically, there are physical constraints on the accuracy and precision of
 these responses given by the intrinsic stochastic fluctuations
 \cite{Nemenman2010}. This means that two genetically identical cells exposed to
@@ -10,20 +11,20 @@ the same stimulus will not have an identical response \cite{Eldar2010}.
 
 The implications of this biological noise is that cells do not have an infinite
 resolution to distinguish signals and as a consequence there is a one-to-many
-mapping between inputs and outputs. In that sense cells perform a Bayesian
-inference of the state of the environment given their phenotypic response as
-schematized in \fref{fig1_intro}(B). The question then becomes how to analyze
-this probabilistic rather than deterministic relationship between inputs and
-outputs? The abstract answer to this question was worked out in 1948 by Claude
-Shannon who, in his seminal work, founded the field of information theory
-\cite{Shannon1948}. Shannon developed a general framework for how to analyze
-information transmission through noisy communication channels. In his work,
-Shannon showed that the only quantity that satisfies simple conditions of what a
-metric for information should be, was of the same functional form as the
-thermodynamic entropy -- thereby naming it the same \cite{MacKay2003}. He also
-gave a definition, based on this information entropy, for the relationship
-between inputs and outputs known as the mutual information \mrm{see Appendix XX
-for details on these metrics}.
+mapping between inputs and outputs. In that sense one could think of cells
+performing a Bayesian inference of the state of the environment given their
+phenotypic response as schematized in \fref{fig1_intro}(B). The question then
+becomes how to analyze this probabilistic rather than deterministic relationship
+between inputs and outputs? The abstract answer to this question was worked out
+in 1948 by Claude Shannon who, in his seminal work, founded the field of
+information theory \cite{Shannon1948}. Shannon developed a general framework for
+how to analyze information transmission through noisy communication channels. In
+his work, Shannon showed that the only quantity that satisfies simple conditions
+of what a metric for information should be, was of the same functional form as
+the thermodynamic entropy -- thereby christening his metric the information
+entropy \cite{MacKay2003}. He also gave a definition, based on this information
+entropy, for the relationship between inputs and outputs known as the mutual
+information \mrm{see Appendix XX for details on these metrics}.
 
 It is natural to think that under certain scenarios living organisms that can
 better resolve signals might have an evolutionary advantage, making it more
@@ -52,14 +53,16 @@ experiment-theory contrasting though!}. These models based on equilibrium and
 non-equilibrium statistical physics have reached a predictive accuracy level
 such that for simple cases it is now possible to design input-output functions
 \cite{Brewster2012, Barnes2018}. This opens the possibility to exploit these
-predictive models to tackle the question of how much information can genetic
-circuits process. The question lays at the heart of understanding the precision
-of the cellular response to environmental signals. \fref{fig1_intro}(C)
-schematizes a scenario in which for three different stimulus (inducer
-concentrations) two bacterial strains respond with different levels of precision
-given the degrees of overlap between outputs. It is precisely this overlap
-between responses that determines the resolution with which cells can
-distinguish different inputs.
+predictive models to tackle the question of how much information genetic
+circuits can process. The question lays at the heart of understanding the
+precision of the cellular response to environmental signals.
+\fref{fig1_intro}(C) schematizes a scenario in which for three different
+stimuli (inducer concentrations) two bacterial strains respond with different
+levels of precision given the degrees of overlap between outputs. It is
+precisely this overlap between responses that determines the resolution with
+which cells can distinguish different inputs.
+\rp{You could mention overlap of point spread function and rayleigh diffraction
+limit.}
 
 In this work we follow the same philosophy of theory-experiment dialogue to
 predict from first principles the effect that biophysical parameters such as
@@ -72,9 +75,8 @@ We then compute the channel capacity, i.e. the maximum information that can be
 processed by this gene regulatory architecture. All parameters used for our
 model were inferred from a series of studies that span several experimental
 techniques \cite{Garcia2011c, Brewster2012, Jones2014a, Brewster2014,
-Razo-Mejia2018} \mrm{see Appendix XX Parameter inference}, allowing us to
-perform zero-parameter fit predictions of this non-trivial quantity.
-\mrm{Aztec pyramid reference}
+Razo-Mejia2018}, allowing us to perform parameter free predictions of this
+non-trivial quantity. \mrm{Aztec pyramid reference}
 
 These predictions are then contrasted with experimental data, where the channel
 capacity is inferred from single-cell fluorescence distributions taken at
@@ -109,10 +111,10 @@ predictions with experimental inferences of the channel capacity.
 	noisy communication channel. From an environmental input (inducer molecule
 	concentration) to a phenotypic output (protein expression level), cellular
 	signaling systems can be modeled as noisy communication channels. (B) As cells
-	respond to external stimulus they perform a Bayesian inference of the state of
-	the environment. As the phenotype (protein level) serves as the internal
-	representation of the environmental state (inducer concentration), the
-	probability of a cell being on a specific environment is a function of the
+	respond to external stimuli we imagine they perform a Bayesian inference of
+	the state of the environment. As the phenotype (protein level) serves as the
+	internal representation of the environmental state (inducer concentration),
+	the probability of a cell being on a specific environment is a function of the
 	probability of the response given that environmental state. (C) The precision
 	of the inference of the environmental state depends on how well can cells
 	resolve different inputs. For three different levels of input (left panel) the
