@@ -42,7 +42,7 @@ def set_plotting_style():
     plt.rc('xtick.major', pad=-1)
     plt.rc('ytick.major', pad=-1)
     plt.rc('mathtext', fontset='stixsans', sf='sansserif')
-    plt.rc('figure', figsize=[4.0, 3.0])
+    plt.rc('figure', figsize=[3.5, 2.5])
     plt.rc('svg', fonttype='none')
     plt.rc('legend', title_fontsize='8', frameon=True, 
            facecolor='#E3DCD0', framealpha=1)
@@ -53,9 +53,11 @@ def set_plotting_style():
 # Plotting the standard PMF CDF plot
 def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
                  mean_mark=True, marker_height=None,
+                 marker_size=200,
                  pmf_edgecolor='k', pmf_alpha=0.8,
                  color_bar=True, cbar_label='', binstep=1,
-                 figsize=(4, 4), title='', xlabel='', xlim=None, ylim=None):
+                 figsize=(3.5, 3.5), title='', xlabel='', xlim=None, ylim=None,
+                 labelsize=8, cbar_fontsize=8):
     '''
     Custom plot of the PMF and the CDF of multiple distributions
     with a side legend.
@@ -81,6 +83,8 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     marker_height : float.
         Height that all of the markers that point at the mean should
         have.
+    marker_size : float. Default = 200.
+        Size of the markers that indicate the mean of the PMF.
     pmf_edgecolor : string or RGB colors. Default : 'k'
         Color for the edges of the histograms in the PMF plot.
         If a single entry is listed, this color is used for all PMF edges.
@@ -106,6 +110,11 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     ylim : array-like. 1 x 2.
         Limits on the y-axis for the PMF. The CDF goes from 0 to 1 by
         definition.
+    labelsize : float. Default = 8
+        Font size for the plot labels, meaning the (A) and (B) on the corner of
+        the plot.
+    cbar_fontsize : float. Default = 8
+        Font size for the labels on the colorbar
     '''
     # Determine if user gave the name of a color palette or a list of colors
     if type(color_palette) == str:
@@ -164,7 +173,7 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     else:
         height = marker_height
     mean_plot = ax[0].scatter(mean_dist, [height] * len(mean_dist),
-                              marker='v', s=200,
+                              marker='v', s=marker_size,
                               c=np.arange(len(mean_dist)), cmap=cmap,
                               edgecolor='k', linewidth=1.5)
 
@@ -175,12 +184,12 @@ def pmf_cdf_plot(x, px, legend_var, color_palette='Blues',
     for j, c in enumerate(legend_var):
         cbar.ax.text(1, j / len(legend_var) + 1 / (2 * len(legend_var)),
                      c, ha='left', va='center',
-                     transform=cbar_ax.transAxes, fontsize=12)
+                     transform=cbar_ax.transAxes, fontsize=cbar_fontsize)
     cbar.ax.get_yaxis().labelpad = 35
     cbar.set_label(r'{:s}'.format(cbar_label))
 
-    plt.figtext(-0.02, .9, '(A)', fontsize=18)
-    plt.figtext(-0.02, .46, '(B)', fontsize=18)
+    plt.figtext(-0.02, .9, '(A)', fontsize=labelsize)
+    plt.figtext(-0.02, .46, '(B)', fontsize=labelsize)
 
     plt.subplots_adjust(hspace=0.06)
 
