@@ -72,6 +72,10 @@ df_filt = df_im[(df_im.area > 0.5) & (df_im.area < 6.0) &
 # Add column of absolute intensity
 df_filt.loc[:, 'intensity'] = df_filt.area * df_filt.mean_intensity
 
+## SPECIAL CASE OF REMOVING THE ∆lacI data for the 0uM case since it has
+## a significant deviation
+df_filt = df_filt[~ ((df_filt.rbs == 'delta') & (df_filt.IPTG_uM == 0))]
+
 # Save file in the same directory as the summary plots
 df_filt.to_csv('./outdir/' +
                str(DATE) + '_' + OPERATOR + '_' +
