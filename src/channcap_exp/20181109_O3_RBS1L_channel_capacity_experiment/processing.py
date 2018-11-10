@@ -126,7 +126,7 @@ df_cc[['date', 'bins']] = df_cc[['date', 'bins']].astype(int)
 # Computing the channel capacity for randomized data
 # =============================================================================
 
-compute_exp = True
+compute_exp = False
 if compute_exp:
     print('shuffling  data')
     df = df.assign(shuffled=df.intensity.sample(frac=1).values)
