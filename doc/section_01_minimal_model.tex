@@ -105,23 +105,24 @@ XX for full definition of these matrices}.
 \subsection{Inferring parameters from published data sets}
 
 A decade of research in our group has characterized the simple repression motif
-with an ever expanding scope to learn the physics of this genetic circuit
-\mrm{Aztec pyramid ref}. In doing so we have come to understand the mean
-response of a single promoter to varying levels of repressor copy numbers and
-repressor-DNA affinities \cite{Garcia2011c}, the effect that competing binding
-sites and multiple promoter copies have on the regulation \cite{Brewster2014},
-and on a recent publication, assisted by the MWC model, we added the allosteric
-nature of the repressor \cite{Razo-Mejia2018}. All of these studies have
-exploited the simplicity and predictive power of equilibrium approximations of
-these non-equilibrium systems \cite{Buchler2003}. We have also used a similar
-kinetic model to the one depicted in \fref{fig2_minimal_model}(A) to study the
-noise in mRNA copy number \cite{Jones2014a}. As an test case of the solidity of
-our theoretical understanding of the so-called ``hydrogen atom'' of
-transcriptional regulation we combine all of the studies mentioned above to
-inform the parameter values of the model presented in
-\fref{fig2_minimal_model}(A). \fref{fig2_minimal_model}(B) schematizes the
-different data sets and experimental techniques used to measure gene expression
-along with the parameters that can be inferred from such data sets.
+with an ever expanding array of predictions and corresponding experiments to
+learn the physics of this genetic circuit \mrm{Aztec pyramid ref}. In doing so
+we have come to understand the mean response of a single promoter in the
+presence of varying levels of repressor copy numbers and repressor-DNA
+affinities \cite{Garcia2011c}, due to the effect that competing binding sites
+and multiple promoter copies \cite{Brewster2014}, and in recent work, assisted
+by the MWC model, we added the allosteric nature of the repressor
+\cite{Razo-Mejia2018}. All of these studies have exploited the simplicity and
+predictive power of equilibrium approximations to these non-equilibrium systems
+\cite{Buchler2003}. We have also used a similar kinetic model to the one
+depicted in \fref{fig2_minimal_model}(A) to study the noise in mRNA copy number
+\cite{Jones2014a}. As a test case of the depth of our theoretical understanding
+of the so-called ``hydrogen atom'' of transcriptional regulation we combine all
+of the studies mentioned above to inform the parameter values of the model
+presented in \fref{fig2_minimal_model}(A). \fref{fig2_minimal_model}(B)
+schematizes the different data sets and experimental techniques used to measure
+gene expression along with the parameters that can be inferred from such data
+sets.
 
 \mrm{Appendix XX expands on the details of how the inference was performed for
 each of the parameters}, but in summary the RNAP rates $\kpon$ and $\kpoff$, as
@@ -130,21 +131,23 @@ degradation rate $\gm$ by fitting a two-state promoter model \cite{Peccoud1995}
 (no state $R$ from \fref{fig2_minimal_model}(A)) to mRNA FISH data of an
 unregulated promoter (no  repressor present in the cell) \cite{Jones2014a}. The
 repressor on rate is assumed to be of the form $\kron = k_o [R]$ where $k_o$ is
-a diffusion limited constant and $[R]$ is the active repressors concentration in
+a diffusion limited on rate and $[R]$ is the active repressors concentration in
 the cell \cite{Jones2014a}. This concentration of active repressors is at the
 same time determined by the mean repressor copy number in the cell, and the
-fraction of repressors in the active state. Given the separation of time-scales
-between the rapid conformational changes of the repressor and the slower
-downstream processes, we assume that the probability of the repressor being in
-the active state is given by the equilibrium MWC model with parameters $K_A$,
-$K_I$, and $\eAI$ previously characterized from video-microscopy and
-flow-cytometry data \cite{Razo-Mejia2018}. For the repressor off rate $\kroff$
-we take advantage of the fact that the mean mRNA copy number as derived from the
-model in \fref{fig2_minimal_model}(A) casted in the language of rates is of the
-same functional form as the equilibrium model casted in the language of binding
+fraction of repressors in the active state. \mrm{Given the separation of
+time-scales between the rapid conformational changes of the repressor and the
+slower downstream processes} \rp{You'll have to prove this }, we assume that the
+probability of the repressor being in the active state is given by the
+equilibrium MWC model with parameters $K_A$, $K_I$, and $\eAI$ previously
+characterized from video-microscopy and flow-cytometry data
+\cite{Razo-Mejia2018}. For the repressor off rate $\kroff$ we take advantage of
+the fact that the mean mRNA copy number as derived from the model in
+\fref{fig2_minimal_model}(A) cast in the language of rates is of the same
+functional form as the equilibrium model cast in the language of binding
 energies \cite{Phillips2015}. Therefore the inferred value of the repressor-DNA
 binding energy $\eR$ along with the previously determined rates constraints the
 value of the repressor off rate $\kroff$.
+\rp{I feel like we need a little more detail about how you get the parameters}
 
 
 \begin{figure}[h!]
