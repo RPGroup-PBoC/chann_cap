@@ -5,9 +5,9 @@ mRNA and protein $P(m, p)$ we use the chemical master equation formalism as
 described in \secref{sec_model}. Specifically we assume a three-state model
 where the promoter can be found 1) with RNAP bound ($P$ state), 2) empty ($E$
 state) and 3) with the repressor bound ($R$ state) (See
-\fref{fig2_minimal_model}(A). These three states generate a system of three
-coupled differential equations for each of the three state distributions $P_P(m,
-p)$, $P_E(m, p)$ and $P_R(m, p)$. Given the rates shown in
+\fref{fig2_minimal_model}(A)). These three states generate a system of coupled
+differential equations for each of the three state distributions $P_P(m, p)$,
+$P_E(m, p)$ and $P_R(m, p)$. Given the rates shown in
 \fref{fig2_minimal_model}(A) let us define the system of ODEs. For the RNAP
 bound state we have
 \begin{equation}
@@ -63,7 +63,7 @@ system of ODEs containing $\kron$ or $\kroff$ are then set to zero.
 
 As detailed in \secref{sec_model} it is convenient to express this system using
 matrix notation \cite{Sanchez2013}. For this we define $\PP(m, p) = (P_P(m, p),
-P_E(m, p), P_R(m, p))$. Then the system of PDEs can be expressed as
+P_E(m, p), P_R(m, p))^T$. Then the system of PDEs can be expressed as
 \begin{equation}
   \begin{aligned}
     \dt{\PP(m, p)} &= \Km \PP(m, p)
@@ -129,34 +129,40 @@ $\kroff$ to zero.
 \section{Parameter inference}
 
 With the objective of generating falsifiable predictions with meaningful
-parameters we infer the kinetic rates from this three-state promoter model using
+parameters we infer the kinetic rates for this three-state promoter model using
 different data sets generated in our lab over the last decade concerning
-different aspects of the regulation of this simple genetic circuit. The path
-used to systematically find parameter values was constrained by the nature of
-the theoretical and experimental relevance of each of the available data sets.
-For example, for the RNAP rates $\kpon$ and $\kpoff$ and the mRNA production
-rate $r_m$ we used single-molecule mRNA FISH counts from an unregulated promoter
-\cite{Jones2014a}. Once these parameters are fixed, we use these values to
-constraint the repressor rates $\kron$ and $\kroff$. These repressor rates are
-obtained using information from mean gene expression measurements from bulk LacZ
-colorimetric assays \cite{Garcia2011c}. We also expand our model to include the
-allosteric nature of the repressor protein, taking advantage of video microscopy
-measurements done in the context of multiple promoter copies \cite{Brewster2014}
-and flow-cytometry measurements of the mean response of the system to different
-levels of induction \cite{Razo-Mejia2018}.
+different aspects of the regulation of the simple repression motif. The path
+we use to systematically inform parameter values is constrained by the nature
+of the theoretical and experimental relevance of each of the available data
+sets. For example, for the RNAP rates $\kpon$ and $\kpoff$, and the mRNA
+production rate $r_m$ we use single-molecule mRNA FISH counts from an
+unregulated promoter \cite{Jones2014a}. Once these parameters are fixed, we use
+the values to constrain the repressor rates $\kron$ and $\kroff$. These
+repressor rates are obtained using information from mean gene expression
+measurements from bulk LacZ colorimetric assays \cite{Garcia2011c}. We also
+expand our model to include the allosteric nature of the repressor protein,
+taking advantage of video microscopy measurements done in the context of
+multiple promoter copies \cite{Brewster2014} and flow-cytometry measurements of
+the mean response of the system to different levels of induction
+\cite{Razo-Mejia2018}. In what follows of this section we detail the steps
+taken to infer the parameter values. At each step the values of the parameters
+inferred in previous sections constrain the values of the following parameters,
+building in this way a self-consistent theory informed by work that spans
+several experimental techniques.
 
 \subsection{RNAP rates from unregulated two-state promoter}
 
 We begin our parameter inference problem with the RNAP rates $\kpon$ and
 $\kpoff$, as well as the mRNA production rate $r_m$. In this case there are only
-two states  available to the promoter -- the empty state $E$ and the RNAP bound
-state $P$. That means that the third PDE for $P_R(m)$ is removed from the
-system. The steady state distribution of mRNA for this particular two-state
-promoter model has been analytically solved by Peccoud and Ycart
-\cite{Peccoud1995}. The mRNA distribution $P(m) \equiv P_E(m) + P_P(m)$ is of
-the form
+two states available to the promoter -- the empty state $E$ and the RNAP bound
+state $P$. That means that the third PDE for $P_R(m, p)$ is removed from the
+system. The mRNA steady state distribution for this particular two-state
+promoter model was solved analytically by Peccoud and Ycart \cite{Peccoud1995}.
+The mRNA distribution $P(m) \equiv P_E(m) + P_P(m)$ is of the form
 \begin{equation}
-  P(m) = {\Gamma \left( \frac{\kpon}{\gm} + m \right) \over
+  \small
+  P(m \mid \kpon, \kpoff, r_m, \gm) =
+  {\Gamma \left( \frac{\kpon}{\gm} + m \right) \over
   \Gamma(m + 1) \Gamma\left( \frac{\kpoff+\kpon}{\gm} + m \right)}
   {\Gamma\left( \frac{\kpoff+\kpon}{\gm} \right) \over
   \Gamma\left( \frac{\kpon}{\gm} \right)}
@@ -169,18 +175,18 @@ the form
 where $\Gamma(\cdot)$ is the gamma function, and $F_1^1$ is the confluent
 hypergeometric function of the first kind. This rather complicated expression
 will aid us to find parameter values for the rates. The inferred rates $\kpon$,
-$\kpoff$ and $r_m$ are expressed in units of the mRNA degradation rate $\gm$.
-This is because the model in \eref{seq_two_state_mRNA} is homogeneous in time,
-meaning that if we divide all rates by a constant it would be equivalent to
-multiplying the time scale of the problem by the same constant.
+$\kpoff$ and $r_m$ will be expressed in units of the mRNA degradation rate
+$\gm$. This is because the model in \eref{seq_two_state_mRNA} is homogeneous in
+time, meaning that if we divide all rates by a constant it would be equivalent
+to multiplying the time scale of the problem by the same constant.
 
 \subsubsection*{Bayesian parameter inference of RNAP rates}
 
-In order to make progress at inferring the RNAP rates from experimental data we
-make use of the single-molecule mRNA FISH data from Jones et al.
-\cite{Jones2014a}. \fref{sfig_lacUV5_FISH} shows the mRNA per cell distribution
-for the \textit{lacUV5} promoter. This promoter, being rather strong has a mean
-copy number of $\ee{m} \approx 18$ mRNA/cell.
+In order to make progress at inferring the RNAP rates we make use of the
+single-molecule mRNA FISH data from Jones et al. \cite{Jones2014a}.
+\fref{sfig_lacUV5_FISH} shows the mRNA per cell distribution for the
+\textit{lacUV5} promoter used throughout this work. This promoter being rather
+strong has a mean copy number of $\ee{m} \approx 18$ mRNA/cell.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -191,101 +197,114 @@ copy number of $\ee{m} \approx 18$ mRNA/cell.
   \label{sfig_lacUV5_FISH}
 \end{figure}
 
-Having this data in hand we now use Bayesian parameter inference to infer the
-parameter values of our rates. Writing Bayes theorem we have
+Having this data in hand we now use Bayesian parameter inference. Writing Bayes
+theorem we have
 \begin{equation}
   P(\kpon, \kpoff, r_m \mid D) = {P(D \mid \kpon, \kpoff, r_m)
   P(\kpon, \kpoff, r_m) \over P(D)},
   \label{seq_bayes_rnap_rates}
 \end{equation}
-where $D$ represents our data. For our particular case our data is conformed by
-single-cell mRNA counts $D = \{ m_1, m_2, \ldots, m_N \}$, where $N$ is the
-number of cells. We assume that each cell's measurement is independent of each
-other such that we can rewrite
-\eref{seq_bayes_rnap_rates} as
+where $D$ represents the data. For this case the data consists of single-cell
+mRNA counts $D = \{ m_1, m_2, \ldots, m_N \}$, where $N$ is the number of cells.
+We assume that each cell's measurement is independent of each other such that we
+can rewrite \eref{seq_bayes_rnap_rates} as
 \begin{equation}
   P(\kpon, \kpoff, r_m \mid \{m_i\}) \propto
   \prod_{i=1}^N P(m_i \mid \kpon, \kpoff, r_m)
-  P(\kpon, \kpoff, r_m).
+  P(\kpon, \kpoff, r_m),
   \label{seq_bayes_sample}
 \end{equation}
-Where the likelihood term $P(m_i \mid \kpon, \kpoff, r_m)$ is exactly given by
-\eref{seq_two_state_mRNA} with $\gm = 1$.
+where we ignore the normalization constant $P(D)$. The likelihood term $P(m_i
+\mid \kpon, \kpoff, r_m)$ is exactly given by \eref{seq_two_state_mRNA} with
+$\gm = 1$. Given that we have this functional form for the distribution we can
+use a sampler such as Markov Chain Monte Carlo (MCMC) sampling to explore the 3D
+parameter space in order to fit \eref{seq_two_state_mRNA} to the mRNA-FISH data.
 
 \subsubsection*{Constraining the rates given prior thermodynamic knowledge.}
 
 One of the strengths of the Bayesian approach is that we can include all the
-prior knowledge on the parameters when performing the
-inference\cite{MacKay2003}. Basic features such as the fact that the rates have
-to be strictly positive will constraint the values that these parameters can
-take. For these specific rates we know more than the simple constraint of
-non-negative values. The expression of an unregulated promoter has been studied
-from a thermodynamic perspective \cite{Brewster2012}. Since these equilibrium
-models work in the thermodynamic limit of large particle number they are not
-useful to inform us about large deviations from the expected value \mrm{My
-understanding was that this is the reason we couldn't use the thermodynamic
-approach, but I'm not sure anymore given Rob's recent comments}. Nevertheless at
-the mean of the distribution both, the kinetic language and the equilibrium
-language must agree. That means that we can use what we know about the mean gene
-expression, and how this is related to parameters such as molecule copy numbers
-and binding affinities, to constraint the values that these rates can take.
+prior knowledge on the parameters when performing an inference
+\cite{MacKay2003}. Basic features such as the fact that the rates have to be
+strictly positive must constrain the values that these parameters can take. For
+the specific rates analyzed in this section we know more than the simple
+constraint of non-negative values. The expression of an unregulated promoter has
+been studied from a thermodynamic perspective \cite{Brewster2012}. Since these
+equilibrium models work in the thermodynamic limit of large particle number they
+are not useful to inform us about large deviations from the expected value
+\mrm{My understanding was that this is the reason we couldn't use the
+thermodynamic approach, but I'm not sure anymore given Rob's recent comments}.
+Nevertheless at the mean of the distribution both, the kinetic language and the
+equilibrium language must agree. That means that we can use what we know about
+the mean gene expression, and how this is related to parameters such as molecule
+copy numbers and binding affinities, to constrain the values that the rates in
+question can take.
 
 In the case of this two-state promoter it can be shown that the mean number of
-mRNA is given by \cite{Phillips2015}
+mRNA is given by \cite{Phillips2015} \mrm{See Appendix XX for moment
+computation}
 \begin{equation}
   \ee{m} = {r_m \over \gm} {\kpon \over \kpon + \kpoff}.
+  \label{seq_mean_kinetic}
 \end{equation}
 Another way of expressing this is as ${r_m \over \gm} \times
 p_{\text{bound}}^{(p)}$, where $p_{\text{bound}}^{(p)}$ is the probability of
 the RNAP being bound at the promoter. The thermodynamic picture has an
 equivalent result where the mean number of mRNA is given by \cite{Brewster2012,
-Bintu2005a} \begin{equation} \left\langle m \right\rangle = {r_m \over \gm} {{P
-\over N_{NS}} e^{-\beta\Delta\varepsilon_p} \over 1 + {P \over N_{NS}}
-e^{-\beta\Delta\varepsilon_p}}, \end{equation} where $P$ is the number of RNAP
-per cell, $N_{NS}$ is the number of non-specific binding sites,
-$\Delta\varepsilon_p$ is the RNAP binding energy in $k_BT$ units and
-$\beta\equiv {k_BT}^{-1}$.
-
-Using these two equations we can easily see that if these frameworks are to be
-equivalent, then it must be true that
+Bintu2005a}
 \begin{equation}
-  {\kpon \over \kpoff} = {P \over N_{NS}} e^{-\beta\Delta\varepsilon_p},
+  \left\langle m \right\rangle = {r_m \over \gm}
+  {{P \over \Nns} e^{-\beta\eP}
+  \over 1 + {P \over \Nns} e^{-\beta\eP}},
+  \label{seq_mean_thermo}
+\end{equation}
+where $P$ is the number of RNAP
+per cell, $\Nns$ is the number of non-specific binding sites,
+$\eP$ is the RNAP binding energy in $k_BT$ units and
+$\beta\equiv {(k_BT)}^{-1}$.
+
+Using \eref{seq_mean_kinetic} and \eref{seq_mean_thermo} we can easily see that
+if these frameworks are to be equivalent, then it must be true that
+\begin{equation}
+  {\kpon \over \kpoff} = {P \over \Nns} e^{-\beta\eP},
 \end{equation}
 or equivalently
 \begin{equation}
   \ln \left({\kpon \over \kpoff}\right) =
-  -\beta\Delta\varepsilon_p + \ln P - \ln N_{NS}.
+  -\beta\eP + \ln P - \ln \Nns.
 \end{equation}
 To put numerical values into these variables we can use information from the
-literature. The RNAP copy number is order $P \approx 1000-3000$
-RNAP/cell for a 1 hour doubling time \cite{Klumpp2008}. As for the number of
-non-specific binding sites and the binding energy we have that $N_{NS} =
-4.6\times 10^6$ \cite{Bintu2005a}, and $-\beta\Delta\varepsilon_p \approx 5 - 7$
+literature. The RNAP copy number is order $P \approx 1000-3000$ RNAP/cell for a
+1 hour doubling time \cite{Klumpp2008}. As for the number of non-specific
+binding sites and the binding energy we have that $\Nns = 4.6\times 10^6$
+\cite{Bintu2005a}, and $-\beta\eP \approx 5 - 7$
 \cite{Brewster2012}. Given these values we define a Gaussian prior for the ratio
 of these two quantities of the form
 \begin{equation}
   P\left({\kpon \over \kpoff} \right) \propto
   \exp \left\{ - {\left(\ln \left({\kpon \over \kpoff}\right) -
-  \left(-\beta\Delta\varepsilon_p + \ln P - \ln N_{NS} \right) \right)^2
+  \left(-\beta\eP + \ln P - \ln \Nns \right) \right)^2
   \over 2 \sigma^2} \right\},
+  \label{seq_prior_single}
 \end{equation}
 where $\sigma$ is the variance that accounts for the uncertainty on these
 parameters. We include this prior as part of the prior term $P(\kpon, \kpoff,
-r_m)$ of \eref{seq_bayes_sample}. We then use Markov Chain Monte Carlo to sample
-out of the posterior distribution given by \eref{seq_bayes_sample}.
-\fref{sfig_mcmc_rnap} shows the MCMC samples of the posterior distribution. For
-the case of the $\kpon$ parameter there is a single symmetric peak. $\kpoff$ and
-$r_m$ have a rather long tail towards large values. As a matter of fact, the 2D
-projection of $\kpoff$ vs $r_m$ shows that the model is sloppy, meaning that the
-two parameters are highly correlated, a common problem in highly non-linear
-systems used in biophysics and systems biology \cite{Transtrum2015}. What this
-implies is that we can change the value of $\kpoff$, and then compensate by a
-change on $r_m$ in order to maintain the shape of the mRNA distribution.
-Therefore it is impossible from the data and the model themselves to narrow down
-to a single value for the parameters. Since we used the prior information on the
-rates as given by the analogous form between the equilibrium and non-equilibrium
-expressions for the mean mRNA level, this allowed us to obtain at a more
-constrained parameter value for the RNAP rates and the transcription rate.
+r_m)$ of \eref{seq_bayes_sample}. We then use MCMC to sample out of the
+posterior distribution given by \eref{seq_bayes_sample}. \fref{sfig_mcmc_rnap}
+shows the MCMC samples of the posterior distribution. For the case of the
+$\kpon$ parameter there is a single symmetric peak. $\kpoff$ and $r_m$ have a
+rather long tail towards large values. As a matter of fact, the 2D projection of
+$\kpoff$ vs $r_m$ shows that the model is sloppy, meaning that the two
+parameters are highly correlated. This features is a common problem for many
+non-linear systems used in biophysics and systems biology \cite{Transtrum2015}.
+What this implies is that we can change the value of $\kpoff$, and then
+compensate by a change on $r_m$ in order to maintain the shape of the mRNA
+distribution. Therefore it is impossible from the data and the model themselves
+to narrow down a single value for the parameters. Nevertheless since we
+included the prior information on the rates as given by the analogous form
+between the equilibrium and non-equilibrium expressions for the mean mRNA level,
+we obtained obtain a more constrained parameter value for the RNAP rates and the
+transcription rate that we will take as the peak of this long-tailed
+distribution.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -314,9 +333,14 @@ Using this value gives the following values for the inferred rates: $\kpon =
 $r_m = 0.3_{-0.09}^{+0.5} s^{-1}$. \mrm{This is where a statement should be done
 with respect to known values in the literature}
 
-\fref{sfig_lacUV5_theory_data} shows the result of substituting these parameter
-values onto \eref{seq_two_state_mRNA}. As we can see this two-state model fits
-the data adequately.
+\fref{sfig_lacUV5_theory_data} compares the experimental data from
+\fref{sfig_lacUV5_FISH} with the resulting distribution obtained by substituting
+the most likely parameter values into \eref{seq_two_state_mRNA}. As we can see
+this two-state model fits the data adequately. \mrm{Here with respect to the
+question of how to judge the "goodness" of the fit we could compute something
+like the $D_{KL}$ divergence between the distributions since it can be
+interpreted as the number of bits lost when using the theoretical distribution
+to describe the experimental one.}
 
 \begin{figure}[h!]
 	\centering \includegraphics[width=0.5\columnwidth]
@@ -324,7 +348,7 @@ the data adequately.
 	\caption{\textbf{Experimental vs. theoretical distribution of mRNA per cell
   using parameters from Bayesian inference.} Dotted line shows the result of
   using \eref{seq_two_state_mRNA} along with the parameters inferred for the
-  rates. Blue bars are the same data as \fref{fig_lacUV5_FISH} from
+  rates. Blue bars are the same data as \fref{fig_lacUV5_FISH} obtained from
   \cite{Jones2014a}}
   \label{sfig_lacUV5_theory_data}
 \end{figure}
@@ -332,20 +356,20 @@ the data adequately.
 \subsubsection*{Accounting for variability in the number of promoters}
 
 As discussed in ref. \cite{Jones2014a} and further expanded in
-\cite{Peterson2015} an important source of noise in gene expression level in
-bacteria is the fact that depending on the position relative to the chromosome
-replication origin, and the growth rate, cells can have multiple copies of a
-given gene. Genes closer to the replication origin have on average higher gene
-copy number compare to genes at the opposite end. For the locus in which our
-reporter construct is located (\textit{galK}) and the doubling time of the mRNA
-FISH experiments we expect to have $\approx$ 1.66 copies of the gene
-\cite{Bremer1996}. This implies that the cells spend 2/3 of the cell cycle with
-two copies of the promoter and the rest with a single copy.
+\cite{Peterson2015} an important source of cell-to-cell variability in gene
+expression in bacteria is the fact that depending on the position relative to
+the chromosome replication origin, and the growth rate, cells can have multiple
+copies of any given gene. Genes closer to the replication origin have on average
+higher gene copy number compare to genes at the opposite end. For the locus in
+which our reporter construct is located (\textit{galK}) and the doubling time of
+the mRNA FISH experiments we expect to have $\approx$ 1.66 copies of the gene
+\cite{Jones2014a, Bremer1996}. This implies that the cells spend 2/3 of the cell
+cycle with two copies of the promoter and the rest with a single copy.
 
 To account for this variability in gene copy we extend the model assuming that
-when cells have two copies of the promoter the production rate is $2 r_m$
-compared to the rate $r_m$ for a single copy. Then the probability of observing
-certain mRNA copy $m$ is given by
+when cells have two copies of the promoter the mRNA production rate is $2 r_m$
+compared to the rate $r_m$ for a single promoter copy. The probability of
+observing certain mRNA copy $m$ is therefore given by
 \begin{equation}
   P(m) = f \cdot P(m \mid \text{one promoter}) +
   (1 - f) \cdot P(m \mid \text{two promoters}),
@@ -355,9 +379,9 @@ where $f = 1/3$ is the fraction of the cell cycle that cells spend with a single
 copy of the promoter. Both terms $P(m \mid \text{promoter copy})$ are given by
 \eref{seq_two_state_mRNA} with the only difference being the rate $r_m$. It is
 important to acknowledge that \eref{seq_prob_multipromoter} assumes that once
-the cell replicates the promoter the time scale in which the mRNA count relaxes
-to the new steady state is shorter than the time that the cells spend in this
-two-promoter state. This approximation should be valid for a short lived mRNA
+the gene is replicated the time scale in which the mRNA count relaxes to the new
+steady state is much shorter than the time that the cells spend in this two
+promoter copies state. This approximation should be valid for a short lived mRNA
 molecule, but the assumption is not applicable for proteins whose degradation
 rate is comparable to the cell cycle length as explored in
 \secref{sec_cell_cycle}.
@@ -367,21 +391,22 @@ copy number we must split the mRNA count data in two sets -- cells with a single
 copy of the promoter and cells with two copies of the promoter. For the single
 molecule mRNA FISH data there is no labeling of the locus, making it impossible
 to determine the number of copies of the promoter for any given cell. We
-therefore follow Jones et al. \cite{Jones2014a} and use the cell area as a proxy
-for stage in the cell cycle. In their approach they sorted cells by area,
-considering the low 33th percentile as cells with a single promoter copy, with
-the rest being cells with two copies of the promoter. This approach ignores that
-cells are not uniformly distributed along the cell cycle. As first discussed in
-\cite{Powell1956} populations of cells in a log-phase are exponentially
-distributed along the cell cycle. This distribution is of the form
+therefore follow Jones et al. \cite{Jones2014a} in using the cell area as a
+proxy for stage in the cell cycle. In their approach they sorted cells by area,
+considering the low 33$\th$ percentile as cells with a single promoter copy,
+with the rest being cells with two copies of the promoter. This approach ignores
+that cells are not uniformly distributed along the cell cycle. As first
+discussed in \cite{Powell1956} populations of cells in a log-phase are
+exponentially distributed along the cell cycle. This distribution is of the form
 \begin{equation}
 P(a) = (\ln 2) \cdot 2^{1 - a},
 \label{seq_cell_cycle_dist}
 \end{equation}
 where $a \in [0, 1]$ is the stage of the cell cycle, with $a = 0$ being the
-start of the cycle and $a = 1$ being the division. \fref{sfig_cell_area} shows
-the separation of the two groups based on area where \eref{seq_cell_cycle_dist}
-was used to weigh the distribution along the cell cycle.
+start of the cycle and $a = 1$ being the cell division. \fref{sfig_cell_area}
+shows the separation of the two groups based on area where
+\eref{seq_cell_cycle_dist} was used to weigh the distribution along the cell
+cycle.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -414,12 +439,65 @@ parameters is of the form
 \begin{equation}
   \small
 P(\kpon, \kpoff, r_m \mid \{m_i\}) \propto
-  \prod_{i=1}^{N_s} f \cdot P(m_i \mid \kpon, \kpoff, r_m)
-  \prod_{j=1}^{N_l} (1 - f) \cdot P(m_j \mid \kpon, \kpoff, 2 r_m)
+  \prod_{i=1}^{N_s} \cdot P(m_i \mid \kpon, \kpoff, r_m)
+  \prod_{j=1}^{N_l} \cdot P(m_j \mid \kpon, \kpoff, 2 r_m)
   P(\kpon, \kpoff, r_m),
   \label{seq_bayes_sample_double}
 \end{equation}
 where we split the product of small and large cells.
+
+For the two-promoter model the prior shown in \eref{seq_prior_single} requires
+a small modification. The two-promoter model has a mean mRNA copy number of
+the form
+\begin{equation}
+  \ee{m} = f \ee{m}_1 + (1 - f) \ee{m}_2,
+  \label{seq_mean_m_double}
+\end{equation}
+where $\ee{m}_1$ and $\ee{m}_2$ are the mean number of mRNA for a single
+promoter and two-promoters respectively. Given that we assume that the only
+difference between these two cases is the change in transcription rate from
+$r_m$ in the single promoter case to $2 r_m$ in the two-promoter case we can
+write \eref{seq_mean_m_double} as
+\begin{equation}
+  \ee{m} = f \cdot {r_m \over \gm} {\kpon \over \kpon + \kpoff} +
+      (1 -f) \cdot {2 r_m \over \gm} {\kpon \over \kpon + \kpoff}.
+\end{equation}
+This can be simplified to
+\begin{equation}
+  \ee{m} = (2 - f) {r_m \over \gm} {\kpon \over \kpon + \kpoff}.
+  \label{seq_mean_m_double_rates}
+\end{equation}
+
+Equating \eref{seq_mean_m_double_rates} to \eref{seq_mean_thermo} to again make
+both predictions from the equilibrium and kinetic model be self-consistent at
+the mean gives
+\begin{equation}
+  (2 - f) {\kpon \over \kpon + \kpoff} =
+  {{P \over \Nns} e^{-\beta\eP}
+  \over 1 + {P \over \Nns} e^{-\beta\eP}}.
+\end{equation}
+Solving for $\kpon \over \kpoff$ results in
+\begin{equation}
+  \left[ (1 + \rho)(2 - f) - \rho \right] \left({\kpon \over \kpoff}\right) =
+  \rho,
+  \label{seq_kinetic_thermo_equiv}
+\end{equation}
+where we define $\rho \equiv {P \over \Nns} e^{-\beta\eP}$. To simplify things
+further we notice that for the specified values of $P = 1000 - 3000$ per cell,
+$\Nns = 4.6 \times 10^6$ bp, and $-\beta\eP = 5 - 7$, we can safely assume that
+$\rho \ll 1$. This approximation has been previously called the weak promoter
+approximation \cite{Garcia2011c}. Given this we can simplify
+\eref{seq_kinetic_thermo_equiv} as
+\begin{equation}
+  {\kpon \over \kpoff} = {1 \over 2 - f} {P \over \Nns} e^{-\beta\eP}}.
+\end{equation}
+Taking the log from both sides gives
+\begin{equation}
+  \ln\left({\kpon \over \kpoff}\right) = -\ln (2 - f) + \ln P - \ln\Nns
+  - \beta\eP
+\end{equation}
+
+
 \fref{sfig_mcmc_rnap_double} shows the result of sampling out of
 \eref{seq_bayes_sample_double}. Again we see that the model is highly sloppy
 with large credible regions obtained for $\kpoff$ and $r_m$.
@@ -433,28 +511,36 @@ with large credible regions obtained for $\kpoff$ and $r_m$.
 	the mRNA degradation rate $\gm$) $\kpon = 6^{+0.8}_{-0.4}$, $\kpoff =
 	52.9^{+124}_{-28.6}$ and $r_m = 102.9^{+195.5}_{-44.1}$ which are the modes of
 	their respective distributions, where the superscripts and subscripts
-	represent the upper and lower bounds of the 95$^\text{th}$ percentile of the
+	represent the upper and lower bounds of the 95$\th$ percentile of the
 	parameter value distributions.}
   \label{sfig_mcmc_rnap_double}
 \end{figure}
 
-and using again the mRNA mean lifetime
-of 350 seconds gives the following values for the parameters: $\kpon =
-0.017_{-0.001}^{+0.002} s^{-1}$, $\kpoff = {0.24}_ {-0.11}^{+0.46} s^{-1}$, and
-$r_m = 0.5_{-0.2}^{+0.8} s^{-1}$. \mrm{again need to compare with what is known
-about these rates.}. \fref{fig_lacUV5_theory_data_double} shows the result of
-applying \eref{seq_prob_multipromoter} with these parameters.
+Using again the mRNA mean lifetime of gives the following values for the
+parameters: $\kpon = 0.017_{-0.001}^{+0.002} s^{-1}$, $\kpoff = {0.24}_
+{-0.11}^{+0.46} s^{-1}$, and $r_m = 0.5_{-0.2}^{+0.8} s^{-1}$. \mrm{again need
+to compare with what is known about these rates.}.
+\fref{sfig_lacUV5_theory_data_double} shows the result of applying
+\eref{seq_prob_multipromoter} using these parameter values. Specifically
+\fref{sfig_lacUV5_theory_data_double}(A) shows the global distribution including
+cells with one and two promoters and \fref{sfig_lacUV5_theory_data_double}(B)
+splits the distributions within the two populations. Given that the model
+adequately describes both populations independently and pooled together we
+confirm that using the cell area as a proxy for stage in the cell cycle is a
+good approximation.
 
 \begin{figure}[h!]
-	\centering \includegraphics[width=0.5\columnwidth]
-  {../fig/chemical_master_mRNA_FISH/lacUV5_two_state_mcmc_multi_copy.pdf}
-	\caption{\textbf{Experimental vs. theoretical distribution of mRNA per cell
-  using parameters for single and multi promoter model} Purple dotted curve
-  shows the result of using \eref{seq_prob_multipromoter} witht the parameters
-  inferred by sampling \eref{seq_bayes_sample_double}. For comparison orange
-  dotted line shows the model from \fref{fig_lacUV5_theory_data}. Blue bars are
-  the same data as \fref{fig_lacUV5_FISH} from \cite{Jones2014a}.}
-  \label{fig_lacUV5_theory_data_double}
+	\centering \includegraphics
+  {../fig/chemical_master_mRNA_FISH/lacUV5_multi_prom_fit.pdf}
+  \caption{\textbf{Experimental vs. theoretical distribution of mRNA per cell
+  using parameters for multi-promoter model.} (A) Solid curve shows the result
+  of using \eref{seq_prob_multipromoter} with the parameters inferred by
+  sampling \eref{seq_bayes_sample_double}. Blue bars are the same data as
+  \fref{sfig_lacUV5_FISH} from \cite{Jones2014a}. (B) Split distributions of
+  small cells (light blue bars) and large cells (dark blue) with the
+  corresponding theoretical predictions with transcription rate $r_m$ (light
+  blue line) and transcription rate $2 r_m$ (dark blue line)}
+	\label{sfig_lacUV5_theory_data_double}
 \end{figure}
 
 \section{Repressor rates from three-state regulated promoter.}
@@ -465,30 +551,31 @@ from equilibrium models \cite{Phillips2015}. For this we again exploit the
 feature that only at the mean both, the kinetic language and the thermodynamic
 language should have equivalent predictions. Over the last decade there has been
 a lot of effort in developing equilibrium models for gene expression regulation
-\cite{Buchler2003,Vilar2011,Bintu2005a}. In particular our group has extensively
-characterized the simple repression motif using this formalism
-\cite{Garcia2011c,Brewster2014,Razo-Mejia2018}.
+\cite{Buchler2003, Vilar2011, Bintu2005a}. In particular our group has
+extensively characterized the simple repression motif using this formalism
+\cite{Garcia2011c, Brewster2014, Razo-Mejia2018}.
 
 The dialogue between theory and experiments has lead to simplified expressions
 that capture the phenomenology of the gene expression response as a function of
 natural variables such as molecule count and affinities between molecular
-players. A particularly interesting quantity defined by Garcia \& Phillips
-\cite{Garcia2011c} as the fold-change in gene expression is given by
+players. A particularly interesting quantity for the simple repression motif
+defined by Garcia \& Phillips \cite{Garcia2011c} as the fold-change in gene
+expression is given by
 \begin{equation}
   \foldchange = {\ee{\text{gene expression}(R > 0)} \over
                  \ee{\text{gene expression}(R = 0)}},
 \end{equation}
-where $R$ is the number of transcriptional repressors per cell. Basically the
-fold-change is the mean expression level in the presence of the repressor
-divided by the expression level in the absence of regulation. In the language of
-statistical mechanics this quantity is of the form \cite{Garcia2011c}
+where $R$ is the number of repressors per cell. The fold-change is simply the
+mean expression level in the presence of the repressor relative to the mean
+expression level in the absence of regulation. In the language of statistical
+mechanics this quantity is of the form \cite{Garcia2011c}
 \begin{equation}
   \foldchange = \left( 1 + {R \over \Nns} e^{-\beta\eR} \right)^{-1},
   \label{seq_fc_thermo}
 \end{equation}
-where $\Nns$ is the number of non-specific binding sites in the genome (taken
-as the size of the \textit{E. coli} genome $4.6\times 10^6$), $\eR$ is the
-repressor-DNA binding energy and $\beta \equiv {1 \over k_BT}$.
+where $\Nns$ is the number of non-specific binding sites in the genome (taken as
+the size of the \textit{E. coli} genome $4.6\times 10^6$ base pairs), $\eR$ is
+the repressor-DNA binding energy and $\beta \equiv {1 \over k_BT}$.
 
 To compute the fold-change in the chemical master equation language we compute
 the first moment of the steady sate mRNA distribution $\ee{m}$ for both, the
@@ -497,7 +584,7 @@ three-state promoter ($R>0$) and the two-state promoter case ($R=0$)
 \begin{equation}
   \ee{m (R = 0)} = {r_m \over \gm} {\kpon \over \kpon + \kpoff}.
 \end{equation}
-The three-state promoter has a steady-state mean mRNA copy number of the form
+The three-state promoter has a steady state mean mRNA copy number of the form
 \begin{equation}
   \ee{m (R > 0)} = {r_m \over \gm} {\kroff\kron
   \over \kpoff\kroff + \kpoff\kron + \kroff\kpon}.
@@ -513,7 +600,7 @@ Computing the fold-change then gives
 Given that the number of repressors per cell $R$ is an experimental variable
 that we can control, we assume that the rate at which the promoter transitions
 form the empty state to the repressor bound state $\kron$ is given by the
-concentration of repressors $[R]$ times a diffusion limited rate $k_o$
+concentration of repressors $[R]$ times a diffusion limited rate on $k_o$
 \cite{Jones2014a}.  For the diffusion limited constant $k_o$ we use the value
 used by Jones et al. \cite{Jones2014a} \mrm{Find real reference for this value
 that Brewster never gave me.}. With this in hand we can rewrite
@@ -537,9 +624,9 @@ Solving for $\kroff$ gives
   \label{seq_kroff_complete}
 \end{equation}
 
-In order for the units to cancel properly the repressor concentration has to be
-given in nM rather than absolute count. If we consider that the repressor
-concentration is equal to
+Since $k_o$ is given in units of nM$^{-1}$s$^{-1}$ in order for the units to
+cancel properly the repressor concentration has to be given in nM rather than
+absolute count. If we consider that the repressor concentration is equal to
 \begin{equation}
 [R] = \frac{R}{V_{cell}}\cdot \frac{1}{Av},
 \end{equation}
@@ -559,8 +646,10 @@ Using this we simplify \eref{seq_kroff_complete} as
   \label{seq_kroff}
 \end{equation}
 What \eref{seq_kroff} shows is the direct relationship that must be true if the
-equilibrium model must be self consistent with the non-equilibrium kinetic
+equilibrium model is set to be consistent with the non-equilibrium kinetic
 picture.
+
+
 
 Putting all these parameters together we can generate zero-parameter fit
 predictions for the full mRNA and protein distributions.
