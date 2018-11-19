@@ -126,7 +126,7 @@ exact same form with the definition of the matrices following the same scheme
 without including the third row and third column, and setting $\kron$ and
 $\kroff$ to zero.
 
-\section{Parameter inference}
+\section{Parameter inference}\label{supp_param_inference}
 
 With the objective of generating falsifiable predictions with meaningful
 parameters we infer the kinetic rates for this three-state promoter model using
@@ -454,7 +454,7 @@ the form
   \label{seq_mean_m_double}
 \end{equation}
 where $\ee{m}_1$ and $\ee{m}_2$ are the mean number of mRNA for a single
-promoter and two-promoters respectively. Given that we assume that the only
+promoter and two promoters respectively. Given that we assume that the only
 difference between these two cases is the change in transcription rate from
 $r_m$ in the single promoter case to $2 r_m$ in the two-promoter case we can
 write \eref{seq_mean_m_double} as
@@ -485,22 +485,32 @@ Solving for $\kpon \over \kpoff$ results in
 where we define $\rho \equiv {P \over \Nns} e^{-\beta\eP}$. To simplify things
 further we notice that for the specified values of $P = 1000 - 3000$ per cell,
 $\Nns = 4.6 \times 10^6$ bp, and $-\beta\eP = 5 - 7$, we can safely assume that
-$\rho \ll 1$. This approximation has been previously called the weak promoter
-approximation \cite{Garcia2011c}. Given this we can simplify
+$\rho \ll 1$. This simplifying assumption has been previously called the weak
+promoter approximation \cite{Garcia2011c}. Given this we can simplify
 \eref{seq_kinetic_thermo_equiv} as
 \begin{equation}
-  {\kpon \over \kpoff} = {1 \over 2 - f} {P \over \Nns} e^{-\beta\eP}}.
+  {\kpon \over \kpoff} = {1 \over 2 - f} {P \over \Nns} e^{-\beta\eP}.
 \end{equation}
 Taking the log from both sides gives
 \begin{equation}
   \ln\left({\kpon \over \kpoff}\right) = -\ln (2 - f) + \ln P - \ln\Nns
-  - \beta\eP
+  - \beta\eP.
 \end{equation}
-
+With this we can set as before a Gaussian prior to constain the ratio of the
+RNAP rates as
+\begin{equation}
+  P\left({\kpon \over \kpoff} \right) \propto
+  \exp \left\{ - {\left(\ln \left({\kpon \over \kpoff}\right) -
+  \left[-\ln(2 - f) -\beta\eP + \ln P - \ln \Nns \right) \right]^2
+  \over 2 \sigma^2} \right\},
+  \label{seq_prior_double}
+\end{equation}
 
 \fref{sfig_mcmc_rnap_double} shows the result of sampling out of
 \eref{seq_bayes_sample_double}. Again we see that the model is highly sloppy
-with large credible regions obtained for $\kpoff$ and $r_m$.
+with large credible regions obtained for $\kpoff$ and $r_m$. Nevertheless again
+the use of the prior information allow us to get a parameter value consistent
+with the equilibrium picture.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -508,17 +518,18 @@ with large credible regions obtained for $\kpoff$ and $r_m$.
 	\caption{\textbf{MCMC posterior distribution for a multi-promoter model.}
 	Sampling out of \eref{seq_bayes_sample_double} the plot shows 2D and 1D
 	projections of the 3D parameter space. The parameter values are (in units of
-	the mRNA degradation rate $\gm$) $\kpon = 6^{+0.8}_{-0.4}$, $\kpoff =
-	52.9^{+124}_{-28.6}$ and $r_m = 102.9^{+195.5}_{-44.1}$ which are the modes of
+	the mRNA degradation rate $\gm$) $\kpon = 6^{+0.8}_{-0.3}$, $\kpoff =
+	85.7^{+437}_{-47.6}$ and $r_m = 154.8^{+684}_{-72.7}$ which are the modes of
 	their respective distributions, where the superscripts and subscripts
 	represent the upper and lower bounds of the 95$\th$ percentile of the
-	parameter value distributions.}
+	parameter value distributions. The sampling was bounded to values < 1000 for
+  numerical stability when computing the confluent hypergeometric function.}
   \label{sfig_mcmc_rnap_double}
 \end{figure}
 
 Using again the mRNA mean lifetime of gives the following values for the
-parameters: $\kpon = 0.017_{-0.001}^{+0.002} s^{-1}$, $\kpoff = {0.24}_
-{-0.11}^{+0.46} s^{-1}$, and $r_m = 0.5_{-0.2}^{+0.8} s^{-1}$. \mrm{again need
+parameters: $\kpon = 0.035_{-0.002}^{+0.004} s^{-1}$, $\kpoff = {0.47}_
+{-0.26}^{+2.43} s^{-1}$, and $r_m = 0.860_{-0.4}^{+3.8} s^{-1}$. \mrm{again need
 to compare with what is known about these rates.}.
 \fref{sfig_lacUV5_theory_data_double} shows the result of applying
 \eref{seq_prob_multipromoter} using these parameter values. Specifically
@@ -526,8 +537,9 @@ to compare with what is known about these rates.}.
 cells with one and two promoters and \fref{sfig_lacUV5_theory_data_double}(B)
 splits the distributions within the two populations. Given that the model
 adequately describes both populations independently and pooled together we
-confirm that using the cell area as a proxy for stage in the cell cycle is a
-good approximation.
+confirm that using the cell area as a proxy for stage in the cell cycle and the
+doubling of the transcription rate once cells have two promoters are reasonable
+approximations.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -546,14 +558,15 @@ good approximation.
 \section{Repressor rates from three-state regulated promoter.}
 
 Having determined the RNAP rates we now proceed to determine the repressor rates
-$\kron$ and $\kroff$. The value of these rates is constrained by what we know
-from equilibrium models \cite{Phillips2015}. For this we again exploit the
-feature that only at the mean both, the kinetic language and the thermodynamic
-language should have equivalent predictions. Over the last decade there has been
-a lot of effort in developing equilibrium models for gene expression regulation
-\cite{Buchler2003, Vilar2011, Bintu2005a}. In particular our group has
-extensively characterized the simple repression motif using this formalism
-\cite{Garcia2011c, Brewster2014, Razo-Mejia2018}.
+$\kron$ and $\kroff$. The values of these rates are constrained again by the
+correspondence between our kinetic picture and what we know from equilibrium
+models \cite{Phillips2015}. For this we again exploit the feature that only at
+the mean both, the kinetic language and the thermodynamic language should have
+equivalent predictions. Over the last decade there has been a lot of effort in
+developing equilibrium models for gene expression regulation \cite{Buchler2003,
+Vilar2011, Bintu2005a}. In particular our group has extensively characterized
+the simple repression motif using this formalism \cite{Garcia2011c,
+Brewster2014, Razo-Mejia2018}.
 
 The dialogue between theory and experiments has lead to simplified expressions
 that capture the phenomenology of the gene expression response as a function of
@@ -568,34 +581,31 @@ expression is given by
 where $R$ is the number of repressors per cell. The fold-change is simply the
 mean expression level in the presence of the repressor relative to the mean
 expression level in the absence of regulation. In the language of statistical
-mechanics this quantity is of the form \cite{Garcia2011c}
+mechanics this quantity takes the form \cite{Garcia2011c}
 \begin{equation}
   \foldchange = \left( 1 + {R \over \Nns} e^{-\beta\eR} \right)^{-1},
   \label{seq_fc_thermo}
 \end{equation}
-where $\Nns$ is the number of non-specific binding sites in the genome (taken as
-the size of the \textit{E. coli} genome $4.6\times 10^6$ base pairs), $\eR$ is
-the repressor-DNA binding energy and $\beta \equiv {1 \over k_BT}$.
+where $\eR$ is the repressor-DNA binding energy.
 
 To compute the fold-change in the chemical master equation language we compute
 the first moment of the steady sate mRNA distribution $\ee{m}$ for both, the
 three-state promoter ($R>0$) and the two-state promoter case ($R=0$)
-\mrm{See section XX for moment derivation}. The latter gives
+\mrm{See section XX for moment derivation}. The unregulated (two-state) promoter
+mean mRNA copy number is given by \eref{seq_mean_m_double_rates}. For the
+regulated (three-state) promoter we have an equivalent expression of the form
 \begin{equation}
-  \ee{m (R = 0)} = {r_m \over \gm} {\kpon \over \kpon + \kpoff}.
-\end{equation}
-The three-state promoter has a steady state mean mRNA copy number of the form
-\begin{equation}
-  \ee{m (R > 0)} = {r_m \over \gm} {\kroff\kron
+  \ee{m (R > 0)} = (2 - f){r_m \over \gm} {\kroff\kron
   \over \kpoff\kroff + \kpoff\kron + \kroff\kpon}.
 \end{equation}
 Computing the fold-change then gives
 \begin{equation}
   \foldchange = {\ee{m (R > 0)} \over \ee{m (R = 0)}} =
   {\kroff \left( \kpoff + \kpon \right) \over
-  \kpoff\kron + \kroff \left( \kpoff + \kpon \right)}.
+  \kpoff\kron + \kroff \left( \kpoff + \kpon \right)},
   \label{seq_fold_change_cme}
 \end{equation}
+where the factor $(2 -f)$ due to the multiple promoter copies cancels out.
 
 Given that the number of repressors per cell $R$ is an experimental variable
 that we can control, we assume that the rate at which the promoter transitions
@@ -624,9 +634,10 @@ Solving for $\kroff$ gives
   \label{seq_kroff_complete}
 \end{equation}
 
-Since $k_o$ is given in units of nM$^{-1}$s$^{-1}$ in order for the units to
-cancel properly the repressor concentration has to be given in nM rather than
-absolute count. If we consider that the repressor concentration is equal to
+Since the reported value of $k_o$ is given in units of nM$^{-1}$s$^{-1}$ in
+order for the units to cancel properly the repressor concentration has to be
+given in nM rather than absolute count. If we consider that the repressor
+concentration is equal to
 \begin{equation}
 [R] = \frac{R}{V_{cell}}\cdot \frac{1}{Av},
 \end{equation}
@@ -641,15 +652,10 @@ turn M into nM we find that
 \end{equation}
 Using this we simplify \eref{seq_kroff_complete} as
 \begin{equation}
-  \kroff = 0.8 \cdot k_o \cdot \Nns e^{\beta\eR}
+  \kroff \approx 1.66 \cdot k_o \cdot \Nns e^{\beta\eR}
    \cdot {\kpon \over \kpon + \kpoff}.
   \label{seq_kroff}
 \end{equation}
-What \eref{seq_kroff} shows is the direct relationship that must be true if the
-equilibrium model is set to be consistent with the non-equilibrium kinetic
+What \eref{seq_kroff} shows is the direct relationship that must be satisfied if
+the equilibrium model is set to be consistent with the non-equilibrium kinetic
 picture.
-
-
-
-Putting all these parameters together we can generate zero-parameter fit
-predictions for the full mRNA and protein distributions.
