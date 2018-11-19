@@ -1,14 +1,15 @@
 \subsection{Theoretical prediction of the channel capacity}
 \label{sec_channcap}
 
-As a useful measure of the ability of the genetic circuit to allow the cell
+As a useful measure of the ability of the genetic circuit to allow the cell to
 infer the environmental state, i.e. the inducer concentration, we turn to the
 channel capacity. The channel capacity is defined as the maximum mutual
 information between input and output, maximized over all possible input
 distributions. Putting this into mathematical terms let us define $c$ as the
 inducer concentration. $P(c)$ represents the distribution of inducer and $P(p
-\mid c)$ the distribution of protein counts given a fixed inducer concentration.
-The channel capacity is then given by
+\mid c)$ the distribution of protein counts given a fixed inducer concentration
+- effectively the distributions shown in \fref{fig4_maxent}. The channel
+capacity is then given by
 \begin{equation}
   C \equiv \max_{P(c)} I(p; c),
   \label{eq_chann_cap}
@@ -41,7 +42,7 @@ analytical equations have been derived \cite{Tkacik2008a}. But given the high
 cell-to-cell variability that our model predicts, the conditions of the
 so-called small noise approximation are not satisfied. We therefore appeal to
 a numerical solution known as the Blahut-Arimoto algorithm \cite{Blahut1972}.
-This algorithm starting on any (discrete) distribution $P(C)$ converges to the
+This algorithm starting on any (discrete) distribution $P(c)$ converges to the
 distribution at channel capacity by iteratively applying a series of simple
 operations. \fref{fig5_channcap} shows zero-parameter fit predictions of the
 channel capacity as a function of the number of repressors for different

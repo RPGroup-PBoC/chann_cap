@@ -7,8 +7,8 @@ hinted in \secref{sec_moments} the maximum entropy (MaxEnt) principle, first
 proposed by E.T. Jaynes in 1957, approximates the entire distribution by
 maximizing the Shannon entropy subject to constraints given by, among other
 quantities, the values of the moments of the distribution \cite{Jaynes1957}.
-This procedure leads to a distribution of the form
-\mrm{See appendix XX for full derivation.}
+This procedure leads to a distribution of the form (See \siref{supp_maxent} for
+full derivation)
 \begin{equation}
   P_H(m, p) = {1 \over \mathcal{Z}}
               \exp \left( - \sum_{(x,y)} \lambda_{(x,y)} m^x p^y \right),
@@ -23,17 +23,17 @@ becomes.
 The computational challenge then becomes a minimization routine in which the
 values for the Lagrange multipliers $\lambda_{(x,y)}$ that are consistent with
 the constraints set by the moments values $\ee{m^x p^y}$ need to be found.
-\mrm{Appendix XX} details our implementation of a robust algorithm to find such
-values. \fref{fig4_maxent} shows example predicted protein distributions
+\siref{supp_maxent} details our implementation of a robust algorithm to find
+such values. \fref{fig4_maxent} shows example predicted protein distributions
 reconstructed using six moments of the protein distribution for a suite of
 different biophysical parameters and environmental inducer concentrations. As
 repressor-DNA binding affinity (columns in \fref{fig4_maxent}) and repressor
 copy number (rows in \fref{fig4_maxent}) are varied, the responses to different
-signals (i.e. inducer concentrations) overlap to varying degrees. For
-example the upper right corner frame with a weak binding site ($\eR = -9.7 \;
-k_BT$) and a low repressor copy number (22 repressors per cell) has virtually
-identical distributions regardless of the input inducer concentration. This
-means that cells with this set of parameters cannot resolve a difference in any
+signals (i.e. inducer concentrations) overlap to varying degrees. For example
+the upper right corner frame with a weak binding site ($\eR = -9.7 \; k_BT$) and
+a low repressor copy number (22 repressors per cell) has virtually identical
+distributions regardless of the input inducer concentration. This means that
+cells with this set of parameters cannot resolve a difference in any
 concentration of the signal. As the number of repressors is increased along the
 rows, the degree of overlap between distributions changes, allowing cells to
 better resolve the value of the signal input. On the opposite extreme the lower

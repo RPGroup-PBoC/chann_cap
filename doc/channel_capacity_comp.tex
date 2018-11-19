@@ -17,6 +17,20 @@
 \newcommand{\fref}[1]{Fig.~\ref{#1}}
 % Section referencing
 \newcommand{\secref}[1]{Section~\ref{#1}}
+% SI referencing
+\newcommand{\siref}[1]{Appendix~\ref{#1}}
+
+% Define command to begin the supplementary section
+\newcommand{\beginsupplement}{
+				\setcounter{section}{0} % Restart section counter
+        \renewcommand{\thesection}{S\arabic{section}}%
+        \setcounter{table}{0} % Restart table counter
+        \renewcommand{\thetable}{S\arabic{table}}%
+        \setcounter{figure}{0} % Restart figure counter
+        \renewcommand{\thefigure}{S\arabic{figure}}%
+        \setcounter{equation}{0} % Restart equation counter
+        \renewcommand{\theequation}{S\arabic{equation}}%
+     }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Personalized math functions
@@ -45,15 +59,18 @@
 \newcommand{\ddt}[1]{{\partial{#1} \over \partial t}}
 % Sum over m and p
 \newcommand{\smp}{\sum_m \sum_p}
+% Bold µ symbol
+\newcommand{\bmu}{\boldsymbol{\mu}}
 % Thermodynamic variables
 \newcommand{\foldchange}{\text{fold-change}}
 \newcommand{\Nns}{N_\text{NS}}
 \newcommand{\eR}{\Delta\varepsilon_r}
+\newcommand{\eP}{\Delta\varepsilon_p}
 \newcommand{\eAI}{\Delta\varepsilon_{AI}}
 \newcommand{\pbound}{p_{_\text{bound}}}
 % To write i^th object
 \let\oldth\th
-\renewcommand\th{\text{th}}
+\renewcommand\th{^\text{th}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% Begin document
@@ -83,14 +100,15 @@ Pasadena, CA 91125, USA}
 
 \begin{document}
 \maketitle
-	% \input{abstract}
-	% \input{section_00_introduction}
-	% \input{section_01_minimal_model.tex}
+	\input{abstract}
+	\input{section_00_introduction}
+	\input{section_01_minimal_model.tex}
 	\input{section_02_distribution_moments.tex}
-	% \input{section_03_cell_cycle.tex}
-	% \input{section_04_maxent.tex}
-	% \input{section_05_channel_capacity.tex}
-	% \input{section_XX_model.tex}
+	\input{section_03_cell_cycle.tex}
+	\input{section_04_maxent.tex}
+	\input{section_05_channel_capacity.tex}
+	\beginsupplement
+	% \input{appendix_model.tex}
 	% \input{appendix_moment_cme.tex}
 	% \input{appendix_multiple_gene_copy.tex}
 	% \input{appendix_maxent.tex}

@@ -23,7 +23,7 @@ we build upon these models to characterize the full distribution of gene
 expression as parameters such as repressor copy number and its affinity for the
 DNA are systematically varied.
 
-Given the discrete nature of molecular species count inside cells, chemical
+Given the discrete nature of molecular species counts inside cells, chemical
 master equations have emerged as a useful tool to model the inherent probability
 distribution of these counts \cite{Sanchez2013}. In \fref{fig2_minimal_model}(A)
 we show the minimal model and the necessary set of parameters needed to predict
@@ -99,8 +99,8 @@ The system of ODEs can then be written as
 \end{equation}
 where $\Km$ is the promoter state transition matrix, $\Rm$ and $\Gm$ are the
 mRNA production and degradation matrices, respectively, and $\Rp$ and $\Gp$ are
-the protein production and degradation matrices respectively \mrm{See Appendix
-XX for full definition of these matrices}.
+the protein production and degradation matrices respectively (See
+\siref{supp_model} for full definition of these matrices).
 
 \subsection{Inferring parameters from published data sets}
 
@@ -125,30 +125,32 @@ gene expression along with the parameters that can be inferred from such data
 sets.
 
 \siref{supp_param_inference} expands on the details of how the inference was
-performed for each of the parameters. But in summary the RNAP rates $\kpon$ and
+performed for each of the parameters. Briefly the RNAP rates $\kpon$ and
 $\kpoff$, as well as the transcription rate $r_m$ were obtained in units of the
 mRNA degradation rate $\gm$ by fitting a two-state promoter model
-\cite{Peccoud1995} (no state $R$ from \fref{fig2_minimal_model}(A)) to mRNA FISH
+(no state $R$ from \fref{fig2_minimal_model}(A)) \cite{Peccoud1995} to mRNA FISH
 data of an unregulated promoter (no  repressor present in the cell)
 \cite{Jones2014a}. The repressor on rate is assumed to be of the form $\kron =
-k_o [R]$ where $k_o$ is a diffusion limited on rate and $[R]$ is the active
-repressors concentration in the cell \cite{Jones2014a}. This concentration of
-active repressors is at the same time determined by the mean repressor copy
-number in the cell, and the fraction of repressors in the active state.
-\mrm{Given the separation of time-scales between the rapid conformational
-changes of the repressor and the slower downstream processes} \rp{You'll have to
-prove this }, we assume that the probability of the repressor being in the
-active state is given by the equilibrium MWC model with parameters $K_A$, $K_I$,
-and $\eAI$ previously characterized from video-microscopy and flow-cytometry
-data \cite{Razo-Mejia2018}. For the repressor off rate $\kroff$ we take
-advantage of the fact that the mean mRNA copy number as derived from the model
-in \fref{fig2_minimal_model}(A) cast in the language of rates is of the same
-functional form as the equilibrium model cast in the language of binding
-energies \cite{Phillips2015}. Therefore the inferred value of the repressor-DNA
-binding energy $\eR$ along with the previously determined rates constraints the
-value of the repressor off rate $\kroff$.
+k_o [R]$ where $k_o$ is a diffusion limited on rate and $[R]$ is the
+concentration of active repressors in the cell \cite{Jones2014a}. This
+concentration of active repressors is at the same time determined by the mean
+repressor copy number in the cell, and the fraction of repressors in the active
+state. Existing estimates of the transition rates between conformations of
+allosteric molecules set them at the $\mu$s scale \cite{Cui2008}. By
+considering this to be representative for our protein of interest the separation
+of time-scales between the rapid conformational changes of the repressor and the
+slower downstream processes allow us to model the probability of the repressor
+being in the active state as an equilibrium MWC process. The parameters of the
+MWC model $K_A$, $K_I$ and $\eAI$ were  previously characterized from
+video-microscopy and flow-cytometry data \cite{Razo-Mejia2018}. For the
+repressor off rate $\kroff$ we take advantage of the fact that the mean mRNA
+copy number as derived from the model in \fref{fig2_minimal_model}(A) cast in
+the language of rates is of the same functional form as the equilibrium model
+cast in the language of binding energies \cite{Phillips2015}. Therefore the
+inferred value of the repressor-DNA binding energy $\eR$ along with the
+previously determined rates constraints the value of the repressor off rate
+$\kroff$.
 \rp{I feel like we need a little more detail about how you get the parameters}
-
 
 \begin{figure}[h!]
 	\centering \includegraphics

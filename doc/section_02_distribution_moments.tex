@@ -25,7 +25,7 @@ computed as
 \end{equation}
 
 Summing over all possible $m$ and $p$ values in \eref{eq_cme_matrix} results in
-a ODE for any moment of the form \mrm{See appendix XX for full derivation}
+a ODE for any moment of the form (See \siref{supp_moments} for full derivation)
 \begin{equation}
   \begin{aligned}
     \dt{\bb{\ee{m^x p^y}}} &=
@@ -39,35 +39,35 @@ a ODE for any moment of the form \mrm{See appendix XX for full derivation}
 \end{equation}
 
 Given that all transitions in our stochastic model are first order reactions,
-\eref{eq_gral_mom} has no moment-closure problem. What this means is that the
-dynamical equation for a given moment only depends on lower moments \mrm{See
-appendix XX for full proof}. This feature of our model implies for example that
-the second moment of the protein distribution $\ee{p^2}$ depends only on the
-first two moments of the mRNA distribution $\ee{m}$, and $\ee{m^2}$, the first
-protein moment $\ee{p}$  and the cross-correlation term $\ee{mp}$. We can
-therefore define $\bb{\mu}$ to be a vector containing all moments up to
-$\bb{\ee{m^x p^y}}$ for all promoter states. This is
+\eref{eq_gral_mom} has no moment-closure problem \cite{Voliotis2014a}. What this
+means is that the dynamical equation for a given moment only depends on lower
+moments (See \siref{supp_moments} for full proof). This feature of our model
+implies for example that the second moment of the protein distribution
+$\ee{p^2}$ depends only on the first two moments of the mRNA distribution
+$\ee{m}$, and $\ee{m^2}$, the first protein moment $\ee{p}$  and the
+cross-correlation term $\ee{mp}$. We can therefore define $\bmu$ to be a
+vector containing all moments up to $\bb{\ee{m^x p^y}}$ for all promoter states.
+This is
 \begin{equation}
-\bb{\mu} = \left[ \bb{\ee{m^0 p^0}},
-								  \bb{\ee{m^1 p^0}},
-									\ldots \bb{\ee{m^x p^y}} \right]^T.
+\bmu = \left[ \bb{\ee{m^0 p^0}},
+							\bb{\ee{m^1 p^0}},
+							\ldots \bb{\ee{m^x p^y}} \right]^T.
 \end{equation}
 Explicitly for the three-state promoter model depicted in
 \fref{fig2_minimal_model}(A) this vector takes the form
 \begin{equation}
-	\bb{\mu} = \left[ \ee{m^0 p^0}_E, \ee{m^0 p^0}_P, \ee{m^0 p^0}_R, \ldots
-                 \ee{m^x p^y}_E, \ee{m^x p^y}_P, \ee{m^x p^y}_R \right]^T.
+	\bmu = \left[ \ee{m^0 p^0}_E, \ee{m^0 p^0}_P, \ee{m^0 p^0}_R,
+	\ldots \ee{m^x p^y}_E, \ee{m^x p^y}_P, \ee{m^x p^y}_R \right]^T.
 \end{equation}
 
 Given this definition we can define the general moment dynamics as
 \begin{equation}
-\dt{\boldsymbol{\mu}} = \bb{A} \boldsymbol{\mu},
+\dt{\bmu} = \bb{A} \bmu,
 \label{eq_mom_dynamics}
 \end{equation}
-where $\bb{A}$ is a square matrix that contains all the connections in the
-network, i.e. the numeric coefficients that relate each of the moments. We can
-then use \eref{eq_gral_mom} to build the matrix $\bb{A}$ by iteratively
-substituting values for the exponents $x$ and $y$ up to a specified value. In
-the next section we will use \eref{eq_mom_dynamics} to numerically integrate the
-dynamical equations for our moments of interest as cells progress through the
-cell cycle.
+where $\bb{A}$ is a square matrix that contains all the numeric coefficients
+that relate each of the moments. We can then use \eref{eq_gral_mom} to build 
+matrix $\bb{A}$ by iteratively substituting values for the exponents $x$ and $y$
+up to a specified value. In the next section we will use \eref{eq_mom_dynamics}
+to numerically integrate the dynamical equations for our moments of interest as
+cells progress through the cell cycle.
