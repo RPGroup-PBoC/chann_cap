@@ -1,101 +1,30 @@
 \section{Computing moments from the master equation}\label{supp_moments}
 
-\subsection{Defining the chemical master equation for simple repression}
-
 In this section we will compute the moment equations for the distribution  $P(m,
-p; t)$. As defined in section \mrm{ref model section} the chemical master
-equation for our simple genetic circuit written in matrix notation is of the
-form
-\begin{equation}
-  \begin{aligned}
-    \dt{\PP(m, p)} &= \Km \PP(m, p)
-    - \Rm \PP(m, p) + \Rm \PP(m-1, p)
-    - m \Gm \PP(m, p) + (m + 1) \Gm \PP(m + 1, p)\\
-    &- m \Rp \PP(m, p) + m \Rp \PP(m, p - 1)
-    - p \Gp \PP(m, p) + (p + 1) \Gp \PP(m, p + 1),
-  \end{aligned}
-  \label{eq_cme_matrix}
-\end{equation}
-where $\PP(m, p)$ is a vector with two entries in the case of the unregulated
-promoter
-\begin{equation}
-  \PP(m, p) = (P_P(m, p), P_E(m, p))^T,
-\end{equation}
-and a vector with three entries for the regulated promoter
-\begin{equation}
-  \PP(m, p) = (P_P(m, p), P_E(m, p), P_R(m, p))^T.
-\end{equation}
-
-Without lost of generality here we will focus on the three-state regulated
-promoter. The computation of the moments for the two-state promoter follows the
-exact same procedure, having only the definition of the matrices change. For
-\eref{eq_cme_matrix} we have defined the following matrices:
-The promoter state transition matrix
-$\Km$
-\begin{align}
-  \Km \equiv
-  \begin{bmatrix}
-    -\kpoff   & \kpon         & 0\\
-    \kpoff    & -\kpon -\kron  & \kroff\\
-    0         & \kron         & -\kroff
-  \end{bmatrix},
-\end{align}
-The mRNA production $\Rm$ and degradation $\Gm$ matrices
-\begin{equation}
-  \Rm \equiv
-  \begin{bmatrix}
-    r_m   & 0 & 0\\
-    0     & 0 & 0\\
-    0     & 0 & 0\\
-  \end{bmatrix},
-\end{equation}
-and
-\begin{equation}
-  \Gm \equiv
-  \begin{bmatrix}
-    \gm   & 0   & 0\\
-    0     & \gm & 0\\
-    0     & 0   & \gm\\
-  \end{bmatrix}.
-\end{equation}
-For the protein we also define a production $\Rp$ and degradation $\Gp$ matrices
-as
-\begin{equation}
-  \Rp \equiv
-  \begin{bmatrix}
-    r_m   & 0   & 0\\
-    0     & r_m & 0\\
-    0     & 0   & r_m\\
-  \end{bmatrix},
-\end{equation}
-and
-\begin{equation}
-  \Gp \equiv
-  \begin{bmatrix}
-    \gp   & 0   & 0\\
-    0     & \gp & 0\\
-    0     & 0   & \gp\\
-  \end{bmatrix}.
-\end{equation}
+p; t)$. Without lost of generality here we will focus on the three-state
+regulated promoter. The computation of the moments for the two-state promoter
+follows the exact same procedure, having only the definition of the matrices
+change.
 
 \subsection{Computing a distribution moment}
 
-To compute any moment of our chemical master equation let us define a vector
+To compute any moment of our chemical master equation (\eref{eq_cme_matrix})
+let us define a vector
 \begin{equation}
   \ee{\bb{m^x p^y}} \equiv (\ee{m^x p^y}_E, \ee{m^x p^y}_P, \ee{m^x p^y}_R)^T,
 \end{equation}
-where $\ee{m^x p^y}_S$ is the expected value of $m^x p^y$ in state $S \in
-\{E, P, R\}$. In other words, just as we defined the vector $\PP(m, p)$, here
-we define a vector to collect the expected value of each of the promoter states.
-
-By definition any of these moments $\ee{m^x p^y}_S$ is computed as
+where $\ee{m^x p^y}_S$ is the expected value of $m^x p^y$ in state $S \in \{E,
+P, R\}$ with $x, y \in \mathbb{N}$. In other words, just as we defined the
+vector $\PP(m, p)$, here we define a vector to collect the expected value of
+each of the promoter states. By definition any of these moments $\ee{m^x p^y}_S$
+is computed as
 \begin{equation}
   \ee{m^x p^y}_S \equiv \sum_{m=0}^\infty \sum_{p=0}^\infty m^x p^y P_S(m, p).
   \label{eq_mom_def}
 \end{equation}
-To simplify the notation let $\sum_x \equiv \sum_{x=1}^\infty$. Since we are
-working with three PDE, one for each state, let us define the following
-operation:
+To simplify the notation let $\sum_x \equiv \sum_{x=0}^\infty$. Since we are
+working with a system of three ODE, one for each state, let us define the
+following operation:
 \begin{equation}
   \ee{\bb{m^x p^y}} =
   \smp m^x p^y \PP(m, p) \equiv
@@ -106,9 +35,7 @@ operation:
   \end{bmatrix}.
 \end{equation}
 
-\subsubsection{Computing the general moment PDE}
-
-With this in hand we can then apply this sum over $m$ and $p$ to the PDE in
+With this in hand we can then apply this sum over $m$ and $p$ to
 \eref{eq_cme_matrix}. For the left-hand side we have
 \begin{equation}
   \smp m^x p^y \dt{\PP(m, p)} = \dt{}\left[ \smp m^x p^y \PP(m, p) \right],
@@ -201,7 +128,7 @@ For the mRNA degradation term involving $\PP(m + 1, p)$ we follow a similar
 procedure in which we define $m' = m + 1$ to obtain
 \begin{equation}
   \Gm \smp (m + 1) m^x p^y \PP(m + 1, p) =
-  \Gm \sum_{m' = 1}^\infty m' (m' - 1)^x p^y \PP(m', p).
+  \Gm \sum_{m' = 1}^\infty \sum_p m' (m' - 1)^x p^y \PP(m', p).
 \end{equation}
 In this case since the term on the right-hand side of the equation is multiplied
 by $m'$, starting the sum over $m'$ from 0 rather than from 1 will not affect
@@ -262,7 +189,7 @@ of the form
 \subsection{Moment closure of the simple-repression distribution}
 
 A very interesting and useful feature of \eref{eq_mom_pde} is that for a given
-value of $x$ and $y$ the moments $\bb{ee{m^x p^y}}$ is only a function of lower
+value of $x$ and $y$ the moments $\bb{\ee{m^x p^y}}$ is only a function of lower
 moments. Specifically $\bb{\ee{m^x p^y}}$ is a function of moments
 $\bb{\ee{m^{x'} p^{y'}}}$ that satisfy two conditions:
 \begin{equation}
@@ -273,7 +200,7 @@ $\bb{\ee{m^{x'} p^{y'}}}$ that satisfy two conditions:
   \label{eq_mom_conditions}
 \end{equation}
 
-To prove this we factorize \eref{eq_mom_pde} as
+To prove this we rewrite \eref{eq_mom_pde} as
 \begin{equation}
   \begin{aligned}
     \dt{\bb{\ee{m^x p^y}}} &=
@@ -288,7 +215,7 @@ To prove this we factorize \eref{eq_mom_pde} as
 where the factorization is valid given the linearity of expected values. The
 objective now is to find for each term which is the highest moment once the
 binomial is expanded. Take for example a simple case in which we want to find
-the mRNA second moment. We then set $x = 2$ and $y = 0$.
+the second moment of the mRNA. We then set $x = 2$ and $y = 0$.
 \eref{eq_mom_pde_factorized} then becomes
 \begin{equation}
   \begin{aligned}
@@ -311,11 +238,11 @@ Simplifying this equation gives
 
 \eref{eq_second_mom_mRNA} satisfies both of our conditions. Since we set $y$ to
 be zero, non of the terms depend on any moment that involves the protein number,
-therefore $y' \leq y$, and the highest moment in \eref{eq_second_mom_mRNA} also
-satisfies $x' + y' \leq x + y$ since the second moment of mRNA doesn't depend
-on any moment higher than $\bb{\ee{m^2}}$. To demonstrate this is true for any
-$x$ and $y$ we now simplify \eref{eq_mom_pde_factorized} making use of the
-binomial expansion
+therefore $y' \leq y$ is satisfied. Also the highest moment in
+\eref{eq_second_mom_mRNA}  satisfies $x' + y' \leq x + y$ since the second
+moment of mRNA doesn't depend on any moment higher than $\bb{\ee{m^2}}$. To
+demonstrate this is true for any $x$ and $y$ we now simplify
+\eref{eq_mom_pde_factorized} making use of the binomial expansion
 \begin{equation}
   (z \pm 1)^n = \sum_{k=0}^n {n \choose k} (\pm 1)^{k} z^{n-k}.
 \end{equation}
@@ -325,15 +252,17 @@ term we have
   \Rm \bb{\ee{p^y \left[ (m + 1)^x -m^x \right]}} =
   \Rm \bb{\ee{p^y \left[ \sum_{k=0}^x {x \choose k} m^{x-k} - m^x \right]}}.
 \end{equation}
-Since on the right-hand side when $k=0$ the term is cancelled we can simplify
+Since on the right-hand side when $k=0$ the term inside the sum is cancelled with the other $\bb{m^x}$ we can simplify
 this to
 \begin{equation}
   \Rm \bb{\ee{p^y \left[ (m + 1)^x -m^x \right]}} =
   \Rm \bb{\ee{p^y \left[ \sum_{k=1}^x {x \choose k} m^{x-k} \right]}}.
 \end{equation}
 Once the sum is expanded we can see that the highest moment in this sum is given
-by $\bb{\ee{m^{(x-1)} p^y}}$ which satisfies both of our conditions. For the
-mRNA degradation term we similarly have
+by $\bb{\ee{m^{(x-1)} p^y}}$ which satisfies both of the conditions on
+\eref{eq_mom_conditions}.
+
+For the mRNA degradation term we similarly have
 \begin{equation}
   \Gm \bb{\ee{m p^y \left[ (m - 1)^x - m^x \right]}} =
   \Gm \bb{\ee{m p^y \left[ \sum_{k=0}^x {x \choose k}(-1)^k m^{x-k} -
@@ -345,8 +274,10 @@ Simplifying terms we obtain
                           m^x \right]}} =
   \Gm \bb{\ee{p^y \left[ \sum_{k=1}^x {x \choose k}(-1)^k m^{x+1-k} \right]}}.
 \end{equation}
-For this case we have that the largest moment is therefore $\bb{\ee{p^y m^x}}$
-which again satisfies our conditions. The protein production term gives
+For this case we have that the largest moment is therefore $\bb{\ee{m^x p^y }}$
+which again satisfies the conditions on \eref{eq_mom_conditions}.
+
+The protein production term gives
 \begin{equation}
   \Rp \bb{\ee{m^{(x + 1)} \left[ (p + 1)^y - p^y \right]}} =
   \Rp \bb{\ee{m^{(x + 1)} \left[ \sum_{k=0}^y {y \choose k} (-1)^k p^{y-k}
@@ -369,4 +300,4 @@ degradation we have
 \end{equation}
 The largest moment involved in this term is therefore $\bb{\ee{m^x p^{y-1}}}$.
 Having showed that the four terms involved in our general moment equation depend
-on lower moments that satisfy \eref{eq_mom_conditions}
+on lower moments that satisfy \eref{eq_mom_conditions}.
