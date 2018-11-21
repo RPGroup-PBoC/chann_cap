@@ -3,210 +3,251 @@
 cycle}
 
 When growing in rich media bacteria can double every $\approx$ 20 minutes. With
-a replication fork that travels at $\approx$ 1000 bp per second, and a genome of
-$\approx$ 5 Mbp for {\it E. coli}\cite{Moran2010}, a cell would need $\approx$
-80 minutes to replicate its genome. The apparent paradox is solved by the fact
-that cells have multiple replisomes, i.e. molecular machines that replicate the
-genome running in parallel. Cells can have up to 8 copies of the genome being
-replicated at all time depending on the growth rate \cite{Bremer1996}.
+two replication forks each traveling at $\approx$ 1000 bp per second, and a
+genome of $\approx$ 5 Mbp for {\it E. coli}\cite{Moran2010}, a cell would need
+$\approx$ 40 minutes to replicate its genome. The apparent paradox is solved by
+the fact that cells have multiple replisomes, i.e. molecular machines that
+replicate the genome running in parallel. Cells can have up to 8 copies of the
+genome being replicated simultaneously depending on the growth rate
+\cite{Bremer1996}.
 
-What this implies is that during the cell cycle gene copy number varies. This
-variation depends on the relative position of the gene with respect to the
-replication origin, having genes close to the origin spending more time with
-multiple copies compare to genes closer to the termination. This change in gene
-dosage has a direct effect on the cell-to-cell variability in gene expression
-\cite{Jones2014a, Peterson2015}. Furthermore, since the time to reach steady
-state is determined by the degradation rate, mRNA and protein will experience
-experience these changes in gene copy number differently from each other.
+This observation implies that during the cell cycle gene copy number varies.
+This variation depends on the relative position of the gene with respect to the
+replication origin, having genes close to the replication origin spending more
+time with multiple copies compare to genes closer to the replication termination
+site. This change in gene dosage has a direct effect on the cell-to-cell
+variability in gene expression \cite{Jones2014a, Peterson2015}.
 
 \subsection{Numerical integration of moment equations}
 
-For our specific locus ({\it galK}) and a doubling time of $\approx$ 100 min,
-cells have on average 1.4 copies of the reporter gene during the cell cycle.
-What this means is that cells spend 60\% of the time having one copy of the gene
-and 40\% of the time with two copies. To account for this variability in gene
-copy number along the cell cycle we numerically integrate the moment equations
-derived in \mrm{reference moment derivation section} for a time $t = [0, t_s]$
-with an mRNA production rate $r_m$, where $t_s$ is the time point at which the
-replication fork reaches our specific locus. For the remaining time before the
-cell division $t = [t_s, t_d]$ that the cell spends with two promoters, we
-assume that the only parameter that changes is the mRNA production rate from
-$r_m$ to $2 r_m$. This simplifying assumption ignores potential changes in
-protein translation rate $r_p$ or changes in the repressor copy number that
-would be reflected in changes on the repressor on rate $\kron$.
+For our specific locus ({\it galK}) and a doubling time of $\approx$ 100 min for
+our experimental conditions, cells have on average 1.4 copies of the reporter
+gene during the cell cycle. What this means is that cells spend 60\% of the time
+having one copy of the gene and 40\% of the time with two copies. To account for
+this variability in gene copy number along the cell cycle we numerically
+integrate the moment equations derived in \siref{supp_moments} for a time $t =
+[0, t_s]$ with an mRNA production rate $r_m$, where $t_s$ is the time point at
+which the replication fork reaches our specific locus. For the remaining time
+before the cell division $t = [t_s, t_d]$ that the cell spends with two
+promoters, we assume that the only parameter that changes is the mRNA production
+rate from $r_m$ to $2 r_m$. This simplifying assumption ignores potential
+changes in protein translation rate $r_p$ or changes in the repressor copy
+number that would be reflected in changes on the repressor on rate $\kron$.
+\rp{Question: Let's discuss Elowitz two-color experiment.}
 
 \subsubsection{Initial conditions for numerical integration}
 
 In order to define the initial conditions for the numerical integration for each
 of the cell cycle stages we follow a simple procedure:
-\mrm{These are rather technical details. But I'm just dumping all of what I did
-without thinking where will this end.}
 \begin{enumerate}
   \item Initialize the zeroth moment, i.e. the probability of the promoter of
-  being on each of the two (unregulated) or three (regulated) states at any
+  being in each of the two (unregulated) or three (regulated) states at any
   value, constrained to the fact that the sum of all zeroth moments should add
   up to one.
-  \item Integrate moment equations for a long time using parameters
-  corresponding to a single promoter. This will set the initial conditions to
-  be used for the single promoter case.
-  \item Integrate the moment equations for a time $t = [0, t_s]$ using the
-  initial conditions determined in the previous step.
-  \item Update parameters to the ones corresponding to two promoter copies.
-  \item Integrate the moment equations for a time $t = [t_s, t_d]$ using the
-  last time point of the single promoter time as initial conditions.
-  \item Divide the mRNA first moment $\ee{\bb{m}}$ and the protein first moment
-  $\ee{\bb{p}}$ by two to represent the cell division.
-  \item Integrate the moment equations for a long time with the constraint that
-  the zeroth moment, the mRNA and protein first moments remain fixed as defined
-  by halving the values from the previous step.
-  \item Repeat process from step 3, using as initial conditions the last point
-  of the integration in step 7.
+  \item Numerically integrate the moment dynamics (\eref{eq_mom_dynamics} in the
+  main text) for time longer than the length of the cell cycle in order for the
+  moment values to reach steady satte using parameters corresponding to a single
+  promoter. This will set the initial conditions to be used for the single
+  promoter case.
+  \item Integrate the moment dynamics for a time $t = [0, t_s]$ using the
+  as initial conditions the last time point from step 2.
+  \item Update transcription rate from $r_m$ to $2 r_m$ corresponding to the
+  cell having two promoter copies.
+  \item Integrate the moment dynamics for a time $t = [t_s, t_d]$ using the
+  last time point of step 3 as initial conditions.
+  \item As a way to represent what the cell division does to the mean mRNA and
+  mean protein copy number multiply the mRNA first moment $\ee{\bb{m}}$ and the
+  protein first moment $\ee{\bb{p}}$ by $1 \over 2$. In other words if at the
+  end of the n$\th$ cell cycle the mean protein count is $\ee{p}_n$, the
+  next cell cycle starts with a protein count $\ee{p}_{n + 1} =
+  {\ee{p}_n \over 2}$.
+  \item In order to set the initial value of the rest of the moments after the
+  cell division integrate the moment dynamics for a time longer than a single
+  cell cycle with the constraint that the zeroth moment, the mRNA and protein
+  first moments remain fixed as defined by halving the values from the previous
+  step.
+  \item Repeat process from step 3, using as initial conditions the last time
+  point of the integration in step 7.
 \end{enumerate}
 
 Step 7 in our procedure to determine initial conditions serves as a way to
 determine how higher moments change after the cell divides. Only the first
 moments of both mRNA and protein can simply be halved after cell division, but
-it is less clear how higher moments of the distribution change as cells half
-their content. To visualize why this is not a trivial step let's consider a
-binomially distributed variable $X \sim \text{Bin}(N, p)$. For the first moment,
-given by $\ee{X} = Np$ is easy to see that upon halving the number of trials
-$N$, the new first moment would simply be $\ee{X}_{\text{new}} = {N \over 2} p$.
-But for the second moment given by $\ee{X^2} = Np - Np^2 + N^2p^2$ it is obvious
-that halving the number of attempts does not translate to halving the second
-moment. Given this non-linear transformation between moments, we concluded that
-the easiest way to converge to the value of higher moments after cell division
-was to simply integrate the moment equations keeping the first moments fixed
-until higher moments relaxed to a steady state given these constrained
-conditions.
+it is less clear how higher moments of the distribution change as cells halve
+their content. To gain intuition for why this is not a trivial step let's
+consider a binomially distributed variable $X \sim \text{Bin}(N, p)$. For the
+first moment, given by $\ee{X} = Np$ is easy to see that upon halving the number
+of trials $N \rightarrow N/2$, the new first moment would simply be
+$\ee{X}_{\text{new}} = {N \over 2} p$. But for the second moment given by
+$\ee{X^2} = Np - Np^2 + N^2p^2$ it is obvious that halving the number of
+attempts, i.e. setting $\ee{X^2}_{\text{new}} = {\ee{X^2} \over 2}$ is not
+equivalent to the second moment of a binomial distribution with $N/2$ trials.
+The right answer for this case would be to substitute every $N$ with $N/2$
+obtaining $\ee{X^2}_{\text{new}} = {N \over 2}p - {N \over 2}p^2 + \left({N
+\over 2}\right)^2p^2$.
 
-\fref{fig_first_mom_cycles} shows how the first moment of both mRNA and protein
-changes over several cell cycles. The mRNA seems to quickly relax to the steady
-state corresponding to the parameters for both a single and two promoter copies.
-This is expected since the parameters for the mRNA production were determined in
-the first place under this assumption (See \mrm{cite mRNA MCMC section}). On the
-other hand given that this relaxation time is determined by the degradation rate
-the protein doesn't reach such steady state for either promoter state.
-Interestingly once a couple of cell cycles have passed the first moment seems to
-have a reproducible trajectory over cell cycles. We call this a dynamic
-steady-state for the protein.
+What step 7 simply does is to set higher moments of the distribution to the
+expected steady state value given a fixed mRNA and protein first moment. In
+other words, in order to map how higher moments of the distribution change as
+cells halve their content we divide the first moments of the mRNA and protein
+counts in half and integrate the rest of the moment dynamics until the values
+reach steady state keeping the zero and first moments fixed. This is possible
+since, as shown in \siref{supp_moments}, higher moments of the distribution only
+depend on lower moments. Therefore by running the higher moment dynamics while
+keeping the lower moments fixed we converge to the corresponding steady state
+values of the high moments.
+
+\fref{sfig_first_mom_cycles} (adapted from \fref{fig3_cell_cycle}(B)) shows how
+the first moment of both mRNA and protein changes over several cell cycles. The
+mRNA quickly relaxes to the steady state corresponding to the parameters for
+both a single and two promoter copies. This is expected since the parameters for
+the mRNA production were determined in the first place under this assumption
+(See \siref{supp_model}). We note that there is no apparent delay before
+reaching steady state on the mean mRNA count after the cell divides. This is
+because the mean mRNA count for the two promoters state is exactly twice the
+expected mRNA count for the single promoter state (See \siref{supp_model}).
+Therefore once the mean mRNA count is halved after the cell division it is
+already at the steady state value for the single promoter case. On the other
+hand, given that the relaxation time to steady state is determined by the
+degradation rate, the mean protein count does not reach its corresponding steady
+state value for either promoter copy number state. Interestingly once a couple
+of cell cycles have passed the first moment has a repetitive trajectory over
+cell cycles.
 
 \begin{figure}[h!]
 	\centering \includegraphics
   {../fig/moment_dynamics_numeric/first_mom_cycles.pdf}
-	\caption{\textbf{First moment dynamics over cell the cell cycle.}(A) mean
-	mRNA and (B) mean protein copy number as the cell cycle progresses. The dark
-	shaded region delimits the fraction of the cell cycle that cells spend with  a
-	single copy of the promoter. The light shaded region delimits the fraction of
-	the cell cycle that cells spend with two copies of the promoter. For a 100
-  min doubling time at the {\it galK} locus cells spend 60\% of the time with
-  one copy of the promoter and the rest with two copies.}
-  \label{fig_first_mom_cycles}
+	\caption{\textbf{First moment dynamics over cell the cell cycle.} Mean mRNA
+	(upper panel) and mean protein copy number (lower panel) as the cell cycle
+	progresses. The dark shaded region delimits the fraction of the cell cycle
+	that cells spend with  a single copy of the promoter. The light shaded region
+	delimits the fraction of the cell cycle that cells spend with two copies of
+	the promoter. For a 100 min doubling time at the {\it galK} locus cells spend
+	60\% of the time with one copy of the promoter and the rest with two copies.}
+  \label{sfig_first_mom_cycles}
 \end{figure}
 
-Since our experiments were not performed with synchronized cells, in principle
-we sampled cells over the entirety of the cell cycle, so the moments that we
-determined experimentally correspond to an average over the cell cycle.  In
-order to compute these averages in the following section we discuss how to
-account for the fact that cells are not uniformly distributed along the cell
-cycle
+Experimentally when measuring single-cell gene expression levels using
+microscopy in principle cells were sampled from any time point along their
+individual cell cycles. That is because our cell cultures were not synchronized
+in any form, so the moments that we determined experimentally correspond to an
+average over the cell cycle.  In order to compute these averages in the
+following section we discuss how to account for the fact that cells are not
+uniformly distributed along the cell cycle
 
 \subsection{Exponentially distributed ages}
 
-As first mentioned in Section \mrm{ref to mRNA MCMC section}, cells in a log
-phase have exponentially distributed ages along the cell cycle, having more
-young cells compared to old ones. Specifically the probability of a cell of
-being at any time point in the cell cycle is given by \cite{Powell1956}
+As mentioned in \siref{supp_param_inference}, cells in a log phase have
+exponentially distributed ages along the cell cycle, having more young cells
+compared to old ones. Specifically the probability of a cell of being at any
+time point in the cell cycle is given by \cite{Powell1956}
 \begin{equation}
   P(a) = (\ln 2) \cdot 2^{1 - a},
-  \label{eq_age_prob}
+  \label{seq_age_prob}
 \end{equation}
 where $a \in [0, 1]$ is the stage of the cell cycle, with $a = 0$ being the
 start of the cycle and $a = 1$ being the division.
 
 Our numerical integration of the moment equations gave us a time evolution of
-the moments along the cell cycle. Without loss of generality let's focus on the
-first mRNA moment $\ee{m(t)}$ (the same can be applied to all other moments).
-In order to calculate the first moment along the entire cell cycle we must
-average each time point by the corresponding probability that a cell is found
-in such time point. This translates to computing the integral
+the moments as cells progress through the cell cycle. Without loss of generality
+let's focus on the first mRNA moment $\ee{m(t)}$ (the same can be applied to all
+other moments). In order to calculate the first moment along the entire cell
+cycle we must weigh each time point by the corresponding probability that a
+cell is found in such time point. This translates to computing the integral
 \begin{equation}
-  \ee{m} = \int_{\text{beginning cell cycle}}^{\text{end cell cycle}}
-                       \ee{m(t)} P(t) dt.
+  \ee{m}_c = \int_{\text{beginning cell cycle}}^{\text{end cell cycle}}
+                       \ee{m(t)} P(t) dt,
 \end{equation}
+where $\ee{m}_c$ is the mean mRNA copy number averaged over the entire cell
+cycle trajectory, and $P(t)$ is the probability of a cell being at a time $t$ of
+its cell cycle.
 
 If we map each time point in the cell cycle into a fraction we can use
 \eref{eq_age_prob} and compute instead
 \begin{equation}
   \ee{m} = \int_0^1 \ee{m(a)} P(a) da.
-  \label{eq_moment_avg}
+  \label{seq_moment_avg}
 \end{equation}
-We perform this integral numerically for all moments using Simpson's rule.
+What \eref{seq_moment_avg} implies is that in order to compute the first moment
+(or any moment of the distribution) we must weigh each point in the moment
+dynamics by the corresponding probability of a cell being at that point along
+its cell cycle. So when computing a moment we take the time trajectory of a
+single cell cycle as the ones shown in \fref{sfig_first_mom_cycles} and compute
+the average using \eref{seq_age_prob} to weigh each time point. We perform this
+integral numerically for all moments using Simpson's rule.
 
 \subsection{Reproducing the equilibrium picture}
 
 Given the large variability of the first moments depicted in
-\fref{fig_first_mom_cycles} it is worth considering why a simplistic equilibrium
-picture has shown to be very successful in predicting the mean expression level
-under diverse conditions \cite{Garcia2011c, Brewster2014, Barnes2018,
-Razo-Mejia2018}. In this section we compare the simple repression thermodynamic
-model with this dynamical picture of the cell cycle. But first it is worth
-recapping the assumptions that go into the equilibrium model.
+\fref{sfig_first_mom_cycles} it is worth considering why a simplistic
+equilibrium picture has shown to be very successful in predicting the mean
+expression level under diverse conditions \cite{Garcia2011c, Brewster2014,
+Barnes2018, Razo-Mejia2018}. In this section we compare the simple repression
+thermodynamic model with this dynamical picture of the cell cycle. But before it
+is worth recapping the assumptions that go into the equilibrium model.
 
-\subsubsection{Steady state under the equilibrium model}
+\subsubsection{Steady state under the thermodynamic model}
 
 Since our equilibrium model only work for the thermodynamic limit of large
 number of particles, using this theoretical framework we are only allowed to
-describe the dynamics of the first moment \cite{Phillips2015}. Again without
-loss of generality let's only focus on the mRNA first moment $\ee{m}$. The same
-principles apply if we consider the protein first moment. We can write a
-dynamical system of the form
+describe the dynamics of the first moment \cite{Phillips2015}.
+\rp{I challenge this. Single Brownian particle can be in equilibrium. Not clear
+what you want to say or if true.}
+\mrm{Now I'm doubting about my understanding of why then we have to use the
+spread the butter approach to get deviations from the mean. I originally
+thought that it was because the thermodynamic models work at this limit.}
+Again let's only focus on the mRNA first moment $\ee{m}$. The same principles
+apply if we consider the protein first moment. We can write a dynamical system
+of the form
 \begin{equation}
-  {d \ee{m} \over dt} = r_m \cdot \pbound - \gm \ee{m},
+  \dt{\ee{m}} = r_m \cdot \pbound - \gm \ee{m},
 \end{equation}
 where as before $r_m$ and $\gm$ are the mRNA production and degradation rates
-respectively, and $\pbound$ is the probability of finding the RNAP
-bound to the promoter \cite{Bintu2005a}. This dynamical system is predicted to
-have a single stable fixed point that we can find by computing the steady state.
-When we solve for $\ee{m}$ at steady state we find
+respectively, and $\pbound$ is the probability of finding the RNAP bound to the
+promoter \cite{Bintu2005a}. This dynamical system is predicted to have a single
+stable fixed point that we can find by computing the steady state. When we solve
+for $\ee{m}$ at steady state we find
 \begin{equation}
   \ee{m}_{ss} = {r_m \over \gm} \pbound.
 \end{equation}
 
 Since we assume that the only effect that the repressor has over the regulation
-of the promoter is to block the RNAP from binding to the promoter, we assume
+of the promoter is exclusion of the RNAP from binding to the promoter, we assume
 that only $\pbound$ depends on the repressor copy number $R$. Therefore when
 computing the fold-change in gene expression we  are left with
 \begin{equation}
-  \foldchange = {\ee{m}_{ss}(R \neq 0) \over \ee{m}_{ss}(R = 0)}
+  \foldchange = {\ee{m (R \neq 0)}_{ss} \over \ee{m (R = 0)}_{ss}}
               = {\pbound (R \neq 0) \over \pbound (R = 0)}.
 \end{equation}
-And as derived elsewhere this is of the form \cite{Garcia2011c}
+And as derived in \cite{Garcia2011c} this can be simplified to
 \begin{equation}
   \foldchange = \left(1 + {R \over \Nns}e^{-\beta \eR}  \right)^{-1},
-  \label{eq_fold_change_thermo}
+  \label{seq_fold_change_thermo}
 \end{equation}
-where $\beta \equiv k_BT^{-1}$, $\eR$ is the repress-DNA binding energy, and
-$\Nns$ is the number of non-specific binding sites.
+where $\beta \equiv (k_BT)^{-1}$, $\eR$ is the repress-DNA binding energy, and
+$\Nns$ is the number of non-specific binding sites where the repressor can bind.
 
-To arrive to \eref{eq_fold_change_thermo} considering both mRNA or protein we
-ignore the physiological changes that happen along the cell cycle. One of the
-most important being the variability in gene copy number that we are exploring
-in this section. It is therefore worth thinking about whether or not the dynamic
-picture exemplified in \fref{fig_first_mom_cycles} can be reconciled with the
-predictions done by \eref{eq_fold_change_thermo}.
+To arrive to \eref{seq_fold_change_thermo} we ignore the physiological changes
+that happen during the cell cycle. One of the most important being the
+variability in gene copy number that we are exploring in this section. It is
+therefore worth thinking about whether or not the dynamical picture exemplified
+in \fref{sfig_first_mom_cycles} can be reconciled with the predictions done by
+\eref{seq_fold_change_thermo} both at the mRNA and protein level.
 
 \subsubsection{Steady state under the kinetic model}
 
+\mrm{Here. All of this section is not necessary since we have the parameter
+inference section.}
 For our kinetic picture with changes over the cell cycle the mRNA (or protein)
-first moment is computed as the integral defined in \eref{eq_moment_avg}.
-\fref{fig_first_mom_cycles}(A) suggests that for the mRNA at least we could
-approximate the integral as the sum of the steady state value of the
-single-promoter state and the steady state value of the two-promoters state
-weighted by their respective probabilities. This is because by construction the
-relaxation to steady state happens at a faster time scale compared with the
-length of each of the stages along the cell cycle. In other words if $\ee{m}_i$
-is the steady state value for the state with $i$ promoters, then we can
-approximate the average mRNA copy number as
+first moment is computed as the integral defined in \eref{seq_moment_avg}.
+\fref{sfig_first_mom_cycles} upper panel suggests that for the mRNA we
+could approximate the integral as the sum of the steady state value of the
+single promoter copy state and the steady state value of the two promoter copies
+state weighted by their respective probabilities. This is because by
+construction the relaxation to steady state happens at a faster time scale
+compared with the length of each of the stages along the cell cycle. In other
+words if $\ee{m}_i$ is the steady state value for the state with $i$ promoters,
+then we can approximate the average mRNA copy number as
 \begin{equation}
   \ee{m} \approx \ee{m}_1 \int_0^{f} P(a)da +
                  \ee{m}_2 \int_f^{1} P(a)da,

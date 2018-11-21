@@ -20,7 +20,7 @@ each of the promoter states. By definition any of these moments $\ee{m^x p^y}_S$
 is computed as
 \begin{equation}
   \ee{m^x p^y}_S \equiv \sum_{m=0}^\infty \sum_{p=0}^\infty m^x p^y P_S(m, p).
-  \label{eq_mom_def}
+  \label{seq_mom_def}
 \end{equation}
 To simplify the notation let $\sum_x \equiv \sum_{x=0}^\infty$. Since we are
 working with a system of three ODE, one for each state, let us define the
@@ -39,18 +39,17 @@ With this in hand we can then apply this sum over $m$ and $p$ to
 \eref{eq_cme_matrix}. For the left-hand side we have
 \begin{equation}
   \smp m^x p^y \dt{\PP(m, p)} = \dt{}\left[ \smp m^x p^y \PP(m, p) \right],
-  \label{eq_sum_mom}
+  \label{seq_sum_mom}
 \end{equation}
 where we made use of the linearity property of the derivative to switch the
 order between the sum and the derivative. Notice that the right-hand side of
-\eref{eq_sum_mom} contains the definition of a moment from \eref{eq_mom_def}.
+\eref{seq_sum_mom} contains the definition of a moment from \eref{seq_mom_def}.
 That means that we can rewrite it as
 \begin{equation}
   \dt{}\left[ \smp m^x p^y \PP(m, p) \right] = \dt{\bb{\ee{m^x p^y}}}.
 \end{equation}
 
-Distributing the sum on the right-hand
-side of \eref{eq_cme_matrix} gives
+Distributing the sum on the right-hand side of \eref{eq_cme_matrix} gives
 \begin{equation}
   \begin{aligned}
     \dt{\bb{\ee{m^x p^y}}} &=
@@ -60,11 +59,11 @@ side of \eref{eq_cme_matrix} gives
     &- \Rp \smp (m) m^x p^y \PP(m, p) + \Rp \smp (m) m^x p^y \PP(m, p - 1)\\
     &- \Gp \smp (p) m^x p^y \PP(m, p) + \Gp \smp (p + 1) m^x p^y \PP(m, p + 1).
   \end{aligned}
-  \label{eq_master_sum}
+  \label{seq_master_sum}
 \end{equation}
 
 Let's look at each term on the right-hand side individually. For the terms in
-\eref{eq_master_sum} involving $\PP(m, p)$ we can again use \eref{eq_mom_def}
+\eref{seq_master_sum} involving $\PP(m, p)$ we can again use \eref{seq_mom_def}
 to rewrite them in a more compact form. This means that we can rewrite the
 state transition term as
 \begin{equation}
@@ -89,7 +88,7 @@ and
 \end{equation}
 respectively.
 
-For the sums terms in \eref{eq_master_sum} involving $\PP(m \pm 1, p)$ or
+For the sums terms in \eref{seq_master_sum} involving $\PP(m \pm 1, p)$ or
 $\PP(m, p \pm 1)$ we can reindex the sum to work around this mismatch. To be
 more specific let's again look at each term case by case. For the mRNA
 production term involving $\PP(m-1, p)$ we define $m' \equiv m - 1$. Using this
@@ -104,7 +103,7 @@ rather than from -1, obtaining
 \begin{equation}
   \Rm \sum_{m' = -1}^\infty \sum_p (m' + 1)^x p^y \PP(m', p) =
   \Rm \sum_{m'=0}^\infty \sum_p (m' + 1)^x p^y \PP(m', p).
-  \label{eq_reindex}
+  \label{seq_reindex}
 \end{equation}
 \mrm{In my experience a lot of people have a problem with simply substituting
 back $m'$ with $m$ for the final step. PBoC doesn't give a detailed
@@ -116,7 +115,7 @@ $m$ and $p$ themselves are dimensionless quantities that serve as indexes of how
 many molecules are in the cell. So our distribution doesn't care if the variable
 is called $m$ or $m'$; for a specific number, let's say $m = 5$, or $m' = 5$,
 $\PP(5, p)$ will return the same result. What that means is that the variable
-name is somehow arbitrary, and the right-hand side of \eref{eq_reindex} can be
+name is somehow arbitrary, and the right-hand side of \eref{seq_reindex} can be
 written as
 \begin{equation}
   \Rm \sum_{m'=0}^\infty \sum_p (m' + 1)^x p^y \PP(m', p) =
@@ -133,7 +132,7 @@ procedure in which we define $m' = m + 1$ to obtain
 In this case since the term on the right-hand side of the equation is multiplied
 by $m'$, starting the sum over $m'$ from 0 rather than from 1 will not affect
 the result since this factor will not contribute to the total sum. Nevertheless
-this is useful since our definition of a moment from \eref{eq_mom_def} requires
+this is useful since our definition of a moment from \eref{seq_mom_def} requires
 the sum to start at zero. This means that we can rewrite this term as
 \begin{equation}
   \Gm \sum_{m' = 1}^\infty m' \sum_p (m' - 1)^x p^y \PP(m', p) =
@@ -183,12 +182,12 @@ of the form
     &- \Rp \bb{\ee{m^{(x + 1)} p^y}} + \Rp \bb{\ee{m^{(x + 1)} (p + 1)^y}}\\
     &- \Gp \bb{\ee{m^x p^{(y + 1)}}} + \Gp \bb{\ee{m^x p (p - 1)^y}}.
   \end{aligned}
-  \label{eq_mom_pde}
+  \label{seq_mom_pde}
 \end{equation}
 
 \subsection{Moment closure of the simple-repression distribution}
 
-A very interesting and useful feature of \eref{eq_mom_pde} is that for a given
+A very interesting and useful feature of \eref{seq_mom_pde} is that for a given
 value of $x$ and $y$ the moments $\bb{\ee{m^x p^y}}$ is only a function of lower
 moments. Specifically $\bb{\ee{m^x p^y}}$ is a function of moments
 $\bb{\ee{m^{x'} p^{y'}}}$ that satisfy two conditions:
@@ -197,10 +196,10 @@ $\bb{\ee{m^{x'} p^{y'}}}$ that satisfy two conditions:
     &1) y' \leq y,\\
   &2) x' + y' \leq x + y.
   \end{aligned}
-  \label{eq_mom_conditions}
+  \label{seq_mom_conditions}
 \end{equation}
 
-To prove this we rewrite \eref{eq_mom_pde} as
+To prove this we rewrite \eref{seq_mom_pde} as
 \begin{equation}
   \begin{aligned}
     \dt{\bb{\ee{m^x p^y}}} &=
@@ -209,14 +208,14 @@ To prove this we rewrite \eref{eq_mom_pde} as
     &+ \Gm \bb{\ee{m p^y \left[ (m - 1)^x - m^x \right]}}\\
     &+ \Rp \bb{\ee{m^{(x + 1)} \left[ (p + 1)^y - p^y \right]}}\\
     &+ \Gp \bb{\ee{m^x p \left[ (p - 1)^y - p^y \right]}},
-    \label{eq_mom_pde_factorized}
+    \label{seq_mom_pde_factorized}
   \end{aligned}
 \end{equation}
 where the factorization is valid given the linearity of expected values. The
 objective now is to find for each term which is the highest moment once the
 binomial is expanded. Take for example a simple case in which we want to find
 the second moment of the mRNA. We then set $x = 2$ and $y = 0$.
-\eref{eq_mom_pde_factorized} then becomes
+\eref{seq_mom_pde_factorized} then becomes
 \begin{equation}
   \begin{aligned}
     \dt{\bb{\ee{m^2 p^0}}} &=
@@ -233,16 +232,16 @@ Simplifying this equation gives
     \Km \bb{\ee{m^2}}
     + \Rm \bb{\ee{\left[ 2m + 1 \right]}}
     + \Gm \bb{\ee{\left[- 2m^2 + m \right]}}.
-    \label{eq_second_mom_mRNA}
+    \label{seq_second_mom_mRNA}
 \end{equation}
 
-\eref{eq_second_mom_mRNA} satisfies both of our conditions. Since we set $y$ to
+\eref{seq_second_mom_mRNA} satisfies both of our conditions. Since we set $y$ to
 be zero, non of the terms depend on any moment that involves the protein number,
 therefore $y' \leq y$ is satisfied. Also the highest moment in
-\eref{eq_second_mom_mRNA}  satisfies $x' + y' \leq x + y$ since the second
+\eref{seq_second_mom_mRNA}  satisfies $x' + y' \leq x + y$ since the second
 moment of mRNA doesn't depend on any moment higher than $\bb{\ee{m^2}}$. To
 demonstrate this is true for any $x$ and $y$ we now simplify
-\eref{eq_mom_pde_factorized} making use of the binomial expansion
+\eref{seq_mom_pde_factorized} making use of the binomial expansion
 \begin{equation}
   (z \pm 1)^n = \sum_{k=0}^n {n \choose k} (\pm 1)^{k} z^{n-k}.
 \end{equation}
@@ -260,7 +259,7 @@ this to
 \end{equation}
 Once the sum is expanded we can see that the highest moment in this sum is given
 by $\bb{\ee{m^{(x-1)} p^y}}$ which satisfies both of the conditions on
-\eref{eq_mom_conditions}.
+\eref{seq_mom_conditions}.
 
 For the mRNA degradation term we similarly have
 \begin{equation}
@@ -275,7 +274,7 @@ Simplifying terms we obtain
   \Gm \bb{\ee{p^y \left[ \sum_{k=1}^x {x \choose k}(-1)^k m^{x+1-k} \right]}}.
 \end{equation}
 For this case we have that the largest moment is therefore $\bb{\ee{m^x p^y }}$
-which again satisfies the conditions on \eref{eq_mom_conditions}.
+which again satisfies the conditions on \eref{seq_mom_conditions}.
 
 The protein production term gives
 \begin{equation}
@@ -300,4 +299,4 @@ degradation we have
 \end{equation}
 The largest moment involved in this term is therefore $\bb{\ee{m^x p^{y-1}}}$.
 Having showed that the four terms involved in our general moment equation depend
-on lower moments that satisfy \eref{eq_mom_conditions}.
+on lower moments that satisfy \eref{seq_mom_conditions}.
