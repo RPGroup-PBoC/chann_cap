@@ -6,30 +6,30 @@ described in \secref{sec_model}. Specifically we assume a three-state model
 where the promoter can be found 1) with RNAP bound ($P$ state), 2) empty ($E$
 state) and 3) with the repressor bound ($R$ state) (See
 \fref{fig2_minimal_model}(A)). These three states generate a system of coupled
-differential equations for each of the three state distributions $P_P(m, p)$,
+differential equations for each of the three state distributions $P_B(m, p)$,
 $P_E(m, p)$ and $P_R(m, p)$. Given the rates shown in
 \fref{fig2_minimal_model}(A) let us define the system of ODEs. For the RNAP
 bound state we have
 \begin{equation}
   \begin{aligned}
-    \dt{P_P(m, p)} &=
-    - \overbrace{\kpoff P_P(m, p)}^{P \rightarrow E} % P -> E
+    \dt{P_B(m, p)} &=
+    - \overbrace{\kpoff P_B(m, p)}^{P \rightarrow E} % P -> E
     + \overbrace{\kpon P_E(m, p)}^{E \rightarrow P}\\ % E -> P
     &+ \overbrace{r_m P_p(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
     - \overbrace{r_m P_p(m, p)}^{m \rightarrow m+1}% m -> m+1
-    + \overbrace{\gm (m + 1) P_P(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
-    - \overbrace{\gm m P_P(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
-    &+ \overbrace{r_p m P_P(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
-    - \overbrace{r_p m P_P(m, p)}^{p \rightarrow p+1} % p -> p+1
-    + \overbrace{\gp (p + 1) P_P(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
-    - \overbrace{\gp p P_P(m, p)}^{p \rightarrow p-1}. % p -> p-1
+    + \overbrace{\gm (m + 1) P_B(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
+    - \overbrace{\gm m P_B(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
+    &+ \overbrace{r_p m P_B(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
+    - \overbrace{r_p m P_B(m, p)}^{p \rightarrow p+1} % p -> p+1
+    + \overbrace{\gp (p + 1) P_B(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
+    - \overbrace{\gp p P_B(m, p)}^{p \rightarrow p-1}. % p -> p-1
   \end{aligned}
 \end{equation}
 For the empty state $E$ we have
 \begin{equation}
   \begin{aligned}
     \dt{P_E(m, p)} &=
-    \overbrace{\kpoff P_P(m, p)}^{P \rightarrow E} % P -> E
+    \overbrace{\kpoff P_B(m, p)}^{P \rightarrow E} % P -> E
     - \overbrace{\kpon P_E(m, p)}^{E \rightarrow P} % E -> P
     + \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
     - \overbrace{\kron P_E(m, p)}^{E \rightarrow R}\\ % E -> R
@@ -62,7 +62,7 @@ two-state model in which the state $R$ is not allowed. All the terms in the
 system of ODEs containing $\kron$ or $\kroff$ are then set to zero.
 
 As detailed in \secref{sec_model} it is convenient to express this system using
-matrix notation \cite{Sanchez2013}. For this we define $\PP(m, p) = (P_P(m, p),
+matrix notation \cite{Sanchez2013}. For this we define $\PP(m, p) = (P_B(m, p),
 P_E(m, p), P_R(m, p))^T$. Then the system of PDEs can be expressed as
 \begin{equation}
   \begin{aligned}
@@ -158,7 +158,7 @@ two states available to the promoter -- the empty state $E$ and the RNAP bound
 state $P$. That means that the third PDE for $P_R(m, p)$ is removed from the
 system. The mRNA steady state distribution for this particular two-state
 promoter model was solved analytically by Peccoud and Ycart \cite{Peccoud1995}.
-The mRNA distribution $P(m) \equiv P_E(m) + P_P(m)$ is of the form
+The mRNA distribution $P(m) \equiv P_E(m) + P_B(m)$ is of the form
 \begin{equation}
   \small
   P(m \mid \kpon, \kpoff, r_m, \gm) =

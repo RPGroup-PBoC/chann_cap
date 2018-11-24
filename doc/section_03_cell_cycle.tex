@@ -1,17 +1,19 @@
 \subsection{Accounting for cell-cycle dependent variability in gene dosage}
 \label{sec_cell_cycle}
 
-As cells progress through the cell cycle the genome has to be replicated to
+As cells progress through the cell cycle, the genome has to be replicated to
 guarantee that each daughter cell receives a copy of the genetic material.
 This replication of the genome implies that cells spend part of the cell cycle
 with multiple copies of each gene depending on the cellular growth rate and the
 relative position of the gene with respect to the replication origin
-\cite{Bremer1996}. Genes closer to the replication origin spend larger fractions
-of the cell cycle with multiple copies compared to genes closer to the
+\cite{Bremer1996}. Genes closer to the replication origin spend a larger
+fraction of the cell cycle with multiple copies compared to genes closer to the
 replication termination site \cite{Bremer1996}. \fref{fig3_cell_cycle}(A)
 depicts a schematic of this process where the replication origin ({\it oriC})
 and the relevant locus for our experimental measurements ({\it galK}) are
 highlighted.
+\note{GC: I think that your argument would be strengthened with an estimate.
+Show that the fraction spent with two copies is $\gg r_m, \gm$}
 
 Since this change in gene copy number has been shown to have an effect on
 cell-to-cell variability in gene expression \cite{Jones2014a, Peterson2015}, we
@@ -28,7 +30,9 @@ reaches the steady state value for the corresponding mRNA production rate. The
 steady state assumption is justified since the timescale to reach this steady
 state depends only on the degradation rate $\gm$, which for the mRNA  is much
 shorter ($\approx 3$ min) than the length of the cell cycle (100 min for our
-experimental conditions). \siref{supp_param_inference} shows that a model
+experimental conditions).
+\mrm{Cite for the mRNA degradation rate.}
+\siref{supp_param_inference} shows that a model
 accounting for this gene copy number variability is able to capture the
 experimental data from single molecule mRNA counts of an unregulated promoter.
 
@@ -46,26 +50,24 @@ unregulated promoter. Since we inferred the RNAP rate parameters considering
 that mRNA reaches steady state at each stage, we see that the numerical
 integration of the equations is consistent with the assumption of having the
 mRNA reach a stable value at each stage (See \fref{fig3_cell_cycle}(B) upper
-panel). On the other hand the mean protein level does not reach a stable value
+panel). On the other hand, the mean protein level does not reach a steady state
 at each of the cellular stages. Nevertheless it is interesting to observe that
 after a couple of cell cycles the trajectory from cycle to cycle follows a
 repetitive pattern (See \fref{fig3_cell_cycle}(B) lower panel).
 
-To test the effects of including this gene copy number variability in our
-model we compare the numerical results with experimental determinations of
-relevant quantities related to the mean protein copy number and the cell-to-cell
-variability. Specifically as detailed in \mrm{Methods} we obtained single-cell
-fluorescence distributions of different strains under twelve different inducer
-concentrations. The strains imaged spanned three orders of magnitude in
-repressor copy number and variable repressor-DNA affinities. Since these
-bacterial cells were not synchronized, we reason that cells were sampled at any
-stage of the cell cycle. Therefore when computing statistics from the data such
-as the mean fluorescence value, in reality we are averaging over the cell
-cycle. In other words, as depicted in \fref{fig3_cell_cycle}(B) quantities such
-as the mean protein copy number change over time, i.e. $\ee{p} \equiv
-\ee{p(t)}$. This means that computing the mean of a population of unsynchronized
-cells is equivalent to averaging this mean protein copy number over the span of
-the cell cycle. Mathematically this is expressed as
+To test the effects of including this gene copy number variability in our model
+we now compare the predictions of the model with experimental data. Specifically
+as detailed in \mrm{Methods} we obtained single-cell fluorescence values of
+different strains under twelve different inducer concentrations. The strains
+imaged spanned three orders of magnitude in repressor copy number and variable
+repressor-DNA affinities. Since growth was asynchronous, we reason that cells
+were sampled at any stage of the cell cycle. Therefore when computing statistics
+from the data such as the mean fluorescence value, in reality we are averaging
+over the cell cycle. In other words, as depicted in \fref{fig3_cell_cycle}(B)
+quantities such as the mean protein copy number change over time, i.e. $\ee{p}
+\equiv \ee{p(t)}$. This means that computing the mean of a population of
+unsynchronized cells is equivalent to averaging this mean protein copy number
+over the span of the cell cycle. Mathematically this is expressed as
 \begin{equation}
 	\ee{p}_c = \int_{t_o}^{t_d} \ee{p(t)} P(t) dt,
 	\label{eq_time_avg}
@@ -81,30 +83,31 @@ averaging like the one in \eref{eq_time_avg} for the span of a cell cycle.
 
 \fref{fig3_cell_cycle}(C) compares zero-parameter fit predictions (solid lines)
 with experimentally determined quantities. The upper row shows the
-non-dimensional \mrm{adimensional?} quantity known as the fold-change in gene
-expression \cite{Garcia2011c}. This fold-change is defined as the relative mean
-expression level with respect to an unregulated promoter. For protein this is
+non-dimensional quantity known as the fold-change in gene expression
+\cite{Garcia2011c}. This fold-change is defined as the relative mean expression
+level with respect to an unregulated promoter. For protein this is
 \begin{equation}
 	\foldchange = {\ee{p(R \neq 0)}_c \over \ee{p(R = 0)}_c},
 \end{equation}
 where $\ee{p(R \neq 0)}_c$ represents the mean protein count for cells with
-non-zero repressor copy number $R$ count, and $\ee{p(R = 0)}_c$ represents the
-equivalent for a strain with no repressors present. The experimental points were
-determined from the fluorescent intensities of cells with varying repressor copy
-number and a $\Delta lacI$ strain with no repressor gene present \mrm{See image
-analysis appendix for further details}. The fold-change in gene expression has
-served as a metric to test the validity of equlibrium-based models
-\cite{Phillips2015}. We note that the curves shown in the upper panel of
-\fref{fig3_cell_cycle}(C) are consistent with the predictions from equilibrium
-models \cite{Razo-Mejia2018} despite being generated from a clearly
-non-equilibrium process as shown in \fref{fig3_cell_cycle}(B). The kinetic model
-from \fref{fig2_minimal_model}(A) goes beyond the equilibrium picture to
-generate predictions for moments of the distribution other than the mean mRNA or
-mean protein count. To test this extended predictive power the lower row of
-\fref{fig3_cell_cycle}(C) shows the noise in gene expression $\eta$ defined as
-the standard deviation over the mean protein count. The good correspondence
-between the theoretical predictions and the experimental data is only achieved
-when considering the gene copy number variability treated in this section
+non-zero repressor copy number $R$ count over the entire cell cycle, and
+$\ee{p(R = 0)}_c$ represents the equivalent for a strain with no repressors
+present. The experimental points were determined from the fluorescent
+intensities of cells with varying repressor copy number and a $\Delta lacI$
+strain with no repressor gene present \mrm{See image analysis appendix for
+further details}. The fold-change in gene expression has served as a metric to
+test the validity of equlibrium-based models \cite{Phillips2015}. We note that
+the curves shown in the upper panel of \fref{fig3_cell_cycle}(C) are consistent
+with the predictions from equilibrium models \cite{Razo-Mejia2018} despite being
+generated from a clearly non-equilibrium process as shown in
+\fref{fig3_cell_cycle}(B). The kinetic model from \fref{fig2_minimal_model}(A)
+goes beyond the equilibrium picture to generate predictions for moments of the
+distribution other than the mean mRNA or mean protein count. To test this
+extended predictive power the lower row of \fref{fig3_cell_cycle}(C) shows the
+noise in gene expression defined as the standard deviation over the mean protein
+count. The good correspondence between the theoretical predictions and the
+experimental data is only achieved when considering the gene copy number
+variability treated in this section
 \mrm{See Appendix XX for comparison with single-copy predictions}.
 
 \begin{figure}[h!]
@@ -114,14 +117,15 @@ when considering the gene copy number variability treated in this section
 	cycle.} (A) Schematic of a replicating genome. As cells progress through the
 	cell cycle the genome is replicated, duplicating gene copies for a fraction of
 	the cell cycle. {\it oriC} indicates the replication origin, and {\it galK}
-	indicates the locus at which the experimental construct was integrated. (B)
-	mean mRNA (upper panel) and mean protein (lower panel) dynamics. Cells spend a
+	indicates the locus at which the reporter construct was integrated. (B) mean
+	mRNA (upper panel) and mean protein (lower panel) dynamics. Cells spend a
 	fraction of the cell cycle with a single copy of the promoter (light brown)
 	and the rest of the cell cycle with two copies (light yellow). Black arrows
-	indicate time of cell division. (C) Zero parameter-fit predictions (solid
-	lines) and experimental data (circles) of the fold-change (upper row) and
-	noise $\eta$ (lower row) for different repressor binding sites with different
-	affinities and different repressor copy numbers per cell. White dots on the
-	lower row are plotted on a different scale for visual clarity.}
+	indicate time of cell division. (C) Zero parameter-fit predictions (lines) and
+	experimental data (circles) of the fold-change (upper row) and noise (lower
+	row) for different repressor binding sites with different affinities and
+	different repressor copy numbers per cell. Dotted line indicate linear scale
+	while solid line indicate logarithmic scale. White dots on the lower row are
+	plotted on a different scale for visual clarity.}
   \label{fig3_cell_cycle}
 \end{figure}

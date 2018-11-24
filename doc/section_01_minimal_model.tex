@@ -10,51 +10,51 @@ circuit consists of a single promoter with an RNA-polymerase (RNAP) binding site
 and a single binding site for a transcriptional repressor \cite{Garcia2011c}.
 The regulation due to the repressor occurs via exclusion of the RNAP from its
 binding site when the repressor is bound, decreasing the likelihood of having a
-transcription event. As in many examples throughout biology, we consider an
-allosteric repressor, meaning that it can exist in two conformations, one in
-which the repressor is able to bind to the specific binding site (active state)
-and one in which it cannot bind the specific binding site (inactive state). The
-environmental signaling occurs via passive import of an extracellular inducer
-that binds the repressor, shifting the equilibrium between the two conformations
-of the repressor \cite{Razo-Mejia2018}. In previous publications we have
-extensively characterized the mean response of this circuit under different
-conditions using equilibrium based models \mrm{cite aztec pyramid}. In this work
-we build upon these models to characterize the full distribution of gene
-expression as parameters such as repressor copy number and its affinity for the
-DNA are systematically varied.
+transcription event. As in many examples throughout biology, we consider the
+repressor to be allosteric, meaning that it can exist in two conformations, one
+in which the repressor is able to bind to the specific binding site (active
+state) and one in which it cannot bind the specific binding site (inactive
+state). The environmental signaling occurs via passive import of an
+extracellular inducer that binds the repressor, shifting the equilibrium between
+the two conformations of the repressor \cite{Razo-Mejia2018}. In previous
+publications we have extensively characterized the mean response of this circuit
+under different conditions using equilibrium based models \mrm{cite aztec
+pyramid}. In this work we build upon these models to characterize the full
+distribution of gene expression as parameters such as repressor copy number and
+its affinity for the DNA are systematically varied.
 
-Given the discrete nature of molecular species counts inside cells, chemical
-master equations have emerged as a useful tool to model the inherent probability
-distribution of these counts \cite{Sanchez2013}. In \fref{fig2_minimal_model}(A)
-we show the minimal model and the necessary set of parameters needed to predict
-mRNA and protein distributions. Specifically, we assume a three-state model
-where the promoter can be found 1) with RNAP bound ($P$ state), 2) empty ($E$
-state) and 3) with the repressor bound ($R$ state). These three states generate
-a system of coupled differential equations for each of the three state
-distributions $P_P(m, p)$, $P_E(m, p)$ and $P_R(m, p)$, where $m$ and $p$ are
-the mRNA and protein count per cell, respectively. Given the rates shown in
-\fref{fig2_minimal_model}(A) we define the system of ODEs for a specific $m$
-and $p$. For the RNAP bound state we have
+Given the discrete nature of molecular species copy numbers inside cells,
+chemical master equations have emerged as a useful tool to model the inherent
+probability distribution of these counts \cite{Sanchez2013}. In
+\fref{fig2_minimal_model}(A) we show the minimal model and the necessary set of
+parameters needed to predict mRNA and protein distributions. Specifically, we
+assume a three-state model where the promoter can be found 1) with RNAP bound
+($B$ state), 2) empty ($E$ state) and 3) with the repressor bound ($R$ state).
+These three states generate a system of coupled differential equations for each
+of the three state distributions $P_B(m, p)$, $P_E(m, p)$ and $P_R(m, p)$, where
+$m$ and $p$ are the mRNA and protein count per cell, respectively. Given the
+rates shown in \fref{fig2_minimal_model}(A) we define the system of ODEs for a
+specific $m$ and $p$. For the RNAP bound state we have
 \begin{equation}
   \begin{aligned}
-    \dt{P_P(m, p)} &=
-    - \overbrace{\kpoff P_P(m, p)}^{P \rightarrow E} % P -> E
+    \dt{P_B(m, p)} &=
+    - \overbrace{\kpoff P_B(m, p)}^{P \rightarrow E} % P -> E
     + \overbrace{\kpon P_E(m, p)}^{E \rightarrow P}\\ % E -> P
     &+ \overbrace{r_m P_p(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
     - \overbrace{r_m P_p(m, p)}^{m \rightarrow m+1}% m -> m+1
-    + \overbrace{\gm (m + 1) P_P(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
-    - \overbrace{\gm m P_P(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
-    &+ \overbrace{r_p m P_P(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
-    - \overbrace{r_p m P_P(m, p)}^{p \rightarrow p+1} % p -> p+1
-    + \overbrace{\gp (p + 1) P_P(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
-    - \overbrace{\gp p P_P(m, p)}^{p \rightarrow p-1}. % p -> p-1
+    + \overbrace{\gm (m + 1) P_B(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
+    - \overbrace{\gm m P_B(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
+    &+ \overbrace{r_p m P_B(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
+    - \overbrace{r_p m P_B(m, p)}^{p \rightarrow p+1} % p -> p+1
+    + \overbrace{\gp (p + 1) P_B(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
+    - \overbrace{\gp p P_B(m, p)}^{p \rightarrow p-1}. % p -> p-1
   \end{aligned}
 \end{equation}
 For the empty state $E$ we have
 \begin{equation}
   \begin{aligned}
     \dt{P_E(m, p)} &=
-    \overbrace{\kpoff P_P(m, p)}^{P \rightarrow E} % P -> E
+    \overbrace{\kpoff P_B(m, p)}^{P \rightarrow E} % P -> E
     - \overbrace{\kpon P_E(m, p)}^{E \rightarrow P} % E -> P
     + \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
     - \overbrace{\kron P_E(m, p)}^{E \rightarrow R}\\ % E -> R
@@ -84,23 +84,23 @@ And finally, for the repressor bound state $R$ we have
 It is convenient to rewrite these equations in a compact matrix notation
 \cite{Sanchez2013}. For this we define the vector $\PP(m, p)$ as
 \begin{equation}
-  \PP(m, p) = (P_P(m, p), P_E(m, p), P_R(m, p))^T.
+  \PP(m, p) = (P_B(m, p), P_E(m, p), P_R(m, p))^T,
 \end{equation}
-The system of ODEs can then be written as
+where $T$ is the transpose. By defining the matrices $\Km$ to contain the
+promoter state transitions, $\Rm$ and $\Gm$ to contain the mRNA production and
+degradation terms, respectively, and $\Rp$ and $\Gp$ to contain the mRNA
+production and degradation terms, respectively, the system of ODEs can then be
+written as (See \siref{supp_model} for full definition of these matrices)
 \begin{equation}
   \begin{aligned}
     \dt{\PP(m, p)} &= \left( \Km -\Rm -m\Gm -m\Rp -p\Gp \right) \PP(m, p)\\
     &+ \Rm \PP(m-1, p)
     + (m + 1) \Gm \PP(m + 1, p)\\
     &+ m \Rp \PP(m, p - 1)
-    + (p + 1) \Gp \PP(m, p + 1),
+    + (p + 1) \Gp \PP(m, p + 1).
   \end{aligned}
   \label{eq_cme_matrix}
 \end{equation}
-where $\Km$ is the promoter state transition matrix, $\Rm$ and $\Gm$ are the
-mRNA production and degradation matrices, respectively, and $\Rp$ and $\Gp$ are
-the protein production and degradation matrices respectively (See
-\siref{supp_model} for full definition of these matrices).
 
 \subsection{Inferring parameters from published data sets}
 
@@ -111,18 +111,18 @@ we have come to understand the mean response of a single promoter in the
 presence of varying levels of repressor copy numbers and repressor-DNA
 affinities \cite{Garcia2011c}, due to the effect that competing binding sites
 and multiple promoter copies \cite{Brewster2014}, and in recent work, assisted
-by the MWC model, we added the allosteric nature of the repressor
-\cite{Razo-Mejia2018}. All of these studies have exploited the simplicity and
-predictive power of equilibrium approximations to these non-equilibrium systems
-\cite{Buchler2003}. We have also used a similar kinetic model to the one
-depicted in \fref{fig2_minimal_model}(A) to study the noise in mRNA copy number
-\cite{Jones2014a}. As a test case of the depth of our theoretical understanding
-of the so-called ``hydrogen atom'' of transcriptional regulation we combine all
-of the studies mentioned above to inform the parameter values of the model
-presented in \fref{fig2_minimal_model}(A). \fref{fig2_minimal_model}(B)
-schematizes the different data sets and experimental techniques used to measure
-gene expression along with the parameters that can be inferred from such data
-sets.
+by the Monod-Wyman-Changeux (MWC) model, we added the allosteric nature of the
+repressor \cite{Razo-Mejia2018}. All of these studies have exploited the
+simplicity and predictive power of equilibrium approximations to these
+non-equilibrium systems \cite{Buchler2003}. We have also used a similar kinetic
+model to the one depicted in \fref{fig2_minimal_model}(A) to study the noise in
+mRNA copy number \cite{Jones2014a}. As a test case of the depth of our
+theoretical understanding of the so-called ``hydrogen atom'' of transcriptional
+regulation we combine all of the studies mentioned above to inform the parameter
+values of the model presented in \fref{fig2_minimal_model}(A).
+\fref{fig2_minimal_model}(B) schematizes the data sets and experimental
+techniques used to measure gene expression along with the parameters that can be
+inferred from such data sets.
 
 \siref{supp_param_inference} expands on the details of how the inference was
 performed for each of the parameters. Briefly the RNAP rates $\kpon$ and
@@ -136,20 +136,20 @@ concentration of active repressors in the cell \cite{Jones2014a}. This
 concentration of active repressors is at the same time determined by the mean
 repressor copy number in the cell, and the fraction of repressors in the active
 state. Existing estimates of the transition rates between conformations of
-allosteric molecules set them at the $\mu$s scale \cite{Cui2008}. By
+allosteric molecules set them at the microsecond scale \cite{Cui2008}. By
 considering this to be representative for our protein of interest the separation
 of time-scales between the rapid conformational changes of the repressor and the
-slower downstream processes allow us to model the probability of the repressor
-being in the active state as an equilibrium MWC process. The parameters of the
-MWC model $K_A$, $K_I$ and $\eAI$ were  previously characterized from
-video-microscopy and flow-cytometry data \cite{Razo-Mejia2018}. For the
-repressor off rate $\kroff$ we take advantage of the fact that the mean mRNA
-copy number as derived from the model in \fref{fig2_minimal_model}(A) cast in
-the language of rates is of the same functional form as the equilibrium model
-cast in the language of binding energies \cite{Phillips2015}. Therefore the
-inferred value of the repressor-DNA binding energy $\eR$ along with the
-previously determined rates constraints the value of the repressor off rate
-$\kroff$.
+slower downstream such as the open-complex formation processes allow us to model
+the probability of the repressor being in the active state as an equilibrium MWC
+process. The parameters of the MWC model $K_A$, $K_I$ and $\eAI$ were
+previously characterized from video-microscopy and flow-cytometry data
+\cite{Razo-Mejia2018}. For the repressor off rate $\kroff$ we take advantage of
+the fact that the mean mRNA copy number as derived from the model in
+\fref{fig2_minimal_model}(A) cast in the language of rates is of the same
+functional form as the equilibrium model cast in the language of binding
+energies \cite{Phillips2015}. Therefore the inferred value of the repressor-DNA
+binding energy $\eR$ along with the previously determined rates constraints the
+value of the repressor off rate $\kroff$.
 \rp{I feel like we need a little more detail about how you get the parameters}
 
 \begin{figure}[h!]

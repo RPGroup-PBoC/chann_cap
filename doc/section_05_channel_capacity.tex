@@ -5,7 +5,7 @@ As a useful measure of the ability of the genetic circuit to allow the cell to
 infer the environmental state, i.e. the inducer concentration, we turn to the
 channel capacity. The channel capacity is defined as the maximum mutual
 information between input and output, maximized over all possible input
-distributions. Putting this into mathematical terms let us define $c$ as the
+distributions. Putting this into mathematical terms we define $c$ as the
 inducer concentration. $P(c)$ represents the distribution of inducer and $P(p
 \mid c)$ the distribution of protein counts given a fixed inducer concentration
 - effectively the distributions shown in \fref{fig4_maxent}. The channel
@@ -23,7 +23,7 @@ concentration is given by \cite{Shannon1948}
 If used as a metric of how reliably a signaling system can infer the state
 of the external signal, the channel capacity, when measured in bits, is commonly
 interpreted as the logarithm of the number of states that the signaling system
-can properly resolve. So for example a signaling system with a channel capacity
+can properly resolve. For example, a signaling system with a channel capacity
 of $C$ bits is interpreted as being able to resolve $2^C$ states. We caution
 against the use of this interpretation as channel capacities with fractional
 values are allowed. We prefer the Bayesian interpretation that the mutual
@@ -60,7 +60,7 @@ reaches a maximum to then fall back down at high repressor copy number since the
 promoter would be permanently repressed \mrm{See Fig. SXX}. The steepness of the
 increment in channel capacity as well as the height of the maximum expression
 highly depend on the repressor-DNA affinity. For strong binding sites (blue
-curve in \fref{fig5_channcap}) there is a quick increment in the channel
+curve in \fref{fig5_channcap}) there is a rapid increment in the channel
 capacity, but the maximum value reached is smaller compared to a weak binding
 site (green curve in \fref{fig5_channcap}).
 
@@ -72,8 +72,8 @@ site (green curve in \fref{fig5_channcap}).
 	\cite{Blahut1972} for varying number of repressors and repressor-DNA
 	affinities. All inferences were performed using 12 IPTG concentrations as
 	detailed in the Methods. Solid lines represent zero-parameter fit predictions
-	done with MaxEnt distributions as the ones showed in \fref{fig4_maxent}. Dots
-	represent inferences made from single cell fluorescence distributions (See
-	Methods for further details).}
+	done with the maximum entropy distributions as those showed in
+	\fref{fig4_maxent}. Points represent inferences made from single cell
+	fluorescence distributions (See Methods for further details).}
   \label{fig5_channcap}
 \end{figure}
