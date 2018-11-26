@@ -15,28 +15,58 @@ both experimentally and theoretically.
 
 In this paper we take advantage of the recent progress on the quantitative
 modeling of input-output functions of genetic circuits to build a minimal model
-of the so-called simple repression motif. By combining a series of studies on
-this circuit spanning diverse experimental methods for measuring gene expression
-we infer all parameter values of our model - allowing us to generate
-parameter-free predictions for processes related to information processing. The
-model parameters for our kinetic formulation of the input-output function are
-informed by inferences made from equilibrium assumptions. We use the fact that
-if both languages describe the same system the predictions must be
-self-consistent. In other words, if the equilibrium model can only make
-statements about the mean mRNA and mean protein copy number, those predictions
-must be equivalent to what the kinetic model has to say about these same
-quantities. This condition therefore constrains the value that the kinetic rates
-in the model can take. To test whether or not the kinetic picture can reproduce
-the predictions made by the equilibrium model we compare the experimental and
-theoretical fold-change in protein copy number for a suite of biophysical
-parameters and environmental conditions. The agreement between theory and
-experiment demonstrates that both languages can indeed make consistent
-predictions.
+of the so-called simple repression motif \mrm{Aztec pyramid ref}. By combining a
+series of studies on this circuit spanning diverse experimental methods for
+measuring gene expression we infer all parameter values of our model - allowing
+us to generate parameter-free predictions for processes related to information
+processing. Some of the model parameters for our kinetic formulation of the
+input-output function are informed by inferences made from equilibrium
+assumptions. We use the fact that if both languages describe the same system the
+predictions must be self-consistent. In other words, if the equilibrium model
+can only make statements about the mean mRNA and mean protein copy number, those
+predictions must be equivalent to what the kinetic model has to say about these
+same quantities. This condition therefore constrains the value that the kinetic
+rates in the model can take. To test whether or not the kinetic picture can
+reproduce the predictions made by the equilibrium model we compare the
+experimental and theoretical fold-change in protein copy number for a suite of
+biophysical parameters and environmental conditions. The agreement between
+theory and experiment demonstrates that both languages can indeed make
+consistent predictions.
 
 The kinetic treatment of the system brings with it increasing predictive power
 compared to the equilibrium picture. Under the kinetic formulation the
 predictions are not limited only to the mean but to any moment of the mRNA and
 protein distribution. We first tested these novel predictions by comparing the
 noise in protein copy number (standard deviation / mean) with experimental data.
-Since the model is able to accurately predict the noise in protein count we set
-the goal to use the model predict the entire protein distribution.
+Since the model is able to accurately predict the noise in protein count we
+extended our analysis to infer entire protein distributions at different input
+signal concentrations by using the maximum entropy principle. What this means is
+that we computed moments of the protein distribution, and then used these
+moments to build an approximation of the full distribution. Finally we use these
+protein distributions to compute the maximum amount of information that the
+genetic circuit is able to process.
+
+By maximizing the mutual information between input signal concentration and
+output protein distribution over all possible input distributions we predicted
+the channel capacity for a suite of biophysical parameters. We compared the
+theoretical  channel capacity - a metric of how precise is the inference that
+cells can make about the state of the environment given their response - with
+experimental data, finding that our minimal model is able to predict with no
+free parameters this non-trivial quantity. To our knowledge, this is the first
+example in which the ongoing theory-experiment dialogue on gene regulation gives
+insights into the  information processing capabilities of a genetic circuit.
+
+The findings of this work open the opportunity to accurately test intriguing
+ideas that connect Shannon's metric of how accurately a signaling system can
+infer the state of the signal, with Darwinian fitness \cite{Taylor2007a}.
+Beautiful work has been done in the context of the developmental program of the
+early {\it Drosophila} embryo \cite{Tkacik2008, Petkova2016}. These studies
+demonstrated that the input-output function of the pair-rule genes works at
+channel capacity, suggesting that natural selection has acted on these signaling
+pathways, pushing them to operate at the limit of what the physics of these
+systems allows. Our system differs from the early embryo in the sense that we
+have a tunable circuit with variable amounts of information processing
+capabilities. Furthermore, compared with the fly embryo in which the organism
+tunes both the input and output distributions over evolutionary time, we have
+experimental control of the distribution of inputs that the cells are exposed
+to.
