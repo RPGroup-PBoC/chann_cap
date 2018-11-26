@@ -20,6 +20,10 @@ graphicspath.tex
 *.fls
 *.fdb_latexmk
 *.dvi
+*.bcf
+*.run.xml
+*.toc
+*blx.bib
 
 #Ignore images
 *.jpg

@@ -67,7 +67,7 @@ the Lagrange multipliers. For this we define the Lagrangian $\mathcal{L}(x)$ as
   \mathcal{L}(x) \equiv H(x) - \sum_{i=0}^m
   \left[ \lambda_i \left( \ee{x^i} - \sum_x x^i P_X(x) \right) \right],
 \end{equation}
-where $\lambda_i$ is the Lagrange multiplier associated with the $i^\th$
+where $\lambda_i$ is the Lagrange multiplier associated with the $i\th$
 moment. The inclusion of the zeroth moment is an additional constraint to
 guarantee the normalization of the resulting distribution.
 
@@ -214,7 +214,7 @@ serve as constraints, where each entry is of the form
 \begin{equation}
   A_{ij} = m_i^{x_j} \cdot p_i^{y_j},
 \end{equation}
-i.e. the $i^\th$ entry of our sample space consisting of of the product of all
+i.e. the $i\th$ entry of our sample space consisting of of the product of all
 possible pairs ($m, p$) elevated to the appropriate powers $x$ and $y$
 associated with the $j^{\text{th}}$ constraint. Let also $\bb{v}$ be a vector
 containing all the constraints with each entry of the form
@@ -230,7 +230,7 @@ maximization problem takes the form
 \end{equation}
 where $\lambda_0$ is the Lagrange multiplier associated with the normalization
 constraint, and $\lambda_j$ is the Lagrange multiplier associated with the
-$j^\th$ constraint.
+$j\th$ constraint.
 
 With this notation in hand we now proceed to rescale the problem. The first
 step consists of rescaling the rules to compute the entries of matrix $\bb{A}$
@@ -278,8 +278,8 @@ for entires of the constraint vector $\bb{v}$, finally
 \begin{equation}
   \lambda_k'' = \sum_j {e}_{jk} \beta_j,
 \end{equation}
-for the Lagrange multipliers. Here ${e}_{jk}$ is the $j^\th$ component
-of the $k^\th$ eigenvector of the matrix $\bb{E}$ with entries
+for the Lagrange multipliers. Here ${e}_{jk}$ is the $j\th$ component
+of the $k\th$ eigenvector of the matrix $\bb{E}$ with entries
 \begin{equation}
   {E}_{kj} = \sum_i {A}_{ik}' {A}_{ij}'.
 \end{equation}
@@ -288,7 +288,7 @@ This transformation guarantees that the matrix $\bb{A}''$ has the property
 \begin{equation}
   \sum_i A_{ij}'' A_{jk}'' = \beta_j \delta_{jk},
 \end{equation}
-where $\beta_j$ is the $j^\th$ eigenvalue of the matrix $\bb{E}$ and
+where $\beta_j$ is the $j\th$ eigenvalue of the matrix $\bb{E}$ and
 $\delta_{jk}$ is the delta function. What this means is that, as desired, the
 constraints are orthogonal to each other, improving the algorithm convergence
 speed.

@@ -1,8 +1,45 @@
 % Preamble
 \input{./TeX_preamble.tex}
 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Document settings
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% References
+\usepackage[
+	backend=bibtex,
+	style=numeric-comp, % show references as [1-3] instead of [1,2,3]
+	sorting=none,				% Do not sort bibliography
+	url=false, 					% Do not show url in reference
+	doi=false, 					% Do not show doi in reference
+	isbn=false, 				% Do not show isbn link in reference
+	eprint=false, 			% Do not show eprint link in reference
+	maxbibnames=9, 			% Include up to 9 names in citation
+]{biblatex}
+% Add library
+\addbibresource{./chann_cap_bib}
+
+% Bold the 'Figure #' in the caption and separate it from the title/caption
+% with a period
+% Captions will be left justified
+\usepackage[
+	aboveskip=1pt,
+	labelfont=bf,
+	labelsep=period,
+	justification=raggedright,
+	singlelinecheck=off
+]{caption}
+
+% Add numbered lines
+\usepackage{lineno}
+\linenumbers
+
+% Package to include multiple title pages
+% This will allow me to add a tile to the main text and to the SI
+\usepackage{titling}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%% Begin packages
+% Personalized functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Commenting
 \newcommand{\mrm}[1]{\textcolor{cuteBlue}{(MR:~#1)}} % Commenting
@@ -101,23 +138,60 @@ Pasadena, CA 91125, USA}
 
 \begin{document}
 \maketitle
-	% \input{abstract}
-	% \input{section_00_introduction}
-	% \input{section_01_minimal_model.tex}
-	% \input{section_02_distribution_moments.tex}
-	% \input{section_03_cell_cycle.tex}
-	% \input{section_04_maxent.tex}
-	% \input{section_05_channel_capacity.tex}
-	\input{section_06_discussion.tex}
-	\beginsupplement
-	% \input{appendix_model.tex}
-	% \input{appendix_moment_cme.tex}
-	% \input{appendix_multiple_gene_copy.tex}
-	% \input{appendix_maxent.tex}
-	% \input{appendix_two_stage_dist.tex}
-	% \input{appendix_method_characteristics.tex}
-	%	\input{section_99_ToDo}
-	% Bibliography
-	\bibliographystyle{unsrt}
-	\bibliography{./chann_cap_bib}
+%% MAIN TEXT
+
+% Remove main text from the table of contents by specifying not to include
+% any section or subsection
+\addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
+
+	% Define reference segment for main text
+	\begin{refsegment}
+	% Generate filter to not include references from main text in the
+	% supplemental references
+		\defbibfilter{notother}{not segment=\therefsegment}
+		\input{abstract}
+		\input{section_00_introduction}
+		\input{section_01_minimal_model.tex}
+		\input{section_02_distribution_moments.tex}
+		\input{section_03_cell_cycle.tex}
+		\input{section_04_maxent.tex}
+		\input{section_05_channel_capacity.tex}
+		\input{section_06_discussion.tex}
+		% Print main text references
+		\printbibliography[segment=\therefsegment]
+		% Close reference segment
+	\end{refsegment}
+
+\clearpage
+
+% Set title for supplemental information
+\title{\textbf{Supplemental Information for: First-principles prediction of the
+information processing capacity of a simple genetic circuit}}
+% Authors
+\author[1]{Manuel Razo-Mejia}
+\author[1, 2, 3, *]{Rob Phillips}
+\date{}
+
+\maketitle
+
+% SUPPLEMENTAL MATERIAL
+
+% Indicate that now all sections and subsections should be included in the
+% table of contents so that only the SI is included.
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}
+
+	% Define reference section for the supplemental material
+	\begin{refsegment}
+		% Set equation, table and figure counters to begin with "S"
+		\beginsupplement
+		\tableofcontents
+		\input{appendix_model.tex}
+		\input{appendix_moment_cme.tex}
+		\input{appendix_multiple_gene_copy.tex}
+		\input{appendix_maxent.tex}
+		% Print supplemental references changing the title
+		\printbibliography[title={Supplemental References},
+		segment=\therefsegment, filter=notother]
+	\end{refsegment}
+
 \end{document}
