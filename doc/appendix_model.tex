@@ -14,8 +14,8 @@ bound state we have
 \begin{equation}
   \begin{aligned}
     \dt{P_B(m, p)} &=
-    - \overbrace{\kpoff P_B(m, p)}^{P \rightarrow E} % P -> E
-    + \overbrace{\kpon P_E(m, p)}^{E \rightarrow P}\\ % E -> P
+    - \overbrace{\kpoff P_B(m, p)}^{B \rightarrow E} % P -> E
+    + \overbrace{\kpon P_E(m, p)}^{E \rightarrow B}\\ % E -> P
     &+ \overbrace{r_m P_p(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
     - \overbrace{r_m P_p(m, p)}^{m \rightarrow m+1}% m -> m+1
     + \overbrace{\gm (m + 1) P_B(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
@@ -30,8 +30,8 @@ For the empty state $E$ we have
 \begin{equation}
   \begin{aligned}
     \dt{P_E(m, p)} &=
-    \overbrace{\kpoff P_B(m, p)}^{P \rightarrow E} % P -> E
-    - \overbrace{\kpon P_E(m, p)}^{E \rightarrow P} % E -> P
+    \overbrace{\kpoff P_B(m, p)}^{B \rightarrow E} % P -> E
+    - \overbrace{\kpon P_E(m, p)}^{E \rightarrow B} % E -> P
     + \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
     - \overbrace{\kron P_E(m, p)}^{E \rightarrow R}\\ % E -> R
     &+ \overbrace{\gm (m + 1) P_E(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
@@ -357,7 +357,7 @@ this two-state model fits the data adequately.
   \label{sfig_lacUV5_theory_data}
 \end{figure}
 
-\subsubsection*{Accounting for variability in the number of promoters}
+\subsection{Accounting for variability in the number of promoters}
 
 As discussed in ref. \cite{Jones2014a} and further expanded in
 \cite{Peterson2015} an important source of cell-to-cell variability in gene
@@ -375,12 +375,11 @@ when cells have two copies of the promoter the mRNA production rate is $2 r_m$
 compared to the rate $r_m$ for a single promoter copy. The probability of
 observing certain mRNA copy $m$ is therefore given by
 \begin{equation}
-  P(m) = f \cdot P(m \mid \text{one promoter}) +
-  (1 - f) \cdot P(m \mid \text{two promoters}),
+  P(m) = P(m \mid \text{one promoter}) \cdot P(\text{one promoter}) +
+  P(m \mid \text{two promoters}) \cdot P(\text{two promoters}).
   \label{seq_prob_multipromoter}
 \end{equation}
-where $f = 1/3$ is the fraction of the cell cycle that cells spend with a single
-copy of the promoter. Both terms $P(m \mid \text{promoter copy})$ are given by
+Both terms $P(m \mid \text{promoter copy})$ are given by
 \eref{seq_two_state_mRNA} with the only difference being the rate $r_m$. It is
 important to acknowledge that \eref{seq_prob_multipromoter} assumes that once
 the gene is replicated the time scale in which the mRNA count relaxes to the new
@@ -423,6 +422,33 @@ cycle.
   \label{sfig_cell_area}
 \end{figure}
 
+A subtle, but important consequence of \eref{seq_cell_cycle_dist} is that
+computing any quantity for a single cell is not equivalent to computing the same
+quantity for a population of cells. For example, let's assume that we want to
+compute the mean mRNA copy number $\ee{m}$. For a single cell this would be of
+the form
+\begin{equation}
+  \ee{m}_{\text{cell}} = \ee{m}_1 \cdot f + \ee{m}_2 \cdot (1 - f),
+\end{equation}
+where $\ee{m}_i$ is the mean mRNA copy number with $i$ promoter copies in the
+cell, and $f$ is the fraction of the cell cycle that cells spend with a single
+copy of the promoter. For a single cell the probability of having a single
+promoter copy is equivalent to this fraction $f$. But \eref{seq_cell_cycle_dist}
+tells us that if we sample unsynchronized cells we are not sampling uniformly
+across the cell cycle. Therefore for a population of cells the mean mRNA is
+given by
+\begin{equation}
+  \ee{m}_{\text{population}} = \ee{m}_1 \cdot \phi + \ee{m}_2 \cdot (1 - \phi)
+  \label{seq_mean_m_pop}
+\end{equation}
+where the probability of sampling a cell with one promoter $\phi$ is given by
+\begin{equation}
+  \phi = \int_0^f P(a) da,
+\end{equation}
+where $P(a)$ is given by \eref{seq_age_prob}. What this equation computes is
+the probability of sampling a cell on a stage of the cell cycle $< f$ where the
+reporter gene hasn't been replicated yet.
+
 \fref{sfig_mRNA_by_size} shows the distribution of both groups. As expected
 larger cells have a higher mRNA copy number on average.
 
@@ -443,32 +469,27 @@ parameters is of the form
 \begin{equation}
   \small
 P(\kpon, \kpoff, r_m \mid \{m_i\}) \propto
-  \prod_{i=1}^{N_s} \cdot P(m_i \mid \kpon, \kpoff, r_m)
-  \prod_{j=1}^{N_l} \cdot P(m_j \mid \kpon, \kpoff, 2 r_m)
+  \prod_{i=1}^{N_s} P(m_i \mid \kpon, \kpoff, r_m)
+  \prod_{j=1}^{N_l} P(m_j \mid \kpon, \kpoff, 2 r_m)
   P(\kpon, \kpoff, r_m),
   \label{seq_bayes_sample_double}
 \end{equation}
 where we split the product of small and large cells.
 
-For the two-promoter model the prior shown in \eref{seq_prior_single} requires
-a small modification. The two-promoter model has a mean mRNA copy number of
-the form
+For the two-promoter model the prior shown in \eref{seq_prior_single} requires a
+small modification. \eref{seq_mean_m_pop} gives the mean mRNA copy number of a
+population of asynchronous cells growing at steady state. Given that we assume
+that the only difference between having one vs. two promoter copies is the
+change in transcription rate from $r_m$ in the single promoter case to $2 r_m$
+in the two-promoter case we can
+write \eref{seq_mean_m_pop} as
 \begin{equation}
-  \ee{m} = f \ee{m}_1 + (1 - f) \ee{m}_2,
-  \label{seq_mean_m_double}
-\end{equation}
-where $\ee{m}_1$ and $\ee{m}_2$ are the mean number of mRNA for a single
-promoter and two promoters respectively. Given that we assume that the only
-difference between these two cases is the change in transcription rate from
-$r_m$ in the single promoter case to $2 r_m$ in the two-promoter case we can
-write \eref{seq_mean_m_double} as
-\begin{equation}
-  \ee{m} = f \cdot {r_m \over \gm} {\kpon \over \kpon + \kpoff} +
-      (1 -f) \cdot {2 r_m \over \gm} {\kpon \over \kpon + \kpoff}.
+  \ee{m} = \phi \cdot {r_m \over \gm} {\kpon \over \kpon + \kpoff} +
+      (1 -\phi) \cdot {2 r_m \over \gm} {\kpon \over \kpon + \kpoff}.
 \end{equation}
 This can be simplified to
 \begin{equation}
-  \ee{m} = (2 - f) {r_m \over \gm} {\kpon \over \kpon + \kpoff}.
+  \ee{m} = (2 - \phi) {r_m \over \gm} {\kpon \over \kpon + \kpoff}.
   \label{seq_mean_m_double_rates}
 \end{equation}
 
@@ -476,14 +497,14 @@ Equating \eref{seq_mean_m_double_rates} to \eref{seq_mean_thermo} to again make
 both predictions from the equilibrium and kinetic model be self-consistent at
 the mean gives
 \begin{equation}
-  (2 - f) {\kpon \over \kpon + \kpoff} =
+  (2 - \phi) {\kpon \over \kpon + \kpoff} =
   {{P \over \Nns} e^{-\beta\eP}
   \over 1 + {P \over \Nns} e^{-\beta\eP}}.
 \end{equation}
 Solving for $\kpon \over \kpoff$ results in
 \begin{equation}
-  \left[ (1 + \rho)(2 - f) - \rho \right] \left({\kpon \over \kpoff}\right) =
-  \rho,
+  \left({\kpon \over \kpoff}\right) =
+  {\rho \over \left[ (1 + \rho)(2 - \phi) - \rho \right]},
   \label{seq_kinetic_thermo_equiv}
 \end{equation}
 where we define $\rho \equiv {P \over \Nns} e^{-\beta\eP}$. To simplify things
@@ -493,11 +514,11 @@ $\rho \ll 1$. This simplifying assumption has been previously called the weak
 promoter approximation \cite{Garcia2011c}. Given this we can simplify
 \eref{seq_kinetic_thermo_equiv} as
 \begin{equation}
-  {\kpon \over \kpoff} = {1 \over 2 - f} {P \over \Nns} e^{-\beta\eP}.
+  {\kpon \over \kpoff} = {1 \over 2 - \phi} {P \over \Nns} e^{-\beta\eP}.
 \end{equation}
 Taking the log from both sides gives
 \begin{equation}
-  \ln\left({\kpon \over \kpoff}\right) = -\ln (2 - f) + \ln P - \ln\Nns
+  \ln\left({\kpon \over \kpoff}\right) = -\ln (2 - \phi) + \ln P - \ln\Nns
   - \beta\eP.
 \end{equation}
 With this we can set as before a Gaussian prior to constain the ratio of the
@@ -505,7 +526,7 @@ RNAP rates as
 \begin{equation}
   P\left({\kpon \over \kpoff} \right) \propto
   \exp \left\{ - {\left(\ln \left({\kpon \over \kpoff}\right) -
-  \left[-\ln(2 - f) -\beta\eP + \ln P - \ln \Nns \right) \right]^2
+  \left[-\ln(2 - \phi) -\beta\eP + \ln P - \ln \Nns \right) \right]^2
   \over 2 \sigma^2} \right\},
   \label{seq_prior_double}
 \end{equation}
@@ -576,8 +597,8 @@ The dialogue between theory and experiments has led to simplified expressions
 that capture the phenomenology of the gene expression response as a function of
 natural variables such as molecule count and affinities between molecular
 players. A particularly interesting quantity for the simple repression motif
-used by Garcia \& Phillips \cite{Garcia2011c} as the fold-change in gene
-expression is given by
+used by Garcia \& Phillips \cite{Garcia2011c} is the fold-change in gene
+expression, defined as
 \begin{equation}
   \foldchange = {\ee{\text{gene expression}(R > 0)} \over
                  \ee{\text{gene expression}(R = 0)}},
@@ -585,12 +606,14 @@ expression is given by
 where $R$ is the number of repressors per cell. The fold-change is simply the
 mean expression level in the presence of the repressor relative to the mean
 expression level in the absence of regulation. In the language of statistical
-mechanics this quantity takes the form \cite{Garcia2011c}
+mechanics this quantity takes the form
 \begin{equation}
   \foldchange = \left( 1 + {R \over \Nns} e^{-\beta\eR} \right)^{-1},
   \label{seq_fc_thermo}
 \end{equation}
-where $\eR$ is the repressor-DNA binding energy.
+where $\eR$ is the repressor-DNA binding energy, and as before $\Nns$ is the
+number of non-specific binding sites where the repressor can bind
+\cite{Garcia2011c}.
 
 To compute the fold-change in the chemical master equation language we compute
 the first moment of the steady sate mRNA distribution $\ee{m}$ for both, the
@@ -600,7 +623,7 @@ promoter mean mRNA copy number is given by \eref{seq_mean_m_double_rates}. For
 the regulated (three-state) promoter we have an equivalent expression of the
 form
 \begin{equation}
-  \ee{m (R > 0)} = (2 - f){r_m \over \gm} {\kroff\kron
+  \ee{m (R > 0)} = (2 - \phi){r_m \over \gm} {\kroff\kron
   \over \kpoff\kroff + \kpoff\kron + \kroff\kpon}.
 \end{equation}
 Computing the fold-change then gives
@@ -610,7 +633,7 @@ Computing the fold-change then gives
   \kpoff\kron + \kroff \left( \kpoff + \kpon \right)},
   \label{seq_fold_change_cme}
 \end{equation}
-where the factor $(2 -f)$ due to the multiple promoter copies cancels out.
+where the factor $(2 - \phi)$ due to the multiple promoter copies cancels out.
 
 Given that the number of repressors per cell $R$ is an experimental variable
 that we can control, we assume that the rate at which the promoter transitions

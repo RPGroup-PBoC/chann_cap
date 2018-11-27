@@ -38,8 +38,8 @@ specific $m$ and $p$. For the RNAP bound state we have
 \begin{equation}
   \begin{aligned}
     \dt{P_B(m, p)} &=
-    - \overbrace{\kpoff P_B(m, p)}^{P \rightarrow E} % P -> E
-    + \overbrace{\kpon P_E(m, p)}^{E \rightarrow P}\\ % E -> P
+    - \overbrace{\kpoff P_B(m, p)}^{B \rightarrow E} % P -> E
+    + \overbrace{\kpon P_E(m, p)}^{E \rightarrow B}\\ % E -> P
     &+ \overbrace{r_m P_p(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
     - \overbrace{r_m P_p(m, p)}^{m \rightarrow m+1}% m -> m+1
     + \overbrace{\gm (m + 1) P_B(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
@@ -54,8 +54,8 @@ For the empty state $E$ we have
 \begin{equation}
   \begin{aligned}
     \dt{P_E(m, p)} &=
-    \overbrace{\kpoff P_B(m, p)}^{P \rightarrow E} % P -> E
-    - \overbrace{\kpon P_E(m, p)}^{E \rightarrow P} % E -> P
+    \overbrace{\kpoff P_B(m, p)}^{ \rightarrow E} % P -> E
+    - \overbrace{\kpon P_E(m, p)}^{E \rightarrow B} % E -> P
     + \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
     - \overbrace{\kron P_E(m, p)}^{E \rightarrow R}\\ % E -> R
     &+ \overbrace{\gm (m + 1) P_E(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
