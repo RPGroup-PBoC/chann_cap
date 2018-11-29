@@ -38,6 +38,11 @@
 % This will allow me to add a tile to the main text and to the SI
 \usepackage{titling}
 
+% This package will allow me to define booleans to compile main text or SI
+\usepackage{ifthen}
+\newboolean{maintext}
+\newboolean{sitext}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Personalized functions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -137,18 +142,24 @@ Pasadena, CA 91125, USA}
 \renewcommand\Affilfont{\itshape\small}
 
 \begin{document}
-\maketitle
 %% MAIN TEXT
 
 % Remove main text from the table of contents by specifying not to include
 % any section or subsection
 \addtocontents{toc}{\protect\setcounter{tocdepth}{-1}}
 
+
 	% Define reference segment for main text
 	\begin{refsegment}
 	% Generate filter to not include references from main text in the
 	% supplemental references
+
 		\defbibfilter{notother}{not segment=\therefsegment}
+		% Set boolean to ether compile or not the main text
+		\setboolean{maintext}{true}
+		\ifthenelse{\boolean{maintext}}{
+		\maketitle % Set title for paper
+
 		\input{abstract}
 		\input{section_00_introduction}
 		\input{section_01_minimal_model.tex}
@@ -157,6 +168,7 @@ Pasadena, CA 91125, USA}
 		\input{section_04_maxent.tex}
 		\input{section_05_channel_capacity.tex}
 		\input{section_06_discussion.tex}
+		}{}% Close boolean to compile main text
 		% Print main text references
 		\printbibliography[segment=\therefsegment]
 		% Close reference segment
@@ -167,11 +179,11 @@ Pasadena, CA 91125, USA}
 % Set title for supplemental information
 \title{\textbf{Supplemental Information for: First-principles prediction of the
 information processing capacity of a simple genetic circuit}}
-% Authors
-\author[1]{Manuel Razo-Mejia}
-\author[1, 2, 3, *]{Rob Phillips}
 \date{}
 
+
+\setboolean{sitext}{true}
+\ifthenelse{\boolean{sitext}}{
 \maketitle
 
 % SUPPLEMENTAL MATERIAL
@@ -194,4 +206,5 @@ information processing capacity of a simple genetic circuit}}
 		segment=\therefsegment, filter=notother]
 	\end{refsegment}
 
+}{} % Close boolean to compile SI
 \end{document}

@@ -11,7 +11,7 @@ change.
 To compute any moment of our chemical master equation (\eref{eq_cme_matrix})
 let us define a vector
 \begin{equation}
-  \ee{\bb{m^x p^y}} \equiv (\ee{m^x p^y}_E, \ee{m^x p^y}_B, \ee{m^x p^y}_R)^T,
+  \ee{\bb{m^x p^y}} \equiv (\ee{m^x p^y}_B, \ee{m^x p^y}_E, \ee{m^x p^y}_R)^T,
 \end{equation}
 where $\ee{m^x p^y}_S$ is the expected value of $m^x p^y$ in state $S \in \{E,
 P, R\}$ with $x, y \in \mathbb{N}$. In other words, just as we defined the
@@ -29,8 +29,8 @@ following operation:
   \ee{\bb{m^x p^y}} =
   \smp m^x p^y \PP(m, p) \equiv
   \begin{bmatrix}
-    \smp m^x p^y P_E(m, p)\\
     \smp m^x p^y P_B(m, p)\\
+    \smp m^x p^y P_E(m, p)\\
     \smp m^x p^y P_R(m, p)\\
   \end{bmatrix}.
 \end{equation}
