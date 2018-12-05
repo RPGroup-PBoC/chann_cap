@@ -16,8 +16,8 @@ bound state we have
     \dt{P_B(m, p)} &=
     - \overbrace{\kpoff P_B(m, p)}^{B \rightarrow E} % P -> E
     + \overbrace{\kpon P_E(m, p)}^{E \rightarrow B}\\ % E -> P
-    &+ \overbrace{r_m P_p(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
-    - \overbrace{r_m P_p(m, p)}^{m \rightarrow m+1}% m -> m+1
+    &+ \overbrace{r_m P_B(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
+    - \overbrace{r_m P_B(m, p)}^{m \rightarrow m+1}% m -> m+1
     + \overbrace{\gm (m + 1) P_B(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
     - \overbrace{\gm m P_B(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
     &+ \overbrace{r_p m P_B(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
@@ -153,10 +153,10 @@ work that spans several experimental techniques.
 We begin our parameter inference problem with the RNAP rates $\kpon$ and
 $\kpoff$, as well as the mRNA production rate $r_m$. In this case there are only
 two states available to the promoter -- the empty state $E$ and the RNAP bound
-state $P$. That means that the third ODE for $P_R(m, p)$ is removed from the
+state $B$. That means that the third ODE for $P_R(m, p)$ is removed from the
 system. The mRNA steady state distribution for this particular two-state
 promoter model was solved analytically by Peccoud and Ycart \cite{Peccoud1995}.
-The mRNA distribution $P(m) \equiv P_E(m) + P_B(m)$ is of the form
+This distribution $P(m) \equiv P_E(m) + P_B(m)$ is of the form
 \begin{equation}
   \small
   P(m \mid \kpon, \kpoff, r_m, \gm) =
@@ -202,8 +202,8 @@ strong has a mean copy number of $\ee{m} \approx 18$ mRNA/cell.
   \label{sfig_lacUV5_FISH}
 \end{figure}
 
-Having this data in hand we now use Bayesian parameter inference. Writing Bayes
-theorem we have
+Having this data in hand we now turn to Bayesian parameter inference. Writing
+Bayes theorem we have
 \begin{equation}
   P(\kpon, \kpoff, r_m \mid D) = {P(D \mid \kpon, \kpoff, r_m)
   P(\kpon, \kpoff, r_m) \over P(D)},
@@ -244,7 +244,7 @@ copy numbers and binding affinities, to constrain the values that the rates in
 question can take.
 
 In the case of this two-state promoter it can be shown that the mean number of
-mRNA is given by \cite{Phillips2015} (See \siref{supp_moments} for moment
+mRNA is given by \cite{Sanchez2013} (See \siref{supp_moments} for moment
 computation)
 \begin{equation}
   \ee{m} = {r_m \over \gm} {\kpon \over \kpon + \kpoff}.
@@ -318,16 +318,15 @@ peak of this long-tailed distribution.
 	\caption{\textbf{MCMC posterior distribution.} Sampling out of
 	\eref{seq_bayes_sample} the plot shows 2D and 1D projections of the 3D
 	parameter space. The parameter values are (in units of the mRNA degradation
-	rate $\gm$) $\kpon = 4.4^{+0.8}_{-0.3}$, $\kpoff = 20.4^{+52.1}_{-8.4}$ and
-	$r_m = 106.1^{+184.8}_{-31.2}$ which are the modes of their respective
-	distributions, where the superscripts and subscripts represent the upper and
-	lower bounds of the 95$^\text{th}$ percentile of the parameter value
-  distributions}
+	rate $\gm$) $\kpon = 4.3^{+1}_{-0.3}$, $\kpoff = 18.8^{+120}_{-10}$ and $r_m =
+	103.8^{+423}_{-37}$ which are the modes of their respective distributions,
+	where the superscripts and subscripts represent the upper and lower bounds of
+	the 95$^\text{th}$ percentile of the parameter value distributions}
   \label{sfig_mcmc_rnap}
 \end{figure}
 
-The inferred values $\kpon = 4.4^{+0.8}_{-0.3}$, $\kpoff = 20.4^{+52.1}_{-8.4}$
-and $r_m = 106.1^{+184.8}_{-31.2}$ are given in units of the mRNA degradation
+The inferred values $\kpon = 4.3^{+1}_{-0.3}$, $\kpoff = 18.8^{+120}_{-10}$
+and $r_m = 103.8^{+423}_{-37}$ are given in units of the mRNA degradation
 rate $\gm$. Given the asymmetry of the parameter distributions we report the
 upper and lower bound of the 95$^\text{th}$ percentile of the posterior
 distributions. Assuming a mean life-time for mRNA of $\approx$ 3 min (from
@@ -335,8 +334,8 @@ this
 \href{http://bionumbers.hms.harvard.edu/bionumber.aspx?&id=107514&ver=1&trm=mRNA%20mean%20lifetime}{link})
 we have an mRNA degradation rate of $\gm \approx 2.84 \times 10^{-3} s^{-1}$.
 Using this value gives the following values for the inferred rates: $\kpon =
-0.012_{-0.001}^{+0.002} s^{-1}$, $\kpoff = {0.06}_ {-0.02}^{+0.15} s^{-1}$, and
-$r_m = 0.3_{-0.09}^{+0.5} s^{-1}$.
+0.024_{-0.002}^{+0.005} s^{-1}$, $\kpoff = {0.11}_ {-0.05}^{+0.66} s^{-1}$, and
+$r_m = 0.3_{-0.2}^{+2.3} s^{-1}$.
 \mrm{This is where a statement should be done
 with respect to known values in the literature}
 \rp{Absolutely}
@@ -543,8 +542,8 @@ with the equilibrium picture.
 	\caption{\textbf{MCMC posterior distribution for a multi-promoter model.}
 	Sampling out of \eref{seq_bayes_sample_double} the plot shows 2D and 1D
 	projections of the 3D parameter space. The parameter values are (in units of
-	the mRNA degradation rate $\gm$) $\kpon = 6^{+0.8}_{-0.3}$, $\kpoff =
-	85.7^{+437}_{-47.6}$ and $r_m = 154.8^{+684}_{-72.7}$ which are the modes of
+	the mRNA degradation rate $\gm$) $\kpon = 6.8^{+1}_{-0.5}$, $\kpoff =
+	112^{+440}_{-50}$ and $r_m = 203^{+698}_{-82}$ which are the modes of
 	their respective distributions, where the superscripts and subscripts
 	represent the upper and lower bounds of the 95$\th$ percentile of the
 	parameter value distributions. The sampling was bounded to values < 1000 for
@@ -553,9 +552,9 @@ with the equilibrium picture.
 \end{figure}
 
 Using again the mRNA mean lifetime of gives the following values for the
-parameters: $\kpon = 0.035_{-0.002}^{+0.004} s^{-1}$, $\kpoff = {0.47}_
-{-0.26}^{+2.43} s^{-1}$, and $r_m = 0.860_{-0.4}^{+3.8} s^{-1}$. \mrm{again need
-to compare with what is known about these rates.}.
+parameters: $\kpon = {0.03}_{-0.003}^{+0.005} s^{-1}$, $\kpoff = {0.6}
+_{-0.2}^{+2.4} s^{-1}$, and $r_m = {1}_{-0.4}^{+3} s^{-1}$. \mrm{again
+need to compare with what is known about these rates.}.
 \fref{sfig_lacUV5_theory_data_double} shows the result of applying
 \eref{seq_prob_multipromoter} using these parameter values. Specifically
 \fref{sfig_lacUV5_theory_data_double}(A) shows the global distribution including
@@ -600,7 +599,7 @@ players. A particularly interesting quantity for the simple repression motif
 used by Garcia \& Phillips \cite{Garcia2011c} is the fold-change in gene
 expression, defined as
 \begin{equation}
-  \foldchange = {\ee{\text{gene expression}(R > 0)} \over
+  \foldchange = {\ee{\text{gene expression}(R \neq 0)} \over
                  \ee{\text{gene expression}(R = 0)}},
 \end{equation}
 where $R$ is the number of repressors per cell. The fold-change is simply the
@@ -617,28 +616,29 @@ number of non-specific binding sites where the repressor can bind
 
 To compute the fold-change in the chemical master equation language we compute
 the first moment of the steady sate mRNA distribution $\ee{m}$ for both, the
-three-state promoter ($R>0$) and the two-state promoter case ($R=0$) (See
+three-state promoter ($R \neq 0$) and the two-state promoter case ($R=0$) (See
 \siref{supp_moments} for moment derivation). The unregulated (two-state)
 promoter mean mRNA copy number is given by \eref{seq_mean_m_double_rates}. For
 the regulated (three-state) promoter we have an equivalent expression of the
 form
 \begin{equation}
-  \ee{m (R > 0)} = (2 - \phi){r_m \over \gm} {\kroff\kron
+  \ee{m (R \neq 0)} = (2 - \phi){r_m \over \gm} {\kroff\kron
   \over \kpoff\kroff + \kpoff\kron + \kroff\kpon}.
 \end{equation}
 Computing the fold-change then gives
 \begin{equation}
-  \foldchange = {\ee{m (R > 0)} \over \ee{m (R = 0)}} =
+  \foldchange = {\ee{m (R \neq 0)} \over \ee{m (R = 0)}} =
   {\kroff \left( \kpoff + \kpon \right) \over
   \kpoff\kron + \kroff \left( \kpoff + \kpon \right)},
   \label{seq_fold_change_cme}
 \end{equation}
-where the factor $(2 - \phi)$ due to the multiple promoter copies cancels out.
+where the factor $(2 - \phi)$ due to the multiple promoter copies, the
+transcription rate $r_m$ and the mRNA degradation rate $\gm$ cancel out.
 
 Given that the number of repressors per cell $R$ is an experimental variable
 that we can control, we assume that the rate at which the promoter transitions
 form the empty state to the repressor bound state $\kron$ is given by the
-concentration of repressors $[R]$ times a diffusion limited rate on $k_o$
+concentration of repressors $[R]$ times a diffusion limited on rate $k_o$
 \cite{Jones2014a}.  For the diffusion limited constant $k_o$ we use the value
 used by Jones et al. \cite{Jones2014a} \mrm{Find real reference for this value
 that Brewster never gave me.}. With this in hand we can rewrite
@@ -679,11 +679,11 @@ conversion factor to turn M into nM we find that
 from that data set.}
 \begin{equation}
 [R] = {R \over 2.1 \times 10^{-15} L} \cdot {1 \over 6.022 \times 10^{23}}
-\cdot {10^9 \text{ nmol} \over 1 \text{ mol}} \approx 1.66 \times R.
+\cdot {10^9 \text{ nmol} \over 1 \text{ mol}} \approx 0.8 \times R.
 \end{equation}
 Using this we simplify \eref{seq_kroff_complete} as
 \begin{equation}
-  \kroff \approx 1.66 \cdot k_o \cdot \Nns e^{\beta\eR}
+  \kroff \approx 0.8 \cdot k_o \cdot \Nns e^{\beta\eR}
    \cdot {\kpon \over \kpon + \kpoff}.
   \label{seq_kroff}
 \end{equation}

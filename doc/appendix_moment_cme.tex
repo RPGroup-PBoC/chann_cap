@@ -1,20 +1,20 @@
 \section{Computing moments from the master equation}\label{supp_moments}
 
 In this section we will compute the moment equations for the distribution  $P(m,
-p; t)$. Without lost of generality here we will focus on the three-state
+p)$. Without lost of generality here we will focus on the three-state
 regulated promoter. The computation of the moments for the two-state promoter
 follows the exact same procedure, having only the definition of the matrices
 change.
 
-\subsection{Computing a distribution moment}
+\subsection{Computing moments of a distribution}
 
 To compute any moment of our chemical master equation (\eref{eq_cme_matrix})
 let us define a vector
 \begin{equation}
   \ee{\bb{m^x p^y}} \equiv (\ee{m^x p^y}_B, \ee{m^x p^y}_E, \ee{m^x p^y}_R)^T,
 \end{equation}
-where $\ee{m^x p^y}_S$ is the expected value of $m^x p^y$ in state $S \in \{E,
-P, R\}$ with $x, y \in \mathbb{N}$. In other words, just as we defined the
+where $\ee{m^x p^y}_S$ is the expected value of $m^x p^y$ in state $S \in \{B,
+E, R\}$ with $x, y \in \mathbb{N}$. In other words, just as we defined the
 vector $\PP(m, p)$, here we define a vector to collect the expected value of
 each of the promoter states. By definition any of these moments $\ee{m^x p^y}_S$
 is computed as
@@ -214,7 +214,7 @@ To prove this we rewrite \eref{seq_mom_pde} as
 where the factorization is valid given the linearity of expected values. The
 objective now is to find for each term which is the highest moment once the
 binomial is expanded. Take for example a simple case in which we want to find
-the second moment of the mRNA. We then set $x = 2$ and $y = 0$.
+the second moment of the mRNA distribution. We then set $x = 2$ and $y = 0$.
 \eref{seq_mom_pde_factorized} then becomes
 \begin{equation}
   \begin{aligned}
@@ -240,7 +240,7 @@ be zero, non of the terms depend on any moment that involves the protein number,
 therefore $y' \leq y$ is satisfied. Also the highest moment in
 \eref{seq_second_mom_mRNA}  satisfies $x' + y' \leq x + y$ since the second
 moment of mRNA doesn't depend on any moment higher than $\bb{\ee{m^2}}$. To
-demonstrate this is true for any $x$ and $y$ we now simplify
+demonstrate this is true for any $x$ and $y$ we now rewrite
 \eref{seq_mom_pde_factorized} making use of the binomial expansion
 \begin{equation}
   (z \pm 1)^n = \sum_{k=0}^n {n \choose k} (\pm 1)^{k} z^{n-k}.
@@ -298,5 +298,5 @@ degradation we have
   \right]}}.
 \end{equation}
 The largest moment involved in this term is therefore $\bb{\ee{m^x p^{y-1}}}$.
-Having showed that the four terms involved in our general moment equation depend
-on lower moments that satisfy \eref{seq_mom_conditions}.
+With this we show that the four terms involved in our general moment equation
+depend only on lower moments that satisfy \eref{seq_mom_conditions}.

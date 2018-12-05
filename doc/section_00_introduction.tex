@@ -6,12 +6,12 @@ biofilm, living organisms of all types sense and respond to external signals.
 \fref{fig1_intro}(A) shows a schematic of this process for a bacterial cell
 sensing a concentration of an extracellular chemical. At the molecular level
 where signal transduction unfolds mechanistically, there are physical
-constraints on the accuracy and precision of these responses given by the
+constraints on the accuracy and precision of these responses given by
 intrinsic stochastic fluctuations \cite{Nemenman2010}. This means that two
 genetically identical cells exposed to the same stimulus will not have an
 identical response \cite{Eldar2010}.
 
-The implications of this biological noise is that cells do not have an infinite
+The implication of this biological noise is that cells do not have an infinite
 resolution to distinguish signals and, as a consequence, there is a one-to-many
 mapping between inputs and outputs. In that sense, one might think of cells
 performing a Bayesian inference of the state of the environment given their
@@ -76,7 +76,7 @@ emitting point sources.
 In this work we follow the same philosophy of theory-experiment dialogue to
 predict from first principles the effect that biophysical parameters such as
 transcription factor copy number and protein-DNA affinity have on the
-information processing capacity of a simple genetic circuit. Specifically to
+information processing capacity of a simple genetic circuit. Specifically, to
 predict the mutual information between an extracellular chemical signal (input
 $c$) and the corresponding cellular response in the form of protein expression
 (output $p$) (\eref{eq_mutual_info}) we must compute the input-output function
@@ -101,8 +101,10 @@ which cells can resolve the environmental state with no free parameters.
 
 The reminder of the paper is organized as follows. In \secref{sec_model} we
 define the minimal theoretical model and parameter inference for a simple
-repression genetic circuit. \secref{sec_moments} computes the moments of the
-mRNA and protein distributions from this minimal model. In
+repression genetic circuit. \secref{sec_param} discusses how all parameters for
+the minimal model were determined from published datasets that explore different
+aspects of the simple repression motif. \secref{sec_moments} computes the
+moments of the mRNA and protein distributions from this minimal model. In
 \secref{sec_cell_cycle} we explore the consequences of variability in gene copy
 number during the cell cycle. In this section we compare experimental and
 theoretical quantities related to the moments of the distribution. Specifically

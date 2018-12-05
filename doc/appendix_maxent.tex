@@ -1,10 +1,10 @@
 \section{Maximum entropy approximation of distributions}\label{supp_maxent}
 
-On the one hand the solution of chemical master equations like the one proposed
-in \secref{sec_model} represent a had mathematical challenge. As presented
+On the one hand the solution of chemical master equations like the one
+in \secref{sec_model} represent a hard mathematical challenge. As presented
 in \siref{supp_param_inference} Peccoud \& Ycart derived a closed-form solution
 for the two-state promoter at the mRNA level \cite{Peccoud1995}. In an
-impressive display of mathematical skills Shahrezaei \& Swain were able to
+impressive display of mathematical skills, Shahrezaei \& Swain were able to
 derive an approximate solution for the one- (not considered in this work) and
 two-state promoter master equation at the protein level \cite{Shahrezaei2008}.
 Nevertheless both of these solutions do not give instantaneous insights about
@@ -28,7 +28,7 @@ tackles the question of given limited information what is the least biased
 inference one can make about a particular probability distribution
 \cite{Jaynes1957}. In particular Jaynes used this principle to show the
 correspondence between statistical mechanics and information theory,
-demonstrating for example that the Boltzmann distribution is the probability
+demonstrating, for example, that the Boltzmann distribution is the probability
 distribution that maximizes Shannon's entropy subject to a constraint that the
 average energy of the system is fixed.
 
@@ -56,7 +56,7 @@ it on the base of maximizing the Shannon entropy, constrained by the information
 we have about these $m$ moments. The maximization of Shannon's entropy
 guarantees that we are the least committed possible to information that we do
 not posses. The Shannon entropy for an univariate discrete distribution is
-given by
+given by \cite{Shannon1948}
 \begin{equation}
   H(x) \equiv - \sum_x P_X(x) \log P_X(x).
 \end{equation}
@@ -71,11 +71,10 @@ where $\lambda_i$ is the Lagrange multiplier associated with the $i\th$
 moment. The inclusion of the zeroth moment is an additional constraint to
 guarantee the normalization of the resulting distribution.
 
-Since $P_X(x)$ has a finite set of discrete values if we take the derivative of
-the Lagrangian with respect to $P_X(x)$ what this implies is that we chose a
-particular value of $X = x$. Therefore from the sum over all possible $x$ values
-only a single term survives. With this in mind we take the derivative of the
-Lagrangian obtaining
+Since $P_X(x)$ has a finite set of discrete values, when taking the derivative
+of the Lagrangian with respect to $P_X(x)$, we chose a particular value of $X =
+x$. Therefore from the sum over all possible $x$ values only a single term
+survives. With this in mind we take the derivative of the Lagrangian obtaining
 \begin{equation}
   {d\mathcal{L} \over d P_X(x)} = -\log P_X(x) - 1 -
   \sum_{i=0}^m \lambda_i x^i.
@@ -152,7 +151,7 @@ As a consequence the MaxEnt joint distribution $P_H(m, p)$ is of the form
 \begin{equation}
   P_H(m, p) = {1 \over \mathcal{Z}}
               \exp \left( - \sum_{(x,y)} \lambda_{(x,y)} m^x p^y \right),
-  \label{eq_maxEnt_joint}
+  \label{seq_maxEnt_joint}
 \end{equation}
 where $\lambda_{(x,y)}$ is the Lagrange multiplier associated with the moment
 $\ee{m^x p^y}$, and again $\mathcal{Z}$ is the normalization constant given by
@@ -296,7 +295,7 @@ speed.
 \subsection{Predicting distributions for simple repression constructs}
 
 Having explained the theoretical background along with the practical
-difficulties and a workaround strategy proposed by Bretthorst we implemented
+difficulties and a workaround strategy proposed by Bretthorst, we implemented
 the inference using the moments obtained from averaging over the variability
 along the cell cycle (See \siref{supp_multi_gene}).
 \fref{fig_pmf_mRNA} and \fref{fig_pmf_protein} present these inferences for
@@ -305,14 +304,7 @@ repressor-DNA binding energy and repressor copy numbers per cell. From these
 plots we can easily appreciate that despite the fact that the mean of each
 distribution changes as the induction level changes, there is a lot of overlap
 between distributions. This as a consequence means that at the single cell level
-cells cannot perfectly resolve between different inputs. The influence of the
-biophysical parameters is interesting to explore. For the upper right corner
-where cells have a very weak binding site and a small amount of repressors, all
-of the inducer concentrations basically overlap for the most part, giving cells
-very little capacity of resolving different inputs. As the number of repressors
-per cell or the reprssor-DNA interaction increases, the different distributions
-start to overlap less, allowing cells to extract more information about the
-inputs.
+cells cannot perfectly resolve between different inputs.
 
 \begin{figure}[h!]
 	\centering \includegraphics

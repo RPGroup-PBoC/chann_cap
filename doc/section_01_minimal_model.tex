@@ -40,8 +40,8 @@ specific $m$ and $p$. For the RNAP bound state we have
     \dt{P_B(m, p)} &=
     - \overbrace{\kpoff P_B(m, p)}^{B \rightarrow E} % P -> E
     + \overbrace{\kpon P_E(m, p)}^{E \rightarrow B}\\ % E -> P
-    &+ \overbrace{r_m P_p(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
-    - \overbrace{r_m P_p(m, p)}^{m \rightarrow m+1}% m -> m+1
+    &+ \overbrace{r_m P_B(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
+    - \overbrace{r_m P_B(m, p)}^{m \rightarrow m+1}% m -> m+1
     + \overbrace{\gm (m + 1) P_B(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
     - \overbrace{\gm m P_B(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
     &+ \overbrace{r_p m P_B(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
@@ -54,7 +54,7 @@ For the empty state $E$ we have
 \begin{equation}
   \begin{aligned}
     \dt{P_E(m, p)} &=
-    \overbrace{\kpoff P_B(m, p)}^{ \rightarrow E} % P -> E
+    \overbrace{\kpoff P_B(m, p)}^{B \rightarrow E} % P -> E
     - \overbrace{\kpon P_E(m, p)}^{E \rightarrow B} % E -> P
     + \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
     - \overbrace{\kron P_E(m, p)}^{E \rightarrow R}\\ % E -> R
@@ -88,7 +88,7 @@ It is convenient to rewrite these equations in a compact matrix notation
 \end{equation}
 where $T$ is the transpose. By defining the matrices $\Km$ to contain the
 promoter state transitions, $\Rm$ and $\Gm$ to contain the mRNA production and
-degradation terms, respectively, and $\Rp$ and $\Gp$ to contain the mRNA
+degradation terms, respectively, and $\Rp$ and $\Gp$ to contain the protein
 production and degradation terms, respectively, the system of ODEs can then be
 written as (See \siref{supp_model} for full definition of these matrices)
 \begin{equation}
@@ -103,6 +103,7 @@ written as (See \siref{supp_model} for full definition of these matrices)
 \end{equation}
 
 \subsection{Inferring parameters from published data sets}
+\label{sec_param}
 
 A decade of research in our group has characterized the simple repression motif
 with an ever expanding array of predictions and corresponding experiments to
@@ -136,8 +137,8 @@ in the cell \cite{Jones2014a}. This concentration of active repressor is at the
 same time determined by the mean repressor copy number in the cell, and the
 fraction of repressors in the active state. Existing estimates of the transition
 rates between conformations of allosteric molecules set them at the microsecond
-scale \cite{Cui2008}. By considering this to be representative for our protein
-of interest the separation of time-scales between the rapid conformational
+scale \cite{Cui2008}. By considering this to be representative for our repressor
+of interest, the separation of time-scales between the rapid conformational
 changes of the repressor and the slower downstream such as the open-complex
 formation processes allow us to model the probability of the repressor being in
 the active state as an equilibrium MWC process. The parameters of the MWC model
@@ -156,7 +157,7 @@ both, the equilibrium and the kinetic framework.
 	\centering \includegraphics
   {./fig/main/parameter_inference_v03.pdf}
 	\caption{\textbf{Minimal kinetic model of transcriptional regulation for a
-	simple repression architecture.} (A) Three-state stochastic model of
+	simple repression architecture.} (A) Three-state promoter stochastic model of
 	transcriptional regulation by a repressor. The regulation by the repressor
 	occur via exclusion of the RNAP, not allowing a promoter state in which both,
 	the repressor and the RNAP are bound simultaneously. All parameters
