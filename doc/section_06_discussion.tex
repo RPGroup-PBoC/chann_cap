@@ -1,8 +1,8 @@
 \section*{Discussion}
 
-Building on Shannon's formulation of information theory there have been
+Building on Shannon's formulation of information theory, there have been
 significant efforts using this theoretical framework to understand the
-information processing capabilities of biological systems and the evolutionary
+information processing capabilities of biological systems, and the evolutionary
 consequences for organisms harboring signal transduction systems
 \cite{Bergstrom2004, Taylor2007a, Tkacik2008, Polani2009, Nemenman2010,
 Rivoire2011}. Recently, with the mechanistic dissection of molecular signaling
@@ -21,8 +21,8 @@ measuring gene expression under a myriad of different conditions, we infer all
 parameter values of our model - allowing us to generate parameter-free
 predictions for processes related to information processing. Some of the model
 parameters for our kinetic formulation of the input-output function are informed
-by inferences made from equilibrium models. We use the fact that if both
-kinetic and thermodynamic languages describe the same system the predictions
+by inferences made from equilibrium models. We use the fact that if both,
+kinetic and thermodynamic languages describe the same system, the predictions
 must be self-consistent. In other words, if the equilibrium model can only make
 statements about the mean mRNA and mean protein copy number, those predictions
 must be equivalent to what the kinetic model has to say about these same
@@ -37,31 +37,37 @@ predictions.
 The kinetic treatment of the system brings with it increasing predictive power
 compared to the equilibrium picture. Under the kinetic formulation, the
 predictions are not limited only to the mean but to any moment of the mRNA and
-protein distribution. We first tested these novel predictions by comparing the
+protein distribution. We first test these novel predictions by comparing the
 noise in protein copy number (standard deviation / mean) with experimental data.
 Since the model is able to accurately predict the noise in protein count we
 extended our analysis to infer entire protein distributions at different input
 signal concentrations by using the maximum entropy principle. What this means is
-that we computed moments of the protein distribution, and then used these
+that we compute moments of the protein distribution, and then use these
 moments to build an approximation to the full distribution. Finally we use these
 protein distributions to compute the maximum amount of information that the
 genetic circuit is able to process.
 
 By maximizing the mutual information between input signal concentration and
-output protein distribution over all possible input distributions we predicted
+output protein distribution over all possible input distributions we predict
 the channel capacity for a suite of biophysical parameters such as varying
-repressor protein copy number and repressor-DNA binding affinity. We compared
+repressor protein copy number and repressor-DNA binding affinity. We compare
 the theoretical channel capacity, a metric of how precise is the inference that
 cells can make about the state of the environment is given their response, with
 experimental data, finding that our minimal model is able to predict with no
-free parameters this quantity. To our knowledge this is the first
-example in which theoretical predictions in which all relevant molecular players
-are explicitly modeled are contrasted with experimental measurements to shed
-light on the information processing capacity of a genetic circuit.
-\mrm{Tkacik, Gregor and Bialek measure input-output functions but never
-explicitly model interactions of the gap-genes with promoters and so on. On the
-other hand Tkacik and Bialek make similar predictions to the ones we make here
-but never test them experimentally.}
+free parameters this quantity.
+
+It is important to highlight the limitations of the work presented here. As
+first reported in \cite{Razo-Mejia2018}, our model fails to capture the
+steepness of the fold-change induction curve for the weakest repressor binding
+site (See \fref{fig3_cell_cycle}(B)). This systematic deviation for weak binding
+sites remains an unresolved problem that deserves further investigation. Also
+the minimal model in \fref{fig2_minimal_model}(A), despite widely used,
+disagrees with the physical picture of how the transcriptional machinery works.
+Since the RNAP escapes the promoter when a transcriptional event happens, the
+arrow that produces an mRNA with rate $r_m$ should also send the promoter back
+to the empty state $E$ as suggested in \cite{Phillips2015}. Nevertheless this
+model cannot capture the level of cell-to-cell variability in the data. The
+comparison between these models requires a deeper theoretical analysis.
 
 The findings of this work open the opportunity to accurately test intriguing
 ideas that connect Shannon's metric of how accurately a signaling system can
@@ -76,28 +82,9 @@ the sense that we have a tunable circuit with variable amounts of information
 processing capabilities. Furthermore, compared with the fly embryo in which the
 organism tunes both the input and output distributions over evolutionary time,
 we have experimental control of the distribution of inputs that the cells are
-exposed to. These features of the system suggest experiments in the context of
-the recent attempt of predicting evolution \cite{Lassig2017}.
-
-\mrm{The discussion already touched on
-\begin{enumerate}
-  \item what we did.
-  \item how this is different from previous efforts on the information
-  processing front.
-  \item what cool evo-related things we now can tackle given the the findings
-  of the paper.
-\end{enumerate}
-The other topics that I am not sure if we should include given the length of
-the discussion already would be:
-\begin{itemize}
-  \item How should we think about one bit of information?
-  \item "On the imperfection of the theory"
-  \item A little bit of a "chest beating" statement of how this is (as far as I
-  am concerned at least) the only example in all of the gene regulation
-  literature where a minimal model has been taken that seriously to carry on
-  physical parameters from previous studies; allowing us to make new
-  predictions that were not possible before.
-  \item What would be needed to reproduce this kind of predictions in other
-  systems such as simple activation, looping, multiple inputs.
-\end{itemize}
-}
+exposed to. What this means is that instead of seeing the final result of the
+evolutionary process, we can set different environmental challenges, and track
+over time the evolution of the population. These experiments could shed light
+into the suggestive hypothesis of information bits as a metric on which natural
+selection acts. We see this exciting direction as part of the overall effort in
+quantitative biology of predicting evolution \cite{Lassig2017}.
