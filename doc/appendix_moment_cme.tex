@@ -182,12 +182,12 @@ of the form
     &- \Rp \bb{\ee{m^{(x + 1)} p^y}} + \Rp \bb{\ee{m^{(x + 1)} (p + 1)^y}}\\
     &- \Gp \bb{\ee{m^x p^{(y + 1)}}} + \Gp \bb{\ee{m^x p (p - 1)^y}}.
   \end{aligned}
-  \label{seq_mom_pde}
+  \label{seq_mom_ode}
 \end{equation}
 
 \subsection{Moment closure of the simple-repression distribution}
 
-A very interesting and useful feature of \eref{seq_mom_pde} is that for a given
+A very interesting and useful feature of \eref{seq_mom_ode} is that for a given
 value of $x$ and $y$ the moments $\bb{\ee{m^x p^y}}$ is only a function of lower
 moments. Specifically $\bb{\ee{m^x p^y}}$ is a function of moments
 $\bb{\ee{m^{x'} p^{y'}}}$ that satisfy two conditions:
@@ -199,7 +199,7 @@ $\bb{\ee{m^{x'} p^{y'}}}$ that satisfy two conditions:
   \label{seq_mom_conditions}
 \end{equation}
 
-To prove this we rewrite \eref{seq_mom_pde} as
+To prove this we rewrite \eref{seq_mom_ode} as
 \begin{equation}
   \begin{aligned}
     \dt{\bb{\ee{m^x p^y}}} &=
@@ -208,14 +208,14 @@ To prove this we rewrite \eref{seq_mom_pde} as
     &+ \Gm \bb{\ee{m p^y \left[ (m - 1)^x - m^x \right]}}\\
     &+ \Rp \bb{\ee{m^{(x + 1)} \left[ (p + 1)^y - p^y \right]}}\\
     &+ \Gp \bb{\ee{m^x p \left[ (p - 1)^y - p^y \right]}},
-    \label{seq_mom_pde_factorized}
+    \label{seq_mom_ode_factorized}
   \end{aligned}
 \end{equation}
 where the factorization is valid given the linearity of expected values. The
 objective now is to find for each term which is the highest moment once the
 binomial is expanded. Take for example a simple case in which we want to find
 the second moment of the mRNA distribution. We then set $x = 2$ and $y = 0$.
-\eref{seq_mom_pde_factorized} then becomes
+\eref{seq_mom_ode_factorized} then becomes
 \begin{equation}
   \begin{aligned}
     \dt{\bb{\ee{m^2 p^0}}} &=
@@ -241,7 +241,7 @@ therefore $y' \leq y$ is satisfied. Also the highest moment in
 \eref{seq_second_mom_mRNA}  satisfies $x' + y' \leq x + y$ since the second
 moment of mRNA doesn't depend on any moment higher than $\bb{\ee{m^2}}$. To
 demonstrate this is true for any $x$ and $y$ we now rewrite
-\eref{seq_mom_pde_factorized} making use of the binomial expansion
+\eref{seq_mom_ode_factorized} making use of the binomial expansion
 \begin{equation}
   (z \pm 1)^n = \sum_{k=0}^n {n \choose k} (\pm 1)^{k} z^{n-k}.
 \end{equation}
@@ -300,3 +300,25 @@ degradation we have
 The largest moment involved in this term is therefore $\bb{\ee{m^x p^{y-1}}}$.
 With this we show that the four terms involved in our general moment equation
 depend only on lower moments that satisfy \eref{seq_mom_conditions}.
+
+\subsection{Computing single promoter steady-state moments}
+
+As discussed in \secref{sec_cell_cycle}, one of the main factors contributing to
+cell-to-cell variability in gene expression is the  changes in gene copy number
+during the cell cycle as cells replicate their  genome before cell division. Our
+minimal model account for this variability by considering the time trajectory of
+the distribution moments as given by \eref{seq_mom_ode_factorized}. These
+predictions will be contrasted with the predictions from a kinetic model that
+doesn't account for changes in gene copy number during the cell cycle in
+\siref{supp_multi_gene}.
+
+In order to compute the steady-state moments of the kinetic model with a single
+gene across the cell cycle we use the moment closure property of our master
+equation. By equating \eref{seq_mom_ode_factorized} to zero for a given
+$\bb{x}$ and $\bb{y}$ we can solve the resulting linear system obtaining a
+solution for $\bb{\ee{m^x p^y}}$ at steady state as a function of moments
+$\bb{\ee{m^{x'} p^{y'}}}$ that satisfy \eref{seq_mom_conditions}. Then by
+solving for the zero$\th$ moment $\bb{\ee{m^0 p^0}}$ subject to the constraint
+that the probability of the promoter being in any state should add up to one,
+we can substitute back all of the solutions in terms of moments $\bb{\ee{m^{x'}
+p^{y'}}}$ to solutions in terms of the rates shown in \fref{fig2_minimal_model}.
