@@ -74,3 +74,40 @@ def hpd(trace, mass_frac):
 
     # Return interval
     return np.array([d[min_int], d[min_int + n_samples]])
+
+
+def gauss_kernel(t):
+    """
+    Gaussian kernel.
+    """
+    return np.exp(-t**2 / 2.0)
+
+
+def nw_kernel_smooth(x_0, x, y, lam, kernel_fun=gauss_kernel):
+    """
+    Gives smoothed data at points x_0 using a Nadaraya-Watson kernel 
+    estimator.  The data points are given by NumPy arrays x, y.
+        
+    kernel_fun must be of the form
+        kernel_fun(t), 
+    where t = |x - x_0| / lam
+    
+    This is not a fast way to do it, but it simply implemented!
+    """
+    
+    # Function to give estimate of smoothed curve at single point.
+    def single_point_estimate(x_0_single):
+        """
+        Estimate at a single point x_0_single.
+        """
+        t = np.abs(x_0_single - x) / lam
+        return np.dot(kernel_fun(t), y) / kernel_fun(t).sum()
+    
+    # If we only want an estimate at a single data point
+    if np.isscalar(x_0):
+        return single_point_estimate(x_0)
+    else:  # Get estimate at all points
+        y_smooth = np.empty_like(x_0)
+        for i in range(len(x_0)):
+            y_smooth[i] = single_point_estimate(x_0[i])
+        return y_smooth
