@@ -36,11 +36,11 @@ experimental data from single molecule mRNA counts of an unregulated
 (constitutively expressed) promoter.
 
 Given that the protein degradation rate $\gp$ in our model is set by the cell
-division time, we cannot consider that the protein count reaches the
+division time, we do not expect that the protein count will reach the
 corresponding steady state value for each stage in the cell cycle. In other
 words, cells do not spend long enough with two copies of the promoter for the
-protein to reach the steady state value corresponding to a transcription rate of
-$2 r_m$. We therefore use the dynamical equations developed in
+protein level to reach the steady state value corresponding to a transcription
+rate of $2 r_m$. We therefore use the dynamical equations developed in
 \secref{sec_moments} to numerically integrate the moments of the distribution
 dynamics with the corresponding parameters for each phase of the cell cycle.
 \fref{fig3_cell_cycle}(B) shows an example corresponding to the mean mRNA level
@@ -50,20 +50,20 @@ considering that mRNA reaches steady state at each stage, we see that the
 numerical integration of the equations is consistent with the assumption of
 having the mRNA reach a stable value at each stage (See
 \fref{fig3_cell_cycle}(B) upper panel). On the other hand, the mean protein
-level does not reach a steady state at each of the cellular stages. Nevertheless
-it is interesting to observe that after a couple of cell cycles the trajectory
-from cycle to cycle follows a repetitive pattern (See \fref{fig3_cell_cycle}(B)
-lower panel).
+level does not reach a steady state at either of the cellular stages.
+Nevertheless it is interesting to observe that after a couple of cell cycles the
+trajectory from cycle to cycle follows a repetitive pattern (See
+\fref{fig3_cell_cycle}(B) lower panel).
 
 To test the effects of including this gene copy number variability in our model
 we now compare the predictions of the model with experimental data. Specifically
 as detailed in Methods we obtained single-cell fluorescence values of
 different {\it E. coli} strains under twelve different inducer concentrations.
 The strains imaged spanned three orders of magnitude in repressor copy number
-and variable repressor-DNA affinities. Since growth was asynchronous, we reason
-that cells were sampled at any stage of the cell cycle. Therefore when computing
-statistics from the data such as the mean fluorescence value, in reality we are
-averaging over the cell cycle. In other words, as depicted in
+and three distinct repressor-DNA affinities. Since growth was asynchronous, we
+reason that cells were sampled at all stages of the cell cycle. Therefore when
+computing statistics from the data such as the mean fluorescence value, in
+reality we are averaging over the cell cycle. In other words, as depicted in
 \fref{fig3_cell_cycle}(B) quantities such as the mean protein copy number change
 over time, i.e. $\ee{p} \equiv \ee{p(t)}$. This means that computing the mean of
 a population of unsynchronized cells is equivalent to averaging this time
@@ -115,18 +115,18 @@ for comparison with single promoter copy predictions).
 	\centering \includegraphics
   {./fig/main/cell_cycle_moments_v01.pdf}
 	\caption{\textbf{Accounting for gene copy number variability during the cell
-	cycle.} (A) Schematic of a replicating genome. As cells progress through the
-	cell cycle the genome is replicated, duplicating gene copies for a fraction of
-	the cell cycle. {\it oriC} indicates the replication origin, and {\it galK}
-	indicates the locus at which the reporter construct was integrated. (B) mean
-	mRNA (upper panel) and mean protein (lower panel) dynamics. Cells spend a
-	fraction of the cell cycle with a single copy of the promoter (light brown)
-	and the rest of the cell cycle with two copies (light yellow). Black arrows
-	indicate time of cell division. (C) Zero parameter-fit predictions (lines) and
-	experimental data (circles) of the gene expression fold-change (upper row) and
-	noise (lower row) for repressor binding sites with different affinities and
-	different repressor copy numbers per cell. Dotted line indicate linear scale
-	while solid line indicate logarithmic scale. White dots on the lower row are
-	plotted on a different scale for visual clarity.}
+	cycle.} (A) Schematic of a replicating bacterial genome. As cells progress
+	through the cell cycle the genome is replicated, duplicating gene copies for a
+	fraction of the cell cycle. {\it oriC} indicates the replication origin, and
+	{\it galK} indicates the locus at which the reporter construct was integrated.
+	(B) mean mRNA (upper panel) and mean protein (lower panel) dynamics. Cells
+	spend a fraction of the cell cycle with a single copy of the promoter (light
+	brown) and the rest of the cell cycle with two copies (light yellow). Black
+	arrows indicate time of cell division. (C) Zero parameter-fit predictions
+	(lines) and experimental data (circles) of the gene expression fold-change
+	(upper row) and noise (lower row) for repressor binding sites with different
+	affinities and different repressor copy numbers per cell. Dotted lines
+	indicate linear scale while solid lines indicate logarithmic scale. White dots
+	on the lower row are plotted on a different scale for visual clarity.}
   \label{fig3_cell_cycle}
 \end{figure}

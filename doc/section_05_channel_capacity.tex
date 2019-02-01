@@ -16,36 +16,34 @@ distributions shown in \fref{fig4_maxent}. The channel capacity is then given by
 where $I(p; c)$, the mutual information between protein count and inducer
 concentration is given by \eref{eq_mutual_info}.
 
-If used as a metric of how reliably a signaling system can infer the state
-of the external signal, the channel capacity, when measured in bits, is commonly
+If used as a metric of how reliably a signaling system can infer the state of
+the external signal, the channel capacity, when measured in bits, is commonly
 interpreted as the logarithm of the number of states that the signaling system
-can properly resolve. For example, a signaling system with a channel capacity
-of $C$ bits is interpreted as being able to resolve $2^C$ states. We caution
-against the use of this interpretation as channel capacities with fractional
-values are allowed. We prefer the Bayesian interpretation that the mutual
-information, and as a consequence the channel capacity, quantifies the
-improvement in the inference of the input when considering the output compared
-to just using the prior distribution of the input by itself for prediction
-\cite{Voliotis2014a, Bowsher2014}. Under this interpretation a channel capacity
-of a fractional bit still quantifies an improvement of the ability of the
-signaling system to infer the value of the extracellular signal compared to
-having no sensing system at all.
+can properly resolve. For example, a signaling system with a channel capacity of
+$C$ bits is interpreted as being able to resolve $2^C$ states, though channel
+capacities with fractional values are allowed. As a result, we prefer the
+Bayesian interpretation that the mutual information, and as a consequence the
+channel capacity, quantifies the improvement in the inference of the input when
+considering the output compared to just using the prior distribution of the
+input by itself for prediction \cite{Voliotis2014a, Bowsher2014}. Under this
+interpretation a channel capacity of a fractional bit still quantifies an
+improvement of the ability of the signaling system to infer the value of the
+extracellular signal compared to having no sensing system at all.
 
 Computing the channel capacity as defined in \eref{eq_chann_cap} implies
-optimizing over an infinite space of distributions $P(c)$ possible. For special
+optimizing over an infinite space of possible distributions $P(c)$. For special
 cases in which the noise is small compared to the dynamic range, approximate
 analytical equations have been derived \cite{Tkacik2008a}. But given the high
 cell-to-cell variability that our model predicts, the conditions of the
 so-called small noise approximation are not satisfied. We therefore appeal to
 a numerical solution known as the Blahut-Arimoto algorithm \cite{Blahut1972}.
-This algorithm starting on any (discrete) distribution $P(c)$ converges to the
-distribution at channel capacity by iteratively applying a series of simple
-operations. \fref{fig5_channcap} shows zero-parameter fit predictions of the
-channel capacity as a function of the number of repressors for different
-repressor-DNA affinities (solid lines). These predictions are contrasted with
-experimental determinations of the channel capacity as inferred from single-cell
-fluorescence intensity distributions taken over 12 different concentrations of
-inducer (See \siref{supp_channcap} for further details).
+This algorithm, starting on any (discrete) distribution $P(c)$, converges to the
+distribution at channel capacity. \fref{fig5_channcap} shows zero-parameter fit
+predictions of the channel capacity as a function of the number of repressors
+for different repressor-DNA affinities (solid lines). These predictions are
+contrasted with experimental determinations of the channel capacity as inferred
+from single-cell fluorescence intensity distributions taken over 12 different
+concentrations of inducer (See \siref{supp_channcap} for further details).
 
 \fref{fig5_channcap} has interesting features that are worth highlighting. On
 one extreme for cells with no transcription factors there is no information
@@ -68,7 +66,7 @@ curve in \fref{fig5_channcap}).
 	\cite{Blahut1972} for varying number of repressors and repressor-DNA
 	affinities. All inferences were performed using 12 IPTG concentrations as
 	detailed in the Methods. Lines represent zero-parameter fit predictions done
-	with the maximum entropy distributions as those showed in \fref{fig4_maxent}.
+	with the maximum entropy distributions as those shown in \fref{fig4_maxent}.
 	Points represent inferences made from single cell fluorescence distributions
 	(See \siref{supp_channcap} for further details). Solid lines indicate plot in
 	logarithmic scale, while dashed line indicates linear scale.}

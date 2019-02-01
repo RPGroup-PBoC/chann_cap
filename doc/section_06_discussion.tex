@@ -26,8 +26,8 @@ kinetic and thermodynamic languages describe the same system, the predictions
 must be self-consistent. In other words, if the equilibrium model can only make
 statements about the mean mRNA and mean protein copy number, those predictions
 must be equivalent to what the kinetic model has to say about these same
-quantities. This condition therefore constrains the value that the kinetic rates
-in the model can take. To test whether or not the equilibrium picture can
+quantities. This condition therefore constrains the values that the kinetic
+rates in the model can take. To test whether or not the equilibrium picture can
 reproduce the predictions made by the kinetic model we compare the experimental
 and theoretical fold-change in protein copy number for a suite of biophysical
 parameters and environmental conditions. The agreement between theory and
@@ -51,23 +51,27 @@ By maximizing the mutual information between input signal concentration and
 output protein distribution over all possible input distributions we predict
 the channel capacity for a suite of biophysical parameters such as varying
 repressor protein copy number and repressor-DNA binding affinity. We compare
-the theoretical channel capacity, a metric of how precise is the inference that
-cells can make about the state of the environment is given their response, with
-experimental data, finding that our minimal model is able to predict with no
-free parameters this quantity.
+these theoretical channel capacity predictions with experimental determinations,
+finding that our minimal model is able to predict with no free parameters this
+quantity. The relevance of this information-theoretic metric. The relevance of
+the channel capacity comes from its interpretation as a metric of how precise
+the inference that cells can make about what the state of the environment will
+be, given their response.
 
 It is important to highlight the limitations of the work presented here. As
 first reported in \cite{Razo-Mejia2018}, our model fails to capture the
 steepness of the fold-change induction curve for the weakest repressor binding
 site (See \fref{fig3_cell_cycle}(B)). This systematic deviation for weak binding
 sites remains an unresolved problem that deserves further investigation. Also
-the minimal model in \fref{fig2_minimal_model}(A), despite widely used,
-disagrees with the physical picture of how the transcriptional machinery works.
-Since the RNAP escapes the promoter when a transcriptional event happens, the
-arrow that produces an mRNA with rate $r_m$ should also send the promoter back
-to the empty state $E$ as suggested in \cite{Phillips2015}. Nevertheless this
-model cannot capture the level of cell-to-cell variability in the data. The
-comparison between these models requires a deeper theoretical analysis.
+the minimal model in \fref{fig2_minimal_model}(A), despite being widely used,
+is an oversimplification of the physical picture of how the transcriptional
+machinery works. Since the RNAP escapes the promoter when a transcriptional
+event occurs, the arrow that produces an mRNA with rate $r_m$ should also send
+the promoter back to the empty state $E$ as suggested in \cite{Phillips2015}.
+Nevertheless such a model with an arrow that empties the promoter after a
+transcription event cannot capture the level of cell-to-cell variability in the
+data. The comparison between these models requires a deeper theoretical
+analysis.
 
 The findings of this work open the opportunity to accurately test intriguing
 ideas that connect Shannon's metric of how accurately a signaling system can
@@ -75,7 +79,7 @@ infer the state of the environment, with Darwinian fitness \cite{Taylor2007a}.
 Beautiful work along these lines has been done in the context of the
 developmental program of the early {\it Drosophila} embryo \cite{Tkacik2008,
 Petkova2016}. These studies demonstrated that the input-output function of the
-pair-rule genes works at channel capacity, suggesting that natural selection has
+pair-rule genes works at channel capacity, suggesting that selection has
 acted on these signaling pathways, pushing them to operate at the limit of what
 the physics of these systems allows. Our system differs from the early embryo in
 the sense that we have a tunable circuit with variable amounts of information
@@ -85,6 +89,6 @@ we have experimental control of the distribution of inputs that the cells are
 exposed to. What this means is that instead of seeing the final result of the
 evolutionary process, we can set different environmental challenges, and track
 over time the evolution of the population. These experiments could shed light
-into the suggestive hypothesis of information bits as a metric on which natural
+into the suggestive hypothesis of information bits as a metric on which
 selection acts. We see this exciting direction as part of the overall effort in
 quantitative biology of predicting evolution \cite{Lassig2017}.

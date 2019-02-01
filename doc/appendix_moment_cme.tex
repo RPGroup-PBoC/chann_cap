@@ -105,10 +105,6 @@ rather than from -1, obtaining
   \Rm \sum_{m'=0}^\infty \sum_p (m' + 1)^x p^y \PP(m', p).
   \label{seq_reindex}
 \end{equation}
-\mrm{In my experience a lot of people have a problem with simply substituting
-back $m'$ with $m$ for the final step. PBoC doesn't give a detailed
-justification for this either, so I've tried explaining this in a clear way in
-what follows, but it is far from perfect.}.
 Recall that our distribution $\PP(m, p)$ takes as numerical inputs $m$ and $p$
 and returns a probability associated with such a molecule count.  Nevertheless
 $m$ and $p$ themselves are dimensionless quantities that serve as indexes of how
@@ -150,14 +146,13 @@ $p' \equiv p - 1$. This gives
   \Rp \smp (m) m^x p^y \PP(m, p - 1) =
   \Rp \sum_m \sum_{p'=-1}^\infty m^{(x + 1)} (p + 1)^y \PP(m, p').
 \end{equation}
-We use again the fact that negative molecule copy numbers are assigned with
+We again use the fact that negative molecule copy numbers are assigned with
 probability zero to begin the sum from 0 rather than -1 and the arbitrary nature
 of the label $p'$ to write
 \begin{equation}
   \Rp \sum_m \sum_{p'=0}^\infty m^{(x + 1)} (p + 1)^y \PP(m, p') =
   \Rp \bb{\ee{m^{(x + 1)} (p + 1)^y}}.
 \end{equation}
-
 Finally we take care of the protein degradation term involving $\PP(m, p + 1)$.
 As before we define $p' = p + 1$ and substitute this to obtain
 \begin{equation}
@@ -171,7 +166,7 @@ us to start the sum over $p'$ from 0 rather than 1. We can therefore write
   \Gp \bb{\ee{m^x p (p - 1)^y}}.
 \end{equation}
 
-Putting all these terms together we can write the general moment PDE. This is
+Putting all these terms together we can write the general moment ODE. This is
 of the form
 \begin{equation}
   \begin{aligned}
@@ -188,7 +183,7 @@ of the form
 \subsection{Moment closure of the simple-repression distribution}
 
 A very interesting and useful feature of \eref{seq_mom_ode} is that for a given
-value of $x$ and $y$ the moments $\bb{\ee{m^x p^y}}$ is only a function of lower
+value of $x$ and $y$ the moment $\bb{\ee{m^x p^y}}$ is only a function of lower
 moments. Specifically $\bb{\ee{m^x p^y}}$ is a function of moments
 $\bb{\ee{m^{x'} p^{y'}}}$ that satisfy two conditions:
 \begin{equation}
@@ -213,9 +208,9 @@ To prove this we rewrite \eref{seq_mom_ode} as
 \end{equation}
 where the factorization is valid given the linearity of expected values. The
 objective now is to find for each term which is the highest moment once the
-binomial is expanded. Take for example a simple case in which we want to find
-the second moment of the mRNA distribution. We then set $x = 2$ and $y = 0$.
-\eref{seq_mom_ode_factorized} then becomes
+binomial such as $(m - 1)^x$, for example is expanded. Take for example a simple
+case in which we want to find the second moment of the mRNA distribution. We
+then set $x = 2$ and $y = 0$. \eref{seq_mom_ode_factorized} then becomes
 \begin{equation}
   \begin{aligned}
     \dt{\bb{\ee{m^2 p^0}}} &=
@@ -300,6 +295,13 @@ degradation we have
 The largest moment involved in this term is therefore $\bb{\ee{m^x p^{y-1}}}$.
 With this we show that the four terms involved in our general moment equation
 depend only on lower moments that satisfy \eref{seq_mom_conditions}.
+
+As a reminder, what we showed in this section is that the kinetic model
+introduced in \fref{fig2_minimal_model}(A) has no moment-closure problem. In
+other words, moments of the joint mRNA and protein distribution can be computed
+just from knowledge of lower moments. What this allows us to do is to cleanly
+integrate the moments of the distribution dynamics as cells progress through the
+cell cycle.
 
 \subsection{Computing single promoter steady-state moments}
 

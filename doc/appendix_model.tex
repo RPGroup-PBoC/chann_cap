@@ -2,7 +2,7 @@
 
 In order to tackle the question of how much information the simple repression
 motif can process we require the joint probability distribution of mRNA and
-protein $P(m, p)$. To obtain this distribution we use the chemical master
+protein $P(m, p; t)$. To obtain this distribution we use the chemical master
 equation formalism as described in \secref{sec_model}. Specifically we assume a
 three-state model where the promoter can be found 1) with RNAP bound ($B$
 state), 2) empty ($E$ state) and 3) with the repressor bound ($R$ state) (See
@@ -107,9 +107,9 @@ as
 \begin{equation}
   \Rp \equiv
   \begin{bmatrix}
-    r_m   & 0   & 0\\
-    0     & r_m & 0\\
-    0     & 0   & r_m\\
+    r_p   & 0   & 0\\
+    0     & r_p & 0\\
+    0     & 0   & r_p\\
   \end{bmatrix},
 \end{equation}
 and
@@ -126,6 +126,15 @@ The corresponding equation for the unregulated two-state promoter takes the
 exact same form with the definition of the matrices following the same scheme
 without including the third row and third column, and setting $\kron$ and
 $\kroff$ to zero.
+
+A closed-form solution for this master equation might not even exist. The
+approximate solution of chemical master equations of this kind is an active area
+of research. As we will see in \siref{supp_param_inference} the two-state
+promoter master equation has been analytically solved for the mRNA
+\cite{Peccoud1995} and protein distribution \cite{Shahrezaei2008}. For our
+purposes in \siref{supp_maxent} we will detail how to use the Maximum Entropy
+principle to approximate the full distribution for the two- and three-state
+promoter.
 
 \section{Parameter inference}\label{supp_param_inference}
 
@@ -145,8 +154,8 @@ and flow-cytometry measurements of the mean response of the system to different
 levels of induction \cite{Razo-Mejia2018}. In what follows of this section we
 detail the steps taken to infer the parameter values. At each step the values of
 the parameters inferred in previous sections constrain the values of the
-following parameters, building in this way a self-consistent theory informed by
-work that spans several experimental techniques.
+parameters that are not yet determined, building in this way a self-consistent
+theory informed by work that spans several experimental techniques.
 
 \subsection{RNAP rates from unregulated two-state promoter}
 
@@ -191,7 +200,6 @@ single-molecule mRNA FISH data from Jones et al. \cite{Jones2014a}.
 \fref{sfig_lacUV5_FISH} shows the mRNA per cell distribution for the
 \textit{lacUV5} promoter used throughout this work. This promoter being very
 strong has a mean copy number of $\ee{m} \approx 18$ mRNA/cell.
-\rp{maybe mention data we show in CBN to explain what's going on?}
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -211,7 +219,7 @@ Bayes theorem we have
 \end{equation}
 where $D$ represents the data. For this case the data consists of single-cell
 mRNA counts $D = \{ m_1, m_2, \ldots, m_N \}$, where $N$ is the number of cells.
-We assume that each cell's measurement is independent of each other such that we
+We assume that each cell's measurement is independent of the other such that we
 can rewrite \eref{seq_bayes_rnap_rates} as
 \begin{equation}
   P(\kpon, \kpoff, r_m \mid \{m_i\}) \propto
@@ -233,15 +241,15 @@ prior knowledge on the parameters when performing an inference
 strictly positive must constrain the values that these parameters can take. For
 the specific rates analyzed in this section we know more than the simple
 constraint of non-negative values. The expression of an unregulated promoter has
-been studied from a thermodynamic perspective \cite{Brewster2012}. Since these
-equilibrium models work in the thermodynamic limit of large particle number they
-are not useful to inform us about large deviations from the expected value
-\mrm{I need to discuss this point in person with Rob}.
-Nevertheless at the mean of the distribution both, the kinetic language and the
-equilibrium language must agree. That means that we can use what we know about
-the mean gene expression, and how this is related to parameters such as molecule
-copy numbers and binding affinities, to constrain the values that the rates in
-question can take.
+been studied from a thermodynamic perspective \cite{Brewster2012}. Given the
+underlying assumptions of these equilibrium models, in which the probability of
+finding the RNAP bound to the promoter is proportional to the transcription
+rate \cite{Bintu2005a}, they can only make statements about the mean expression
+level. Nevertheless if both the thermodynamic and the kinetic model describe
+the same process, the predictions for the mean gene expression level must
+agree. That means that we can use what we know about the mean gene expression,
+and how this is related to parameters such as molecule copy numbers and binding
+affinities, to constrain the values that the rates in question can take.
 
 In the case of this two-state promoter it can be shown that the mean number of
 mRNA is given by \cite{Sanchez2013} (See \siref{supp_moments} for moment
@@ -284,10 +292,10 @@ literature. The RNAP copy number is order $P \approx 1000-3000$ RNAP/cell for a
 As for the number of non-specific
 binding sites and the binding energy we have that $\Nns = 4.6\times 10^6$
 \cite{Bintu2005a}, and $-\beta\eP \approx 5 - 7$
-\cite{Brewster2012}. Given these values we define a Gaussian prior for the ratio
-of these two quantities of the form
+\cite{Brewster2012}. Given these values we define a Gaussian prior for the log
+ratio of these two quantities of the form
 \begin{equation}
-  P\left({\kpon \over \kpoff} \right) \propto
+  P\left(\ln \left({\kpon \over \kpoff}\right) \right) \propto
   \exp \left\{ - {\left(\ln \left({\kpon \over \kpoff}\right) -
   \left(-\beta\eP + \ln P - \ln \Nns \right) \right)^2
   \over 2 \sigma^2} \right\},
@@ -351,7 +359,7 @@ this two-state model fits the data adequately.
 	\caption{\textbf{Experimental vs. theoretical distribution of mRNA per cell
   using parameters from Bayesian inference.} Dotted line shows the result of
   using \eref{seq_two_state_mRNA} along with the parameters inferred for the
-  rates. Blue bars are the same data as \fref{fig_lacUV5_FISH} obtained from
+  rates. Blue bars are the same data as \fref{sfig_lacUV5_FISH} obtained from
   \cite{Jones2014a}}
   \label{sfig_lacUV5_theory_data}
 \end{figure}
@@ -414,7 +422,7 @@ cycle.
 	\centering \includegraphics
   {../fig/chemical_master_mRNA_FISH/area_division_expo.pdf}
 	\caption{\textbf{Separation of cells based on cell size.} Using the area as
-  a proxy for state on the cell cycle, cells can be sorted into two groups --
+  a proxy for position in the cell cycle, cells can be sorted into two groups --
   small cells (with one promoter copy) and large cells (with two promoter
   copies). The vertical black line delimits the threshold that divides both
   groups as weighted by \eref{seq_cell_cycle_dist}.}
@@ -445,11 +453,10 @@ where the probability of sampling a cell with one promoter $\phi$ is given by
   \phi = \int_0^f P(a) da,
 \end{equation}
 where $P(a)$ is given by \eref{seq_age_prob}. What this equation computes is
-the probability of sampling a cell on a stage of the cell cycle $< f$ where the
-reporter gene hasn't been replicated yet.
-
-\fref{sfig_mRNA_by_size} shows the distribution of both groups. As expected
-larger cells have a higher mRNA copy number on average.
+the probability of sampling a cell during a stage of the cell cycle $< f$ where
+the reporter gene hasn't been replicated yet. \fref{sfig_mRNA_by_size} shows the
+distribution of both groups. As expected larger cells have a higher mRNA copy
+number on average.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -523,7 +530,7 @@ Taking the log from both sides gives
 With this we can set as before a Gaussian prior to constain the ratio of the
 RNAP rates as
 \begin{equation}
-  P\left({\kpon \over \kpoff} \right) \propto
+  P\left(\ln \left({\kpon \over \kpoff}\right) \right)  \propto
   \exp \left\{ - {\left(\ln \left({\kpon \over \kpoff}\right) -
   \left[-\ln(2 - \phi) -\beta\eP + \ln P - \ln \Nns \right) \right]^2
   \over 2 \sigma^2} \right\},
@@ -546,15 +553,15 @@ with the equilibrium picture.
 	112^{+440}_{-50}$ and $r_m = 203^{+698}_{-82}$ which are the modes of
 	their respective distributions, where the superscripts and subscripts
 	represent the upper and lower bounds of the 95$\th$ percentile of the
-	parameter value distributions. The sampling was bounded to values < 1000 for
+	parameter value distributions. The sampling was bounded to values $<$ 1000 for
   numerical stability when computing the confluent hypergeometric function.}
   \label{sfig_mcmc_rnap_double}
 \end{figure}
 
-Using again the mRNA mean lifetime of gives the following values for the
-parameters: $\kpon = {0.03}_{-0.003}^{+0.005} s^{-1}$, $\kpoff = {0.6}
-_{-0.2}^{+2.4} s^{-1}$, and $r_m = {1}_{-0.4}^{+3} s^{-1}$. \mrm{again
-need to compare with what is known about these rates.}.
+Using again the mRNA mean lifetime of $\approx 3$ min gives the following values
+for the parameters: $\kpon = {0.03}_{-0.003}^{+0.005} s^{-1}$, $\kpoff = {0.6}
+_{-0.2}^{+2.4} s^{-1}$, and $r_m = {1}_{-0.4}^{+3} s^{-1}$. \mrm{again need to
+compare with what is known about these rates.}.
 \fref{sfig_lacUV5_theory_data_double} shows the result of applying
 \eref{seq_prob_multipromoter} using these parameter values. Specifically
 \fref{sfig_lacUV5_theory_data_double}(A) shows the global distribution including
@@ -584,13 +591,13 @@ approximations.
 Having determined the RNAP rates we now proceed to determine the repressor rates
 $\kron$ and $\kroff$. The values of these rates are constrained again by the
 correspondence between our kinetic picture and what we know from equilibrium
-models \cite{Phillips2015}. For this we again exploit the feature that only at
-the mean both, the kinetic language and the thermodynamic language should have
-equivalent predictions. Over the last decade there has been a lot of effort in
-developing equilibrium models for gene expression regulation \cite{Buchler2003,
-Vilar2011, Bintu2005a}. In particular our group has extensively characterized
-the simple repression motif using this formalism \cite{Garcia2011c,
-Brewster2014, Razo-Mejia2018}.
+models \cite{Phillips2015}. For this analysis we again exploit the feature that
+only at the mean both, the kinetic language and the thermodynamic language
+should have equivalent predictions. Over the last decade there has been a lot of
+effort in developing equilibrium models for gene expression regulation
+\cite{Buchler2003, Vilar2011, Bintu2005a}. In particular our group has
+extensively characterized the simple repression motif using this formalism
+\cite{Garcia2011c, Brewster2014, Razo-Mejia2018}.
 
 The dialogue between theory and experiments has led to simplified expressions
 that capture the phenomenology of the gene expression response as a function of
@@ -689,4 +696,49 @@ Using this we simplify \eref{seq_kroff_complete} as
 \end{equation}
 What \eref{seq_kroff} shows is the direct relationship that must be satisfied if
 the equilibrium model is set to be consistent with the non-equilibrium kinetic
-picture.
+picture. \tref{stab_koff} summarizes the values obtained for the three operator
+sequences used throughout this work. To compute these numbers the number of
+non-specific binding sites $\Nns$ was taken to be $4.6 \times 10^6$ bp, i.e. the
+size of the {\it E. coli} K12 genome.
+
+\begin{table}[]
+  \caption{\textbf{Binding sites and corresponding parameters.}}
+\begin{tabular}{|c|c|c|}
+\hline
+ Operator & \eR $(k_BT)$ & \kroff $(s^{-1})$  \\ \hline
+ O1 & -15.3 & 0.002  \\ \hline
+ O2 & -13.9 & 0.008  \\ \hline
+ O3 & -9.7  & 0.55   \\ \hline
+\end{tabular}
+\label{stab_koff}
+\end{table}
+
+{\it In-vivo} measurements of the Lac repressor off rate have been done with
+single-molecule resolution \cite{Hammar2014}. The authors report a mean
+residence time of $5.3 \pm 0.2$ minutes for the repressor on an O1 operator.
+The corresponding rate is $\kroff \approx 0.003$ $(s^{-1})$, very similar value
+to what we inferred from our model.
+
+In this same reference the authors determined that on average the repressor
+takes $30.9 \pm 0.5$ seconds to bind to the operator \cite{Hammar2014}. Given
+the kinetic model presented in \fref{fig2_minimal_model}(A) this time can be
+converted to the probability of not being on the repressor bound state
+$P_{\text{not }R}$. This is computed as
+\begin{equation}
+  P_{\text{not }R} = {\tau_{\text{not }R} \over
+                      \tau_{\text{not }R} + \tau_{R}},
+\end{equation}
+where $\tau_{\text{not }R}$ is the average time that the operator is not
+occupied by the repressor and $\tau_{R}$ is the average time that the repressor
+spends bound to the operator. Substituting the numbers from \cite{Hammar2014}
+gives $P_{\text{not }R} \approx 0.088$. From our model we can compute the zeroth
+moment $\ee{m^0 p^0}$ for each of the three promoter states. This moment is
+equivalent to the probability of being on each of the promoter states. Upon
+substitution of our inferred rate parameters we can compute $P_{\text{not }R}$
+as
+\begin{equation}
+  P_{\text{not }R} = 1 - P_R \approx 0.046,
+\end{equation}
+where $P_R$ is the probability of the promoter being bound by the repressor. The
+value we obtained is within a factor of two from the one reported in
+\cite{Hammar2014}.
