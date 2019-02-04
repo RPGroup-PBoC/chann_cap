@@ -629,7 +629,7 @@ promoter mean mRNA copy number is given by \eref{seq_mean_m_double_rates}. For
 the regulated (three-state) promoter we have an equivalent expression of the
 form
 \begin{equation}
-  \ee{m (R \neq 0)} = (2 - \phi){r_m \over \gm} {\kroff\kron
+  \ee{m (R \neq 0)} = (2 - \phi){r_m \over \gm} {\kroff\kpon
   \over \kpoff\kroff + \kpoff\kron + \kroff\kpon}.
 \end{equation}
 Computing the fold-change then gives
@@ -652,7 +652,7 @@ that Brewster never gave me.}. With this in hand we can rewrite
 \eref{seq_fold_change_cme} as
 \begin{equation}
   \foldchange = \left( 1 + {k_0 [R] \over \kroff}
-                {\kpon \over \kpon + \kpoff} \right)^{-1}.
+                {\kpoff \over \kpon + \kpoff} \right)^{-1}.
   \label{seq_fc_kinetic}
 \end{equation}
 
@@ -660,12 +660,12 @@ We note that both \eref{seq_fc_thermo} and \eref{seq_fc_kinetic} have the same
 functional form. Therefore if both languages predict the same output for the
 mean gene expression level, it must be true that
 \begin{equation}
-  {k_o [R] \over \kroff}{\kpon \over \kpon + \kpoff} =
+  {k_o [R] \over \kroff}{\kpoff \over \kpon + \kpoff} =
   {R \over \Nns} e^{-\beta\eR}.
 \end{equation}
 Solving for $\kroff$ gives
 \begin{equation}
-  \kroff = {k_o [R] \Nns e^{\beta\eR} \over R}{\kpon \over \kpon + \kpoff}.
+  \kroff = {k_o [R] \Nns e^{\beta\eR} \over R}{\kpoff \over \kpon + \kpoff}.
   \label{seq_kroff_complete}
 \end{equation}
 
@@ -691,7 +691,7 @@ from that data set.}
 Using this we simplify \eref{seq_kroff_complete} as
 \begin{equation}
   \kroff \approx 0.8 \cdot k_o \cdot \Nns e^{\beta\eR}
-   \cdot {\kpon \over \kpon + \kpoff}.
+   \cdot {\kpoff \over \kpon + \kpoff}.
   \label{seq_kroff}
 \end{equation}
 What \eref{seq_kroff} shows is the direct relationship that must be satisfied if
