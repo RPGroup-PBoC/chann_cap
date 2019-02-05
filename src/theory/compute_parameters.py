@@ -86,7 +86,8 @@ rm = {6:.3f} -{7:0.3f} +{8:0.3f} s^-1
 # =============================================================================
 
 # Load the flat-chain
-with open('../../data/mcmc/lacUV5_constitutive_mRNA_double.pkl', 'rb') as file:
+with open('../../data/mcmc/lacUV5_constitutive_mRNA_double_expo.pkl',
+          'rb') as file:
     unpickler = pickle.Unpickler(file)
     gauss_flatchain = unpickler.load()
     gauss_flatlnprobability = unpickler.load()
@@ -146,7 +147,9 @@ rm = {6:.1f} -{7:0.1f} +{8:0.1f} s^-1
 energies = {'Oid': -17, 'O1': -15.3, 'O2': -13.9, 'O3': -9.7}
 
 # Compute the rates for each repressor
-kr_offs = {key: chann_cap.kr_off_fun(value, k0, kpon, kpoff,
+kr_offs = {key: chann_cap.kr_off_fun(value, k0, 
+                                     kpon_double,
+                                     kpoff_double,
                                      Vcell=Vcell) for key, value in
                                      energies.items()}
 
@@ -157,3 +160,35 @@ The most probable parameters for the repressor in seconds^-1
 """)
 for key, value in kr_offs.items():
     print('kr_off {0:s} = {1:.5f} s^-1'.format(key, value))
+    
+
+# =============================================================================
+# Compute probability of each of the states
+# =============================================================================
+
+def prob_promoter(kr_on, kr_off, kp_on, kp_off, rm):
+    '''
+    Computes the probability of the three promoter states for a regulated
+    promoter
+    '''
+    P_B = (kr_off * kp_on) / (kp_off * kr_off + kp_off * kr_on + kr_off * kp_on)
+    P_E = (kp_off * kr_off) / (kp_off * kr_off + kp_off * kr_on + kr_off * kp_on)
+    P_R = (kp_off * kr_on) / (kp_off * kr_off + kp_off * kr_on + kr_off * kp_on)
+
+    return {'P_B': P_B, 'P_E': P_E, 'P_R': P_R}
+
+# O1
+R = 22
+kr_on = 1 / Vcell / 0.6022 * k0 * R
+
+probs_O1 = prob_promoter(kr_on, kr_offs['O1'], kpon_double, 
+                         kpoff_double, rm_double)
+
+
+print('''
+Probability of each promoter state for O1 - R{:d}
+-------------------------------------------------
+'''.format(R))
+for key, value in probs_O1.items():
+    print('State {0:s} = {1:.5f}'.format(key, value))
+ 
