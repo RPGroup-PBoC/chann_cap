@@ -4,18 +4,18 @@ cycle} \label{supp_multi_gene}
 When growing in rich media, bacteria can double every $\approx$ 20 minutes. With
 two replication forks each traveling at $\approx$ 1000 bp per second, and a
 genome of $\approx$ 5 Mbp for {\it E. coli} \cite{Moran2010}, a cell would need
-$\approx$ 40 minutes to replicate its genome. The apparent paradox is solved by
-the fact that cells have multiple replisomes, i.e. molecular machines that
-replicate the genome running in parallel. Cells can have up to 8 copies of the
-genome being replicated simultaneously depending on the growth rate
-\cite{Bremer1996}.
+$\approx$ 40 minutes to replicate its genome. The apparent paradox  of growth
+rates faster than one division per 40 minutes is solved by the fact that cells
+have multiple replisomes, i.e. molecular machines that replicate the genome
+running in parallel. Cells can have up to 8 copies of the genome being
+replicated simultaneously depending on the growth rate \cite{Bremer1996}.
 
 This observation implies that during the cell cycle gene copy number varies.
-This variation depends on the relative position of the gene with respect to the
-replication origin, having genes close to the replication origin spending more
-time with multiple copies compare to genes closer to the replication termination
-site. This change in gene dosage has a direct effect on the cell-to-cell
-variability in gene expression \cite{Jones2014a, Peterson2015}.
+This variation depends on the growth rate and the relative position of the gene
+with respect to the replication origin, having genes close to the replication
+origin spending more time with multiple copies compare to genes closer to the
+replication termination site. This change in gene dosage has a direct effect on
+the cell-to-cell variability in gene expression \cite{Jones2014a, Peterson2015}.
 
 \subsection{Numerical integration of moment equations}
 
@@ -41,7 +41,9 @@ of the cell cycle stages we follow a simple procedure:
   \item Initialize the zeroth moment, i.e. the probability of the promoter of
   being in each of the two (unregulated) or three (regulated) promoter states at
   any value, constrained such that the sum of all zeroth moments should add up
-  to one. Initialize the rest of the moments with zeros.
+  to one. Initialize the rest of the moments with zeros. This initial value does
+  not affect the final result since the dynamics will be integrated to steady
+  state in following steps.
   \item Numerically integrate the moment dynamics (\eref{eq_mom_dynamics} in the
   main text) for time longer than the length of the cell cycle in order for the
   moment values to reach steady state using the parameters corresponding to a
@@ -50,7 +52,9 @@ of the cell cycle stages we follow a simple procedure:
   \item Integrate the moment dynamics for a time $t = [0, t_s]$ using the
   as initial conditions the last time point from step 2.
   \item Update transcription rate from $r_m$ to $2 r_m$ corresponding to the
-  cell having two promoter copies.
+  cell having two promoter copies. In principle the repressor copy number also
+  changes during the cell cycle, but we will neglect these differences and take
+  an effective mean repressor copy number for the entirety of the dynamics.
   \item Integrate the moment dynamics for a time $t = [t_s, t_d]$ using the
   last time point of step 3 as initial conditions.
   \item As a way to represent what the cell division does to the mean mRNA and
@@ -72,8 +76,8 @@ after the cell divides. Only the first moments of both mRNA and protein can
 simply be halved after cell division, but it is less clear how higher moments of
 the distribution change as cells halve their content. To gain intuition for why
 this is not a trivial step let's consider a binomially distributed variable $X
-\sim \text{Bin}(N, p)$. For the first moment, given by $\ee{X} = Np$ is easy to
-see that upon halving the number of trials $N \rightarrow N/2$, the new first
+\sim \text{Bin}(N, p)$. For the first moment, given by $\ee{X} = Np$, it is easy
+to see that upon halving the number of trials $N \rightarrow N/2$, the new first
 moment would simply be $\ee{X}_{\text{new}} = {N \over 2} p$. But for the second
 moment, given by $\ee{X^2} = Np - Np^2 + N^2p^2$, it is obvious that halving the
 number of attempts, i.e. setting $\ee{X^2}_{\text{new}} = {\ee{X^2} \over 2}$ is
@@ -99,7 +103,7 @@ mRNA quickly relaxes to the steady state corresponding to the parameters for
 both a single and two promoter copies. This is expected since the parameters for
 the mRNA production were determined in the first place under this assumption
 (See \siref{supp_model}). We note that there is no apparent delay before
-reaching steady state on the mean mRNA count after the cell divides. This is
+reaching steady state of the mean mRNA count after the cell divides. This is
 because the mean mRNA count for the two promoters copies  state is exactly twice
 the expected mRNA count for the single promoter state (See \siref{supp_model}).
 Therefore once the mean mRNA count is halved after the cell division, it is
@@ -132,10 +136,10 @@ across the cell cycle in order to compute these averages.
 
 \subsection{Exponentially distributed ages}
 
-As mentioned in \siref{supp_param_inference}, cells in a log phase have
+As mentioned in \siref{supp_param_inference}, cells in log phase have
 exponentially distributed ages across the cell cycle, having more young cells
-compared to old ones. Specifically the probability of a cell of being at any
-time point in the cell cycle is given by \cite{Powell1956}
+compared to old ones. Specifically the probability of a cell being at any time
+point in the cell cycle is given by \cite{Powell1956}
 \begin{equation}
   P(a) = (\ln 2) \cdot 2^{1 - a},
   \label{seq_age_prob}
@@ -190,14 +194,13 @@ the equilibrium model.
 
 \subsubsection{Steady state under the thermodynamic model}
 
-Since our equilibrium model only work for the thermodynamic limit of large
-number of particles, using this theoretical framework we are only allowed to
-describe the dynamics of the first moment \cite{Phillips2015}.
-\rp{I challenge this. Single Brownian particle can be in equilibrium. Not clear
-what you want to say or if true.}
-Again let's only focus on the mRNA first moment $\ee{m}$. The same principles
-apply if we consider the protein first moment. We can write a dynamical system
-of the form
+Given the construction of the thermodynamic model of gene regulation for which
+the probability of the promoter microstates rather than the probability of mRNA
+or protein counts is accounted for,  we are only allowed to describe the
+dynamics of the first moment using this theoretical framework
+\cite{Phillips2015}. Again let's only focus on the mRNA first moment $\ee{m}$.
+The same principles apply if we consider the protein first moment. We can write
+a dynamical system of the form
 \begin{equation}
   \dt{\ee{m}} = r_m \cdot \pbound - \gm \ee{m},
 \end{equation}
@@ -227,11 +230,11 @@ equilibrium statistical mechanics as
 where $\beta \equiv (k_BT)^{-1}$, $\eR$ is the repressor-DNA binding energy, and
 $\Nns$ is the number of non-specific binding sites where the repressor can bind.
 
-To arrive to \eref{seq_fold_change_thermo} we ignore the physiological changes
-that happen during the cell cycle; one of the most important being the
+To arrive at \eref{seq_fold_change_thermo} we ignore the physiological changes
+that occur during the cell cycle; one of the most important being the
 variability in gene copy number that we are exploring in this section. It is
 therefore worth thinking about whether or not the dynamical picture exemplified
-in \fref{sfig_first_mom_cycles} can be reconciled with the predictions done by
+in \fref{sfig_first_mom_cycles} can be reconciled with the predictions made by
 \eref{seq_fold_change_thermo} both at the mRNA and protein level.
 
 \fref{sfig_lacI_titration} compares the predictions of both theoretical
@@ -259,7 +262,7 @@ repressor copy number for both stages.
 	are compared for varying repressor copy numbers and operator binding energy.
 	The equilibrium model is directly computed from \eref{seq_fold_change_thermo}
 	while the kinetic model is computed by numerically integrating the moment
-	equations over several cell cycles, and then averaging over the extend of the
+	equations over several cell cycles, and then averaging over the extent of the
 	cell cycle as defined in \eref{seq_moment_avg}.}
   \label{sfig_lacI_titration}
 \end{figure}
@@ -282,7 +285,7 @@ of active repressors, affecting therefore $\kron$.
 	The equilibrium model is directly computed as Eq. 5 of reference
 	\cite{Razo-Mejia2018} with repressor-DNA binding energy $\eR = -13.5 \; k_BT$
 	while the kinetic model is computed by numerically integrating the moment
-	dynamics over several cell cycles, and then averaging over the extend of a
+	dynamics over several cell cycles, and then averaging over the extent of a
 	single cell cycle as defined in \eref{seq_moment_avg}.}
   \label{sfig_IPTG_titration}
 \end{figure}
@@ -300,18 +303,18 @@ moments of the distribution for the single-promoter model are detailed in
 \siref{supp_moments}.
 
 \fref{sfig_lacI_titration} and \fref{sfig_IPTG_titration} both suggest that
-since the dynamic kinetic model can reproduce the results of the equilibrium
-model at the first moment level it must then by definition be able to reproduce
-the results of the single-promoter model at this level (See
+since the dynamic multi-promoter model can reproduce the results of the
+equilibrium model at the first moment level it must then also be able to
+reproduce the results of the single-promoter model at this level (See
 \siref{supp_param_inference}). The interesting comparison comes with higher
 moments. A useful metric to consider for gene expression variability is the
 noise in gene expression \cite{Shahrezaei2008}. This quantity, defined as the
-standard deviation divided by the mean, is a dimensionless metric of how
-much variability there is with respect to the mean of a distribution. As we will
-show below this quantity has an advantage compared to the also commonly used
-metric known as the Fano factor (variance / mean) in the sense that for
-experimentally determined expression levels in fluorescent arbitrary units, the
-noise is a dimensionless quantity while the Fano factor is not.
+standard deviation divided by the mean, is a dimensionless metric of how much
+variability there is with respect to the mean of a distribution. As we will show
+below this quantity differs from the also commonly used metric known as the Fano
+factor (variance / mean) in the sense that for experimentally determined
+expression levels in fluorescent arbitrary units, the noise is a dimensionless
+quantity while the Fano factor is not.
 
 \fref{sfig_noise_comparison} shows the comparison of the predicted protein noise
 between  the single- (dashed lines) and the multi-promoter model (solid lines)

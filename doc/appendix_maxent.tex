@@ -2,9 +2,9 @@
 
 On the one hand the solution of chemical master equations like the one
 in \secref{sec_model} represent a hard mathematical challenge. As presented
-in \siref{supp_param_inference} Peccoud \& Ycart derived a closed-form solution
+in \siref{supp_param_inference} Peccoud and Ycart derived a closed-form solution
 for the two-state promoter at the mRNA level \cite{Peccoud1995}. In an
-impressive display of mathematical skills, Shahrezaei \& Swain were able to
+impressive display of mathematical skills, Shahrezaei and Swain were able to
 derive an approximate solution for the one- (not considered in this work) and
 two-state promoter master equation at the protein level \cite{Shahrezaei2008}.
 Nevertheless both of these solutions do not give instantaneous insights about
@@ -12,14 +12,14 @@ the distributions as they involve complicated terms such as confluent
 hypergeometric functions.
 
 On the other hand there has been a great deal of work to generate methods that
-can approximate the solution of these discrete states Markovian models
+can approximate the solution of these discrete state Markovian models
 \cite{Ale2013, Andreychenko2017, Frohlich2016, Schnoerr2017, Smadbeck2013,
 Hasenauer2014, Dinh2016}. In particular for master equations like the one that
 concerns us here whose moments can be easily computed, the moment expansion
 method provides a simple method to approximate the full joint distribution of
 mRNA and protein \cite{Smadbeck2013}. In this section we will explain the
 principles behind this method and show the implementation for our particular
-study case.
+case study.
 
 \subsection{The MaxEnt principle}
 
@@ -62,19 +62,22 @@ given by \cite{Shannon1948}
 \end{equation}
 
 For an optimization problem subject to constraints we make use of the method of
-the Lagrange multipliers. For this we define the Lagrangian $\mathcal{L}(x)$ as
+the Lagrange multipliers. For this we define the constraint equation
+$\mathcal{L}(x)$ as
 \begin{equation}
   \mathcal{L}(x) \equiv H(x) - \sum_{i=0}^m
   \left[ \lambda_i \left( \ee{x^i} - \sum_x x^i P_X(x) \right) \right],
+  \label{seq_constraint_eq}
 \end{equation}
 where $\lambda_i$ is the Lagrange multiplier associated with the $i\th$
 moment. The inclusion of the zeroth moment is an additional constraint to
 guarantee the normalization of the resulting distribution.
 
 Since $P_X(x)$ has a finite set of discrete values, when taking the derivative
-of the Lagrangian with respect to $P_X(x)$, we chose a particular value of $X =
-x$. Therefore from the sum over all possible $x$ values only a single term
-survives. With this in mind we take the derivative of the Lagrangian obtaining
+of the constraint equation with respect to $P_X(x)$, we chose a particular value
+of $X = x$. Therefore from the sum over all possible $x$ values only a single
+term survives. With this in mind we take the derivative of the constraint
+equation obtaining
 \begin{equation}
   {d\mathcal{L} \over d P_X(x)} = -\log P_X(x) - 1 -
   \sum_{i=0}^m \lambda_i x^i.
@@ -177,9 +180,9 @@ Larry Bretthorst, E.T. Jaynes' last student. With a very simple argument we can
 show that linearly rescaling the constraints, the Lagrange multipliers and the
 ``rules'' for how to compute each of the moments, i.e. each of the individual
 products that go into the moment calculation, should converge to the same MaxEnt
-distribution. In order to see this let's consider again an univariate
+distribution. In order to see this let's consider again a univariate
 distribution $P_X(x)$ that we are trying to reconstruct given the first two
-moments. The MaxEnt distribution can be written as
+moments $\ee{x}$, and $\ee{x^2}$. The MaxEnt distribution can be written as
 \begin{equation}
   P_H(x) = {1 \over \mathcal{Z}}
   \exp \left(- \lambda_1 x - \lambda_2 x^2 \right) =
@@ -199,46 +202,62 @@ $\lambda_2'$ rather than $\lambda_2$ maybe because it is of the same order of
 magnitude as $\lambda_1$. Then we can always multiply $\lambda_2'$ by $a$ to
 obtain back the constraint for our quadratic term. What this means is that that
 we can always rescale the MaxEnt problem to make it numerically more stable,
-then we can rescale back to obtain the value of the Lagrange multipliers.
+then we can rescale back to obtain the value of the Lagrange multipliers. The
+key to the Bretthorst algorithm lies in the selection of what rescaling factor
+to choose in order to make the numerical inference more efficient.
 
-Bretthorst algorithm goes even further by further transforming the constraints
+Bretthorst's algorithm goes even further by further transforming the constraints
 and the variables to make the constraints orthogonal, making the computation
 much more effective. We now explain the implementation of the algorithm to our
 joint distribution of interest $P(m, p)$.
 
 \subsubsection{Algorithm implementation}
 
-Let the matrix $\bb{A}$ contain all the rules used to compute the moments that
-serve as constraints, where each entry is of the form
+Let the $M \times N$ matrix $\bb{A}$ contain all the factors used to compute the
+moments that serve as constraints, where each entry is of the form
 \begin{equation}
-  A_{ij} = m_i^{x_j} \cdot p_i^{y_j},
+  A_{ij} = m_i^{x_j} \cdot p_i^{y_j}.
+  \label{seq_maxent_rules}
 \end{equation}
-i.e. the $i\th$ entry of our sample space consisting of of the product of all
-possible pairs ($m, p$) elevated to the appropriate powers $x$ and $y$
-associated with the $j^{\text{th}}$ constraint. Let also $\bb{v}$ be a vector
-containing all the constraints with each entry of the form
+In other words, recall that to obtain any moment $\ee{m^x p^y}$ we compute
+\begin{equation}
+  \ee{m^x p^y} = \sum_m \sum_p m^x p^y P(m, x).
+\end{equation}
+If we have $M$ possible $(m, p)$ pairs in our truncated sample space (because we
+can't include the sample space up to infinity) $\{(m, p)_1, (m, p)_2, \ldots (m,
+p)_N \}$, and we have $N$ exponent pairs $(x, y)$ corresponding to the $N$
+moments used to constraint the maximum entropy distribution $\{(x, y)_1, (x,
+y)_2, \ldots, (x, y)_N \}$, then matrix $\bb{A}$ contains all the possible $M$
+by $N$ products of the form described in \eref{seq_maxent_rules}. Let also
+$\bb{v}$ be a vector of length $N$ containing all the constraints with each
+entry of the form
 \begin{equation}
   v_j = \ee{m^{x_j} p^{y_j}}.
 \end{equation}
 
-That means that the Lagrangian $\mathcal{L}$ to be used for this constrained
-maximization problem takes the form
+That means that the constraint equation $\mathcal{L}$ to be used for this
+problem takes the form
 \begin{equation}
   \mathcal{L} = -\sum_i P_i \ln P_i + \lambda_0 \left( 1 - \sum_i P_i \right)
   + \sum_{j>0} \lambda_j \left( v_j - \sum_i A_{ij} P_i \right),
 \end{equation}
 where $\lambda_0$ is the Lagrange multiplier associated with the normalization
 constraint, and $\lambda_j$ is the Lagrange multiplier associated with the
-$j\th$ constraint.
+$j\th$ constraint. This constraint equation is equivalent to
+\eref{seq_constraint_eq}, but now all the details of how to compute the moments
+are specified in matrix $\bb{A}$.
 
 With this notation in hand we now proceed to rescale the problem. The first
-step consists of rescaling the rules to compute the entries of matrix $\bb{A}$
-as
+step consists of rescaling the rules to compute the entries of matrix $\bb{A}$.
+As mentioned before, this is the key feature of the Bretthorst algorithm. The
+particular choice of rescaling factor used in the algorithm empirically promotes
+that the rescaled Lagrange multipliers are of the same order of magnitude. The
+rescaling takes the form
 \begin{equation}
   A_{ij}' = {A_{ij} \over G_j},
 \end{equation}
-where $G_j$ serves to normalize the moments such that all the Lagrange
-multipliers are of the same order of magnitude. This normalization satisfies
+where $G_j$ serves to rescale the moments, providing numerical stability to
+the inference problem. Bretthorst proposes an empirical rescaling that satisfies
 \begin{equation}
 G_j^2 = \sum_i A_{ij}^2,
 \end{equation}
@@ -246,26 +265,27 @@ or in terms of our particular problem
 \begin{equation}
 G_j^2 = \sum_m \sum_p \left( m^{x_j} p^{y_j} \right)^2.
 \end{equation}
+What this indicates is that each pair $m_i^{x_j} p_i^{y_j}$ is normalized by
+the sum of all pairs of the same form.
 
-Since we rescale the rules to compute the constraints, the constraints must
-also be rescaled simply as
+Since we rescale the factors involved in computing the constraints, the
+constraints must also be rescaled simply as
 \begin{equation}
 v_j' = \ee{m^{x_j} p^{y_j}}' = {\ee{m^{x_j} p^{y_j}} \over G_j}.
 \end{equation}
-
 The Lagrange multipliers must compensate this rescaling since at the end of the
 day the probability must add up to the same value. Therefore we rescale the
-$\lambda_j$ terms as as
+$\lambda_j$ terms as
 \begin{equation}
-\lambda_j' = \lambda_j G_j.
+\lambda_j' = \lambda_j G_j,
 \end{equation}
-
-This rescaling by itself would already improve the algorithm convergence since
-now all the Lagrange multipliers would not have drastically different values.
-Bretthorst proposes another linear transformation to make the optimization
-routine even more efficient. For this we generate orthogonal constraints that
-make Newton-Raphson and similar routines converge faster. The transformation is
-as follows
+such that any $\lambda_j  v_j = \lambda_j' v_j'$. If this empirical value for
+the rescaling factor makes the rescaled Lagrange multipliers $\lambda_j'$ be of
+the same order of magnitude, this by itself would already improve the algorithm
+convergence. Bretthorst proposes another linear transformation to make the
+optimization routine even more efficient. For this we generate orthogonal
+constraints that make Newton-Raphson and similar algorithms converge faster. The
+transformation is as follows
 \begin{equation}
   A_{ik}'' = \sum_j {e}_{jk} A_{ij}',
 \end{equation}
@@ -282,7 +302,6 @@ of the $k\th$ eigenvector of the matrix $\bb{E}$ with entries
 \begin{equation}
   {E}_{kj} = \sum_i {A}_{ik}' {A}_{ij}'.
 \end{equation}
-
 This transformation guarantees that the matrix $\bb{A}''$ has the property
 \begin{equation}
   \sum_i A_{ij}'' A_{jk}'' = \beta_j \delta_{jk},
@@ -303,7 +322,7 @@ both mRNA and protein levels respectively for different values of the
 repressor-DNA binding energy and repressor copy numbers per cell. From these
 plots we can easily appreciate that despite the fact that the mean of each
 distribution changes as the induction level changes, there is a lot of overlap
-between distributions. This as a consequence means that at the single cell level
+between distributions. This as a consequence means that at the single-cell level
 cells cannot perfectly resolve between different inputs.
 
 \begin{figure}[h!]

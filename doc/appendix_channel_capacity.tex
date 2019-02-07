@@ -5,7 +5,7 @@ In this section we detail the computation of the channel capacity of the simple
 genetic circuit shown in \fref{fig5_channcap}. As detailed in
 \secref{sec_channcap} the channel capacity is defined as the mutual information
 between input $c$ and output $p$ maximized over all possible input distributions
-$P(c)$ \cite{Shannon1948}. In principle there is an infinite number of input
+$P(c)$ \cite{Shannon1948}. In principle there are an infinite number of input
 distributions, so the task of finding $\hat{P}(c)$, the input distribution at
 channel capacity, requires an algorithmic approach that guarantees the
 convergence to this distribution. Tkačik, Callan and Bialek developed a clever
@@ -19,7 +19,7 @@ distributions shown in \fref{fig4_maxent}.
 Fortunately there exists a numerical algorithm to approximate $\hat{P}(c)$ for
 discrete distributions. In 1972 Richard Blahut and Suguru Arimoto independently
 came up with an algorithm mathematically shown to converge to $\hat{P}(c)$
-\cite{Blahut1972}. To compute both, the theoretical and the experimental channel
+\cite{Blahut1972}. To compute both the theoretical and the experimental channel
 capacity shown in \fref{fig5_channcap}, we implemented Blahut's algorithm. In
 the following section we detail the definitions needed for the algorithm. Then
 we detail how to compute the experimental channel capacity when the bins of the
@@ -77,7 +77,7 @@ true that \cite{Shannon1948}
 \begin{equation}
 I(g; c) \geq I(f(g); c),
 \end{equation}
-meaning that we can at best not lose information when mapping from the real
+meaning that information can only be lost when mapping from the real
 relationship between gene expression and inducer concentration to a fluorescence
 value.
 
@@ -96,7 +96,10 @@ where $I_{\text{biased}}$ is the biased estimate of the mutual information as
 computed from experimental data, $I_\infty$ is the quantity we would like to
 estimate, being the unbiased mutual information when having access to infinity
 number of experimental samples, and the coefficients $a_i$ depend on the
-underlying distribution of the signal and the response.
+underlying distribution of the signal and the response. This is an empirical
+choice to be tested. Intuitively this choice satisfies the limit that as the
+number of samples from the distribution grows, the empirical estimate of the
+mutual information should get closer to the actual one.
 
 In principle for a good number of data points the terms of higher order become
 negligible. So we can write the mutual information as
@@ -104,7 +107,8 @@ negligible. So we can write the mutual information as
 I_{\text{biased}} \approx I_\infty + \frac{a_1}{N} + \mathcal{O}(N^{-2}).
 \label{seq_mutual_biased}
 \end{equation}
-This means that when computing the mutual information for varying number of
+This means that if this particular arbitrary choice of functional form is  a
+good approximation, when computing the mutual information for varying number of
 samples, by taking subsamples of the experimental data, we expect to find a
 linear relationship as a function of the inverse of these number of data points.
 From this linear relationship the intercept is a bias-corrected estimate of the
@@ -141,8 +145,8 @@ and binned into 100 equal bins. The counts on each of these bins are then
 normalized and used to build matrix $\bb{Q}$ that is then fed to the
 Blahut-Arimoto algorithm. We can see that for these 200 bootstrap samples the
 channel capacity varies by $\approx$ 0.1 bits. Not a significant variability,
-nevertheless is important to bootstrap the data multiple times to get a better
-estimate of the channel capacity.
+nevertheless  we consider that it is important to bootstrap the data multiple
+times to get a better estimate of the channel capacity.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -158,15 +162,16 @@ estimate of the channel capacity.
 \eref{seq_mutual_biased} tells us that if we subsample each of the distributions
 from \fref{sfig_fluor_dist} at different fractions, and plot them as a function
 of the inverse sample size we will find a linear relationship if the expansion
-of the mutual information is valid. To test this idea we repeated the bootstrap
-estimate of \fref{sfig_channcap_bootstrap} sampling 10\%, 20\%, and so on until
-taking 100\% of the data. We repeated this for different number of bins since a
-priori for arbitrary units of fluorescence we do not have a way to select the
-optimal number of bins. \fref{sfig_channcap_lin_reg} shows the result of these
-estimates. We can see that the linear relationship proposed in
-\eref{seq_mutual_biased} holds true for all number of bins selected. We also
-note that the value of the intercept of the linear regression varies depending
-on the number of bins.
+of the mutual information is valid. This suggests that the empirical choice for
+the expansion of the mutual information is a good approximation. To test this
+idea we repeated the bootstrap estimate of \fref{sfig_channcap_bootstrap}
+sampling 10\%, 20\%, and so on until taking 100\% of the data. We repeated this
+for different number of bins since a priori for arbitrary units of fluorescence
+we do not have a way to select the optimal number of bins.
+\fref{sfig_channcap_lin_reg} shows the result of these estimates. We can see
+that the linear relationship proposed in \eref{seq_mutual_biased} holds true for
+all number of bins selected. We also note that the value of the intercept of the
+linear regression varies depending on the number of bins.
 
 \begin{figure}[h!]
 	\centering \includegraphics
