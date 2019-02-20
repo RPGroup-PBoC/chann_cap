@@ -57,10 +57,10 @@ And finally for the repressor bound state $R$ we have
   \end{aligned}
 \end{equation}
 
-For an unregulated promoter, i.e. a promoter within a cell that has no
-repressors present, and therefore constitutively expresses the gene, we use a
-two-state model in which the state $R$ is not allowed. All the terms in the
-system of ODEs containing $\kron$ or $\kroff$ are then set to zero.
+For an unregulated promoter, i.e. a promoter in a cell that has no repressors
+present, and therefore constitutively expresses the gene, we use a two-state
+model in which the state $R$ is not allowed. All the terms in the system of ODEs
+containing $\kron$ or $\kroff$ are then set to zero.
 
 As detailed in \secref{sec_model} it is convenient to express this system using
 matrix notation \cite{Sanchez2013}. For this we define $\PP(m, p) = (P_B(m, p),
@@ -153,9 +153,9 @@ measurements done in the context of multiple promoter copies \cite{Brewster2014}
 and flow-cytometry measurements of the mean response of the system to different
 levels of induction \cite{Razo-Mejia2018}. In what follows of this section we
 detail the steps taken to infer the parameter values. At each step the values of
-the parameters inferred in previous sections constrain the values of the
+the parameters inferred in previous steps constrain the values of the
 parameters that are not yet determined, building in this way a self-consistent
-theory informed by work that spans several experimental techniques.
+model informed by work that spans several experimental techniques.
 
 \subsection{RNAP rates from unregulated two-state promoter}
 
@@ -269,13 +269,11 @@ Bintu2005a}
   \over 1 + {P \over \Nns} e^{-\beta\eP}},
   \label{seq_mean_thermo}
 \end{equation}
-where $P$ is the number of RNAP
-per cell, $\Nns$ is the number of non-specific binding sites,
-$\eP$ is the RNAP binding energy in $k_BT$ units and
-$\beta\equiv {(k_BT)}^{-1}$.
-
-Using \eref{seq_mean_kinetic} and \eref{seq_mean_thermo} we can easily see that
-if these frameworks are to be equivalent, then it must be true that
+where $P$ is the number of RNAP per cell, $\Nns$ is the number of non-specific
+binding sites, $\eP$ is the RNAP binding energy in $k_BT$ units and $\beta\equiv
+{(k_BT)}^{-1}$. Using \eref{seq_mean_kinetic} and \eref{seq_mean_thermo} we can
+easily see that if these frameworks are to be equivalent, then it must be true
+that
 \begin{equation}
   {\kpon \over \kpoff} = {P \over \Nns} e^{-\beta\eP},
 \end{equation}
@@ -406,7 +404,7 @@ proxy for stage in the cell cycle. In their approach they sorted cells by area,
 considering the low 33$\th$ percentile as cells with a single promoter copy,
 with the rest being cells with two copies of the promoter. This approach ignores
 that cells are not uniformly distributed along the cell cycle. As first
-discussed in \cite{Powell1956} populations of cells in a log-phase are
+derived in \cite{Powell1956} populations of cells in a log-phase are
 exponentially distributed along the cell cycle. This distribution is of the form
 \begin{equation}
 P(a) = (\ln 2) \cdot 2^{1 - a},
@@ -549,8 +547,8 @@ with the equilibrium picture.
 	\caption{\textbf{MCMC posterior distribution for a multi-promoter model.}
 	Sampling out of \eref{seq_bayes_sample_double} the plot shows 2D and 1D
 	projections of the 3D parameter space. The parameter values are (in units of
-	the mRNA degradation rate $\gm$) $\kpon = 6.8^{+1}_{-0.5}$, $\kpoff =
-	112^{+440}_{-50}$ and $r_m = 203^{+698}_{-82}$ which are the modes of
+	the mRNA degradation rate $\gm$) $\kpon = 6.4^{+0.8}_{-0.4}$, $\kpoff =
+	132^{+737}_{-75}$ and $r_m = 257^{+1307}_{-132}$ which are the modes of
 	their respective distributions, where the superscripts and subscripts
 	represent the upper and lower bounds of the 95$\th$ percentile of the
 	parameter value distributions. The sampling was bounded to values $<$ 1000 for
@@ -559,9 +557,8 @@ with the equilibrium picture.
 \end{figure}
 
 Using again the mRNA mean lifetime of $\approx 3$ min gives the following values
-for the parameters: $\kpon = {0.03}_{-0.003}^{+0.005} s^{-1}$, $\kpoff = {0.6}
-_{-0.2}^{+2.4} s^{-1}$, and $r_m = {1}_{-0.4}^{+3} s^{-1}$. \mrm{again need to
-compare with what is known about these rates.}.
+for the parameters: $\kpon = {0.03}_{-0.002}^{+0.004} s^{-1}$, $\kpoff = {0.7}
+_{-0.4}^{+4.1} s^{-1}$, and $r_m = {1.4}_{-0.7}^{+7.3} s^{-1}$.
 \fref{sfig_lacUV5_theory_data_double} shows the result of applying
 \eref{seq_prob_multipromoter} using these parameter values. Specifically
 \fref{sfig_lacUV5_theory_data_double}(A) shows the global distribution including
@@ -576,7 +573,7 @@ approximations.
 	\centering \includegraphics
   {../fig/chemical_master_mRNA_FISH/lacUV5_multi_prom_fit.pdf}
   \caption{\textbf{Experimental vs. theoretical distribution of mRNA per cell
-  using parameters for multi-promoter model.} (A) Solid curve shows the result
+  using parameters for multi-promoter model.} (A) Solid line shows the result
   of using \eref{seq_prob_multipromoter} with the parameters inferred by
   sampling \eref{seq_bayes_sample_double}. Blue bars are the same data as
   \fref{sfig_lacUV5_FISH} from \cite{Jones2014a}. (B) Split distributions of
@@ -645,11 +642,10 @@ transcription rate $r_m$ and the mRNA degradation rate $\gm$ cancel out.
 Given that the number of repressors per cell $R$ is an experimental variable
 that we can control, we assume that the rate at which the promoter transitions
 form the empty state to the repressor bound state $\kron$ is given by the
-concentration of repressors $[R]$ times a diffusion limited on rate $k_o$
-\cite{Jones2014a}.  For the diffusion limited constant $k_o$ we use the value
-used by Jones et al. \cite{Jones2014a} \mrm{Find real reference for this value
-that Brewster never gave me.}. With this in hand we can rewrite
-\eref{seq_fold_change_cme} as
+concentration of repressors $[R]$ times a diffusion limited on rate $k_o$. For
+the diffusion limited constant $k_o$ we use the value used by Jones et al.
+\cite{Jones2014a}. With this in hand we can rewrite \eref{seq_fold_change_cme}
+as
 \begin{equation}
   \foldchange = \left( 1 + {k_0 [R] \over \kroff}
                 {\kpoff \over \kpon + \kpoff} \right)^{-1}.
@@ -678,12 +674,9 @@ concentration is equal to
 \end{equation}
 where $R$ is the absolute repressor copy number per cell, $V_{cell}$ is the cell
 volume and $N_A$ is Avogadro's number. The \textit{E. coli} cell volume is in
-the order of 2.1 fL = $10^{-15}$ L \mrm{get reference from Nathan}, and
+the order of 2.1 fL = $10^{-15}$ L \cite{Radzikowski2016}, and
 Avogadro's number is $6.022 \times 10^{23}$. If we further include the
 conversion factor to turn M into nM we find that
-\rp{Look at Sukjon Jun's data in CBN. Maybe do better on cell volume.}
-\mrm{I need to double check with Nathan, but I think that this volume comes
-from that data set.}
 \begin{equation}
 [R] = {R \over 2.1 \times 10^{-15} L} \cdot {1 \over 6.022 \times 10^{23}}
 \cdot {10^9 \text{ nmol} \over 1 \text{ mol}} \approx 0.8 \times R.
@@ -705,7 +698,7 @@ size of the {\it E. coli} K12 genome.
   \caption{\textbf{Binding sites and corresponding parameters.}}
 \begin{tabular}{|c|c|c|}
 \hline
- Operator & \eR $(k_BT)$ & \kroff $(s^{-1})$  \\ \hline
+ Operator & $\eR\; (k_BT)$ & $\kroff \; (s^{-1})$  \\ \hline
  O1 & -15.3 & 0.002  \\ \hline
  O2 & -13.9 & 0.008  \\ \hline
  O3 & -9.7  & 0.55   \\ \hline
@@ -715,15 +708,13 @@ size of the {\it E. coli} K12 genome.
 
 {\it In-vivo} measurements of the Lac repressor off rate have been done with
 single-molecule resolution \cite{Hammar2014}. The authors report a mean
-residence time of $5.3 \pm 0.2$ minutes for the repressor on an O1 operator.
-The corresponding rate is $\kroff \approx 0.003$ $(s^{-1})$, very similar value
-to what we inferred from our model.
-
-In this same reference the authors determined that on average the repressor
-takes $30.9 \pm 0.5$ seconds to bind to the operator \cite{Hammar2014}. Given
-the kinetic model presented in \fref{fig2_minimal_model}(A) this time can be
-converted to the probability of not being on the repressor bound state
-$P_{\text{not }R}$. This is computed as
+residence time of $5.3 \pm 0.2$ minutes for the repressor on an O1 operator. The
+corresponding rate is $\kroff \approx 0.003$ $(s^{-1})$, very similar value to
+what we inferred from our model. In this same reference the authors determined
+that on average the repressor takes $30.9 \pm 0.5$ seconds to bind to the
+operator \cite{Hammar2014}. Given the kinetic model presented in
+\fref{fig2_minimal_model}(A) this time can be converted to the probability of
+not being on the repressor bound state $P_{\text{not }R}$. This is computed as
 \begin{equation}
   P_{\text{not }R} = {\tau_{\text{not }R} \over
                       \tau_{\text{not }R} + \tau_{R}},

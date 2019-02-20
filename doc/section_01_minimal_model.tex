@@ -31,10 +31,10 @@ parameters needed to predict mRNA and protein distributions. Specifically, we
 assume a three-state model where the promoter can be found 1) with RNAP bound
 ($B$ state), 2) empty ($E$ state) and 3) with the repressor bound ($R$ state).
 These three states generate a system of coupled differential equations for each
-of the three state distributions $P_B(m, p)$, $P_E(m, p)$ and $P_R(m, p)$, where
-$m$ and $p$ are the mRNA and protein count per cell, respectively. Given the
-rates shown in \fref{fig2_minimal_model}(A) we define the system of ODEs for a
-specific $m$ and $p$. For the RNAP bound state we have
+of the three state distributions $P_B(m, p; t)$, $P_E(m, p; t)$ and $P_R(m, p;
+t)$, where $m$ and $p$ are the mRNA and protein count per cell, respectively and
+$t$ is the time. Given the rates shown in \fref{fig2_minimal_model}(A) we define
+the system of ODEs for a specific $m$ and $p$. For the RNAP bound state we have
 \begin{equation}
   \begin{aligned}
     \dt{P_B(m, p)} &=

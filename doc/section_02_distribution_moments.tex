@@ -2,11 +2,11 @@
 \label{sec_moments}
 
 Solving chemical master equations represent a challenge that is still an active
-area of research \cite{Dinh2016}. An alternative approach is to find schemes to
-approximate the distribution. One such scheme, the maximum entropy approach,
-makes use of the moments of the distribution to approximate the full
-distribution. In this section we will demonstrate an iterative algorithm to
-compute the mRNA and protein distribution moments.
+area of research. An alternative approach is to find schemes to approximate the
+distribution. One such scheme, the maximum entropy principle, makes use of the
+moments of the distribution to approximate the full distribution. In this
+section we will demonstrate an iterative algorithm to compute the mRNA and
+protein distribution moments.
 
 Our simple repression kinetic model depicted in \fref{fig2_minimal_model}(A)
 consists of an infinite system of ODEs for each possible pair $m, p$. To
@@ -31,10 +31,10 @@ for full derivation)
   \begin{aligned}
     \dt{\bb{\ee{m^x p^y}}} &=
     \Km \bb{\ee{m^x p^y}}\\
-    &+ \Rm \bb{\ee{p^y \left[ (m + 1)^x -m^x \right]}}\\
-    &+ \Gm \bb{\ee{m p^y \left[ (m - 1)^x - m^x \right]}}\\
-    &+ \Rp \bb{\ee{m^{(x + 1)} \left[ (p + 1)^y - p^y \right]}}\\
-    &+ \Gp \bb{\ee{m^x p \left[ (p - 1)^y - p^y \right]}}.
+    &+ \Rm \bb{\ee{p^y \left[ (m + 1)^x -m^x \right]}}
+     + \Gm \bb{\ee{m p^y \left[ (m - 1)^x - m^x \right]}}\\
+    &+ \Rp \bb{\ee{m^{(x + 1)} \left[ (p + 1)^y - p^y \right]}}
+     + \Gp \bb{\ee{m^x p \left[ (p - 1)^y - p^y \right]}}.
     \label{eq_gral_mom}
   \end{aligned}
 \end{equation}

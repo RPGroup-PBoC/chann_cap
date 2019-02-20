@@ -69,11 +69,9 @@ C(f(g); c) \equiv \max_{P(c)} I(f(g); c),
 \end{equation}
 where $f(g)$ is a function of gene expression that has to do with our mapping
 from the YFP copy number to some arbitrary fluorescent value as computed from
-the images taken with the microscope.
-
-The data processing inequality, as derived by Shannon himself, tells us that
-for a Markov chain of the form $c \rightarrow g \rightarrow f(g)$ it must be
-true that \cite{Shannon1948}
+the images taken with the microscope. The data processing inequality, as derived
+by Shannon himself, tells us that for a Markov chain of the form $c \rightarrow
+g \rightarrow f(g)$ it must be true that \cite{Shannon1948}
 \begin{equation}
 I(g; c) \geq I(f(g); c),
 \end{equation}
@@ -85,10 +83,9 @@ On top of that, given the limited number of samples that we have access to when
 computing the channel capacity, there is a bias in our estimate given this
 undersampling. The definition of accurate unbiased descriptors of the mutual
 information is still an area of active research. For our purposes we will use
-the method described in \cite{Cheong2011a}.
-
-The basic idea of the method is to write the mutual information as a series
-expansion in terms of inverse powers of the sample size, i.e.
+the method described in \cite{Cheong2011a}. The basic idea of the method is to
+write the mutual information as a series expansion in terms of inverse powers of
+the sample size, i.e.
 \begin{equation}
 I_{\text{biased}} = I_\infty + \frac{a_1}{N} + \frac{a_2}{N^2} + \cdots,
 \end{equation}
@@ -99,7 +96,8 @@ number of experimental samples, and the coefficients $a_i$ depend on the
 underlying distribution of the signal and the response. This is an empirical
 choice to be tested. Intuitively this choice satisfies the limit that as the
 number of samples from the distribution grows, the empirical estimate of the
-mutual information should get closer to the actual one.
+mutual information $I_{\text{biased}}$ should get closer to the actual value
+$I_\infty$.
 
 In principle for a good number of data points the terms of higher order become
 negligible. So we can write the mutual information as
@@ -162,16 +160,15 @@ times to get a better estimate of the channel capacity.
 \eref{seq_mutual_biased} tells us that if we subsample each of the distributions
 from \fref{sfig_fluor_dist} at different fractions, and plot them as a function
 of the inverse sample size we will find a linear relationship if the expansion
-of the mutual information is valid. This suggests that the empirical choice for
-the expansion of the mutual information is a good approximation. To test this
-idea we repeated the bootstrap estimate of \fref{sfig_channcap_bootstrap}
-sampling 10\%, 20\%, and so on until taking 100\% of the data. We repeated this
-for different number of bins since a priori for arbitrary units of fluorescence
-we do not have a way to select the optimal number of bins.
-\fref{sfig_channcap_lin_reg} shows the result of these estimates. We can see
-that the linear relationship proposed in \eref{seq_mutual_biased} holds true for
-all number of bins selected. We also note that the value of the intercept of the
-linear regression varies depending on the number of bins.
+of the mutual information is valid. To test this idea we repeated the bootstrap
+estimate of \fref{sfig_channcap_bootstrap} sampling 10\%, 20\%, and so on until
+taking 100\% of the data. We repeated this for different number of bins since a
+priori for arbitrary units of fluorescence we do not have a way to select the
+optimal number of bins. \fref{sfig_channcap_lin_reg} shows the result of these
+estimates. We can see that the linear relationship proposed in
+\eref{seq_mutual_biased} holds true for all number of bins selected. We also
+note that the value of the intercept of the linear regression varies depending
+on the number of bins.
 
 \begin{figure}[h!]
 	\centering \includegraphics

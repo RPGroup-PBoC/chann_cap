@@ -112,7 +112,12 @@ hand, given that the relaxation time to steady state is determined by the
 degradation rate, the mean protein count does not reach its corresponding steady
 state value for either promoter copy number state. Interestingly once a couple
 of cell cycles have passed the first moment has a repetitive trajectory over
-cell cycles.
+cell cycles. We have observed this experimentally by tracking cells as they grow
+under the microscope. Comparing cells at the beginning of the cell cycle with
+the daughter cells that appear after cell division shown that on average all
+cells have the same amount of protein at the beginning of the cell cycle (See
+Fig. 18 of \cite{Phillips2019}), suggesting that these dynamical steady state
+takes place \textit{in vivo}.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -187,7 +192,7 @@ Given the large variability of the first moments depicted in
 \fref{sfig_first_mom_cycles} it is worth considering why a simplistic
 equilibrium picture has shown to be very successful in predicting the mean
 expression level under diverse conditions \cite{Garcia2011c, Brewster2014,
-Barnes2018, Razo-Mejia2018}. In this section we compare the simple repression
+Barnes2019, Razo-Mejia2018}. In this section we compare the simple repression
 thermodynamic model with this dynamical picture of the cell cycle. But before
 diving into this comparison, it is worth recapping the assumptions that go into
 the equilibrium model.
@@ -319,13 +324,12 @@ quantity while the Fano factor is not.
 \fref{sfig_noise_comparison} shows the comparison of the predicted protein noise
 between  the single- (dashed lines) and the multi-promoter model (solid lines)
 for different operators and repressor copy numbers. A striking difference
-between both is that the single-promoter model predicts that as the mean
-expression  level increases, the standard deviation grows much slower than the
-mean, giving a very small noise. In comparison the multi-promoter model has a
-much higher floor for the lowest value of the noise, reflecting the expected
-result that the variability in gene copy number across the cell cycle should
-increase the cell-to-cell variability in gene expression \cite{Peterson2015,
-Jones2014a}
+between both is that the single-promoter model predicts that as the inducer
+concentration increases, the standard deviation grows much slower than the mean,
+giving a very small noise. In comparison the multi-promoter model has a much
+higher floor for the lowest value of the noise, reflecting the expected result
+that the variability in gene copy number across the cell cycle should increase
+the cell-to-cell variability in gene expression \cite{Peterson2015, Jones2014a}
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -340,7 +344,7 @@ Jones2014a}
   \label{sfig_noise_comparison}
 \end{figure}
 
-\subsection{Comparison with experimental data}
+\subsection{Comparison with experimental data}\label{supp_theory_vs_data_mom}
 
 Having shown that the kinetic model presented in this section can reproduce the
 results from the equilibrium picture at the mean level (See
@@ -348,12 +352,12 @@ results from the equilibrium picture at the mean level (See
 prediction for the cell-to-cell variability as quantified by the noise
 (See \fref{sfig_noise_comparison}), we can assess whether or not this model is
 able to predict experimental measurements of the noise. For this we take the
-single cell intensity measurements (See \mrm{reference microscopy section}) to
-compute the noise at the protein level.
+single cell intensity measurements (See Methods) to compute the noise at the
+protein level.
 
-As mentioned before this metric has an advantage over the Fano factor since for
-fluorescent arbitrary units the noise is a dimensionless quantity. To see
-why consider that the noise is defined as
+As mentioned before this metric differs from the Fano factor since for
+fluorescent arbitrary units the noise is a dimensionless quantity. To see why
+consider that the noise is defined as
 \begin{equation}
 \text{noise} \equiv \frac{\sqrt{\left\langle p^2 \right\rangle -
                         \left\langle p \right\rangle^2}}
@@ -398,10 +402,14 @@ the mean autofluorescence intensity, obtained from a strain that does not carry
 the fluorescent reporter gene.
 
 \fref{sfig_noise_delta} shows the comparison between theoretical predictions and
-experimental measurements for the unregulated promoter. We can see that the
-single-promoter model that ignores gene copy number variability greatly
-underestimates the measured noise at the protein level despite the fact that it
-can greatly reproduce the noise at the mRNA level (See
+experimental measurements for the unregulated promoter. The reason we split the
+data by operator despite the fact that since these are unregulated promoters,
+they should in principle have identical expression profiles is to precisely make
+sure that this is the case. We have found in the past that sequences downstream
+of the RNAP binding site can affect the expression level of constitutively
+expressed genes. We can see that the single-promoter model that ignores gene
+copy number variability greatly underestimates the measured noise at the protein
+level despite the fact that it can capture the noise at the mRNA level (See
 \siref{supp_param_inference}). On the other hand the zero parameter fit
 prediction from the multi-promoter level presented in this section has a much
 better agreement with the experimental values. This indicates that changes in
@@ -424,7 +432,7 @@ predictions for the single- and the multi-promoter model for varying repressor
 copy numbers and repressor-DNA binding affinities as a function of the inducer
 concentration. We can see again that the zero-parameter fit multi-promoter model
 has a good agreement with the experimental data, while the single-promoter model
-underestimates the noise.
+again underestimates the noise.
 
 \begin{figure}[h!]
 	\centering \includegraphics

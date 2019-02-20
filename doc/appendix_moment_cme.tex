@@ -3,8 +3,8 @@
 In this section we will compute the moment equations for the distribution  $P(m,
 p)$. Without lost of generality here we will focus on the three-state
 regulated promoter. The computation of the moments for the two-state promoter
-follows the exact same procedure, having only the definition of the matrices
-change.
+follows the exact same procedure, having only the definition of the matrices in
+the master equation change.
 
 \subsection{Computing moments of a distribution}
 
@@ -16,8 +16,8 @@ let us define a vector
 where $\ee{m^x p^y}_S$ is the expected value of $m^x p^y$ in state $S \in \{B,
 E, R\}$ with $x, y \in \mathbb{N}$. In other words, just as we defined the
 vector $\PP(m, p)$, here we define a vector to collect the expected value of
-each of the promoter states. By definition any of these moments $\ee{m^x p^y}_S$
-is computed as
+each of the promoter states. By definition these moments $\ee{m^x p^y}_S$ are
+computed as
 \begin{equation}
   \ee{m^x p^y}_S \equiv \sum_{m=0}^\infty \sum_{p=0}^\infty m^x p^y P_S(m, p).
   \label{seq_mom_def}
@@ -77,8 +77,7 @@ In the same way the mRNA degradation term gives
 \begin{equation}
   \Gm \smp (m) m^x p^y \PP(m, p) = \Gm \bb{\ee{m^{(x + 1)} p^y}}.
 \end{equation}
-As for the protein production and degradation terms involving $\PP(m, p)$ we
-have
+For the protein production and degradation terms involving $\PP(m, p)$ we have
 \begin{equation}
   \Rp \smp (m) m^x p^y \PP(m, p) = \Rp \bb{\ee{m^{(x + 1)} p^y}},
 \end{equation}
@@ -97,7 +96,7 @@ we write
   \Rm \smp m^x p^y \PP(m-1, p) =
   \Rm \sum_{m' = -1}^\infty \sum_p (m' + 1)^x p^y \PP(m', p).
 \end{equation}
-Since having negative numbers of mRNA of protein doesn't make physical sense
+Since having negative numbers of mRNA or protein doesn't make physical sense
 we have that $\PP(-1, p) = 0$. Therefore we can rewrite the sum starting from 0
 rather than from -1, obtaining
 \begin{equation}
@@ -171,11 +170,16 @@ of the form
 \begin{equation}
   \begin{aligned}
     \dt{\bb{\ee{m^x p^y}}} &=
-    \Km \bb{\ee{m^x p^y}}\\
-    &- \Rm \bb{\ee{m^x p^y}} + \Rm \bb{\ee{(m+1)^x p^y}}\\
-    &- \Gm \bb{\ee{m^{(x + 1)} p^y}} + \Gm \bb{\ee{m (m - 1)^x p^y}}\\
-    &- \Rp \bb{\ee{m^{(x + 1)} p^y}} + \Rp \bb{\ee{m^{(x + 1)} (p + 1)^y}}\\
-    &- \Gp \bb{\ee{m^x p^{(y + 1)}}} + \Gp \bb{\ee{m^x p (p - 1)^y}}.
+    \Km \bb{\ee{m^x p^y}}
+    \text{  (promoter state transition)}\\
+    &- \Rm \bb{\ee{m^x p^y}} + \Rm \bb{\ee{(m+1)^x p^y}}
+    \text{  (mRNA production)}\\
+    &- \Gm \bb{\ee{m^{(x + 1)} p^y}} + \Gm \bb{\ee{m (m - 1)^x p^y}}
+    \text{  (mRNA degradation)}\\
+    &- \Rp \bb{\ee{m^{(x + 1)} p^y}} + \Rp \bb{\ee{m^{(x + 1)} (p + 1)^y}}
+    \text{  (protein production)}\\
+    &- \Gp \bb{\ee{m^x p^{(y + 1)}}} + \Gp \bb{\ee{m^x p (p - 1)^y}}
+    \text{  (protein degradation)}.
   \end{aligned}
   \label{seq_mom_ode}
 \end{equation}
@@ -306,21 +310,29 @@ cell cycle.
 \subsection{Computing single promoter steady-state moments}
 
 As discussed in \secref{sec_cell_cycle}, one of the main factors contributing to
-cell-to-cell variability in gene expression is the  changes in gene copy number
-during the cell cycle as cells replicate their  genome before cell division. Our
+cell-to-cell variability in gene expression is the changes in gene copy number
+during the cell cycle as cells replicate their genome before cell division. Our
 minimal model account for this variability by considering the time trajectory of
 the distribution moments as given by \eref{seq_mom_ode_factorized}. These
 predictions will be contrasted with the predictions from a kinetic model that
 doesn't account for changes in gene copy number during the cell cycle in
 \siref{supp_multi_gene}.
 
-In order to compute the steady-state moments of the kinetic model with a single
-gene across the cell cycle we use the moment closure property of our master
-equation. By equating \eref{seq_mom_ode_factorized} to zero for a given
+If we do not account for change in gene copy number during the cell cycle and we
+also don't consider the partition of proteins during division, the dynamics of
+the moments of the distribution described in this section will reach a steady
+state. In order to compute this steady-state moments of the kinetic model with a
+single gene across the cell cycle we use the moment closure property of our
+master equation. By equating \eref{seq_mom_ode_factorized} to zero for a given
 $\bb{x}$ and $\bb{y}$ we can solve the resulting linear system obtaining a
 solution for $\bb{\ee{m^x p^y}}$ at steady state as a function of moments
 $\bb{\ee{m^{x'} p^{y'}}}$ that satisfy \eref{seq_mom_conditions}. Then by
 solving for the zero$\th$ moment $\bb{\ee{m^0 p^0}}$ subject to the constraint
-that the probability of the promoter being in any state should add up to one,
-we can substitute back all of the solutions in terms of moments $\bb{\ee{m^{x'}
+that the probability of the promoter being in any state should add up to one, we
+can substitute back all of the solutions in terms of moments $\bb{\ee{m^{x'}
 p^{y'}}}$ to solutions in terms of the rates shown in \fref{fig2_minimal_model}.
+In other words, through an iterative process we can get at the value of any
+moment of the distribution. We start by solving for the zero$\th$ moment. Since
+all higher moments depend on lower moments we can use the solution of the
+zero$\th$ moment to compute the first mRNA moment. This solution is then used
+for higher moments on a hierarchical iterative process.

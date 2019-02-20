@@ -13,8 +13,7 @@ hypergeometric functions.
 
 On the other hand there has been a great deal of work to generate methods that
 can approximate the solution of these discrete state Markovian models
-\cite{Ale2013, Andreychenko2017, Frohlich2016, Schnoerr2017, Smadbeck2013,
-Hasenauer2014, Dinh2016}. In particular for master equations like the one that
+\cite{Ale2013, Andreychenko2017, Frohlich2016, Schnoerr2017, Smadbeck2013}. In particular for master equations like the one that
 concerns us here whose moments can be easily computed, the moment expansion
 method provides a simple method to approximate the full joint distribution of
 mRNA and protein \cite{Smadbeck2013}. In this section we will explain the
@@ -69,15 +68,13 @@ $\mathcal{L}(x)$ as
   \left[ \lambda_i \left( \ee{x^i} - \sum_x x^i P_X(x) \right) \right],
   \label{seq_constraint_eq}
 \end{equation}
-where $\lambda_i$ is the Lagrange multiplier associated with the $i\th$
-moment. The inclusion of the zeroth moment is an additional constraint to
-guarantee the normalization of the resulting distribution.
-
-Since $P_X(x)$ has a finite set of discrete values, when taking the derivative
-of the constraint equation with respect to $P_X(x)$, we chose a particular value
-of $X = x$. Therefore from the sum over all possible $x$ values only a single
-term survives. With this in mind we take the derivative of the constraint
-equation obtaining
+where $\lambda_i$ is the Lagrange multiplier associated with the $i\th$ moment.
+The inclusion of the zeroth moment is an additional constraint to guarantee the
+normalization of the resulting distribution. Since $P_X(x)$ has a finite set of
+discrete values, when taking the derivative of the constraint equation with
+respect to $P_X(x)$, we chose a particular value of $X = x$. Therefore from the
+sum over all possible $x$ values only a single term survives. With this in mind
+we take the derivative of the constraint equation obtaining
 \begin{equation}
   {d\mathcal{L} \over d P_X(x)} = -\log P_X(x) - 1 -
   \sum_{i=0}^m \lambda_i x^i.
@@ -119,8 +116,8 @@ like? The MaxEnt principle tells us that our best guess would be of the form
 \begin{equation}
   P_H(x) = {1 \over \mathcal{Z}} \exp \left( \lambda x \right).
 \end{equation}
-Using any numerical minimization package we can easily find the numerical value
-of the Lagrange multiplier $\lambda$  that satisfies our constraint.
+Using any numerical minimization package we can easily find the value of the
+Lagrange multiplier $\lambda$  that satisfies our constraint.
 \fref{fig_maxent_die} shows two two examples of distributions that satisfy the
 constraint. Panel (A) shows a distribution consistent with the 4.5 average where
 both 4 and 5 are equally likely. Nevertheless in the information we got about
@@ -208,7 +205,7 @@ to choose in order to make the numerical inference more efficient.
 
 Bretthorst's algorithm goes even further by further transforming the constraints
 and the variables to make the constraints orthogonal, making the computation
-much more effective. We now explain the implementation of the algorithm to our
+much more effective. We now explain the implementation of the algorithm for our
 joint distribution of interest $P(m, p)$.
 
 \subsubsection{Algorithm implementation}
@@ -228,15 +225,14 @@ can't include the sample space up to infinity) $\{(m, p)_1, (m, p)_2, \ldots (m,
 p)_N \}$, and we have $N$ exponent pairs $(x, y)$ corresponding to the $N$
 moments used to constraint the maximum entropy distribution $\{(x, y)_1, (x,
 y)_2, \ldots, (x, y)_N \}$, then matrix $\bb{A}$ contains all the possible $M$
-by $N$ products of the form described in \eref{seq_maxent_rules}. Let also
+by $N$ terms of the form described in \eref{seq_maxent_rules}. Let also
 $\bb{v}$ be a vector of length $N$ containing all the constraints with each
 entry of the form
 \begin{equation}
-  v_j = \ee{m^{x_j} p^{y_j}}.
+  v_j = \ee{m^{x_j} p^{y_j}},
 \end{equation}
-
-That means that the constraint equation $\mathcal{L}$ to be used for this
-problem takes the form
+i.e. the information that we have about the distribution. That means that the
+constraint equation $\mathcal{L}$ to be used for this problem takes the form
 \begin{equation}
   \mathcal{L} = -\sum_i P_i \ln P_i + \lambda_0 \left( 1 - \sum_i P_i \right)
   + \sum_{j>0} \lambda_j \left( v_j - \sum_i A_{ij} P_i \right),
@@ -248,8 +244,8 @@ $j\th$ constraint. This constraint equation is equivalent to
 are specified in matrix $\bb{A}$.
 
 With this notation in hand we now proceed to rescale the problem. The first
-step consists of rescaling the rules to compute the entries of matrix $\bb{A}$.
-As mentioned before, this is the key feature of the Bretthorst algorithm. The
+step consists of rescaling the terms to compute the entries of matrix $\bb{A}$.
+As mentioned before, this is the key feature of the Bretthorst algorithm; the
 particular choice of rescaling factor used in the algorithm empirically promotes
 that the rescaled Lagrange multipliers are of the same order of magnitude. The
 rescaling takes the form
@@ -266,7 +262,7 @@ or in terms of our particular problem
 G_j^2 = \sum_m \sum_p \left( m^{x_j} p^{y_j} \right)^2.
 \end{equation}
 What this indicates is that each pair $m_i^{x_j} p_i^{y_j}$ is normalized by
-the sum of all pairs of the same form.
+the square root of the sum of the all pairs of the same form squared.
 
 Since we rescale the factors involved in computing the constraints, the
 constraints must also be rescaled simply as
@@ -279,11 +275,11 @@ $\lambda_j$ terms as
 \begin{equation}
 \lambda_j' = \lambda_j G_j,
 \end{equation}
-such that any $\lambda_j  v_j = \lambda_j' v_j'$. If this empirical value for
-the rescaling factor makes the rescaled Lagrange multipliers $\lambda_j'$ be of
-the same order of magnitude, this by itself would already improve the algorithm
-convergence. Bretthorst proposes another linear transformation to make the
-optimization routine even more efficient. For this we generate orthogonal
+such that any $\lambda_j A_{ij} = \lambda_j' A_{ij}'$. If this empirical value
+for the rescaling factor makes the rescaled Lagrange multipliers $\lambda_j'$ be
+of the same order of magnitude, this by itself would already improve the
+algorithm convergence. Bretthorst proposes another linear transformation to make
+the optimization routine even more efficient. For this we generate orthogonal
 constraints that make Newton-Raphson and similar algorithms converge faster. The
 transformation is as follows
 \begin{equation}
@@ -307,9 +303,9 @@ This transformation guarantees that the matrix $\bb{A}''$ has the property
   \sum_i A_{ij}'' A_{jk}'' = \beta_j \delta_{jk},
 \end{equation}
 where $\beta_j$ is the $j\th$ eigenvalue of the matrix $\bb{E}$ and
-$\delta_{jk}$ is the delta function. What this means is that, as desired, the
-constraints are orthogonal to each other, improving the algorithm convergence
-speed.
+$\delta_{jk}$ is the Kronecker delta function. What this means is that, as
+desired, the constraints are orthogonal to each other, improving the algorithm
+convergence speed.
 
 \subsection{Predicting distributions for simple repression constructs}
 
@@ -327,26 +323,86 @@ cells cannot perfectly resolve between different inputs.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/MaxEnt_approx_joint/PMF_grid_joyplot_mRNA.pdf}
+  {../fig/MaxEnt_approx_joint/PMF_grid_joyplot_mRNA_nonpoisson.pdf}
 	\caption{\textbf{Maximum entropy mRNA distributions for simple repression
 	constructs.} mRNA distributions for different biophysical parameters. From
 	left to right the repressor-DNA affinity decreases as defined by the three
 	lacI operators O1 ($-15.3 \; k_BT$), O2 ($ -13.9 \; k_BT$), and O3 ($-9.7 \;
 	k_BT$). From top to bottom the mean repressor copy number per cell increases.
-	The twelve curves on each plot represent the twelve IPTG concentrations used
-	in the experiments with higher concentrations represented by lighter colors.}
+	The curves on each plot represent different IPTG concentrations.}
   \label{fig_pmf_mRNA}
 \end{figure}
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/MaxEnt_approx_joint/PMF_grid_joyplot_protein.pdf}
+  {../fig/MaxEnt_approx_joint/PMF_grid_joyplot_protein_nonpoisson.pdf}
 	\caption{\textbf{Maximum entropy protein distributions for simple repression
 	constructs.} Protein distributions for different biophysical parameters. From
 	left to right the repressor-DNA affinity decreases as defined by the three
 	lacI operators O1 ($-15.3 \; k_BT$), O2 ($ -13.9 \; k_BT$), and O3 ($-9.7 \;
 	k_BT$). From top to bottom the mean repressor copy number per cell increases.
-	The twelve curves on each plot represent the twelve IPTG concentrations used
-	in the experiments with higher concentrations represented by lighter colors.}
+	The curves on each plot represent different IPTG concentrations.}
   \label{fig_pmf_protein}
+\end{figure}
+
+\subsection{Comparison with experimental data}
+
+Now that we have reconstructed an approximation of the probability distribution
+$P(m, p)$ we can compare this with our experimental measurements. But just as
+detailed in \siref{supp_theory_vs_data_mom} the single-cell microscopy
+measurements are given in arbitrary units of fluorescence. Therefore we cannot
+compare directly our predicted protein distributions with these values. To get
+around this issue we recall that the fold-change in gene expression that we
+defined as the ratio of the gene expression level in the presence of the
+repressor and the expression level of a knockout strain is a non-dimensional
+quantity. Therefore we normalize all of our single-cell measurements by the mean
+fluorescence value of the $\Delta lacI$ strain with the proper background
+fluorescence subtracted as explained in \siref{supp_theory_vs_data_mom} for the
+noise measurements. In the case of the theoretical predictions of the protein
+distribution we also normalize each protein value by the predicted mean protein
+level $\ee{p}$, having now non-dimensional scales that can be directly compared.
+\fref{sfig_cdf_O1}, \fref{sfig_cdf_O2}, and \fref{sfig_cdf_O3} show comparison
+of the cumulative distribution functions for different repressor binding sites
+(different figures), repressor copy numbers (rows), and inducer concentrations
+(columns).
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/MaxEnt_approx_joint/ECDF_O1_theory_experiment_nonpoisson.pdf}
+	\caption{\textbf{Experiment vs. theory comparison for operator O1.}
+  Example fold-change empirical cumulative distribution functions (ECDF) for
+  strains with the O1 operator ($\eR = -15.3 \; k_BT$) as a function of
+  repressor copy numbers (rows) and inducer concentrations (columns). The color
+  curves represent single-cell microscopy measurements while the dashed black
+  lines represent the theoretical distributions as reconstructed by the maximum
+  entropy principle.}
+  \label{sfig_cdf_O1}
+\end{figure}
+
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/MaxEnt_approx_joint/ECDF_O2_theory_experiment_nonpoisson.pdf}
+  \caption{\textbf{Experiment vs. theory comparison for operator O2.}
+  Example fold-change empirical cumulative distribution functions (ECDF) for
+  strains with the O2 operator ($\eR = -13.9 \; k_BT$) as a function of
+  repressor copy numbers (rows) and inducer concentrations (columns). The color
+  curves represent single-cell microscopy measurements while the dashed black
+  lines represent the theoretical distributions as reconstructed by the maximum
+  entropy principle.}
+  \label{sfig_cdf_O2}
+\end{figure}
+
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/MaxEnt_approx_joint/ECDF_O3_theory_experiment_nonpoisson.pdf}
+	\caption{\textbf{Experiment vs. theory comparison for operator O3.}
+  Example fold-change empirical cumulative distribution functions (ECDF) for
+  strains with the O3 operator ($\eR = -9.7 \; k_BT$) as a function of
+  repressor copy numbers (rows) and inducer concentrations (columns). The color
+  curves represent single-cell microscopy measurements while the dashed black
+  lines represent the theoretical distributions as reconstructed by the maximum
+  entropy principle.}
+  \label{sfig_cdf_O3}
 \end{figure}

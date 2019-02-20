@@ -27,9 +27,8 @@ was performed considering that at each cell state the mRNA level immediately
 reaches the steady state value for the corresponding mRNA production rate. This
 assumption is justified since the timescale to reach this steady
 state depends only on the degradation rate $\gm$, which for the mRNA  is much
-shorter ($\approx 3$ min) than the length of the cell cycle (100 min for our
-experimental conditions).
-\mrm{Cite for the mRNA degradation rate.}
+shorter ($\approx 3$ min ) than the length of the cell cycle (100 min for our
+experimental conditions) \cite{Dong1995}.
 \siref{supp_param_inference} shows that a model
 accounting for this gene copy number variability is able to capture the
 experimental data from single molecule mRNA counts of an unregulated
@@ -41,10 +40,10 @@ corresponding steady state value for each stage in the cell cycle. In other
 words, cells do not spend long enough with two copies of the promoter for the
 protein level to reach the steady state value corresponding to a transcription
 rate of $2 r_m$. We therefore use the dynamical equations developed in
-\secref{sec_moments} to numerically integrate the moments of the distribution
-dynamics with the corresponding parameters for each phase of the cell cycle.
-\fref{fig3_cell_cycle}(B) shows an example corresponding to the mean mRNA level
-(upper panel) and the mean protein level (lower panel) for the case of the
+\secref{sec_moments} to numerically integrate the time trajectory of the moments
+of the distribution with the corresponding parameters for each phase of the cell
+cycle. \fref{fig3_cell_cycle}(B) shows an example corresponding to the mean mRNA
+level (upper panel) and the mean protein level (lower panel) for the case of the
 unregulated promoter. Given that we inferred the RNAP rate parameters
 considering that mRNA reaches steady state at each stage, we see that the
 numerical integration of the equations is consistent with the assumption of
@@ -53,7 +52,9 @@ having the mRNA reach a stable value at each stage (See
 level does not reach a steady state at either of the cellular stages.
 Nevertheless it is interesting to observe that after a couple of cell cycles the
 trajectory from cycle to cycle follows a repetitive pattern (See
-\fref{fig3_cell_cycle}(B) lower panel).
+\fref{fig3_cell_cycle}(B) lower panel). Previously we have experimentally
+observe this repetitive pattern by tracking the expression level over time with
+video microscopy as shown in Fig. 18 of \cite{Phillips2018}.
 
 To test the effects of including this gene copy number variability in our model
 we now compare the predictions of the model with experimental data. Specifically
