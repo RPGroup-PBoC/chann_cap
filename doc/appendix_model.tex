@@ -285,8 +285,6 @@ or equivalently
 To put numerical values into these variables we can use information from the
 literature. The RNAP copy number is order $P \approx 1000-3000$ RNAP/cell for a
 1 hour doubling time \cite{Klumpp2008}.
-\rp{Can Heinemann help us do better?}
-\mrm{I need to talk with Nathan to see if I can get the data from him.}
 As for the number of non-specific
 binding sites and the binding energy we have that $\Nns = 4.6\times 10^6$
 \cite{Bintu2005a}, and $-\beta\eP \approx 5 - 7$
@@ -342,9 +340,6 @@ we have an mRNA degradation rate of $\gm \approx 2.84 \times 10^{-3} s^{-1}$.
 Using this value gives the following values for the inferred rates: $\kpon =
 0.024_{-0.002}^{+0.005} s^{-1}$, $\kpoff = {0.11}_ {-0.05}^{+0.66} s^{-1}$, and
 $r_m = 0.3_{-0.2}^{+2.3} s^{-1}$.
-\mrm{This is where a statement should be done
-with respect to known values in the literature}
-\rp{Absolutely}
 
 \fref{sfig_lacUV5_theory_data} compares the experimental data from
 \fref{sfig_lacUV5_FISH} with the resulting distribution obtained by substituting
@@ -582,6 +577,16 @@ approximations.
   blue line) and transcription rate $2 r_m$ (dark blue line)}
 	\label{sfig_lacUV5_theory_data_double}
 \end{figure}
+
+It is hard to make comparisons with literature reported values because these
+kinetic rates are effective parameters hiding a lot of the complexity of
+transcription initiation \cite{Browning2004}. Also the non-identifiability of
+the parameters restricts our explicit comparison of the actual numerical values
+of the inferred rates. Nevertheless from the model we can see that the mean
+burst  size for each transcription event is given by $r_m / \kpoff$. From our
+inferred values we obtain then a mean burst size of $\approx 1.9$ transcripts
+per cell. This is similar to the reported burst size of 1.15 on a similar system
+on \textit{E. coli} \cite{Yu2006}.
 
 \subsection{Repressor rates from three-state regulated promoter.}
 

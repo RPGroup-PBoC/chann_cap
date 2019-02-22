@@ -1,0 +1,50 @@
+\section{Methods}
+
+\subsection{Growth conditions}
+
+For all experiments cultures were initiated from a 50\% glycerol frozen stock at
+-80$^\circ$C. Three strains - autofluorescence ($auto$), $\Delta lacI$
+($\Delta$), and a strain with a known binding site and repressor copy number
+($R$) - were inoculated into individual tubes with 2 mL of Lysogeny Broth (LB
+Miller Powder, BD Medical) with 20 $\mu$g/mL of chloramphenicol and 30 $\mu$g/mL
+of kanamycin. These cultures were grown overnight at 37$^\circ$C and rapid
+agitation to reach saturation. The saturated cultures were diluted 1:1000 into
+500 $\mu$L of M9 minimal media (M9 5X Salts, Sigma-Aldrich M6030; 2 mM magnesium
+sulfate, Mallinckrodt Chemicals 6066-04; 100 mM calcium chloride, Fisher
+Chemicals C79-500) supplemented with 0.5\% (w/v) glucose on a 2 mL 96-deep-well
+plate. The $R$ strain was diluted into 12 different wells with minimal media,
+each with a different IPTG  concentration (0 $\mu$M, 0.1 $\mu$M, 5 $\mu$M, 10
+$\mu$M, 25 $\mu$M, 50 $\mu$M, 75 $\mu$M, 100 $\mu$M, 250 $\mu$M, 500 $\mu M$,
+1000 $\mu$M, 5000 $\mu$M) while  the $auto$ and $\delta$ strains were diluted
+into two wells (0 $\mu$M, 5000 $\mu$M). Each of the IPTG concentration came from
+a single preparation stock kept in 100-fold concentrated aliquots. The 96 well
+plate was then incubated at 37$^\circ$C with rapid agitation for 8 hours before
+imaging.
+
+\subsection{Microscopy imaging procedure}
+
+The microscopy pipeline used for this work followed exactly the steps from
+\cite{Razo-Mejia2018}. Briefly, twelve 2\% agarose (Life Technologies UltraPure
+Agarose, Cat.No. 16500100) gels were made out of M9 media (or PBS buffer) with
+the corresponding IPTG concentration (See growth conditions) and placed between
+two glass coverslips for them to solidify after microwaving.
+
+After the 8 hour incubation in minimal media 1 $\mu$L of a 1:10 dilution of the
+cultures was placed into small squares (roughly 10 mm $\times$ 10 mm) of the
+different agarose gels. A total of 16 agarose squares - 12 concentrations of
+IPTG for the $R$ strain, 2 concentrations for the $\Delta$ and 2 for the $auto$
+strain - were mounted into a single glass-bottom dish (Ted Pella Wilco Dish,
+Cat. No. 14027-20) that was sealed with parafilm.
+
+All imaging was done on an inverted fluorescent microscope (Nikon Ti-Eclipse)
+with custom-built laser illumination system. The YFP fluorescence (quantitative
+reporter) was imaged with a CrystaLaser 514 nm excitation laser coupled with a
+laser-optimized (Semrock Cat. No. LF514-C-000) emission filter. All strains,
+including the $auto$ strain included a constitutively expressed mCherry protein
+to aid for the segmentation. Therefore for each image 3 channels YFP, mCherry,
+and phase contrast were acquired.
+
+On average 30 images with roughly 20 cells per condition were taken. 25 images
+of a fluorescent slide and 25 images of the camera background noise were taken
+every time in order to flatten the illumination. The image  processing pipeline
+for this work is exactly the same as \cite{Razo-Mejia2018}.
