@@ -1,0 +1,13 @@
+# Date : 2016-08-25
+# Equipment : MACSQuant (Bjorkman lab)
+# User : mrazomej
+# Description :
+# IPTG titration with all the O1+11 YFP strains RBS (delta, HG104, RBS1147, RBS446, RBS1027, RBS1 and RBS1L)
+# The strains were grown in deep 96-well plates in 1 mL of LB + Kan + Spec and then
+# diluted next morning 1:1000 into 0.5 mL of M9 + 0.5% glucose also in deep 96-well plates with the following
+# IPTG concentrations:
+# 0uM, 0.1uM, 5uM, 10uM, 25uM, 50uM, 75uM, 100uM, 250uM, 500uM, 1000uM, 5000uM
+# Comments :
+# The plate was prepared by Stephanie early in the morning and I (Manuel) performed the measurements in the
+# flow cytometer. The flow rates were in the order of 5000 events / sec. The run seemed to proceed with no
+# major delays.
