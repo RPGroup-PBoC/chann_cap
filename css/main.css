@@ -1,0 +1,379 @@
+/*****************************************************************************/
+/*
+/* Common
+/*
+/*****************************************************************************/
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  color: #4a4a4a;
+  background-color: #fafbfc;
+  font-family: 'Helvetica', Arial, sans-serif;
+  font-weight: 400;
+  font-size: 0.85em;
+  overflow: hidden;
+}
+
+a {
+  color: #e74c3c;
+  text-decoration: none;
+  border: none;
+}
+
+a img {
+  outline: none;
+}
+
+a:hover {
+  color: #555;
+  border: none;
+}
+
+.separator {
+  color: #555;
+}
+
+/*****************************************************************************/
+/*
+/* Home
+/*
+/****************************************************************************/
+#logo {
+  max-width: 220px;
+}
+
+.posts a {
+  color: #444;
+}
+
+.posts a:hover {
+  color: #777;
+}
+
+.posts-list {
+  list-style-type: none;
+}
+
+.posts-list li {
+  text-align: center;
+  line-height: 1.75em;
+  max-width: 900px;
+  padding: 10px;
+}
+
+/*****************************************************************************/
+/*
+/* Site
+/*
+/*****************************************************************************/
+
+.site {
+  height: 100%;
+  width: 100%;
+  line-height: 1.25em;
+}
+
+.title {
+  display: inline-block;
+  text-align: center;
+  line-height: 25px;
+}
+
+.tagline {
+  width: 100%;
+  color: #787878;
+  font-weight: 600;
+  text-align: center;
+  margin-top: 0.5em;
+  display: block;
+}
+
+.posts {
+  border-top: 1px solid #e7e7e7;
+  margin-top: 1em;
+  padding-top: 1.5em;
+  padding-bottom: 1.25em;
+}
+
+.footer {
+  font-size: 0.95em;
+  border-top: 1px solid #e7e7e7;
+  padding-top: 1.25em;
+  padding-bottom: 1.5em;
+  overflow: hidden;
+  float: center;
+  text-align: center;
+}
+
+/*****************************************************************************/
+/*
+/* Posts
+/*
+/*****************************************************************************/
+
+#date {
+  font-size: 16px;
+  padding-top: 0.25em;
+  margin-bottom: 2em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: #787878;
+}
+
+#cover-photo-container,
+#info-container {
+  display: block;}
+  /*width: 100%;}*/
+
+#info-container {
+  margin-top: 3em;
+}
+
+#title {
+  color: #4a4a4a;
+  margin-bottom: 0.35em;
+  font-size: 3em;
+  line-height: 40px;
+  text-transform: uppercase;
+  position: absolute;
+}
+
+.post {
+  line-height: 24px;
+  max-width: 900px;
+  clear: both;
+}
+
+.post h1 {
+  margin-top: 1.25em;
+  margin-left: -0.5em;
+  margin-bottom: 1.25em;
+}
+
+
+.post h2 {
+  margin-top: 1.25em;
+  margin-left: -0.5em;
+  margin-bottom: 1.25em;
+  border-bottom: 1px solid #3E4651;
+	border-bottom-left-radius: 4px;
+	border-left: 8px solid #3E4651;
+  padding-left: 0.5em;
+
+}
+
+.post blockquote {
+  padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #f1f5f9;
+  opacity: 0.75;
+}
+
+.post a,
+
+#about a {
+  color: #e74c3c;
+}
+
+.post a:hover {
+  border: none;
+  color: #444 ;
+}
+
+/* standard */
+.post pre {
+  border: 1px solid #ddd;
+  background-color: #eef;
+  padding: 0 .4em;
+}
+
+.post p {
+  font-family: 'Source Sans Pro', Arial, sans-serif;
+  font-size: 17px;
+  margin-bottom: 1.45em;
+  text-align: justify;
+}
+
+.post ul, .post ol {
+  margin-left: 2.35em;
+  margin-bottom: 1.25em;
+}
+
+.post code {
+  /*border: 1px solid #ddd;*/
+  /*background-color: #eef;*/
+  padding: 0 .2em;
+  font-size: 14px;
+}
+
+.post pre code {
+  border: none;
+}
+
+/* terminal */
+.post pre.terminal {
+  border: 1px solid #000;
+  background-color: #333;
+  color: #FFF;
+}
+
+.post pre.terminal code {
+  background-color: #333;
+}
+
+/*****************************************************************************/
+/*
+/* Sidebar and Content
+/*
+/*****************************************************************************/
+
+.sidebar,
+.content {
+  vertical-align: top;
+  height: 100%;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.sidebar {
+  float: left;
+  width: 19%;
+  padding-left: 0em;
+  padding-right: 2.125em;
+  border-right: 1px solid #e7e7e7;
+}
+
+.content {
+  padding-left: 2.125em;
+}
+
+.header {
+  text-align: center;
+  padding-top: 2.5em;
+  font-size: 1.1em;
+}
+
+.post-link {
+  margin-bottom: 0.75em;
+}
+
+.post-title {
+  font-weight: 600;
+  font-size: 1.25em;
+  text-transform: uppercase;
+}
+
+.post-date {
+  color: #FFFFFF;
+  font-family: Monaco, "Courier New", monospace;
+  font-weight: 600;
+  font-size: 0.65em;
+  display: None;
+  text-transform: uppercase;
+}
+
+#sidebar-button {
+  height: intrinsic;
+  cursor: pointer;
+  display: none;
+  padding: 15px 5px 0px 0px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+#sidebar-button:active,
+#sidebar-button:hover {
+  opacity: 0.7;
+}
+
+#im {
+  max-width: 220px ;
+	/*padding: 0;*/
+	/*text-align: center;*/
+	margin: 1em;
+	display: inline-flex;
+  flex-wrap: wrap;
+  text-align: center;
+  justify-content: space-around;
+}
+
+#im img {
+  border: 1px solid #000000;
+  max-width: 175px;
+}
+
+* Table styling */
+table {
+	width: 80%;
+	font-size: 10pt;
+	margin: 10px;
+	border-collapse: collapse;
+
+}
+
+th {
+	text-align: center;
+	background-color: #f2f2f2;
+	border-bottom: 2px solid #4b4b4b;
+	padding: 5px;
+}
+
+
+tr {
+	border-bottom: 1px solid #000000;
+	-transition:.6s;
+	-ms-transition:.6s;
+	-moz-transition:.6s;
+	-webkit-transition:.6s;
+	transition:.6s;
+
+}
+
+tr:hover {
+	background-color: #f2f2f2;
+	border-bottom: 1px solid #2b2b2b;
+	-transition:.6s;
+	-ms-transition:.6s;
+	-moz-transition:.6s;
+	-webkit-transition:.6s;
+	transition:.6s;
+
+}
+
+
+td {
+	padding: 5px 10px;
+	max-width: 1000px;
+  /*border-bottom: 1px solid #3c3c3c;*/
+  border-bottom: 1px solid #3c3c3c;
+
+}
+
+/*
+/* Colophon
+/*
+/*****************************************************************************/
+
+.colophon {
+  margin-top: 1.5em;
+  margin-bottom: 1.45em;
+  border-top: 1px dotted #e7e7e7;
+}
+
+.colophon p {
+  margin-top: 1.25em;
+  font-size: 0.95em;
+  color: #777;
+}
