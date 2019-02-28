@@ -135,6 +135,11 @@ a:hover {
   display: block;
   width: 100%;}
 
+#cover-photo {
+  max-width: 100%;
+  max-height: 100%;
+}
+
 #info-container {
   margin-top: 3em;
 }
