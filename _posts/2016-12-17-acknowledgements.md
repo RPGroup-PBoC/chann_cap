@@ -12,7 +12,7 @@ The authors would like to acknowledge [Griffin Chure](https://gchure.github.io),
 Muir Morrison, and Nathan Belliveau for fruitful discussions. We would like to
 also thank [William Bialek](http://www.princeton.edu/~wbialek/wbialek.html),
 Emmanuel Flores, [Hernan Garcia](https://mcb.berkeley.edu/labs/garcia/),
-Alejandro Granados, Jane Kondev, [Sarah
+Alejandro Granados, [Jane Kondev](http://people.brandeis.edu/~kondev/), [Sarah
 Marzen](https://www.kecksci.claremont.edu/faculty/profile.asp?FacultyID=346),
 [Alvaro Sanchez](http://www.sanchezlaboratory.com), [Gašper
 Tkačik](https://ist.ac.at/research/research-groups/tkacik-group/), Catherine
