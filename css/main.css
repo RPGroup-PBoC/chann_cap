@@ -135,6 +135,7 @@ a:hover {
   display: block;
   width: 100%;}
 
+  /* Properties of the cover image */
 #cover-photo {
   max-width: 100%;
   height: auto;
