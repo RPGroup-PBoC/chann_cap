@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Acknowledgements
-cover: analysis.png
+cover: acknowledgements.png
 categories: posts
 permalink: acknowledgements
 ---
