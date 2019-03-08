@@ -43,9 +43,11 @@ Since the model is able to accurately predict the noise in protein count we
 extended our analysis to infer entire protein distributions at different input
 signal concentrations by using the maximum entropy principle. What this means is
 that we compute moments of the protein distribution, and then use these
-moments to build an approximation to the full distribution. Finally we use these
-protein distributions to compute the maximum amount of information that the
-genetic circuit is able to process.
+moments to build an approximation to the full distribution. These predicted
+distributions are then compared with experimental single-cell distributions as
+shown in \siref{supp_maxent}. The agreement between our predictions and the
+experimental data at the full protein distribution means that we can use our
+model to predict the information processing capacity of the genetic circuit.
 
 By maximizing the mutual information between input signal concentration and
 output protein distribution over all possible input distributions we predict
@@ -53,9 +55,12 @@ the channel capacity for a suite of biophysical parameters such as varying
 repressor protein copy number and repressor-DNA binding affinity. We compare
 these theoretical channel capacity predictions with experimental determinations,
 finding that our minimal model is able to predict with no free parameters this
-quantity. The relevance of the channel capacity comes from its interpretation as
-a metric of how precise the inference that cells can make about what the state
-of the environment will be, given their response.
+quantity. In principle since our predicted input-output distributions were in
+close agreement with experimental data we could have chosen any arbitrary input
+distribution $P(c)$ and compute the mutual information between input and
+outputs. The relevance of the channel capacity comes from its interpretation as
+a metric of the limits of how precise the inference that cells can make about
+what the state of the environment is given this simple genetic circuit.
 
 It is important to highlight the limitations of the work presented here. As
 first reported in \cite{Razo-Mejia2018}, our model fails to capture the

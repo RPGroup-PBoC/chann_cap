@@ -15,6 +15,36 @@ binding gives higher channel capacity than strong binding (Fig 5)-- in fact,
 that counterintuitive behavior with weakness of the binding site could use some
 explanation.
 \end{tcolorbox}
+We thank Sarah for this insightful comment. Indeed it is not the first time that
+this point has been highlighted by people reviewing the manuscript. In
+particular both Ned Wingreen first and Jane Kondev afterwards have given similar
+verbal feedback when present with the paper.
+
+In this case there is no claim about cells being able to shape in any way the
+distribution of environments $P(c)$. The reason we computed the channel
+capacity was to understand what would the \textit{best case scenario} of this
+simple genetic circuit performance look like. It is a view of the maximum
+resolution with which cells could determine the environmental state given the
+biophysical parameters encoded in their genetic circuit. It is true that in
+principle we didn't need to compute the mutual information at channel capacity;
+we could have instead chosen some arbitrary input function such as log-uniform.
+But we argue that by showing the channel capacity we can learn about the upper
+bound limits of what the physics of the system allow cells to do. Any other
+arbitrary distribution could either be meaningful or not, but the fact that the
+distribution at channel capacity has a clear mathematical interpretation
+makes it an appealing example metric.
+
+In the discussion we have added the following lines:
+
+``... We compare these theoretical channel capacity predictions with
+experimental determinations, finding that our minimal model is able to predict
+with no free parameters this quantity. In principle since our predicted
+input-output distributions were in close agreement with experimental data we
+could have chosen any arbitrary input distribution $P(c)$ and compute the mutual
+information between input and outputs. The relevance of the channel capacity
+comes from its interpretation as a metric of the physical limits of how precise
+the inference that cells can make about what the state of the environment is
+given this simple genetic circuit.''
 
 \begin{tcolorbox}
 2)  To get a seemingly static distribution $P(p|c)$, you numerically integrate
@@ -24,6 +54,32 @@ problem by averaging and getting a channel capacity from that average, then
 well... it seems a little fishy to me, and I feel like you should be dealing
 with the mutual information between input and output trajectories.
 \end{tcolorbox}
+We thank Sarah again for the comment. The idea of dealing with temporal
+trajectories of inputs and outputs, while appealing, is out of the scope for
+this paper. In here we are assuming that if cells were to experience changes
+in environmental state, these changes would take place at a time scale much
+larger than the time to reach a new steady-state in gene expression.
+Interestingly the steady-state that we refer to here is of a different nature of
+what one would obtain by setting the time derivative to zero - thereby we named
+it ``dynamical steady-state'' out of better options for a name. The issue is
+that cells over a single cell cycle are changing since they grow, duplicate
+their genomes and divide. But when look over multiple cell cycles, the
+trajectory they follow is repeated systematically over and over again. We have
+seen this experimentally; in our recent review when we tracked cells over time
+we observed that on average cells at the beginning of their cell cycle have the
+same level of expression \cite{Phillips2019}. So when we say that to compute the
+distribution we average over time we mean that in order to compare the
+experimental distributions - which were taken on unsynchronized cells with no
+way of identifying cells with one vs two copies of the reporter gene - we took
+the value of the input-output function at each time point, and averaged it
+weighing each time point by the corresponding probability of finding a cell at
+such point during their cell cycle.
+
+In the text we added the following line:
+``... We remind the reader that these time averages are done under a fixed
+environmental state. It is the trajectory of cells over cell cycles what we need
+to account for since all of our measurements were done on cells growing
+exponentially under a constant inducer concentration.''
 
 \begin{tcolorbox}
 3)  I still think that when you say your theoretically predicted channel
@@ -35,3 +91,22 @@ you've really measured $P(p|c)$ and calculated channel capacity from that (as in
 you didn't directly measure channel capacity, but had to infer it from what you
 did measure).
 \end{tcolorbox}
+
+We thank Sarah for this comment. This is definitely related to the first point
+brought up. While again it is true that the core of the paper is dedicated to
+building a model to predict the input-output function $P(p \mid c)$, we still
+argue that the use of the channel capacity puts these series of gene expression
+distributions into a context of what kind of performances cells could have by
+harboring this simple genetic circuit. In some sense reconstructing a bunch of
+probabilistic input-output functions as a function of some environmental signals
+without providing some metric of what these distributions mean and how
+``useful'' could they be for cells falls short to what we envision with our
+work. In our eyes information theory, and specifically the channel capacity
+gives an insightful perspective on what levels of precision can cells reach with
+their regulatory systems operating at the molecular scale.
+
+We agree that we did not measure the channel capacity. We would appreciated if
+you could point us to where we use this wording. We looked throughout the paper
+and only found examples where we specify that the channel capacity was
+\textit{inferred} from experimental data, which we think is an accurate
+description of what was done.
