@@ -1,0 +1,37 @@
+\section{Sarah Marzen}
+
+So while I like the idea of the paper, I do have some comments that might occur
+to the referees:
+
+\begin{tcolorbox}
+1)  Why is channel capacity the right thing to calculate?  Are these cells such
+good engineers of their environment that they can tune P(c)?  Or are you just
+saying that this is the maximum resolution these circuits could possibly have?
+Either way, might want to justify channel capacity as the thing to calculate
+earlier in the paper.  And if you're going to imply a fitness benefit to
+additional bits, I think it's worth noting that maximum channel capacity
+transducers are deterministic, though that seems to go against how the weak
+binding gives higher channel capacity than strong binding (Fig 5)-- in fact,
+that counterintuitive behavior with weakness of the binding site could use some
+explanation.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+2)  To get a seemingly static distribution $P(p|c)$, you numerically integrate
+$P_t(p|c)$ over time $t$.  If you're in steady state, then this procedure is
+fine, and time $t$ shouldn't matter.  If you're dealing with a nonstationary
+problem by averaging and getting a channel capacity from that average, then
+well... it seems a little fishy to me, and I feel like you should be dealing
+with the mutual information between input and output trajectories.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+3)  I still think that when you say your theoretically predicted channel
+capacity is the same as the experimentally measured channel capacity, you're
+really saying that the theoretically predicted $P(p|c)$ is equivalent to the
+measured $P(p|c)$.  Is that true?  And I have a bone to pick about the word
+"measured"-- I wouldn't say that you've measured the channel capacity since
+you've really measured $P(p|c)$ and calculated channel capacity from that (as in
+you didn't directly measure channel capacity, but had to infer it from what you
+did measure).
+\end{tcolorbox}

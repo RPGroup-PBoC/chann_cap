@@ -1,0 +1,86 @@
+\section{Gasper Tkacik}
+
+This is a beautiful connection between theory and the experiment!
+
+I’m not commenting much on the bulk of the paper that constructs a biophysical
+model except in so far it links to questions below.  I have some questions that
+I feel could make the paper even stronger:
+
+\begin{tcolorbox}
+1) What are the optimal distributions recovered by BA algorithm? Don’t worry if
+they are spiky: it is interesting to ask what is the total weight at low vs high
+vs middle expression or so. Is there real evidence for a meaningful
+“intermediate” state of induction, since you go over 1 bit? Maybe some playing
+around needs to be done to figure out what are the key properties and not
+numerical artefacts of these optimal solutions, or parametrize them in some
+low-D space and optimize there. Our previous experiences have been that these
+distributions are not very finely tuned, and only a few key statistics are
+really important.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+2) How does the capacity you report depend on various assumptions: (i) cell
+cycle; (ii) non-gaussian noise distributions (order-by-order); (iii) multi-state
+promoter; (iv) optimal vs log-flat distributions (= is Blahut-Arimoto really
+important)? It would be great to have some sort of quantitative summary, all in
+terms of the information, of how these (and other?) factors impact transmission,
+like a table or a pie chart or something. This would also give us a metric on
+how much various assumptions / mechanisms functionally matter, which many people
+ask themselves about. You guys are in a perfect situation since you have a real
+biophysical model that is properly calibrated. So something like: it is really
+important to get the three state model, but not so important to take into
+account the multiple copies of the DNA while replicating.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+3) The fact that high repressor copy number turns down the transmission is
+interesting -> we had to put in a “cost” to regulation explicitly to get an
+optimum in transmission, otherwise in our theory with Bill and Alex, more TF is
+always good. Maybe it is an interesting comment to see more precisely why this
+happens. Do you titrate out the inducer with excess TFs? Or is it that there is
+some residual binding of the TF even in the inactive form, and it thus represses
+still, which gets important at high repressor copy number? In general, it is an
+interesting point since we have been speculating about how excess TFs can mess
+up regulation (https://www.nature.com/articles/ncomms12307), and have been doing
+some followup work on this.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+4) What I find extremely cool is that you have “experimentally instantiated” the
+kind of optimization w.r.t. molecular parameters that we studied with Bill and
+Aleks and Sokolowski in the PRE series of papers (Part I, II, III, IV). For
+instance, Figure 4 clearly suggests that there is an optimal combination of
+repressors/cell and the binding energy (at a given copy number, this would give
+you an optimum for the binding energy). This is an ab-initio prediction for the
+energy, which could be contrasted in the WT system to the actual value. I’m not
+sure that in this paper there is scope to do this, but maybe it is nice to
+connect it to optimization approaches and show why also “mutual information”
+might be a relevant quantity: it could have high predictive power if it
+correctly predicts the molecular properties of regulation. Sometimes, even the
+existence of the optimum of information w.r.t. some molecular parameter is
+surprising (at least to us it was in the first years) since it arises from the
+non-trivial interaction between the shape of mean induction, dynamic range, and
+the noise response.
+\end{tcolorbox}
+
+\begin{tcolorbox}
+5) Crazy question: if you set up an experiment where the bugs have an interest
+to express tightly in response to the environment, could you see evolutionary
+dynamics towards information maximum? Or examine how they evolve towards higher
+information? Long time ago we wanted to take this approach with Sergey
+Kryazhimskiy (at UCSD). I think it is still a thrilling prospect for an
+evolutionary experiment… this is something you seem to suggest in the last
+sentence, and I would be very curious on how you’d plan to do it (we had some
+more concrete ideas, in that case with yeast and temperature, but this would be
+great to maybe think about together).
+\end{tcolorbox}
+
+\begin{tcolorbox}
+In general, I think points (2) and (4) can be highlighted in the Discussion as a
+motivation for mutual information as an actually interesting / relevant metric.
+First, it can “measure” how important each actual physical effect, or our
+approximation in the computations, is to the function of a regulatory circuit
+(2). Second, it can predict optimal molecular / systems parameters that can be
+compared to real measurements (4). I know these are obvious in hindsight, but
+for a broader field, one could highlight again.
+\end{tcolorbox}
