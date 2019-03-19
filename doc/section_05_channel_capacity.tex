@@ -35,21 +35,28 @@ optimizing over an infinite space of possible distributions $P(c)$. For special
 cases in which the noise is small compared to the dynamic range, approximate
 analytical equations have been derived \cite{Tkacik2008a}. But given the high
 cell-to-cell variability that our model predicts, the conditions of the
-so-called small noise approximation are not satisfied. We therefore appeal to
-a numerical solution known as the Blahut-Arimoto algorithm \cite{Blahut1972}.
-This algorithm, starting on any (discrete) distribution $P(c)$, converges to the
-distribution at channel capacity. \fref{fig5_channcap}(A) shows zero-parameter fit
-predictions of the channel capacity as a function of the number of repressors
-for different repressor-DNA affinities (solid lines). These predictions are
-contrasted with experimental determinations of the channel capacity as inferred
-from single-cell fluorescence intensity distributions taken over 12 different
-concentrations of inducer (See \siref{supp_channcap} for further details).
-\fref{fig5_channcap}(B) shows example input-output functions for different
-values of the channel capacity. This illustrates that having access to no
-information (zero channel capacity) is a consequence of having overlapping
-input-output functions (lower panel). On the other hand, the more separated the
-input-output distributions are (upper panel) the higher the channel capacity can
-be.
+so-called small noise approximation are not satisfied. We therefore appeal to a
+numerical solution known as the Blahut-Arimoto algorithm \cite{Blahut1972}. This
+algorithm, starting on any (discrete) distribution $P(c)$, converges to the
+distribution at channel capacity. \fref{fig5_channcap}(A) shows zero-parameter
+fit predictions of the channel capacity as a function of the number of
+repressors for different repressor-DNA affinities (solid lines). These
+predictions are contrasted with experimental determinations of the channel
+capacity as inferred from single-cell fluorescence intensity distributions taken
+over 12 different concentrations of inducer. Briefly, from single-cell
+fluorescent measurements we can approximate the input-output distribution $P(p
+\mid c)$. Once these conditional distributions are fixed, the task of finding
+the input distribution at channel capacity become a computational minimization
+routine apt for gradient descent or similar algorithms. For the particular case
+of the channel capacity on a system with a discrete number of inputs and
+outputs the Blahut-Arimoto algorithm is built in such a way that it guarantees
+the convergence towards the optimal input distribution (See
+\siref{supp_channcap} for further details). \fref{fig5_channcap}(B) shows
+example input-output functions for different values of the channel capacity.
+This illustrates that having access to no information (zero channel capacity) is
+a consequence of having overlapping input-output functions (lower panel). On the
+other hand, the more separated the input-output distributions are (upper panel)
+the higher the channel capacity can be.
 
 \fref{fig5_channcap}(A) has interesting features that are worth highlighting. On
 one extreme for cells with no transcription factors there is no information

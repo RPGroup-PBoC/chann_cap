@@ -1,0 +1,245 @@
+\section{Jane Kondev}
+
+I very much enjoyed reading this. Here are some comments. I hope they're useful.
+
+Sorry it took so long to get back to you.
+
+\begin{tcolorbox}
+I don't understand this:
+
+``The implication of this biological noise is that cells do not have an infinite
+resolution to distinguish signals and, as a consequence, there is a one-to-many
+mapping between iputs and outputs.''
+
+There is also a possibility that different inputs give the same output (because
+not all environmental conditions are relevant to the cell?).
+\end{tcolorbox}
+
+We appreciate this comment. It is true that a output value could be the result
+of different inputs. To make things more clear we changed the following in the
+text:
+
+``The implication of this biological noise is that cells do not have an infinite
+resolution to distinguish signals and, as a consequence, there is a one-to-many
+mapping between inputs and outputs. \textbf{Furthermore, given the limited
+number of possible outputs, there are overlapping responses between different
+inputs}.''
+
+\begin{tcolorbox}
+Is the use of mutual information in the context of cell sensing an important
+assumption of the paper?
+\end{tcolorbox}
+
+We again greatly appreciate this input. It is true that other people that have
+kindly given us their input on the paper have commented about the relevance of
+the information-theoretic angle that we present. The majority of efforts in this
+paper are put into building the input-output function $P(p \mid c)$, so one
+could argue that this should be the central focus of the work. But we argue that
+the information-theoretic perspective puts these results in a context. If one
+can agree that a gene regulatory system that responds to an external signal is a
+molecular implementation of a sensor and an actuator, then knowing the channel
+capacity of such sensor gives a better sense of its performance limits. Moreover
+an open question in the field is how the logic that allows cells to sense their
+environment with high precision is built out of noisy molecular components. Our
+study makes progress towards understanding the interplay between biophysical
+parameters such as protein copy number and protein-DNA binding affinity can have
+on the information processing capacity of these gene regulatory systems.
+
+\begin{tcolorbox}
+  From the text:
+
+``These predictions are then contrasted with experimental data, where the
+channel capacity is inferred from single-cell distributions...''
+
+I'm missing something. Channel capacity is obtained by maximizing mutual
+information over all $P(c)$. How do you experimentally scan through all $P(c)$?
+\end{tcolorbox}
+
+We appreciate this point. The channel capacity, as mentioned, is obtained by
+maximizing the mutual information between inputs and outputs $I(c; p)$ over all
+possible input distributions $P(c)$. This optimization is done for a fixed
+input-output function $P(p \mid c)$. This means that from the experimental
+measurements of single-cell gene expression we can approximate the input-output
+distributions $P(p \mid c)$ and then numerically find the input distribution
+$P(c)$ that maximizes the mutual information. For a discrete distribution $P(c)$
+this is equivalent to a minimization routine such as gradient descent. But for
+the specific problem of finding channel capacities there is a highly efficient
+algorithm known as the Blahut-Arimoto algorithm that is guaranteed to converge
+to this optimal input distribution $P(c)$ for a fixed input-output distribution
+$P(p \mid c)$.
+
+We have added the following text on the results section that discuss this
+particular inference:
+
+``Briefly, from single-cell fluorescent measurements we can approximate the
+input-output distribution $P(p \mid c)$. Once these conditional distributions
+are fixed, the task of finding the input distribution at channel capacity become
+a computational minimization routine apt for gradient descent or similar
+algorithms. For the particular case of the channel capacity on a system with a
+discrete number of inputs and outputs the Blahut-Arimoto algorithm is built in
+such a way that it guarantees the convergence towards the optimal input
+distribution.''
+
+\begin{tcolorbox}
+In Fig. 1 caption:
+``As the phenotype (protein level) serves as the internal representation of the
+environmental state (inducer concentration), the probability of a cell being in
+a specific environment is a function of the probability of the response given
+that environmental state''
+
+Sounds like you are referring to $P(c)$ but in fact your mean $P(c \mid p)$.
+\end{tcolorbox}
+
+We appreciate this excellent feedback. We have added the following line to
+make things more precise.
+
+``As the phenotype (protein level) serves as the internal representation of the
+environmental state (inducer concentration), the probability of a cell being in
+a specific environment \textbf{given this internal representation} is a function
+of the probability of the response given that environmental state.''
+
+\begin{tcolorbox}
+I've been curious to what extend the approximation of protein degradation being
+a Poission process is a good one. When in fact "degradation" is really binomial
+partitioning. I think Paulsson has a paper on noise due to partitioning...
+\end{tcolorbox}
+
+We thank again Jane for such a wonderful feedback. It is true that for the
+particular bacterial systems we like to study under steady exponential growth
+the protein degradation term is believed to be caused by binomial partitioning
+during growth. In fact for our inferences we set $\gp$ the protein degradation
+rate to be zero and we explicitly account for binomial partitioning. The reason
+we wrote the full equation with the Poisson process describing protein
+degradation is because if one wants to compare the results of assuming a single
+promoter copy in the genome at steady state where no explicit account for
+binomial partitioning is implemented, i.e. just setting these time derivatives
+to zero, the protein degradation term is a necessary condition to reach such
+steady state.
+
+We added the following text after discussing the master equation:
+
+``As we will discuss later in Section 1.4 the protein degradation term $\gp$ is
+set to zero since we do not consider protein degradation as a Poission process,
+but rather we explicitly implement binomial partitioning as the cells grow and
+divide.''
+
+\begin{tcolorbox}
+With respect to the matrix equation:
+
+Is it necessary/useful to rewrite the equations in this way?
+\end{tcolorbox}
+
+We believe that this notation becomes very handy and useful when we set
+ourselves the task of computing any moment of the distribution $\ee{m^x p^y}$.
+Writing the general moment dynamics equation using this notation gives a clear
+interpretation of how each process (mRNA and protein production and degradation)
+enter to the moment dynamics. Furthermore we would argue that this notation
+would be preferable for the main text, leaving the individual definitions of
+each of the promoter states dynamics to the SI.
+
+\begin{tcolorbox}
+In the text:
+
+``We do not consider cells uniformly distributed along the cell cycle since it
+is known that cells follow an exponential distribution, having more youner than
+older cells at any time point''
+
+I don't understand this. I gues you're talking about a distribution of diviision
+times $t_d$?
+\end{tcolorbox}
+
+We appreciate the request for a clarification. This point does not refer to a
+distribution of division times $t_d$ as a random variable. As a matter of fact
+the exponential distribution discussed here is derived assuming all cells divide
+exactly after $t_d - t_o$ time, i.e. the distribution of division times is a
+delta function. The surprising fact of this calculation (which is included as
+an Appendix at the end of the paper) is that given the nature of steady
+exponential  growth there are always more younger than older cells. It is a
+surprising result, but can be intuitively thought as follows. If the culture is
+growing exponentially, that means that all the time there is an increasing
+number of cells. That means for example that if in a time interval $\Delta t$
+$N$ ``old'' cells divided, these produced $2N$ ``young'' cells. So at any point
+there is always more younger than older cells.
+
+\begin{tcolorbox}
+Would it make sense to compare these distributions to exact obtained from a
+stochastic simulation? Just to see how good is the MaxEnt.
+\end{tcolorbox}
+
+We thank Jane for the comment. It is a interesting and appealing point to
+compare the results obtained from the Maximum entropy approach with
+distributions obtained from a Gillespie simulation. The computational challenge
+that these simulations present is the large possible number of states in the
+simulation. What we mean by this is that our mRNA count goes from roughtly 0 to
+about 50 mRNA, while the protein has a range of values from 0 to basically
+$4 \times 10^4$. That makes this simulation have $\approx 10^6$ possible states.
+What this means is that we would have to run many many simulations for a
+considerably large time in order to get good samples out of this distribution.
+
+That is not to belittle this suggestion or claim that it is not important. Maybe
+a better suggestion would be to implement such a stochastic simulation once the
+paper has been submitted to keep the ball rolling at this point.
+
+
+\begin{tcolorbox}
+  About Fig 5. Is the agreement necessarily true if the experimental and
+  theoretical protein distributions agree?
+\end{tcolorbox}
+
+We thank Jane for this great comment. Just as we discussed before we see the
+channel capacity as an intuitive metric of what are the performance limits of
+these molecular sensing systems. Having said that it is true that as long as the
+theoretical input-output distributions $P(p \mid c)$ agree with the experimental
+ones these curves of mutual information should show such agreement. This is
+because all what the Blahut-Arimoto algorithm is doing is finding an optimal
+input distribution $P(c)$ given a \textbf{fixed} input-output function
+$P(p \mid c)$.
+
+\begin{tcolorbox}
+From the discussion:
+
+``Beautiful work along these lines has been done in the context of the
+developmental program of the early \textit{Drosophila} embryo [3, 15]. These
+studies demonstrated that the input-output function of the pair-rule genes works
+at channel capacity, suggesting that selection has acted on these signaling
+pathways, pushing them to operate at the limit of what the physics of these
+systems allows.''
+
+I am not sure if/how your Fig. 5 differs from this? Does it demonstrate optimal
+information processing by \textit{E. coli} or not?
+\end{tcolorbox}
+
+We appreciate this question. The work by the group of Bialek and Gregor on the
+early \textit{Drosophila} embryo has shown that the input-output function in
+their system works at channel capacity. The way they reach this suggestive
+conclusion is via a similar process to our inference:
+\begin{enumerate}
+  \item First they measure single-cell input and output levels along the embryo
+  to reconstruct an approximate $P(\text{output} \mid \text{input})$.
+  \item Then given this fixed input-output function, they implement either their
+  analytical small noise approximation or the same numerical procedure as us
+  based on the Blahut-Arimoto algorithm to find the optimal $P(\text{input})$
+  that maximizes the mutual information $I(\text{input}; \text{output})$.
+  \item Finally, since they do not get to choose what the input distribution
+  $P(\text{input})$ is, but it is whatever the embryo experiences given the
+  morphogen gradients in the cell, they can compared the result of the numerical
+  computation of the optimal $P(\text{input})$ with the actual distribution that
+  cells along the embryo experience. What they found is that the distribution
+  obtained with the Blahut-Arimoto algorithm looks extremely similar to what
+  actual cells within an embryo observe.
+\end{enumerate}
+Based on this comparison between the optimal input-output distribution and the
+actual distribution that cells ``observe'' is that they conclude that the
+construction of the input-output function allows the cells to gather as much
+information about the input as possible.
+
+In our case since we work with a synthetic system that perceives an
+extracellular concentration we have no way of knowing what the ``real'' input
+distribution $P(c)$ would be on a natural setup. This is a key difference
+between our system and the fly embryo. In their case the fly controls both the
+input distribution $P(c)$ and the input output function $P(p \mid c)$, while in
+our case we get to chose whichever input distribution we want since cells don't
+decide the concentration of sugar in their environment. So our results for the
+channel capacity show an upper bound in performance, i.e. what would the best
+case scenario look like if the system was working optimally. No further
+statements can be made about optimality in our system.

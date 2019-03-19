@@ -13,21 +13,22 @@ identical response \cite{Eldar2010}.
 
 The implication of this biological noise is that cells do not have an infinite
 resolution to distinguish signals and, as a consequence, there is a one-to-many
-mapping between inputs and outputs. In that sense, one might think of cells
-performing a Bayesian inference of the state of the environment given their
-phenotypic response, as schematized in \fref{fig1_intro}(B). The question then
-becomes how to analyze this probabilistic rather than deterministic relationship
-between inputs and outputs? The abstract answer to this question was worked out
-in 1948 by Claude Shannon who, in his seminal work, founded the field of
-information theory \cite{Shannon1948}. Shannon developed a general framework for
-how to analyze information transmission through noisy communication channels. In
-his work, Shannon showed that the only quantity that satisfies simple conditions
-of how a metric for information should behave, was of the same functional form
-as the thermodynamic entropy -- thereby christening his metric the information
-entropy \cite{MacKay2003}. He also gave a definition, based on this information
-entropy, for the relationship between inputs and outputs known as the mutual
-information. The mutual information $I(p; c)$ between input $c$ and output $p$,
-given by
+mapping between inputs and outputs. Furthermore, given the limited number of
+possible outputs, there are overlapping responses between different inputs. In
+that sense, one might think of cells performing a Bayesian inference of the
+state of the environment given their phenotypic response, as schematized in
+\fref{fig1_intro}(B). The question then becomes how to analyze this
+probabilistic rather than deterministic relationship between inputs and outputs?
+The abstract answer to this question was worked out in 1948 by Claude Shannon
+who, in his seminal work, founded the field of information theory
+\cite{Shannon1948}. Shannon developed a general framework for how to analyze
+information transmission through noisy communication channels. In his work,
+Shannon showed that the only quantity that satisfies simple conditions of how a
+metric for information should behave, was of the same functional form as the
+thermodynamic entropy -- thereby christening his metric the information entropy
+\cite{MacKay2003}. He also gave a definition, based on this information entropy,
+for the relationship between inputs and outputs known as the mutual information.
+The mutual information $I(p; c)$ between input $c$ and output $p$, given by
 \begin{equation}
   I(p; c) = \sum_c P(c) \sum_p P(p \mid c) \log_2 {P(p \mid c) \over P(p)},
 	\label{eq_mutual_info}
@@ -128,13 +129,13 @@ predictions with experimental inferences of the channel capacity.
 	cellular response to an external stimuli as a Bayesian inference  of the state
 	of the environment. As the phenotype (protein level) serves as the internal
 	representation of the environmental state (inducer concentration), the
-	probability of a cell being in a specific environment is a function of the
-	probability of the response given that environmental state. (C) The precision
-	of the inference of the environmental state depends on how well can cells
-	resolve different inputs. For three different levels of input (left panel) the
-	green strain responds more precisely than the purple strain since the
-	output distributions overlap less (middle panel). This allows the green strain
-	to make a more precise inference of the environmental state given a
-	phenotypic response (right panel).}
+	probability of a cell being in a specific environment given this internal
+	representation is a function of the probability of the response given that
+	environmental state. (C) The precision of the inference of the environmental
+	state depends on how well can cells resolve different inputs. For three
+	different levels of input (left panel) the green strain responds more
+	precisely than the purple strain since the output distributions overlap less
+	(middle panel). This allows the green strain to make a more precise inference
+	of the environmental state given a phenotypic response (right panel).}
   \label{fig1_intro}
 \end{figure}

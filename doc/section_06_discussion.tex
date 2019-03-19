@@ -60,7 +60,19 @@ close agreement with experimental data we could have chosen any arbitrary input
 distribution $P(c)$ and compute the mutual information between input and
 outputs. The relevance of the channel capacity comes from its interpretation as
 a metric of the limits of how precise the inference that cells can make about
-what the state of the environment is given this simple genetic circuit.
+what the state of the environment is given this simple genetic circuit. Our
+model makes non-trivial predictions such as the existence of an optimal
+repressor copy number for a given repressor-DNA binding energy (See
+\fref{fig5_channcap}). We note that this differs from previous theoretical
+results since this optimal combination does not come from adding a cost term for
+the regulation \cite{Tkacik2011}. This is a consequence of the parameters
+inferred in \cite{Razo-Mejia2018} for the allosteric repressor never allowing
+all repressors to go into the inactive (non-DNA binding) state. That means that
+even at saturating concentrations of inducer, as the number of repressors
+increases, a significant number of them are still able to bind to the promoter.
+This causes all of the input-output functions to be biased towards low
+expression levels, decreasing the amount of information that the circuit is able
+to process.
 
 It is important to highlight the limitations of the work presented here. As
 first reported in \cite{Razo-Mejia2018}, our model fails to capture the
@@ -82,7 +94,7 @@ ideas that connect Shannon's metric of how accurately a signaling system can
 infer the state of the environment, with Darwinian fitness \cite{Taylor2007}.
 Beautiful work along these lines has been done in the context of the
 developmental program of the early {\it Drosophila} embryo \cite{Tkacik2008,
-Petkova2016}. These studies demonstrated that the input-output function of the
+Petkova2019}. These studies demonstrated that the input-output function of the
 pair-rule genes works at channel capacity, suggesting that selection has
 acted on these signaling pathways, pushing them to operate at the limit of what
 the physics of these systems allows. Our system differs from the early embryo in
