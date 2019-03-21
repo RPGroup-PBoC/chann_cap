@@ -1,4 +1,40 @@
+@article{Scholes2017,
+abstract = {Cells decide when, where, and to what level to express their genes by “computing” information from transcription factors (TFs) binding to regulatory DNA. How is the information contained in multiple TF-binding sites integrated to dictate the rate of transcription? The dominant conceptual and quantitative model is that TFs combinatorially recruit one another and RNA polymerase to the promoter by direct physical interactions. Here, we develop a quantitative framework to explore kinetic control, an alternative model in which combinatorial gene regulation can result from TFs working on different kinetic steps of the transcription cycle. Kinetic control can generate a wide range of analog and Boolean computations without requiring the input TFs to be simultaneously bound to regulatory DNA. We propose experiments that will illuminate the role of kinetic control in transcription and discuss implications for deciphering the cis-regulatory “code.”},
+author = {Scholes, Clarissa and DePace, Angela H. and S{\'{a}}nchez, {\'{A}}lvaro},
+doi = {10.1016/j.cels.2016.11.012},
+file = {:Users/razo/Dropbox/Articles/Unknown{\_}2017{\_}Scholes, Depace{\_}Math j Bio Combinatorial Gene Regulation through Kinetic Control of the Transcription Cycle Math j Bio Comb.pdf:pdf},
+issn = {24054720},
+journal = {Cell Systems},
+keywords = {Boolean computations,combinatorial control,frequency modulation,kinetics,quantitative modeling,transcription},
+number = {1},
+pages = {97--108.e9},
+pmid = {28041762},
+title = {{Combinatorial Gene Regulation through Kinetic Control of the Transcription Cycle}},
+volume = {4},
+year = {2017}
+}
+@article{Choubey2018,
+abstract = {Transcription is the dominant point of control of gene expression. Biochemical studies have revealed key molecular components of transcription and their interactions, but the dynamics of transcription initiation in cells is still poorly understood. This state of affairs is being remedied with experiments that observe transcriptional dynamics in single cells using fluorescent reporters. Quantitative information about transcription initiation dynamics can also be extracted from experiments that use electron micrographs of RNA polymerases caught in the act of transcribing a gene (Miller spreads). Inspired by these data, we analyze a general stochastic model of transcription initiation and elongation and compute the distribution of transcription initiation times. We show that different mechanisms of initiation leave distinct signatures in the distribution of initiation times that can be compared to experiments. We analyze published data from micrographs of RNA polymerases transcribing ribosomal RNA genes in Escherichia coli and compare the observed distributions of interpolymerase distances with the predictions from previously hypothesized mechanisms for the regulation of these genes. Our analysis demonstrates the potential of measuring the distribution of time intervals between initiation events as a probe for dissecting mechanisms of transcription initiation in live cells.},
+author = {Choubey, Sandeep and Kondev, Jane and Sanchez, Alvaro},
+doi = {10.1016/j.bpj.2018.03.031},
+file = {:Users/razo/Dropbox/Articles/Biophysical Journal{\_}2018{\_}Choubey, Kondev, Sanchez{\_}Distribution of Initiation Times Reveals Mechanisms of Transcriptional Regulation in S.pdf:pdf},
+issn = {15420086},
+journal = {Biophysical Journal},
+number = {9},
+pages = {2072--2082},
+publisher = {Biophysical Society},
+title = {{Distribution of Initiation Times Reveals Mechanisms of Transcriptional Regulation in Single Cells}},
+url = {https://doi.org/10.1016/j.bpj.2018.03.031},
+volume = {114},
+year = {2018}
+}
 @article{Petkova2019,
+annote = {2019-02-25
+
+This is the second time I read this paper, first time I read it since it came out in Cell. The reason I read this paper at this time was because I was contacted by Quanta Magazine to give my insight into this amazing piece of work. This happened because Jane Kondev gave them my contact and now I'll be interviewed to talk about what I think of this paper.
+The paper asks a very concise question, given that they have shown in the past that the gap genes - hunchback (hb), Kru¨ppel (Kr), knirps (kni), and giant (gt) - carry enough information for a developing embryo to decide all of its cell fates in early development, are the embryos actually just using these signals to set the body plan? In other words, these genes seem to carry enough bits to set the cellular fate of all cells in the early developmental stages, but that does not mean that cells actually use these signals as the readout of positional information. So the question is if we were to build an "optimal decoder" P(x* | {\{}g{\_}i{\}}), i.e. the probability of being in position x* given the gene expression {\{}g{\_}i{\}}, would that suffice to predict morphological features of the body plan?
+Gregor and company go and analyze data having measured simultaneously the 4 gap genes along with a downstream pair-rule genes that determine the characteristic stripes in development. What they found is that indeed the optimal decoder seems to be what cells use to determine their position along the embryo. This implies that cells make use of these noisy signals to decide on which part of the embryo are they located, and they do this with an exquisite precision. Moreover these optimal decoder is somehow encoded in the promoter-enhance architecture of these genes, so upon changing the spacial profile of the gap genes by mutating upstream genes, the dictionary should be able to predict changes in the morphological features of these mutant embryos. The authors show that indeed their optimal decoder is able to predict stripes positions in mutants, again suggesting that the information contained in these morphogen gradients is what the cells use to determine their position along the embryo.
+The paper is a beautiful example of the power of abstraction in biology. All of the molecular details underlying how these optimal decoder work are not necessary to make testable predictions about the system. One doesn't need to know all of the specific details in order to make progress in understanding the system. The theory-experiment dialogue presented here is inspiring as we pursue these reigning principles of biological systems. I am a huge fan of the paper.},
 author = {Petkova, Mariela D. and Tka{\v{c}}ik, Ga{\v{s}}per and Bialek, William and Wieschaus, Eric F. and Gregor, Thomas},
 doi = {10.1016/j.cell.2019.01.007},
 file = {:Users/razo/Dropbox/Articles/Cell{\_}2019{\_}Petkova et al.{\_}Optimal Decoding of Cellular Identities in a Genetic Network.pdf:pdf},
@@ -721,12 +757,6 @@ title = {{Information theory and adaptation}},
 volume = {30322},
 year = {2010}
 }
-@book{MacKay2003,
-author = {MacKay, David JC},
-publisher = {Cambridge university press},
-title = {{Information theory, inference and learning algorithms}},
-year = {2003}
-}
 @article{Gregor2007,
 abstract = {The reproducibility and precision of biological patterning is limited by the accuracy with which concentration profiles of morphogen molecules can be established and read out by their targets. We consider four measures of precision for the Bicoid morphogen in the Drosophila embryo: the concentration differences that distinguish neighboring cells, the limits set by the random arrival of Bicoid molecules at their targets (which depends on absolute concentration), the noise in readout of Bicoid by the activation of Hunchback, and the reproducibility of Bicoid concentration at corresponding positions in multiple embryos. We show, through??a combination of different experiments, that all of these quantities are ???10{\%}. This agreement among different measures of accuracy indicates that the embryo is not faced with noisy input signals and readout mechanisms; rather, the system exerts precise control over absolute concentrations and responds reliably to small concentration differences, approaching the limits set by basic physical principles. ?? 2007 Elsevier Inc. All rights reserved.},
 author = {Gregor, Thomas and Tank, David W. and Wieschaus, Eric F. and Bialek, William},
@@ -742,6 +772,12 @@ pmid = {17632062},
 title = {{Probing the Limits to Positional Information}},
 volume = {130},
 year = {2007}
+}
+@book{MacKay2003,
+author = {MacKay, David JC},
+publisher = {Cambridge university press},
+title = {{Information theory, inference and learning algorithms}},
+year = {2003}
 }
 @article{Tostevin2009,
 abstract = {Biochemical networks can respond to temporal characteristics of time-varying signals. To understand how reliably biochemical networks can transmit information we must consider how an input signal as a function of time--the input trajectory--can be mapped onto an output trajectory. Here we estimate the mutual information between input and output trajectories using a Gaussian model. We study how reliably the chemotaxis network of E. coli can transmit information on the ligand concentration to the flagellar motor, and find the input power spectrum that maximizes the information transmission rate.},

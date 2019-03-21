@@ -3,43 +3,44 @@
 In order to tackle the question of how much information the simple repression
 motif can process we require the joint probability distribution of mRNA and
 protein $P(m, p; t)$. To obtain this distribution we use the chemical master
-equation formalism as described in \secref{sec_model}. Specifically we assume a
-three-state model where the promoter can be found 1) with RNAP bound ($B$
-state), 2) empty ($E$ state) and 3) with the repressor bound ($R$ state) (See
+equation formalism as described in \secref{sec_model}. Specifically, we assume a
+three-state model where the promoter can be found 1) In a transcriptionally
+active state  ($A$ state), 2) In a transcriptionally inactive state without the
+repressor bound ($I$ state) and 3) with the repressor bound ($R$ state). (See
 \fref{fig2_minimal_model}(A)). These three states generate a system of coupled
-differential equations for each of the three state distributions $P_B(m, p)$,
-$P_E(m, p)$ and $P_R(m, p)$. Given the rates shown in
+differential equations for each of the three state distributions $P_A(m, p)$,
+$P_I(m, p)$ and $P_R(m, p)$. Given the rates shown in
 \fref{fig2_minimal_model}(A) let us define the system of ODEs. For the RNAP
 bound state we have
 \begin{equation}
   \begin{aligned}
-    \dt{P_B(m, p)} &=
-    - \overbrace{\kpoff P_B(m, p)}^{B \rightarrow E} % P -> E
-    + \overbrace{\kpon P_E(m, p)}^{E \rightarrow B}\\ % E -> P
-    &+ \overbrace{r_m P_B(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
-    - \overbrace{r_m P_B(m, p)}^{m \rightarrow m+1}% m -> m+1
-    + \overbrace{\gm (m + 1) P_B(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
-    - \overbrace{\gm m P_B(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
-    &+ \overbrace{r_p m P_B(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
-    - \overbrace{r_p m P_B(m, p)}^{p \rightarrow p+1} % p -> p+1
-    + \overbrace{\gp (p + 1) P_B(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
-    - \overbrace{\gp p P_B(m, p)}^{p \rightarrow p-1}. % p -> p-1
+    \dt{P_A(m, p)} &=
+    - \overbrace{\kpoff P_A(m, p)}^{B \rightarrow E} % P -> E
+    + \overbrace{\kpon P_I(m, p)}^{E \rightarrow B}\\ % E -> P
+    &+ \overbrace{r_m P_A(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
+    - \overbrace{r_m P_A(m, p)}^{m \rightarrow m+1}% m -> m+1
+    + \overbrace{\gm (m + 1) P_A(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
+    - \overbrace{\gm m P_A(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
+    &+ \overbrace{r_p m P_A(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
+    - \overbrace{r_p m P_A(m, p)}^{p \rightarrow p+1} % p -> p+1
+    + \overbrace{\gp (p + 1) P_A(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
+    - \overbrace{\gp p P_A(m, p)}^{p \rightarrow p-1}. % p -> p-1
   \end{aligned}
 \end{equation}
-For the empty state $E$ we have
+For the inactive promoter state $I$ we have
 \begin{equation}
   \begin{aligned}
-    \dt{P_E(m, p)} &=
-    \overbrace{\kpoff P_B(m, p)}^{B \rightarrow E} % P -> E
-    - \overbrace{\kpon P_E(m, p)}^{E \rightarrow B} % E -> P
+    \dt{P_I(m, p)} &=
+    \overbrace{\kpoff P_A(m, p)}^{B \rightarrow E} % P -> E
+    - \overbrace{\kpon P_I(m, p)}^{E \rightarrow B} % E -> P
     + \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
-    - \overbrace{\kron P_E(m, p)}^{E \rightarrow R}\\ % E -> R
-    &+ \overbrace{\gm (m + 1) P_E(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
-    - \overbrace{\gm m P_E(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
-    &+ \overbrace{r_p m P_E(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
-    - \overbrace{r_p m P_E(m, p)}^{p \rightarrow p+1} % p -> p+1
-    + \overbrace{\gp (p + 1) P_E(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
-    - \overbrace{\gp p P_E(m, p)}^{p \rightarrow p-1}. % p -> p-1
+    - \overbrace{\kron P_I(m, p)}^{E \rightarrow R}\\ % E -> R
+    &+ \overbrace{\gm (m + 1) P_I(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
+    - \overbrace{\gm m P_I(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
+    &+ \overbrace{r_p m P_I(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
+    - \overbrace{r_p m P_I(m, p)}^{p \rightarrow p+1} % p -> p+1
+    + \overbrace{\gp (p + 1) P_I(m, p + 1)}^{p + 1 \rightarrow p} % p+1 -> p
+    - \overbrace{\gp p P_I(m, p)}^{p \rightarrow p-1}. % p -> p-1
   \end{aligned}
 \end{equation}
 And finally for the repressor bound state $R$ we have
@@ -47,7 +48,7 @@ And finally for the repressor bound state $R$ we have
   \begin{aligned}
     \dt{P_R(m, p)} &=
     - \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
-    + \overbrace{\kron P_E(m, p)}^{E \rightarrow R}\\ % E -> R
+    + \overbrace{\kron P_I(m, p)}^{E \rightarrow R}\\ % E -> R
     &+ \overbrace{\gm (m + 1) P_R(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
     - \overbrace{\gm m P_R(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
     &+ \overbrace{r_p m P_R(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
@@ -63,8 +64,8 @@ model in which the state $R$ is not allowed. All the terms in the system of ODEs
 containing $\kron$ or $\kroff$ are then set to zero.
 
 As detailed in \secref{sec_model} it is convenient to express this system using
-matrix notation \cite{Sanchez2013}. For this we define $\PP(m, p) = (P_B(m, p),
-P_E(m, p), P_R(m, p))^T$. Then the system of ODEs can be expressed as
+matrix notation \cite{Sanchez2013}. For this we define $\PP(m, p) = (P_A(m, p),
+P_I(m, p), P_R(m, p))^T$. Then the system of ODEs can be expressed as
 \begin{equation}
   \begin{aligned}
     \dt{\PP(m, p)} &= \Km \PP(m, p)
@@ -159,13 +160,14 @@ model informed by work that spans several experimental techniques.
 
 \subsection{RNAP rates from unregulated two-state promoter}
 
-We begin our parameter inference problem with the RNAP rates $\kpon$ and
-$\kpoff$, as well as the mRNA production rate $r_m$. In this case there are only
-two states available to the promoter -- the empty state $E$ and the RNAP bound
-state $B$. That means that the third ODE for $P_R(m, p)$ is removed from the
-system. The mRNA steady state distribution for this particular two-state
-promoter model was solved analytically by Peccoud and Ycart \cite{Peccoud1995}.
-This distribution $P(m) \equiv P_E(m) + P_B(m)$ is of the form
+We begin our parameter inference problem with the promoter on and off rates
+$\kpon$ and $\kpoff$, as well as the mRNA production rate $r_m$. In this case
+there are only two states available to the promoter -- the inactive state $I$
+and the transcriptionally active  state $A$. That means that the third ODE for
+$P_R(m, p)$ is removed from the system. The mRNA steady state distribution for
+this particular two-state promoter model was solved analytically by Peccoud and
+Ycart \cite{Peccoud1995}. This distribution $P(m) \equiv P_I(m) + P_A(m)$ is of
+the form
 \begin{equation}
   \small
   P(m \mid \kpon, \kpoff, r_m, \gm) =
