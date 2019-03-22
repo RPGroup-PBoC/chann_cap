@@ -15,8 +15,8 @@ bound state we have
 \begin{equation}
   \begin{aligned}
     \dt{P_A(m, p)} &=
-    - \overbrace{\kpoff P_A(m, p)}^{B \rightarrow E} % P -> E
-    + \overbrace{\kpon P_I(m, p)}^{E \rightarrow B}\\ % E -> P
+    - \overbrace{\kpoff P_A(m, p)}^{A \rightarrow I} % P -> E
+    + \overbrace{\kpon P_I(m, p)}^{I \rightarrow A}\\ % E -> P
     &+ \overbrace{r_m P_A(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
     - \overbrace{r_m P_A(m, p)}^{m \rightarrow m+1}% m -> m+1
     + \overbrace{\gm (m + 1) P_A(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
@@ -31,8 +31,8 @@ For the inactive promoter state $I$ we have
 \begin{equation}
   \begin{aligned}
     \dt{P_I(m, p)} &=
-    \overbrace{\kpoff P_A(m, p)}^{B \rightarrow E} % P -> E
-    - \overbrace{\kpon P_I(m, p)}^{E \rightarrow B} % E -> P
+    \overbrace{\kpoff P_A(m, p)}^{A \rightarrow I} % P -> E
+    - \overbrace{\kpon P_I(m, p)}^{I \rightarrow A} % E -> P
     + \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
     - \overbrace{\kron P_I(m, p)}^{E \rightarrow R}\\ % E -> R
     &+ \overbrace{\gm (m + 1) P_I(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
@@ -143,20 +143,21 @@ With the objective of generating falsifiable predictions with meaningful
 parameters we infer the kinetic rates for this three-state promoter model using
 different data sets generated in our lab over the last decade concerning
 different aspects of the regulation of the simple repression motif. For example,
-for the RNAP rates $\kpon$ and $\kpoff$, and the mRNA production rate $r_m$ we
-use single-molecule mRNA FISH counts from an unregulated promoter
-\cite{Jones2014a}. Once these parameters are fixed, we use the values to
-constrain the repressor rates $\kron$ and $\kroff$. These repressor rates are
-obtained using information from mean gene expression measurements from bulk LacZ
-colorimetric assays \cite{Garcia2011c}. We also expand our model to include the
-allosteric nature of the repressor protein, taking advantage of video microscopy
-measurements done in the context of multiple promoter copies \cite{Brewster2014}
-and flow-cytometry measurements of the mean response of the system to different
-levels of induction \cite{Razo-Mejia2018}. In what follows of this section we
-detail the steps taken to infer the parameter values. At each step the values of
-the parameters inferred in previous steps constrain the values of the
-parameters that are not yet determined, building in this way a self-consistent
-model informed by work that spans several experimental techniques.
+for the unregulated promoter transition rates $\kpon$ and $\kpoff$, and the mRNA
+production rate $r_m$ we use single-molecule mRNA FISH counts from an
+unregulated promoter \cite{Jones2014a}. Once these parameters are fixed, we use
+the values to constrain the repressor rates $\kron$ and $\kroff$. These
+repressor rates are obtained using information from mean gene expression
+measurements from bulk LacZ colorimetric assays \cite{Garcia2011c}. We also
+expand our model to include the allosteric nature of the repressor protein,
+taking advantage of video microscopy measurements done in the context of
+multiple promoter copies \cite{Brewster2014} and flow-cytometry measurements of
+the mean response of the system to different levels of induction
+\cite{Razo-Mejia2018}. In what follows of this section we detail the steps taken
+to infer the parameter values. At each step the values of the parameters
+inferred in previous steps constrain the values of the parameters that are not
+yet determined, building in this way a self-consistent model informed by work
+that spans several experimental techniques.
 
 \subsection{RNAP rates from unregulated two-state promoter}
 
@@ -197,11 +198,11 @@ information from what we know from equilibrium-based models.
 
 \subsubsection*{Bayesian parameter inference of RNAP rates}
 
-In order to make progress at inferring the RNAP rates we make use of the
-single-molecule mRNA FISH data from Jones et al. \cite{Jones2014a}.
-\fref{sfig_lacUV5_FISH} shows the mRNA per cell distribution for the
-\textit{lacUV5} promoter used throughout this work. This promoter being very
-strong has a mean copy number of $\ee{m} \approx 18$ mRNA/cell.
+In order to make progress at inferring the unregulated promoter state transition
+rates we make use of the single-molecule mRNA FISH data from Jones et al.
+\cite{Jones2014a}. \fref{sfig_lacUV5_FISH} shows the mRNA per cell distribution
+for the \textit{lacUV5} promoter used throughout this work. This promoter being
+very strong has a mean copy number of $\ee{m} \approx 18$ mRNA/cell.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -261,10 +262,10 @@ computation)
   \label{seq_mean_kinetic}
 \end{equation}
 Another way of expressing this is as ${r_m \over \gm} \times
-p_{\text{bound}}^{(p)}$, where $p_{\text{bound}}^{(p)}$ is the probability of
-the RNAP being bound at the promoter. The thermodynamic picture has an
-equivalent result where the mean number of mRNA is given by \cite{Brewster2012,
-Bintu2005a}
+p_{\text{active}}^{(p)}$, where $p_{\text{active}}^{(p)}$ is the probability of
+the promoter being in the transcriptionally active state. The thermodynamic
+picture has an equivalent result where the mean number of mRNA is given by
+\cite{Brewster2012, Bintu2005a}
 \begin{equation}
   \left\langle m \right\rangle = {r_m \over \gm}
   {{P \over \Nns} e^{-\beta\eP}

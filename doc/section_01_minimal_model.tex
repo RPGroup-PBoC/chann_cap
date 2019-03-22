@@ -46,8 +46,8 @@ $p$. For the RNAP bound state we have
 \begin{equation}
   \begin{aligned}
     \dt{P_A(m, p)} &=
-    - \overbrace{\kpoff P_A(m, p)}^{B \rightarrow E} % P -> E
-    + \overbrace{\kpon P_I(m, p)}^{E \rightarrow B}\\ % E -> P
+    - \overbrace{\kpoff P_A(m, p)}^{A \rightarrow I} % P -> E
+    + \overbrace{\kpon P_I(m, p)}^{I \rightarrow A}\\ % E -> P
     &+ \overbrace{r_m P_A(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
     - \overbrace{r_m P_A(m, p)}^{m \rightarrow m+1}% m -> m+1
     + \overbrace{\gm (m + 1) P_A(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
@@ -62,8 +62,8 @@ For the transcriptionally inactive state $I$ we have
 \begin{equation}
   \begin{aligned}
     \dt{P_I(m, p)} &=
-    \overbrace{\kpoff P_A(m, p)}^{B \rightarrow E} % P -> E
-    - \overbrace{\kpon P_I(m, p)}^{E \rightarrow B} % E -> P
+    \overbrace{\kpoff P_A(m, p)}^{A \rightarrow I} % P -> E
+    - \overbrace{\kpon P_I(m, p)}^{I \rightarrow A} % E -> P
     + \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
     - \overbrace{\kron P_I(m, p)}^{E \rightarrow R}\\ % E -> R
     &+ \overbrace{\gm (m + 1) P_I(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
