@@ -1,1 +1,39 @@
 \section{Alvaro Sanchez}
+
+\begin{tcolorbox}
+The description of the rates are not consistent with the level of coarse
+graining in the model. It is perfectly fine if you guys lump all of the
+complicated kinetic steps into an effective ``on'' and ``off'' state. But these
+has to be explicitly stated in the paper not to make us believe that your
+$\kpon$ and $\kpoff$ rates are actual binding and unbinding rates of the RNAP.
+\end{tcolorbox}
+
+We greatly appreciate Al's input towards making more explicit the assumptions
+that go into the model. We have added the following text in the results section
+
+``In Fig. 2(A) we show the minimal model and the necessary set of parameters
+needed to predict mRNA and protein distributions. Specifically, we assume a
+three-state model where the promoter can be found 1) In a transcriptionally
+active state ($A$ state), 2) In a transcriptionally inactive state without the
+repressor bound ($I$ state) and 3) with the repressor bound ($R$ state). We
+highlight that we are not assuming that the transition between the active state
+$A$ and the inactive state $I$ happens due to RNAP binding to the promoter. The
+transcriptional initiation kinetics involve several more steps than simple
+binding \cite{Browning2004}. We coarse-grain all these steps into an effective
+``on" and ``off" states for the promoter consistent with experiments
+demonstrating the bursty nature of gene expression in {\it E. coli}
+\cite{Golding2005}.''
+
+Fig. 2(A) has been accordingly updated to be more consistent with this
+assumption in the model. Also in the discussion we added the following based on
+your input:
+
+``Also the minimal model in Fig 2(A), despite being widely used, is an
+oversimplification of the physical picture of how the transcriptional machinery
+works. The coarse-graining of all the kinetic steps involved in the
+transcription initiation into two effective promoter states - active and
+inactive - ignores potential kinetic regulatory mechanisms of intermediary
+states \cite{Scholes2017}. Furthermore it has been argued that despite the fact
+that the mRNA count distribution does not follow a Poisson distribution, this
+effect could be caused by unknown factors not at the level of transcriptional
+regulation \cite{Choubey2018}.''

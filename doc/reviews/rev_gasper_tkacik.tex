@@ -57,9 +57,90 @@ important to get the three state model, but not so important to take into
 account the multiple copies of the DNA while replicating.
 \end{tcolorbox}
 
+We greatly appreciate this incredibly insightful comment. We agree that it is
+worth highlighting the contribution of each of these points. It is hard to make
+a single summary figure of how each of these elements contribute to the
+conclusions. Nevertheless let us elaborate on each of these points:
+
+\paragraph{(i) Cell Cycle.}
+The inclusion of the gene copy number variability during the cell cycle and
+the non-Poissoninan protein degradation is a key component for the correct
+estimation of the input-output functions and as a consequence of the channel
+capacity. This variability in gene copy number is an additional source of noise
+that systematically decreaes the ability of the system to resolve different
+inputs as shown in \fref{revfig2_channcap_compare}.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../../fig/blahut_algorithm_channel_capacity/channcap_single_vs_multi.pdf}
+	\caption{\textbf{Comparison of channel capacity predictions.} The
+	multi-promoter model (solid line) vs. the single-promoter steady state model
+	(dot-dashed line) shows systematic deviations. Assuming a single-promoter at
+	steady state overestimates the channel capacity.}
+  \label{revfig2_channcap_compare}
+\end{figure}
+
+\paragraph{(ii) Non-Gaussian noise distributions.}
+For the construction of the probability distributions used in the main text
+(Fig. 4) we utilized the first 6 moments of the protein distribution. But as
+suggested by Gasper we could have simply used the first two moments for the
+inference. To compare the results we would have obtained we built the maximum
+entropy distributions using an increasing number of moments. We then computed
+the Kullback-Leibler divergence $D_{KL}$ of the form
+\begin{equation}
+	D_{KL}(P_6(p \mid c) || P_i(p \mid c)) =
+	\sum_p P_6(p \mid c) \log_2 {P_6(p \mid c) \over P_i(p \mid c)},
+\end{equation}
+where $P_i(p \mid c)$ is the maximum entropy distribution constructed with $i$
+moments, $i \in \{2, 3, 4, 5, 6\}$. Since the Kullback-Leibler divergence
+$D_{KL}(P || Q)$ can be interpreted as the amount of information lost by
+assuming the incorrect distribution $Q$ when the correct distribution is $P$, we
+used this metric as a way of how much information we would have lost by using
+less constraints compared to the six moments used in the main text.
+\fref{revfig3_dkl} shows this comparison for different operators and repressor
+copy numbers. We can see from here that indeed using less moments would have
+basically given the same result. Therefore the use of non-Gaussian noise is not
+an important feature for our inferences.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../../fig/MaxEnt_approx_joint/num_moments_vs_KL_div.pdf}
+	\caption{\textbf{Measuring the loss of information by using different number
+	of constraints.} The Kullback-Leibler divergence was computed between the
+	maximum entropy distribution constructed using the first 6 moments of the
+	distribution and a variable number of moments.}
+  \label{revfig3_dkl}
+\end{figure}
+
+\paragraph{(iii) Multi-state promoter.}
+This particular point is something that we are still exploring from a
+theoretical perspective. We have shown that in order to capture the single-
+molecule mRNA FISH data a single-state promoter wouldn't suffice. This model
+predicts a Poisson distribution as the steady-state and the data definitely
+shows super Poissonian noise. Given the bursty nature of gene expression we opt
+to use a two-state promoter where the states reflect effective
+transcriptionally ``active'' and ``inactive'' states. We are currently exploring
+alternative formulations of this model to turn it into a single state with a
+geometrically distributed burst-size, but that is still work in progress.
+
+\paragraph{(iv) Optimal vs Log-flat Distributions.}
+The relevance of having use the Blahut-Arimoto algorithm to predict the maximum
+mutual information between input and outputs was just to understand the best-
+case scenario. In reality we could have used any arbitrary input distribution
+$P(c)$ as long as our theoretical input-output distribution $P(p \mid c)$ are
+able to reproduce the experimental distributions. As we show in Fig. S17-S19 the
+maximum entropy distributions we constructed are strikingly similar to the
+experimental distributions.
+
+We still believe that the channel capacity puts the results in a context. By
+reporting the upper bound in performance of these genetic circuits we can start
+to dissect how different molecular parameters such as repressor-DNA binding
+affinity or repressor copy number affect the ability of this genetic circuit to
+extract information from the enviromental state.
+
 \begin{tcolorbox}
 3) The fact that high repressor copy number turns down the transmission is
-interesting -> we had to put in a “cost” to regulation explicitly to get an
+interesting - we had to put in a “cost” to regulation explicitly to get an
 optimum in transmission, otherwise in our theory with Bill and Alex, more TF is
 always good. Maybe it is an interesting comment to see more precisely why this
 happens. Do you titrate out the inducer with excess TFs? Or is it that there is
@@ -91,7 +172,7 @@ channel capacity now looks as follows:
 metric of the limits of how precise the inference that cells can make about what
 the state of the environment is given this simple genetic circuit. Our model
 makes non-trivial predictions such as the existence of an optimal repressor copy
-number for a given repressor-DNA binding energy (See \fref{fig5_channcap}). We
+number for a given repressor-DNA binding energy (See Fig. 5(A)). We
 note that this differs from previous theoretical results since this optimal
 combination does not come from adding a cost term for the regulation
 \cite{Tkacik2011}. This is a consequence of the parameters inferred in
