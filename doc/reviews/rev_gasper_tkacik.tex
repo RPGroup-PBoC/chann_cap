@@ -36,7 +36,7 @@ two upper cases where there is less than one bit of information.
   \label{revfig1_opt_dist}
 \end{figure}
 
-We don't know exactly understand the point about exploring the lower dimensional
+We don't exactly understand the point about exploring the lower dimensional
 parametrization of these distributions. Is it a low parametrization of the
 input-output distribution $P(p \mid c)$ such as approximating it as a Gaussian
 distribution, or is it a low parametrization of the resulting input
@@ -99,8 +99,11 @@ used this metric as a way of how much information we would have lost by using
 less constraints compared to the six moments used in the main text.
 \fref{revfig3_dkl} shows this comparison for different operators and repressor
 copy numbers. We can see from here that indeed using less moments would have
-basically given the same result. Therefore the use of non-Gaussian noise is not
-an important feature for our inferences.
+basically given the same result. This is because most of the values of the
+Kullback-Leibler divergence are significantly smaller than 0.1 bits, and the
+entropy of these distributions is in general $> 10$ bits, so we would loose less
+than 1\% of information by utilizing only two moments as constraints. Therefore
+the use of non-Gaussian noise is not an important feature for our inferences.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -125,18 +128,22 @@ geometrically distributed burst-size, but that is still work in progress.
 
 \paragraph{(iv) Optimal vs Log-flat Distributions.}
 The relevance of having use the Blahut-Arimoto algorithm to predict the maximum
-mutual information between input and outputs was just to understand the best-
-case scenario. In reality we could have used any arbitrary input distribution
-$P(c)$ as long as our theoretical input-output distribution $P(p \mid c)$ are
-able to reproduce the experimental distributions. As we show in Fig. S17-S19 the
-maximum entropy distributions we constructed are strikingly similar to the
-experimental distributions.
+mutual information between input and outputs was just to understand the best
+case scenario. We show the comparison between theoretical and experimental
+input-output functions $P(p \mid c)$ in Fig. S17-S19. Given the good agreement
+between these distributions we could compute the mutual information $I(c; p)$
+for any arbitrary input distribution $P(c)$ and obtain a good agreement with the
+corresponding experimental mutual information.
 
-We still believe that the channel capacity puts the results in a context. By
-reporting the upper bound in performance of these genetic circuits we can start
-to dissect how different molecular parameters such as repressor-DNA binding
-affinity or repressor copy number affect the ability of this genetic circuit to
-extract information from the enviromental state.
+The reason we opted to specifically report the mutual information at channel
+capacity was to puts the results in a context. By reporting the upper bound in
+performance of these genetic circuits we can start to dissect how different
+molecular parameters such as repressor-DNA binding affinity or repressor copy
+number affect the ability of this genetic circuit to extract information from
+the environmental state.
+
+We have included this extensive discussion in the SI on a new section titled
+``\textbf{Assumptions involved in the computation of the channel capacity}.''
 
 \begin{tcolorbox}
 3) The fact that high repressor copy number turns down the transmission is
@@ -158,12 +165,12 @@ compared to the TF copy number, so there is no inducer titration effect. The
 reason for this behavior is that the Monod-Wyman-Changeux model used to model
 the allosteric nature of the repressor shows that the repressor never has a
 probability 1 of being in the inactive state given the inferred parameters
-\cite{Razo-Mejia2018}. That means that even if the culture is saturated the
-with inducer, there would be an existing fraction of TFs that are still in the
-active state able to repress. Therefore having excess of TFs means that cells
-are always repressed regardless of the inducer concentration. This results in
-all distributions starting to overlap at low expression levels - losing
-information processing capacity.
+\cite{Razo-Mejia2018}. That means that even if the culture is saturated  with
+inducer, there would be an existing fraction of TFs that are still in the active
+state able to repress. Therefore having excess of TFs means that cells are
+always repressed regardless of the inducer concentration. This results in all
+distributions starting to overlap at low expression levels - losing information
+processing capacity.
 
 As suggested we added this to the discussion. The discussion paragraph about the
 channel capacity now looks as follows:

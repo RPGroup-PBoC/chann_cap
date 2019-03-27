@@ -15,9 +15,14 @@ There is also a possibility that different inputs give the same output (because
 not all environmental conditions are relevant to the cell?).
 \end{tcolorbox}
 
-We appreciate this comment. It is true that a output value could be the result
-of different inputs. To make things more clear we changed the following in the
-text:
+We really appreciate this comment and the ones that follow. It is clear that
+Jane took the time to thoroughly read the manuscript. As we try to make our
+results as transparent and understandable as possible, this kind of
+clarifications are immensely useful for us. The point we were trying to make
+with this sentence is that for a given input there are multiple possible
+outputs, but we completely agree that in such a statement it is not clear that
+there can also be overlapping outputs for different inputs. To make things more
+clear we changed the following in the text:
 
 ``The implication of this biological noise is that cells do not have an infinite
 resolution to distinguish signals and, as a consequence, there is a one-to-many
@@ -25,25 +30,44 @@ mapping between inputs and outputs. \textbf{Furthermore, given the limited
 number of possible outputs, there are overlapping responses between different
 inputs}.''
 
+If this is the point that was trying to be made, we hope that this extended
+explanation suffices to inform the reader about the possible overlapping
+responses for different inputs.
+
 \begin{tcolorbox}
 Is the use of mutual information in the context of cell sensing an important
 assumption of the paper?
 \end{tcolorbox}
 
-We again greatly appreciate this input. It is true that other people that have
-kindly given us their input on the paper have commented about the relevance of
-the information-theoretic angle that we present. The majority of efforts in this
-paper are put into building the input-output function $P(p \mid c)$, so one
-could argue that this should be the central focus of the work. But we argue that
-the information-theoretic perspective puts these results in a context. If one
-can agree that a gene regulatory system that responds to an external signal is a
-molecular implementation of a sensor and an actuator, then knowing the channel
-capacity of such sensor gives a better sense of its performance limits. Moreover
-an open question in the field is how the logic that allows cells to sense their
-environment with high precision is built out of noisy molecular components. Our
-study makes progress towards understanding the interplay between biophysical
-parameters such as protein copy number and protein-DNA binding affinity can have
-on the information processing capacity of these gene regulatory systems.
+We again greatly appreciate this input. This has been a matter of previous
+discussion with  other people that have taken a look at the paper. The question
+being: If the main effort in the paper is to build the probabilistic
+input-output function $P(p \mid c)$, why focus so much on the goal of computing
+the channel capacity?
+
+We completely agree that the majority of the effort goes into constructing this
+input-output function. But the reason we decided to include the information
+theoretic scope on the paper is because we think that through this framework we
+can put our results into a context. If one can agree that a gene regulatory
+system that responds to an external signal is a molecular implementation of a
+sensor and an actuator, then knowing the channel capacity of such sensor gives
+an intuitive sense of its performance limits. Moreover an open question in the
+field is how the logic that allows cells to sense their environment with high
+precision is built out of noisy molecular components. Our study makes progress
+towards understanding the interplay between biophysical parameters such as
+protein copy number and protein-DNA binding affinity can have on the information
+processing capacity of these gene regulatory systems.
+
+Interesting findings came out of such an analysis. For example, the channel
+capacity shown in Fig. 5(A) shows that there is an ``optimal'' repressor copy
+number for a given binding site that maximizes the information transmission.
+This interesting interplay between parameters was a new finding for experts in
+the field such as Gasper Tkacik since for their theoretical models, in order to
+get such an optimal point to exist, they needed to include a cost term for
+sensing. This raises some interesting hypothesis such as if natural selection
+were to act on a simple repression system to maximize the information processing
+capacity, we would expect to find an optimal combination of binding site and
+repressor copy number.
 
 \begin{tcolorbox}
   From the text:
@@ -55,30 +79,26 @@ I'm missing something. Channel capacity is obtained by maximizing mutual
 information over all $P(c)$. How do you experimentally scan through all $P(c)$?
 \end{tcolorbox}
 
-We appreciate this point. The channel capacity, as mentioned, is obtained by
-maximizing the mutual information between inputs and outputs $I(c; p)$ over all
-possible input distributions $P(c)$. This optimization is done for a fixed
-input-output function $P(p \mid c)$. This means that from the experimental
-measurements of single-cell gene expression we can approximate the input-output
-distributions $P(p \mid c)$ and then numerically find the input distribution
-$P(c)$ that maximizes the mutual information. For a discrete distribution $P(c)$
-this is equivalent to a minimization routine such as gradient descent. But for
-the specific problem of finding channel capacities there is a highly efficient
-algorithm known as the Blahut-Arimoto algorithm that is guaranteed to converge
-to this optimal input distribution $P(c)$ for a fixed input-output distribution
-$P(p \mid c)$.
+We again appreciate this excellent comment to clarify things for the reader. The
+experimental measurements were done under 12 different concentrations of inducer
+$c$ ranging from 0 $\mu$M to 5000 $\mu$M. These concentrations were previously
+chosen in order to capture the three main parts of an induction curve: 1) The
+leakiness, i.e. the expression even in the absence of inducer, 2) the
+saturation, i.e. the maximum expression under saturating concentrations of
+inducer, and 3) the transition, i.e. the region of the induction curve with
+positive slope on a log-log plot where the system goes from minimum to maximum
+expression \cite{Razo-Mejia2018}.
 
-We have added the following text on the results section that discuss this
-particular inference:
-
-``Briefly, from single-cell fluorescent measurements we can approximate the
-input-output distribution $P(p \mid c)$. Once these conditional distributions
-are fixed, the task of finding the input distribution at channel capacity become
-a computational minimization routine apt for gradient descent or similar
-algorithms. For the particular case of the channel capacity on a system with a
-discrete number of inputs and outputs the Blahut-Arimoto algorithm is built in
-such a way that it guarantees the convergence towards the optimal input
-distribution.''
+Given the degree of overlap between input-output distributions these 12 well
+distributed concentrations suffice to capture all ``expression domains'' for our
+system. In other words, the spacing between these concentrations captures all
+representative expression distributions that can be uniquely resolved by the
+system. To confirm that this is true we have done theoretical analysis where we
+calculated the channel capacity using 50 evenly spaced inducer concentrations,
+and we obtained the exact same result as wen using these 12 concentrations. This
+is possible because the values that we are obtaining are $<2$ bits, meaning that
+even 4 properly spaced concentrations would be able to capture all expression
+domains for our system.
 
 \begin{tcolorbox}
 In Fig. 1 caption:
@@ -90,13 +110,15 @@ that environmental state''
 Sounds like you are referring to $P(c)$ but in fact your mean $P(c \mid p)$.
 \end{tcolorbox}
 
-We appreciate this excellent feedback. We have added the following line to
-make things more precise.
+We appreciate this excellent feedback. We apologize for poor wording. We have
+added the following line that includes the mathematical definitions to make
+things more precise.
 
 ``As the phenotype (protein level) serves as the internal representation of the
 environmental state (inducer concentration), the probability of a cell being in
-a specific environment \textbf{given this internal representation} is a function
-of the probability of the response given that environmental state.''
+a specific environment given this internal representation $P(c \mid p)$ is a
+function of the probability of the response given that environmental state $P(p
+\mid c)$.''
 
 \begin{tcolorbox}
 I've been curious to what extend the approximation of protein degradation being
@@ -104,17 +126,17 @@ a Poission process is a good one. When in fact "degradation" is really binomial
 partitioning. I think Paulsson has a paper on noise due to partitioning...
 \end{tcolorbox}
 
-We thank again Jane for such a wonderful feedback. It is true that for the
-particular bacterial systems we like to study under steady exponential growth
-the protein degradation term is believed to be caused by binomial partitioning
-during growth. In fact for our inferences we set $\gp$ the protein degradation
-rate to be zero and we explicitly account for binomial partitioning. The reason
-we wrote the full equation with the Poisson process describing protein
-degradation is because if one wants to compare the results of assuming a single
-promoter copy in the genome at steady state where no explicit account for
-binomial partitioning is implemented, i.e. just setting these time derivatives
-to zero, the protein degradation term is a necessary condition to reach such
-steady state.
+We thank again Jane for such a wonderful feedback. It commonly assumed that for
+the particular bacterial systems we like to study under steady exponential
+growth the protein degradation term is caused by binomial partitioning during
+growth. In fact for our inferences we set $\gp$ the protein degradation rate to
+be zero and we explicitly account for binomial partitioning. The reason we wrote
+the full equation with the Poisson process describing protein degradation is
+because if one wants to compare the results of assuming a single promoter copy
+in the genome at steady state where no explicit account for binomial
+partitioning is implemented, i.e. just setting these time derivatives to zero,
+the protein degradation term is a necessary condition to reach such steady
+state.
 
 We added the following text after discussing the master equation:
 
@@ -129,13 +151,15 @@ With respect to the matrix equation:
 Is it necessary/useful to rewrite the equations in this way?
 \end{tcolorbox}
 
-We believe that this notation becomes very handy and useful when we set
-ourselves the task of computing any moment of the distribution $\ee{m^x p^y}$.
-Writing the general moment dynamics equation using this notation gives a clear
-interpretation of how each process (mRNA and protein production and degradation)
-enter to the moment dynamics. Furthermore we would argue that this notation
-would be preferable for the main text, leaving the individual definitions of
-each of the promoter states dynamics to the SI.
+We thank again Jane's comments. All of them have proved so far to be extremely
+helpful to make our approach and findings much more transparent for every
+reader. We believe that this matrix notation becomes very handy and useful when
+we set ourselves the task of computing any moment of the distribution $\ee{m^x
+p^y}$. Writing the general moment dynamics equation using this notation gives a
+clear interpretation of how each process (mRNA and protein production and
+degradation) enter to the moment dynamics. Furthermore we would argue that this
+notation would be preferable for the main text, leaving the individual
+definitions of each of the promoter states dynamics to the SI.
 
 \begin{tcolorbox}
 In the text:
@@ -179,7 +203,6 @@ considerably large time in order to get good samples out of this distribution.
 That is not to belittle this suggestion or claim that it is not important. Maybe
 a better suggestion would be to implement such a stochastic simulation once the
 paper has been submitted to keep the ball rolling at this point.
-
 
 \begin{tcolorbox}
   About Fig 5. Is the agreement necessarily true if the experimental and
@@ -233,13 +256,13 @@ actual distribution that cells ``observe'' is that they conclude that the
 construction of the input-output function allows the cells to gather as much
 information about the input as possible.
 
-In our case since we work with a synthetic system that perceives an
-extracellular concentration we have no way of knowing what the ``real'' input
-distribution $P(c)$ would be on a natural setup. This is a key difference
-between our system and the fly embryo. In their case the fly controls both the
-input distribution $P(c)$ and the input output function $P(p \mid c)$, while in
-our case we get to chose whichever input distribution we want since cells don't
-decide the concentration of sugar in their environment. So our results for the
-channel capacity show an upper bound in performance, i.e. what would the best
-case scenario look like if the system was working optimally. No further
-statements can be made about optimality in our system.
+Since for our case cells do not control the input distribution $P(c)$, we have
+no standard to which compare our input distributions at channel capacity as
+obtained by the Blahut-Arimoto algorithm $P^*(c)$. Some people have suggested
+interesting approaches known as ``reverse ecology'' where the input
+distributions obtained by computing the channel capacity are assumed to be a
+reflection of the evolutionary history of environments that cells have
+experienced \cite{Bowsher2012}. This construction nevertheless relies on the
+strong assumption that all sensing systems work at channel capacity, i.e. they
+have been optimize over evolutionary time to match the environmental state
+distribution.
