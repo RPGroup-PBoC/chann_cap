@@ -72,4 +72,5 @@ data/csv_protein_dist/
 data/mRNA_FISH/
 data/mcmc/
 data/csv_maxEnt_dist/
+doc/coverletter/
 library.bib
