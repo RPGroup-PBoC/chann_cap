@@ -226,3 +226,109 @@ best unbiased estimate of the channel capacity from this experimental dataset.
   fluroescence distributions and inducer concentration.}
   \label{sfig_bins_channcap}
 \end{figure}
+
+\subsection{Assumptions involved in the computation of the channel capacity}
+
+An interesting suggestion by Professor Gasper Tkacik was to dissect the
+different physical assumptions that went into the construction of the
+input-output function $P(p \mid c)$, and their relevance when comparing the
+theoretical channel capacities with the experimental inferences. In what follows
+we describe the relevance of four important aspects that all affect the
+predictions of the information processing capacity.
+
+\paragraph{(i) Cell cycle variability.}
+The inclusion of the gene copy number variability during the cell cycle and
+the non-Poissoninan protein degradation is a key component for the correct
+estimation of the input-output functions and as a consequence of the channel
+capacity. This variability in gene copy number is an additional source of noise
+that systematically decreases the ability of the system to resolve different
+inputs. The absence of the effects that the gene copy number variability and
+the protein partition has on the information processing capacity leads to an
+overestimate of the channel capacity as shown in \fref{sfig_channcap_compare}.
+Only when these noise sources are included in our inferences is that we get to
+capture the experimental channel capacities with no further fit parameters.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/blahut_algorithm_channel_capacity/channcap_single_vs_multi.pdf}
+  \caption{\textbf{Comparison of channel capacity predictions for single- and
+  multi-promoter models.} Channel capacity for the multi-promoter model (solid
+  lines) vs. the single-promoter steady state model (dot-dashed lines) as a
+  function of repressor copy numbers for different repressor-DNA binding
+  energies. The single-promoter model assumes Poissonian protein degradation
+  ($\gp > 0$) and steady state, while the multi-promoter model accounts for
+  gene copy number variability and during the cell cycle and has protein
+  degradation as an effect due to dilution as cells grow and divide.}
+  \label{sfig_channcap_compare}
+\end{figure}
+
+\paragraph{(ii) Non-Gaussian noise distributions.}
+For the construction of the probability distributions used in the main text
+(\fref{fig4_maxent}) we utilized the first 6 moments of the protein
+distribution. The maximum entropy formalism tells us that the more constraints
+we include in the inference, the closer the maximum entropy distribution will be
+to the real distribution. But \textit{a priori} there is no way of knowing how
+many moments should be included in order to capture the essence of the
+distribution. In principle two moments could suffice to describe the entire
+distribution as happens with the Gaussian distribution. To compare the effect
+that including more or less constraints on the maximum entropy inference we
+constructed maximum entropy distributions using an increasing number of moments
+from 2 to 6. We then computed the Kullback-Leibler divergence $D_{KL}$ of the
+form
+\begin{equation}
+	D_{KL}(P_6(p \mid c) || P_i(p \mid c)) =
+	\sum_p P_6(p \mid c) \log_2 {P_6(p \mid c) \over P_i(p \mid c)},
+\end{equation}
+where $P_i(p \mid c)$ is the maximum entropy distribution constructed with the
+first $i$ moments, $i \in \{2, 3, 4, 5, 6\}$. Since the Kullback-Leibler
+divergence $D_{KL}(P || Q)$ can be interpreted as the amount of information lost
+by assuming the incorrect distribution $Q$ when the correct distribution is $P$,
+we used this metric as a way of how much information we would have lost by using
+less constraints compared to the six moments used in the main text.
+
+\fref{sfig_dkl} shows this comparison for different operators and repressor copy
+numbers. We can see from here that using less moments as constraints gives
+basically the same result. This is because most of the values of the
+Kullback-Leibler divergence are significantly smaller than 0.1 bits, and the
+entropy of these distributions is in general $> 10$ bits, so we would lose less
+than 1\% of the information contained in these distributions by utilizing only
+two moments as constraints. Therefore the use of non-Gaussian noise is not an
+important feature for our inferences.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/MaxEnt_approx_joint/num_moments_vs_KL_div.pdf}
+	\caption{\textbf{Measuring the loss of information by using different number
+	of constraints.} The Kullback-Leibler divergence was computed between the
+	maximum entropy distribution constructed using the first 6 moments of the
+	distribution and a variable number of moments.}
+  \label{sfig_dkl}
+\end{figure}
+
+\paragraph{(iii) Multi-state promoter.}
+This particular point is something that we are still exploring from a
+theoretical perspective. We have shown that in order to capture the
+single-molecule mRNA FISH data a single-state promoter wouldn't suffice. This
+model predicts a Poisson distribution as the steady-state and the data
+definitely shows super Poissonian noise. Given the bursty nature of gene
+expression we opt to use a two-state promoter where the states reflect effective
+transcriptionally ``active'' and ``inactive'' states. We are currently exploring
+alternative formulations of this model to turn it into a single state with a
+geometrically distributed burst-size.
+
+\paragraph{(iv) Optimal vs Log-flat Distributions.}
+The relevance of having use the Blahut-Arimoto algorithm to predict the maximum
+mutual information between input and outputs was just to understand the best
+case scenario. We show the comparison between theoretical and experimental
+input-output functions $P(p \mid c)$ in \fref{sfig_cdf_O1}, \fref{sfig_cdf_O2},
+and \fref{sfig_cdf_O3}. Given the good agreement between these distributions we
+could compute the mutual information $I(c; p)$ for any arbitrary input
+distribution $P(c)$ and obtain a good agreement with the corresponding
+experimental mutual information.
+
+The reason we opted to specifically report the mutual information at channel
+capacity was to puts the results in a context. By reporting the upper bound in
+performance of these genetic circuits we can start to dissect how different
+molecular parameters such as repressor-DNA binding affinity or repressor copy
+number affect the ability of this genetic circuit to extract information from
+the environmental state.
