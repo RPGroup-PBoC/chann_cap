@@ -132,8 +132,14 @@ a:hover {
 
 #cover-photo-container,
 #info-container {
-  display: block;}
-  /*width: 100%;}*/
+  display: block;
+  width: 100%;}
+
+  /* Properties of the cover image */
+#cover-photo {
+  max-width: 100%;
+  height: auto;
+}
 
 #info-container {
   margin-top: 3em;
@@ -245,6 +251,14 @@ a:hover {
   -webkit-overflow-scrolling: touch;
   overflow-y: auto;
   overflow-x: hidden;
+
+
+## Other Languages
+
+All analysis was also performed in Mathematica by Tal Einav. This document can be downloaded below.
+
+
+* [Mathematica Notebook](../../../../supporting_information.nb)
 }
 
 .sidebar {
