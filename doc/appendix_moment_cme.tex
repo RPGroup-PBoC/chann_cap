@@ -11,10 +11,10 @@ the master equation change.
 To compute any moment of our chemical master equation (\eref{eq_cme_matrix})
 let us define a vector
 \begin{equation}
-  \ee{\bb{m^x p^y}} \equiv (\ee{m^x p^y}_B, \ee{m^x p^y}_E, \ee{m^x p^y}_R)^T,
+  \ee{\bb{m^x p^y}} \equiv (\ee{m^x p^y}_A, \ee{m^x p^y}_I, \ee{m^x p^y}_R)^T,
 \end{equation}
-where $\ee{m^x p^y}_S$ is the expected value of $m^x p^y$ in state $S \in \{B,
-E, R\}$ with $x, y \in \mathbb{N}$. In other words, just as we defined the
+where $\ee{m^x p^y}_S$ is the expected value of $m^x p^y$ in state $S \in \{A,
+I, R\}$ with $x, y \in \mathbb{N}$. In other words, just as we defined the
 vector $\PP(m, p)$, here we define a vector to collect the expected value of
 each of the promoter states. By definition these moments $\ee{m^x p^y}_S$ are
 computed as
@@ -309,8 +309,13 @@ cell cycle.
 
 \subsection{Computing single promoter steady-state moments}
 
+(Note: The Python code used for the calculations presented in this section can
+be found in the
+\href{https://www.rpgroup.caltech.edu/chann_cap/src/theory/html/chemical_master_steady_state_moments_general.html}{following
+link} as an anotated Jupter notebook)
+
 As discussed in \secref{sec_cell_cycle}, one of the main factors contributing to
-cell-to-cell variability in gene expression is the changes in gene copy number
+cell-to-cell variability in gene expression is the change in gene copy number
 during the cell cycle as cells replicate their genome before cell division. Our
 minimal model account for this variability by considering the time trajectory of
 the distribution moments as given by \eref{seq_mom_ode_factorized}. These

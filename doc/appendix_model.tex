@@ -10,13 +10,13 @@ repressor bound ($I$ state) and 3) with the repressor bound ($R$ state). (See
 \fref{fig2_minimal_model}(A)). These three states generate a system of coupled
 differential equations for each of the three state distributions $P_A(m, p)$,
 $P_I(m, p)$ and $P_R(m, p)$. Given the rates shown in
-\fref{fig2_minimal_model}(A) let us define the system of ODEs. For the RNAP
-bound state we have
+\fref{fig2_minimal_model}(A) let us define the system of ODEs. For the
+transcriptionally active state we have
 \begin{equation}
   \begin{aligned}
     \dt{P_A(m, p)} &=
-    - \overbrace{\kpoff P_A(m, p)}^{A \rightarrow I} % P -> E
-    + \overbrace{\kpon P_I(m, p)}^{I \rightarrow A}\\ % E -> P
+    - \overbrace{\kpoff P_A(m, p)}^{A \rightarrow I} % A -> I
+    + \overbrace{\kpon P_I(m, p)}^{I \rightarrow A}\\ % I -> A
     &+ \overbrace{r_m P_A(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
     - \overbrace{r_m P_A(m, p)}^{m \rightarrow m+1}% m -> m+1
     + \overbrace{\gm (m + 1) P_A(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
@@ -31,10 +31,10 @@ For the inactive promoter state $I$ we have
 \begin{equation}
   \begin{aligned}
     \dt{P_I(m, p)} &=
-    \overbrace{\kpoff P_A(m, p)}^{A \rightarrow I} % P -> E
-    - \overbrace{\kpon P_I(m, p)}^{I \rightarrow A} % E -> P
-    + \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
-    - \overbrace{\kron P_I(m, p)}^{E \rightarrow R}\\ % E -> R
+    \overbrace{\kpoff P_A(m, p)}^{A \rightarrow I} % A -> I
+    - \overbrace{\kpon P_I(m, p)}^{I \rightarrow A} % I -> A
+    + \overbrace{\kroff P_R(m, p)}^{R \rightarrow I} % R -> I
+    - \overbrace{\kron P_I(m, p)}^{I \rightarrow R}\\ % I -> R
     &+ \overbrace{\gm (m + 1) P_I(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
     - \overbrace{\gm m P_I(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
     &+ \overbrace{r_p m P_I(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
@@ -47,8 +47,8 @@ And finally for the repressor bound state $R$ we have
 \begin{equation}
   \begin{aligned}
     \dt{P_R(m, p)} &=
-    - \overbrace{\kroff P_R(m, p)}^{R \rightarrow E} % R -> E
-    + \overbrace{\kron P_I(m, p)}^{E \rightarrow R}\\ % E -> R
+    - \overbrace{\kroff P_R(m, p)}^{R \rightarrow I} % R -> I
+    + \overbrace{\kron P_I(m, p)}^{I \rightarrow R}\\ % I -> R
     &+ \overbrace{\gm (m + 1) P_R(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
     - \overbrace{\gm m P_R(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
     &+ \overbrace{r_p m P_R(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
@@ -139,6 +139,11 @@ promoter.
 
 \section{Parameter inference}\label{supp_param_inference}
 
+(Note: The Python code used for the calculations presented in this section can
+be found in the
+\href{https://www.rpgroup.caltech.edu/chann_cap/src/theory/html/chemical_master_mRNA_FISH_mcmc.html}{following
+link} as an anotated Jupter notebook)
+
 With the objective of generating falsifiable predictions with meaningful
 parameters we infer the kinetic rates for this three-state promoter model using
 different data sets generated in our lab over the last decade concerning
@@ -188,7 +193,7 @@ will aid us to find parameter values for the rates. The inferred rates $\kpon$,
 $\kpoff$ and $r_m$ will be expressed in units of the mRNA degradation rate
 $\gm$. This is because the model in \eref{seq_two_state_mRNA} is homogeneous in
 time, meaning that if we divide all rates by a constant it would be equivalent
-to multiplying the time scale of the problem by the same constant. As we will
+to multiplying the characteristic time scale by the same constant. As we will
 discuss in the next section, \eref{seq_two_state_mRNA} has degeneracy in the
 parameter values. What this means is that a change in one of the parameters,
 specifically $r_m$, can be compensated by a change in another parameter,
@@ -201,7 +206,7 @@ information from what we know from equilibrium-based models.
 In order to make progress at inferring the unregulated promoter state transition
 rates we make use of the single-molecule mRNA FISH data from Jones et al.
 \cite{Jones2014a}. \fref{sfig_lacUV5_FISH} shows the mRNA per cell distribution
-for the \textit{lacUV5} promoter used throughout this work. This promoter being
+for the \textit{lacUV5} promoter used for our inference. This promoter being
 very strong has a mean copy number of $\ee{m} \approx 18$ mRNA/cell.
 
 \begin{figure}[h!]
@@ -241,7 +246,7 @@ in order to fit \eref{seq_two_state_mRNA} to the mRNA-FISH data.
 One of the strengths of the Bayesian approach is that we can include all the
 prior knowledge on the parameters when performing an inference
 \cite{MacKay2003}. Basic features such as the fact that the rates have to be
-strictly positive must constrain the values that these parameters can take. For
+strictly positive constrain the values that these parameters can take. For
 the specific rates analyzed in this section we know more than the simple
 constraint of non-negative values. The expression of an unregulated promoter has
 been studied from a thermodynamic perspective \cite{Brewster2012}. Given the
@@ -356,7 +361,7 @@ this two-state model fits the data adequately.
   using parameters from Bayesian inference.} Dotted line shows the result of
   using \eref{seq_two_state_mRNA} along with the parameters inferred for the
   rates. Blue bars are the same data as \fref{sfig_lacUV5_FISH} obtained from
-  \cite{Jones2014a}}
+  \cite{Jones2014a}.}
   \label{sfig_lacUV5_theory_data}
 \end{figure}
 
@@ -409,8 +414,9 @@ P(a) = (\ln 2) \cdot 2^{1 - a},
 \label{seq_cell_cycle_dist}
 \end{equation}
 where $a \in [0, 1]$ is the stage of the cell cycle, with $a = 0$ being the
-start of the cycle and $a = 1$ being the cell division. \fref{sfig_cell_area}
-shows the separation of the two groups based on area where
+start of the cycle and $a = 1$ being the cell division (See
+\siref{supp_cell_age_dist} for a derivation of \eref{seq_cell_cycle_dist}).
+\fref{sfig_cell_area} shows the separation of the two groups based on area where
 \eref{seq_cell_cycle_dist} was used to weigh the distribution along the cell
 cycle.
 
@@ -593,16 +599,16 @@ on \textit{E. coli} \cite{Yu2006}.
 
 \subsection{Repressor rates from three-state regulated promoter.}
 
-Having determined the RNAP rates we now proceed to determine the repressor rates
-$\kron$ and $\kroff$. The values of these rates are constrained again by the
-correspondence between our kinetic picture and what we know from equilibrium
-models \cite{Phillips2015}. For this analysis we again exploit the feature that
-only at the mean both, the kinetic language and the thermodynamic language
-should have equivalent predictions. Over the last decade there has been a lot of
-effort in developing equilibrium models for gene expression regulation
-\cite{Buchler2003, Vilar2011, Bintu2005a}. In particular our group has
-extensively characterized the simple repression motif using this formalism
-\cite{Garcia2011c, Brewster2014, Razo-Mejia2018}.
+Having determined the unregulated promoter transition rates we now proceed to
+determine the repressor rates $\kron$ and $\kroff$. The values of these rates
+are constrained again by the correspondence between our kinetic picture and what
+we know from equilibrium models \cite{Phillips2015}. For this analysis we again
+exploit the feature that at the mean both, the kinetic language and the
+thermodynamic language should have equivalent predictions. Over the last decade
+there has been a lot of effort in developing equilibrium models for gene
+expression regulation \cite{Buchler2003, Vilar2011, Bintu2005a}. In particular
+our group has extensively characterized the simple repression motif using this
+formalism \cite{Garcia2011c, Brewster2014, Razo-Mejia2018}.
 
 The dialogue between theory and experiments has led to simplified expressions
 that capture the phenomenology of the gene expression response as a function of
@@ -614,10 +620,10 @@ expression, defined as
   \foldchange = {\ee{\text{gene expression}(R \neq 0)} \over
                  \ee{\text{gene expression}(R = 0)}},
 \end{equation}
-where $R$ is the number of repressors per cell. The fold-change is simply the
-mean expression level in the presence of the repressor relative to the mean
-expression level in the absence of regulation. In the language of statistical
-mechanics this quantity takes the form
+where $R$ is the number of repressors per cell and \ee{\cdot} is the average.
+The fold-change is simply the mean expression level in the presence of the
+repressor relative to the mean expression level in the absence of regulation. In
+the language of statistical mechanics this quantity takes the form
 \begin{equation}
   \foldchange = \left( 1 + {R \over \Nns} e^{-\beta\eR} \right)^{-1},
   \label{seq_fc_thermo}
@@ -649,11 +655,11 @@ transcription rate $r_m$ and the mRNA degradation rate $\gm$ cancel out.
 
 Given that the number of repressors per cell $R$ is an experimental variable
 that we can control, we assume that the rate at which the promoter transitions
-form the empty state to the repressor bound state $\kron$ is given by the
-concentration of repressors $[R]$ times a diffusion limited on rate $k_o$. For
-the diffusion limited constant $k_o$ we use the value used by Jones et al.
-\cite{Jones2014a}. With this in hand we can rewrite \eref{seq_fold_change_cme}
-as
+form the transcriptionally inactive state to the repressor bound state $\kron$
+is given by the concentration of repressors $[R]$ times a diffusion limited on
+rate $k_o$. For the diffusion limited constant $k_o$ we use the value used by
+Jones et al. \cite{Jones2014a}. With this in hand we can rewrite
+\eref{seq_fold_change_cme} as
 \begin{equation}
   \foldchange = \left( 1 + {k_0 [R] \over \kroff}
                 {\kpoff \over \kpon + \kpoff} \right)^{-1}.

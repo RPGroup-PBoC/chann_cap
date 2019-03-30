@@ -1,6 +1,11 @@
 \section{Accounting for the variability in gene copy number during the cell
 cycle} \label{supp_multi_gene}
 
+(Note: The Python code used for the calculations presented in this section can
+be found in the
+\href{https://www.rpgroup.caltech.edu/chann_cap/src/theory/html/moment_dynamics_cell_division.html}{following
+link} as an anotated Jupter notebook)
+
 When growing in rich media, bacteria can double every $\approx$ 20 minutes. With
 two replication forks each traveling at $\approx$ 1000 bp per second, and a
 genome of $\approx$ 5 Mbp for {\it E. coli} \cite{Moran2010}, a cell would need
@@ -141,7 +146,7 @@ across the cell cycle in order to compute these averages.
 
 \subsection{Exponentially distributed ages}
 
-As mentioned in \siref{supp_param_inference}, cells in log phase have
+As mentioned in \siref{supp_param_inference}, cells in exponential growth have
 exponentially distributed ages across the cell cycle, having more young cells
 compared to old ones. Specifically the probability of a cell being at any time
 point in the cell cycle is given by \cite{Powell1956}
@@ -150,7 +155,13 @@ point in the cell cycle is given by \cite{Powell1956}
   \label{seq_age_prob}
 \end{equation}
 where $a \in [0, 1]$ is the stage of the cell cycle, with $a = 0$ being the
-start of the cycle and $a = 1$ being the cell division.
+start of the cycle and $a = 1$ being the cell division. In
+\siref{supp_cell_age_dist} we reproduce this derivation. It is a surprising
+result, but can be intuitively thought as follows: If the culture is growing
+exponentially, that means that all the time there is an increasing number of
+cells. That means for example that if in a time interval $\Delta t$ $N$ ``old''
+cells divided, these produced $2N$ ``young'' cells. So at any point there is
+always more younger than older cells.
 
 Our numerical integration of the moment equations gave us a time evolution of
 the moments as cells progress through the cell cycle. Since experimentally we

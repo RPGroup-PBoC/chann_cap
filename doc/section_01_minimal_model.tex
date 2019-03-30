@@ -46,8 +46,8 @@ $p$. For the transcriptionally active state we have
 \begin{equation}
   \begin{aligned}
     \dt{P_A(m, p)} &=
-    - \overbrace{\kpoff P_A(m, p)}^{A \rightarrow I} % P -> E
-    + \overbrace{\kpon P_I(m, p)}^{I \rightarrow A}\\ % E -> P
+    - \overbrace{\kpoff P_A(m, p)}^{A \rightarrow I} % A -> I
+    + \overbrace{\kpon P_I(m, p)}^{I \rightarrow A}\\ % I -> A
     &+ \overbrace{r_m P_A(m-1, p)}^{m-1 \rightarrow m} % m-1 -> m
     - \overbrace{r_m P_A(m, p)}^{m \rightarrow m+1}% m -> m+1
     + \overbrace{\gm (m + 1) P_A(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
@@ -62,10 +62,10 @@ For the transcriptionally inactive state $I$ we have
 \begin{equation}
   \begin{aligned}
     \dt{P_I(m, p)} &=
-    \overbrace{\kpoff P_A(m, p)}^{A \rightarrow I} % P -> E
-    - \overbrace{\kpon P_I(m, p)}^{I \rightarrow A} % E -> P
-    + \overbrace{\kroff P_R(m, p)}^{R \rightarrow I} % R -> E
-    - \overbrace{\kron P_I(m, p)}^{I \rightarrow R}\\ % E -> R
+    \overbrace{\kpoff P_A(m, p)}^{A \rightarrow I} % A -> I
+    - \overbrace{\kpon P_I(m, p)}^{I \rightarrow A} % I -> A
+    + \overbrace{\kroff P_R(m, p)}^{R \rightarrow I} % R -> I
+    - \overbrace{\kron P_I(m, p)}^{I \rightarrow R}\\ % I -> R
     &+ \overbrace{\gm (m + 1) P_I(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
     - \overbrace{\gm m P_I(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
     &+ \overbrace{r_p m P_I(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
@@ -78,8 +78,8 @@ And finally, for the repressor bound state $R$ we have
 \begin{equation}
   \begin{aligned}
     \dt{P_R(m, p)} &=
-    - \overbrace{\kroff P_R(m, p)}^{R \rightarrow I} % R -> E
-    + \overbrace{\kron P_I(m, p)}^{I \rightarrow R}\\ % E -> R
+    - \overbrace{\kroff P_R(m, p)}^{R \rightarrow I} % R -> I
+    + \overbrace{\kron P_I(m, p)}^{I \rightarrow R}\\ % I -> R
     &+ \overbrace{\gm (m + 1) P_R(m+1 , p)}^{m+1 \rightarrow m} % m+1 -> m
     - \overbrace{\gm m P_R(m , p)}^{m \rightarrow m-1}\\ % m -> m-1
     &+ \overbrace{r_p m P_R(m, p - 1)}^{p-1 \rightarrow p} % p-1 -> p
