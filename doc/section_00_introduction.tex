@@ -88,12 +88,13 @@ input-output distributions allows us to compute the mutual information between
 inputs and outputs $I(c; p)$ for any arbitrary input distribution $P(c)$. We opt
 to compute the channel capacity, i.e. the maximum information that can be
 processed by this gene regulatory architecture, defined as \eref{eq_mutual_info}
-maximized over all possible input distributions $P(c)$. Doing so we can examine
-the physical limits of what cells can do in terms of information processing by
-harboring these genetic circuits. All parameters used for our model were
-inferred from a series of studies that span several experimental techniques
-\cite{Garcia2011c, Jones2014a, Brewster2014, Razo-Mejia2018}, allowing us to
-perform parameter-free predictions of this quantity \cite{Phillips2019}.
+maximized over all possible input distributions $P(c)$. By doing so we can
+examine the physical limits of what cells can do in terms of information
+processing by harboring these genetic circuits. All parameters used for our
+model were inferred from a series of studies that span several experimental
+techniques \cite{Garcia2011c, Jones2014a, Brewster2014, Razo-Mejia2018},
+allowing us to perform parameter-free predictions of this information processing
+capacity \cite{Phillips2019}.
 
 These predictions are then contrasted with experimental data, where the channel
 capacity is inferred from single-cell fluorescence distributions taken at
@@ -106,20 +107,20 @@ which cells can resolve the environmental state with no free parameters.
 The reminder of the paper is organized as follows. In \secref{sec_model} we
 define the minimal theoretical model and parameter inference for a simple
 repression genetic circuit. \secref{sec_param} discusses how all parameters for
-the minimal model were determined from published datasets that explore different
+the minimal model are determined from published datasets that explore different
 aspects of the simple repression motif. \secref{sec_moments} computes the
 moments of the mRNA and protein distributions from this minimal model. In
 \secref{sec_cell_cycle} we explore the consequences of variability in gene copy
 number during the cell cycle. In this section we compare experimental and
 theoretical quantities related to the moments of the distribution. Specifically
-the predictions for the fold-change in gene expression (mean relative expression
-with respect to an unregulated promoter) and the gene expression noise (standard
-deviation over mean). \secref{sec_maxent} follows with reconstruction of the
-full mRNA and protein distribution from the moments using the maximum entropy
-principle. Finally \secref{sec_channcap} uses the distributions from
-\secref{sec_maxent} to compute the maximum amount of information that the
-genetic circuit can process. Here we again contrast our zero-parameter fit
-predictions with experimental inferences of the channel capacity.
+the predictions for the fold-change in gene expression (mean expression relative
+to an unregulated promoter) and the gene expression noise (standard deviation
+over mean). \secref{sec_maxent} follows with reconstruction of the full mRNA and
+protein distribution from the moments using the maximum entropy principle.
+Finally \secref{sec_channcap} uses the distributions from \secref{sec_maxent} to
+compute the maximum amount of information that the genetic circuit can process.
+Here we again contrast our zero-parameter fit predictions with experimental
+inferences of the channel capacity.
 
 
 \begin{figure}[h!]
