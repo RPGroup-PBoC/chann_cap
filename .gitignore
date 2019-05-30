@@ -69,6 +69,7 @@ output/
 data/microscopy/
 data/csv_channcap_bootstrap/
 data/csv_protein_dist/
+data/csv_gillespie/
 data/mRNA_FISH/
 data/mcmc/
 data/csv_maxEnt_dist/
