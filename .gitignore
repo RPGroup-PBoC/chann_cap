@@ -61,6 +61,9 @@ graphicspath.tex
 **/.ipynb_checkpoints/
 *pycache*
 
+# Ignore pickle files
+*.pkl
+*.dill
 
 # Local directories to ignore
 tmp/
