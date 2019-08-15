@@ -185,8 +185,8 @@ def maxEnt_from_lagrange(mRNA, protein, lagrange,
     # check if the log probability should be returned
     if log:
         return np.sum(operations, axis=0) -\
-            sp.misc.logsumexp(np.sum(operations, axis=0))
+            sp.special.logsumexp(np.sum(operations, axis=0))
     else:
         return np.exp(np.sum(operations, axis=0) -
-                      sp.misc.logsumexp(np.sum(operations, axis=0)))
+                      sp.special.logsumexp(np.sum(operations, axis=0)))
 
