@@ -30,10 +30,6 @@
 	singlelinecheck=off
 ]{caption}
 
-% Add numbered lines
-\usepackage{lineno}
-\linenumbers
-
 % Package to include multiple title pages
 % This will allow me to add a tile to the main text and to the SI
 \usepackage{titling}
@@ -163,10 +159,11 @@ Pasadena, CA 91125, USA}
 		\setboolean{maintext}{true}
 		\ifthenelse{\boolean{maintext}}{
 		\maketitle % Set title for paper
-
+		\input{nat_comm_rev_01.tex}
+		% \input{rev_jane_kondev.tex}
 		% \input{rev_gasper_tkacik.tex}
 		% \input{rev_alvaro_sanchez.tex}
-		\input{rev_sarah_marzen.tex}
+		% \input{rev_sarah_marzen.tex}
 		% \input{rev_rachel_taubman.tex}
 		}{}% Close boolean to compile main text
 		% Print main text references
