@@ -3,7 +3,7 @@
 Title:
     model.py
 Last update:
-    2018-10-22
+    2019-11-02
 Author(s):
     Manuel Razo-Mejia
 Purpose:
@@ -11,7 +11,7 @@ Purpose:
     theoretical model for transcriptional regulation relevant
     for the channel capacity project
 """
-# Our numerical workhorses
+import pickle
 import numpy as np
 import scipy as sp
 import scipy.optimize
@@ -200,3 +200,48 @@ def dmomdt(A_mat, expo, t, mom_init, states=['E', 'P', 'R']):
     
     return df
 
+def load_constants():
+    '''
+    Returns a dictionary of various constants 
+    '''
+    # Define constants
+    epR_O1=-15.3
+    epR_O2=-13.9
+    epR_O3=-9.7 
+    HG104=22
+    RBS1027=260
+    RBS1L=1740
+    Nns=4.6E6
+    epAI=4.5
+    Ka=139
+    Ki=0.53
+    gm=1 / (3 * 60)
+    k0=2.7E-3
+    Vcell=2.15
+    rp=0.05768706295740175
+    # Load MCMC parameters
+    with open('../../data/mcmc/lacUV5_constitutive_mRNA_double_expo.pkl',
+            'rb') as file:
+        unpickler = pickle.Unpickler(file)
+        gauss_flatchain = unpickler.load()
+        gauss_flatlnprobability = unpickler.load()
+    # Generate a Pandas Data Frame with the mcmc chain
+    index = ['kp_on', 'kp_off', 'rm']
+    # Generate a data frame out of the MCMC chains
+    df_mcmc = pd.DataFrame(gauss_flatchain, columns=index)
+    index = df_mcmc.columns
+    # map value of the parameters
+    max_idx = np.argmax(gauss_flatlnprobability, axis=0)
+    kp_on, kp_off, rm = df_mcmc.iloc[max_idx, :] * gm
+
+    # Compute repressor dissociation constants
+    kr_off_O1 = kr_off_fun(epR_O1, k0, kp_on, kp_off, Nns, Vcell)
+    kr_off_O2 = kr_off_fun(epR_O2, k0, kp_on, kp_off, Nns, Vcell)
+    kr_off_O3 = kr_off_fun(epR_O3, k0, kp_on, kp_off, Nns, Vcell)
+
+    return dict(epR_O1=epR_O1, epR_O2=epR_O2, epR_O3=epR_O3,
+                HG104=HG104, RBS1027=RBS1027, RBS1L=RBS1L,
+                Nns=Nns, epAI=epAI, Ka=Ka, Ki=Ki,
+                gm=gm, rm=rm, kp_on=kp_on, kp_off=kp_off, k0=k0, Vcell=Vcell,
+                rp=rp,
+                kr_off_O1=kr_off_O1, kr_off_O2=kr_off_O2, kr_off_O3=kr_off_O3)
