@@ -19,6 +19,7 @@ import scipy.special
 import scipy.integrate
 import mpmath
 import pandas as pd
+import git
 
 
 # THERMODYNAMIC FUNCTIONS
@@ -157,7 +158,29 @@ def kr_off_fun(eRA, k0, kp_on, kp_off, Nns=4.6E6, Vcell=2.15):
 
 
 # DISTRIBUTION MOMENT DYNAMICS
-def dmomdt(A_mat, expo, t, mom_init, states=['E', 'P', 'R']):
+def rhs_dmomdt(mom, t, A):
+    '''
+    Function that computes the right-hand side of the moment
+    dynamics equation
+    dµ/dt = Aµ
+    This funciton is fed to the scipy.integrate.odeint function
+    Parameters
+    ----------
+    mom : array-like
+        Array containing all of the moments included in the matrix
+        dynamics A.
+    t : array-like
+        time array
+    A : 2D-array.
+        Matrix containing the linear coefficients of the moment
+        dynamics equation
+    Returns
+    -------
+    Right hand-side of the moment dynamics
+    '''
+    return np.dot(A, mom)
+
+def dmomdt(A_mat, expo, t, mom_init, states=['I', 'A', 'R']):
     '''
     Function to integrate 
     dµ/dt = Aµ
@@ -200,10 +223,160 @@ def dmomdt(A_mat, expo, t, mom_init, states=['E', 'P', 'R']):
     
     return df
 
+def dmomdt_cycles(mom_init, t_single, t_double,
+                  A_mat_fun, par_single, par_double,
+                  expo, n_cycles, Z_mat,
+                  n_steps=1000, states=['A', 'I']):
+    '''
+    Function that integrates the moment dynamics over several cell 
+    cycles. The dynamics are integrated assuming a non-poisson
+    protein degradation. So the protein is only degraded due to 
+    cell division.
+    
+    Parameters
+    ----------
+    mom_init : array-like.
+        Array containing the  initial conditions for the moment 
+        of the states of the promoter.
+    t_single : float.
+        Time [in 1/mRNA degradation rate units] that cells spend 
+        with a single promoter copy
+    t_double : float.
+        Time [in 1/mRNA degradation rate units] that cells spend 
+        with a two promoter copies.
+    A_mat_fun: function.
+        Function to build the matrix moment dynamics. 
+        This function takes as input the necessary rates 
+        to build the matrix that defines the dynamics
+        dµ/dt = A_mat * µ.
+    par_single, par_double: list.
+        Lists containing the rate parameters to be fed into the
+        A_mat_fun function. These parameters must come in the 
+        correct order that will be fed into the funciton.
+        par_single = parameters for single promoter
+        par_double = parameter for two promoters
+    expo : array-like
+        List containing the moments involved in the 
+        dynamics defined by A
+    n_cycles : int.
+        Number of cell cycles to integrate for. A cell cycle is defined
+        as t_single + t_double.
+    Z_mat : array-like.
+        Array containing the linear coefficients to compute the moments
+        after the cell division
+    n_steps : int. Default = 1000.
+        Number of steps to use for the numerical integration.
+    states : array-like. Default = ['A', 'I']
+        Array containing the strings that define the moments that the
+        promoter can be found at. For an unregulated promoter the only
+        two available states are 'A' (active state) and 'E' (inactive).
+        For the regulated case a third state 'R' (repressor bound) is
+        available to the system.
+
+    Returns
+    -------
+    distribution moment dynamics over cell cycles
+    '''
+    # Initialize names for moments in data frame
+    names = ['m{0:d}p{1:d}'.format(*x) + s for x in expo 
+             for s in states]
+    
+    # Substitute value of parameters on matrix
+    # Single promoter
+    A_mat_s = A_mat_fun(*par_single)
+    # Two promoters
+    A_mat_d = A_mat_fun(*par_double)
+
+    # Generate division matrix for all states
+    # Initialize matrix
+    Z_mat_div = np.zeros([len(names), len(names)])
+    
+    # Loop through exponents
+    for i, e in enumerate(expo):
+        # Loop through states
+        for j, s in enumerate(states):
+            Z_mat_div[(i * len(states)) + j,
+                      j::len(states)] = Z_mat[i]
+    
+    # Initialize data frame
+    df = pd.DataFrame(columns=['time', 'state', 'cycle'] + names)
+    
+    # Initilaize global time
+    t_sim = 0
+    
+    ###  Loop through cycles  ###
+    for cyc in range(n_cycles):
+        # == Single promoter == #
+        # Define time array
+        t = np.linspace(0, t_single, n_steps)
+
+        # Integrate moment equations
+        mom = sp.integrate.odeint(rhs_dmomdt, mom_init, t, 
+                             args=(A_mat_s,))
+
+        # Generate data frame
+        df_mom = pd.DataFrame(mom, columns=names)
+        # Append time, state and cycle
+        df_mom = df_mom.assign(time=t + t_sim)
+        df_mom = df_mom.assign(state=['single'] * mom.shape[0])
+        df_mom = df_mom.assign(cycle=[cyc] * mom.shape[0])
+        
+        # Append results to global data frame
+        df = df.append(df_mom, ignore_index=True, sort=False)
+        
+        # Update global time
+        # NOTE: Here we account for whether or not this is the first cycle
+        # This is because of the extra time bit we have to add in order not
+        # to have two overlapping time points
+        if cyc == 0:
+            t_sim = t_sim + t[-1]
+        else:
+            t_sim = t_sim + t[-1] + np.diff(t)[0]
+        
+        # == Two promoters == #
+        
+        # Define initial conditions as last 
+        # point of single promoter state
+        mom_init = mom[-1, :]
+        
+        # Define time array
+        t = np.linspace(0, t_double, n_steps)
+
+        # Integrate moment equations
+        mom = sp.integrate.odeint(rhs_dmomdt, mom_init, t, 
+                                  args=(A_mat_d,))
+
+        # Generate data frame
+        df_mom = pd.DataFrame(mom, columns=names)
+        # Append time, state and cycle
+        df_mom = df_mom.assign(time=t + t_sim)
+        df_mom = df_mom.assign(state=['double'] * mom.shape[0])
+        df_mom = df_mom.assign(cycle=[cyc] * mom.shape[0])
+        
+        # Append results to global data frame
+        df = df.append(df_mom, ignore_index=True, sort=False)
+        
+        # Update global time
+        t_sim = t_sim + t[-1] + np.diff(t)[0]
+        
+        # == Cell division == #
+        
+        # Extract moments during last time point
+        mom_fix = mom[-1, :]
+        
+        # Compute moments after cell division
+        mom_init = np.dot(Z_mat_div, mom_fix)
+        
+    return df
+
+
 def load_constants():
     '''
     Returns a dictionary of various constants 
     '''
+    # Find project parental directory
+    repo = git.Repo('./', search_parent_directories=True)
+    homedir = repo.working_dir
     # Define constants
     epR_O1=-15.3
     epR_O2=-13.9
@@ -220,8 +393,8 @@ def load_constants():
     Vcell=2.15
     rp=0.05768706295740175
     # Load MCMC parameters
-    with open('../../data/mcmc/lacUV5_constitutive_mRNA_double_expo.pkl',
-            'rb') as file:
+    with open(homedir + '/data/mcmc/lacUV5_constitutive_mRNA_double_expo.pkl',
+              'rb') as file:
         unpickler = pickle.Unpickler(file)
         gauss_flatchain = unpickler.load()
         gauss_flatlnprobability = unpickler.load()
