@@ -25,10 +25,9 @@ import matplotlib as mpl
 import seaborn as sns
 
 # Import the utils for this project
-sys.path.insert(0, '../')
-import channcap_exp_utils as chann_cap
+import ccutils
 
-chann_cap.set_plotting_style()
+ccutils.viz.set_plotting_style()
 
 # =============================================================================
 # METADATA
@@ -36,10 +35,11 @@ chann_cap.set_plotting_style()
 
 from metadata import *
 
-N_JOBS = 6
+N_JOBS = 48
 
 # Boolean indicating if the computation should be performed or not
-compute_exp = False
+compute_exp = True
+compute_shuffle = True
 
 # Determine the parameters for the bootstraping
 bins = np.floor(np.logspace(0, 4, 100))
@@ -57,6 +57,9 @@ df_micro = pd.read_csv('../../../data/csv_microscopy/' +
 
 # Define output directory
 outputdir = '../../../data/csv_channcap_bootstrap/'
+
+# Extract autofluorescence data
+mean_auto = df_micro[df_micro.rbs == 'auto'].mean_intensity.mean()
 # removing the auto and delta
 df = df_micro[(df_micro.rbs != 'auto') & (df_micro.rbs != 'delta')]
 
@@ -70,8 +73,14 @@ if compute_exp:
         samp_sizes = np.zeros(len(fracs))
         for i, frac in enumerate(fracs):
             MI_bs[i, :], samp_sizes[i] = \
-                chann_cap.channcap_bootstrap(df, bins=b, nrep=nreps, frac=frac,
-					     **{'output_col': 'intensity'})
+                ccutils.channcap.channcap_bootstrap(
+                        df,
+                        bins=b,
+                        nrep=nreps,
+                        frac=frac,
+		        **{'output_col': 'intensity', 
+                           'extract_auto': mean_auto}
+                        )
         return (MI_bs, samp_sizes)
 
     # Perform the parallel computation
@@ -87,8 +96,11 @@ if compute_exp:
     kwargs = dict((x, df[x].unique()[0]) for x in kwarg_list)
 
     # Convert the list into a tidy data frame
-    df_cc_bs = chann_cap.tidy_df_channcap_bs(
-        channcap_list, fracs, bins, **kwargs)
+    df_cc_bs = ccutils.channcap.tidy_df_channcap_bs(
+            channcap_list, 
+            fracs,
+            bins,
+            **kwargs)
 
     # Save outcome
     filename = str(kwargs['date']) + '_' + kwargs['operator'] + '_' +\
@@ -125,8 +137,7 @@ df_cc[['date', 'bins']] = df_cc[['date', 'bins']].astype(int)
 # =============================================================================
 # Computing the channel capacity for randomized data
 # =============================================================================
-
-if compute_exp:
+if compute_shuffle:
     print('shuffling  data')
     df = df.assign(shuffled=df.intensity.sample(frac=1).values)
 
@@ -136,9 +147,14 @@ if compute_exp:
         MI_bs = np.zeros([len(fracs), nreps])
         samp_sizes = np.zeros(len(fracs))
         for i, frac in enumerate(fracs):
-            MI_bs[i, :], samp_sizes[i] = \
-                chann_cap.channcap_bootstrap(df, bins=b, nrep=nreps, frac=frac,
-                                             **{'output_col': 'shuffled'})
+            MI_bs[i, :], samp_sizes[i] = ccutils.channcap.channcap_bootstrap(
+                    df,
+                    bins=b,
+                    nrep=nreps,
+                    frac=frac,
+                    **{'output_col': 'intensity', 
+                       'extract_auto': mean_auto}
+                    )
         return (MI_bs, samp_sizes)
 
     # Perform the parallel computation
@@ -154,8 +170,12 @@ if compute_exp:
     # Extract the parameters from the data frame
     kwargs = dict((x, df[x].unique()[0]) for x in kwarg_list)
     # Convert the list into a tidy data frame
-    df_cc_bs_shuff = chann_cap.tidy_df_channcap_bs(channcap_list_shuff, fracs,
-                                                   bins, **kwargs)
+    df_cc_bs_shuff = ccutils.channcap.tidy_df_channcap_bs(
+            channcap_list_shuff,
+            fracs,
+            bins, 
+            **kwargs
+            )
     # Save outcome
     filename = str(kwargs['date']) + '_' + kwargs['operator'] + '_' +\
         kwargs['rbs'] + '_' + 'channcap_bootstrap_shuffled.csv'
@@ -204,5 +224,4 @@ ax.set_xlabel('# bins')
 ax.set_ylabel(r'channel capacity $I_\infty$ (bits)')
 ax.set_xscale('log')
 ax.legend(loc=0, title='date ' + str(DATE))
-plt.tight_layout()
-plt.savefig('./outdir/bins_vs_channcap.png', bbox_inches='tight')
+plt.savefig('./outdir/bins_vs_channcap.png')

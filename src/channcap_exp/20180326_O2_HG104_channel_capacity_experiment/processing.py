@@ -25,51 +25,47 @@ import matplotlib as mpl
 import seaborn as sns
 
 # Import the utils for this project
-sys.path.insert(0, '../')
-import channcap_exp_utils as chann_cap
+import ccutils
 
-chann_cap.set_plotting_style()
+ccutils.viz.set_plotting_style()
 
-#==============================================================================
+# =============================================================================
 # METADATA
-#==============================================================================
+# =============================================================================
 
-DATE = 20180326
-USERNAME = 'mrazomej'
-OPERATOR = 'O2'
-STRAIN = 'HG104'
-REPRESSOR = 11
-BINDING_ENERGY = -13.9
+from metadata import *
+
 N_JOBS = 48
 
 # Boolean indicating if the computation should be performed or not
 compute_exp = True
+compute_shuffle = True
 
 # Determine the parameters for the bootstraping
 bins = np.floor(np.logspace(0, 4, 100))
 fracs = 1 / np.linspace(1 / 0.6, 1, 10)
-nreps = 25 # number of bootstrap samples per fraction
+nreps = 25  # number of bootstrap samples per fraction
 
-#============================================================================== 
+# =============================================================================
 
 # Read data
-df_micro = pd.read_csv('../../../data/csv_microscopy/' + \
-        str(DATE) + '_' + OPERATOR + '_' + STRAIN + \
-        '_IPTG_titration_microscopy.csv', header=0, comment='#') 
+df_micro = pd.read_csv('../../../data/csv_microscopy/' +
+                       str(DATE) + '_' + OPERATOR + '_' + STRAIN +
+                       '_IPTG_titration_microscopy.csv', header=0, comment='#')
 
-# Include absolute intensity column
-df_micro.loc[:, 'intensity'] = df_micro['mean_intensity'] * df_micro['area']
-
-#============================================================================== 
+# =============================================================================
 
 # Define output directory
 outputdir = '../../../data/csv_channcap_bootstrap/'
+
+# Extract autofluorescence data
+mean_auto = df_micro[df_micro.rbs == 'auto'].mean_intensity.mean()
 # removing the auto and delta
 df = df_micro[(df_micro.rbs != 'auto') & (df_micro.rbs != 'delta')]
 
-#============================================================================== 
+# =============================================================================
 # Compute channel capacity for experimental data
-#============================================================================== 
+# =============================================================================
 if compute_exp:
     def channcap_bs_parallel(b):
         # Initialize matrix to save bootstrap repeats
@@ -77,36 +73,46 @@ if compute_exp:
         samp_sizes = np.zeros(len(fracs))
         for i, frac in enumerate(fracs):
             MI_bs[i, :], samp_sizes[i] = \
-                chann_cap.channcap_bootstrap(df, bins=b, nrep=nreps, frac=frac,
-					     **{'output_col': 'intensity'})
+                ccutils.channcap.channcap_bootstrap(
+                        df,
+                        bins=b,
+                        nrep=nreps,
+                        frac=frac,
+		        **{'output_col': 'intensity', 
+                           'extract_auto': mean_auto}
+                        )
         return (MI_bs, samp_sizes)
 
     # Perform the parallel computation
     print('Performing bootsrap estimates of channel capacity...')
-    channcap_list = Parallel(n_jobs=48)(delayed(channcap_bs_parallel)(b) \
+    channcap_list = Parallel(n_jobs=N_JOBS)(delayed(channcap_bs_parallel)(b)
                                         for b in bins)
     print('Done performing calculations.')
 
     # Define the parameters to include in the data frame
-    kwarg_list = ['date', 'username', 'operator', 'binding_energy',  'rbs', 
-                    'repressors']
+    kwarg_list = ['date', 'username', 'operator', 'binding_energy',  'rbs',
+                  'repressors']
     # Extract the parameters from the data frame
     kwargs = dict((x, df[x].unique()[0]) for x in kwarg_list)
 
     # Convert the list into a tidy data frame
-    df_cc_bs = chann_cap.tidy_df_channcap_bs(channcap_list, fracs, bins, **kwargs)
+    df_cc_bs = ccutils.channcap.tidy_df_channcap_bs(
+            channcap_list, 
+            fracs,
+            bins,
+            **kwargs)
 
     # Save outcome
     filename = str(kwargs['date']) + '_' + kwargs['operator'] + '_' +\
-                kwargs['rbs'] + '_' + 'channcap_bootstrap.csv'
+        kwargs['rbs'] + '_' + 'channcap_bootstrap.csv'
     df_cc_bs.to_csv(outputdir + filename, index=False)
     print('Saved as dataframe.')
 
-#============================================================================== 
+# =============================================================================
 # Extrapolate to N -> oo
-#============================================================================== 
+# =============================================================================
 filename = str(DATE) + '_' + OPERATOR + '_' +\
-               STRAIN + '_' + 'channcap_bootstrap.csv'
+    STRAIN + '_' + 'channcap_bootstrap.csv'
 
 df_cc_bs = pd.read_csv(outputdir + filename, header=0)
 
@@ -122,18 +128,17 @@ for group, data in df_group:
     # Perform linear regression
     lin_reg = np.polyfit(x, y, deg=1)
     df_tmp = pd.Series([DATE, group, lin_reg[1]],
-                          index=['date', 'bins', 'channcap'])
+                       index=['date', 'bins', 'channcap'])
     df_cc = df_cc.append(df_tmp, ignore_index=True)
 
 # Convert date and bins into integer
 df_cc[['date', 'bins']] = df_cc[['date', 'bins']].astype(int)
 
-#============================================================================== 
+# =============================================================================
 # Computing the channel capacity for randomized data
-#============================================================================== 
-
-if compute_exp:
-    print('shuffling mean_intensity data')
+# =============================================================================
+if compute_shuffle:
+    print('shuffling  data')
     df = df.assign(shuffled=df.intensity.sample(frac=1).values)
 
     # Define the parallel function to run
@@ -142,38 +147,47 @@ if compute_exp:
         MI_bs = np.zeros([len(fracs), nreps])
         samp_sizes = np.zeros(len(fracs))
         for i, frac in enumerate(fracs):
-            MI_bs[i, :], samp_sizes[i] = chann_cap.channcap_bootstrap(df, bins=b,
-                                            nrep=nreps, frac=frac,
-                                            **{'output_col' : 'shuffled'})
+            MI_bs[i, :], samp_sizes[i] = ccutils.channcap.channcap_bootstrap(
+                    df,
+                    bins=b,
+                    nrep=nreps,
+                    frac=frac,
+                    **{'output_col': 'intensity', 
+                       'extract_auto': mean_auto}
+                    )
         return (MI_bs, samp_sizes)
 
     # Perform the parallel computation
     print('Performing bootsrap estimates on random data')
-    channcap_list_shuff = Parallel(n_jobs=N_JOBS)\
-                          (delayed(channcap_bs_parallel_shuff)(b) \
-                                        for b in bins)
+    channcap_list_shuff = \
+        Parallel(n_jobs=N_JOBS)(delayed(channcap_bs_parallel_shuff)(b)
+                                             for b in bins)
     print('Done performing calculations.')
 
     # Define the parameters to include in the data frame
-    kwarg_list = ['date', 'username', 'operator', 'binding_energy',  'rbs', 
-                    'repressors']
+    kwarg_list = ['date', 'username', 'operator', 'binding_energy',  'rbs',
+                  'repressors']
     # Extract the parameters from the data frame
     kwargs = dict((x, df[x].unique()[0]) for x in kwarg_list)
     # Convert the list into a tidy data frame
-    df_cc_bs_shuff = chann_cap.tidy_df_channcap_bs(channcap_list_shuff, fracs,
-                                                   bins, **kwargs)
+    df_cc_bs_shuff = ccutils.channcap.tidy_df_channcap_bs(
+            channcap_list_shuff,
+            fracs,
+            bins, 
+            **kwargs
+            )
     # Save outcome
     filename = str(kwargs['date']) + '_' + kwargs['operator'] + '_' +\
-                kwargs['rbs'] + '_' + 'channcap_bootstrap_shuffled.csv'
+        kwargs['rbs'] + '_' + 'channcap_bootstrap_shuffled.csv'
     df_cc_bs_shuff.to_csv(outputdir + filename, index=False)
     print('Saved as dataframe.')
 
-#============================================================================== 
+# =============================================================================
 # Extraploate randomized data to N -> oo
-#============================================================================== 
+# =============================================================================
 
 filename = str(DATE) + '_' + OPERATOR + '_' +\
-               STRAIN + '_' + 'channcap_bootstrap_shuffled.csv'
+    STRAIN + '_' + 'channcap_bootstrap_shuffled.csv'
 
 df_cc_shuff = pd.read_csv(outputdir + filename, header=0)
 
@@ -189,15 +203,15 @@ for group, data in df_group:
     # Perform linear regression
     lin_reg = np.polyfit(x, y, deg=1)
     df_tmp = pd.Series([DATE, group, lin_reg[1]],
-                          index=['date', 'bins', 'channcap'])
+                       index=['date', 'bins', 'channcap'])
     df_cc_shuff = df_cc_shuff.append(df_tmp, ignore_index=True)
 
 # Convert date and bins into integer
 df_cc_shuff[['date', 'bins']] = df_cc_shuff[['date', 'bins']].astype(int)
 
-#============================================================================== 
+# =============================================================================
 # Plot channel capacity as a function of number of bins
-#============================================================================== 
+# =============================================================================
 # Initialize figure
 fig, ax = plt.subplots(1, 1)
 
@@ -211,4 +225,3 @@ ax.set_ylabel(r'channel capacity $I_\infty$ (bits)')
 ax.set_xscale('log')
 ax.legend(loc=0, title='date ' + str(DATE))
 plt.savefig('./outdir/bins_vs_channcap.png')
-
