@@ -85,8 +85,8 @@ def channel_capacity(QmC, epsilon=1E-3, info=1E4):
 
 # EXPERIMENTAL CHANNEL CAPACITY
 
-def trans_matrix(df, bins, frac=None,
-                 output_col='intensity', group_col='IPTG_uM'):
+def trans_matrix(df, bins, frac=None, output_col='intensity', 
+                 group_col='IPTG_uM', extract_auto=None):
     '''
     Builds the transition matrix P(m|C) from experimental data contained in a
     tidy dataframe. The matrix is build by grouping the data according to the
@@ -115,6 +115,9 @@ def trans_matrix(df, bins, frac=None,
         Name of the column that contains the inputs C of the matrix (usually
         inducer concentrations). This column will be used to separate the
         different rows ot the transition matrix.
+    extract_auto : float.
+        Mean autofluorescence per unit area that must be extracted to the
+        group_col column values
     Returns
     -------
     QmC : array-like.
@@ -122,9 +125,11 @@ def trans_matrix(df, bins, frac=None,
     len(df) : int
         Number of data points considered for building the matrix
     '''
-
     # Extract the data to bin
     bin_data = df[output_col]
+    # Subtract background if asked for
+    if extract_auto != None:
+        bin_data = bin_data - extract_auto * df['area']
 
     # indicate the range in which bin the data
     bin_range = [np.min(bin_data), np.max(bin_data)]

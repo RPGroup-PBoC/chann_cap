@@ -35,7 +35,7 @@ ccutils.viz.set_plotting_style()
 
 from metadata import *
 
-N_JOBS = 6
+N_JOBS = 48
 
 # Boolean indicating if the computation should be performed or not
 compute_exp = True
@@ -147,9 +147,14 @@ if compute_shuffle:
         MI_bs = np.zeros([len(fracs), nreps])
         samp_sizes = np.zeros(len(fracs))
         for i, frac in enumerate(fracs):
-            MI_bs[i, :], samp_sizes[i] = \
-                chann_cap.channcap_bootstrap(df, bins=b, nrep=nreps, frac=frac,
-                                             **{'output_col': 'shuffled'})
+            MI_bs[i, :], samp_sizes[i] = ccutils.channcap.channcap_bootstrap(
+                    df,
+                    bins=b,
+                    nrep=nreps,
+                    frac=frac,
+                    **{'output_col': 'intensity', 
+                       'extract_auto': mean_auto}
+                    )
         return (MI_bs, samp_sizes)
 
     # Perform the parallel computation
@@ -165,8 +170,12 @@ if compute_shuffle:
     # Extract the parameters from the data frame
     kwargs = dict((x, df[x].unique()[0]) for x in kwarg_list)
     # Convert the list into a tidy data frame
-    df_cc_bs_shuff = chann_cap.tidy_df_channcap_bs(channcap_list_shuff, fracs,
-                                                   bins, **kwargs)
+    df_cc_bs_shuff = ccuitls.channcap.tidy_df_channcap_bs(
+            channcap_list_shuff,
+            fracs,
+            bins, 
+            **kwargs
+            )
     # Save outcome
     filename = str(kwargs['date']) + '_' + kwargs['operator'] + '_' +\
         kwargs['rbs'] + '_' + 'channcap_bootstrap_shuffled.csv'
