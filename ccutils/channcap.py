@@ -86,7 +86,7 @@ def channel_capacity(QmC, epsilon=1E-3, info=1E4):
 # EXPERIMENTAL CHANNEL CAPACITY
 
 def trans_matrix(df, bins, frac=None,
-                 output_col='mean_intensity', group_col='IPTG_uM'):
+                 output_col='intensity', group_col='IPTG_uM'):
     '''
     Builds the transition matrix P(m|C) from experimental data contained in a
     tidy dataframe. The matrix is build by grouping the data according to the
