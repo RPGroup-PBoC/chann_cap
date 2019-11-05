@@ -170,7 +170,7 @@ if compute_shuffle:
     # Extract the parameters from the data frame
     kwargs = dict((x, df[x].unique()[0]) for x in kwarg_list)
     # Convert the list into a tidy data frame
-    df_cc_bs_shuff = ccuitls.channcap.tidy_df_channcap_bs(
+    df_cc_bs_shuff = ccutils.channcap.tidy_df_channcap_bs(
             channcap_list_shuff,
             fracs,
             bins, 
