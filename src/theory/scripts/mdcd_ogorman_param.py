@@ -73,7 +73,17 @@ param = dict(epR_O1=epR_O1, epR_O2=epR_O2, epR_O3=epR_O3,
              kr_off_O1=kr_off_O1, kr_off_O2=kr_off_O2, kr_off_O3=kr_off_O3)
 
 # Define experimental concentrations in µM
-inducer = [0, 0.1, 5, 10, 25, 50, 75, 100, 250, 500, 1000, 5000] # µM
+inducer = np.logspace(-1, np.log10(5000), 49) # µM
+inducer = np.insert(inducer, 0, 0)
+inducer_exp = [0, 0.1, 5, 10, 25, 50, 75, 100, 250, 500, 
+               1000, 5000] # µM
+# Add them to list
+inducer =  np.sort(
+    np.unique(
+        np.concatenate([inducer, inducer_exp])
+            )
+        )
+
 # Define repressor copy numebers
 repressors = [0, 22, 260, 1740]
 
