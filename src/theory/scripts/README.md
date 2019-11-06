@@ -18,6 +18,10 @@ they derive.
   moments of the mRNA and protein distribution for a fine grid of repressor
   copy number values with the 12 experimental IPTG concentrations.
 
+- `mdcd_repressor_extended_range.py` : This script computes in parallel the average
+  moments of the mRNA and protein distribution for a grid of repressor up to 10^6
+  copy number values with the 12 experimental IPTG concentrations.
+
 - `mdcd_ogorman_param.py` : This script computes in parallel the average
   moments of the mRNA and protein distribution for the experimentally measured
   combinations of operators and repressors, but this time using the global
