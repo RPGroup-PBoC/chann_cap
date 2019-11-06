@@ -18,3 +18,9 @@ they derive.
   moments of the mRNA and protein distribution for a fine grid of repressor
   copy number values with the 12 experimental IPTG concentrations.
 
+- `mdcd_ogorman_param.py` : This script computes in parallel the average
+  moments of the mRNA and protein distribution for the experimentally measured
+  combinations of operators and repressors, but this time using the global
+  parameter inferences as reported in [Chure et. al, 2019](https://www.rpgroup.caltech.edu/mwc_mutants/index.html)
+  that phenomenologically capture better the induction profile for the O3
+  operator and the general steepness of the other strains.
