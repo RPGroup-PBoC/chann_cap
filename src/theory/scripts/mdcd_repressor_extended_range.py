@@ -175,7 +175,7 @@ for s in constraint_series:
     df_constraints = df_constraints.append(s, ignore_index=True)
 
 # Save progress at each step
-df_constraints.to_csv(datadir + 'MaxEnt_multi_prom_constraints.csv',
+df_constraints.to_csv(datadir + 'MaxEnt_constraints_mult_protein_ext_R.csv',
             index=False)
 
 print('done!')
