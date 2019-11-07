@@ -23,4 +23,5 @@ df_micro = df_micro[~df_micro['date'].isin(ignore_dates)]
 df_micro = df_micro.rename(columns={'repressors': 'repressor'})
 
 # Export file
-df_micro.to_csv('../../../data/csv_microscopy/single_cell_microscopy_data.csv')
+df_micro.to_csv('../../../data/csv_microscopy/single_cell_microscopy_data.csv',
+                index=False)
