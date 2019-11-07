@@ -12,7 +12,7 @@ import numpy as np
 Title:
     viz.py
 Last update:
-    2018-10-22
+    2019-11-06
 Author(s):
     Manuel Razo-Mejia
 Purpose:
@@ -311,3 +311,47 @@ def joint_marginal_plot(x, y, Pxy,
 
         # Label colorbar
         cbar.set_label(cbar_label)
+
+def jitterplot_errorbar(ax, data, x='operator', 
+                        y='noise', y_lower='noise_lower',
+                        y_upper='noise_upper', jitter=0.05, color=None,
+                        fmt='o'):
+    '''
+    Function to create a jitterplot in matplotlib that includes errorbars.
+    Parameters
+    ----------
+    ax : matplotlib axis.
+        axis subplot where to plot data
+    data : pandas tidy dataframe
+        dataframe containing the data to be plotted.
+    x : string. Default='operator'
+        name of the column used as the categories to split the data by
+    y : string. Default='noise'
+        name of the column used for the y-axis
+    y_lower, y_upper : string. Default='noise lower' & 'noise_upper' 
+        name of the columns containing the position of the error bars
+    jitter : float. Default=0.05
+        relative size of the jitter
+    color : list
+        list of colors for each category
+    fmt : str.
+        option for matplotlib's error bar
+    '''
+    # Group data by x
+    group = data.groupby('operator')
+    # Set colors if necessary
+    if color == None:
+        color = sns.color_palette('colorblind', n_colors=len(group))
+    
+    # Loop through groups
+    for i, (g, d) in enumerate(group):
+        # Generate jitter
+        jit = np.random.normal(0, jitter, len(d))
+        # Plot error bars
+        ax.errorbar(x=jit + i, y=d[y],
+                    yerr=[d[y] - d[y_lower], d[y_upper] - d[y]],
+                    color=color[i], fmt=fmt)
+        
+    # Set ticks
+    ax.set_xticks(range(len(group)))
+    ax.set_xticklabels([g for g, d in group])
