@@ -3,7 +3,7 @@
 Title:
     stasts.py
 Last update:
-    2018-11-22
+    2019-11-06
 Author(s):
     Manuel Razo-Mejia
 Purpose:
@@ -111,3 +111,38 @@ def nw_kernel_smooth(x_0, x, y, lam, kernel_fun=gauss_kernel):
         for i in range(len(x_0)):
             y_smooth[i] = single_point_estimate(x_0[i])
         return y_smooth
+
+# Bootstrap estimates
+def bootstrap_estimate(data, function, n_estimates=100000):
+    '''
+    Function to compute a bootstrap estimate of any function applied to a data
+    array.
+    Parameters
+    ----------
+    data : array-like.
+        raw data values on which to perform the bootstrap resampling.
+    function : function
+        function (such as mean or standard deviation) that will be aplied on
+        the data array. This function must return a single scalar value.
+    n_estimates : int. Default = 100000
+        number of bootstrap estimates to be performed over the data
+
+    Returns
+    -------
+    bootstrap : array-like.
+        bootstrap estimates.
+    '''
+    # Define number of data points
+    n = len(data)
+
+    # Initialize array to save bootstrap estimates
+    bootstrap = np.zeros(n_estimates)
+
+    # Perform estimates
+    for i in range(n_estimates):
+        # resample data
+        d = np.random.choice(data, size=n, replace=True)
+        bootstrap[i] = function(d)
+
+    return bootstrap
+    
