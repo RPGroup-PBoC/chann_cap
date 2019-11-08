@@ -28,3 +28,12 @@ they derive.
   parameter inferences as reported in [Chure et. al, 2019](https://www.rpgroup.caltech.edu/mwc_mutants/index.html)
   that phenomenologically capture better the induction profile for the O3
   operator and the general steepness of the other strains.
+
+### `MaxEnt_approx_joint.ipynb` (`maxent`)
+
+- `maxent_mRNA_dist.py` : Script that takes the mRNA distribution moments as
+  inferred from the numerical integration of the dynamical equations and
+  computes the corresponding Lagrange multipliers for a maximum entropy
+  approximation of the distribution.
+
+
