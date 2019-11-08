@@ -53,9 +53,6 @@ for date, data in df_group:
                                  boots_auto[i] * sample.area.values)
         boots_std_delta[i] = np.std(sample.intensity.values -
                              boots_auto[i] * sample.area.values, ddof=1)
-    # Remove negative values
-    boots_mean_delta = boots_mean_delta[boots_mean_delta >= 0]
-    boots_std_delta = boots_std_delta[boots_mean_delta >= 0]
     # Compute ∆lacI noise
     boots_noise_delta = boots_std_delta / boots_mean_delta
     # Loop through percentiles and save information
@@ -101,10 +98,12 @@ for date, data in df_group:
             boots_std_inducer[i] = np.std(sample.intensity.values -
                                     boots_auto[i] * sample.area.values, ddof=1)
         # Remove netative reads
-        boots_mean_inducer = boots_mean_inducer[boots_mean_inducer >= 0]
-        boots_std_inducer = boots_std_inducer[boots_mean_inducer >= 0]
+        idx = boots_mean_inducer >= 0
+        boots_mean_inducer = boots_mean_inducer[idx]
+        boots_std_inducer = boots_std_inducer[idx]
         # Compute fold-change and noise
-        boots_fc_inducer = boots_mean_inducer / boots_mean_delta
+        boots_fc_inducer = boots_mean_inducer /\
+                           boots_mean_delta[0:sum(idx)]
         boots_noise_inducer = boots_std_inducer / boots_mean_inducer
 
         # Loop through percentiles and save information
