@@ -31,6 +31,11 @@ they derive.
 
 ### `MaxEnt_approx_joint.ipynb` (`maxent`)
 
+- `maxent_protein_dist.py` : Script that takes the protein distribution moments
+  as inferred from the numerical integration of the dynamical equations and
+  computes the corresponding Lagrange multipliers for a maximum entropy
+  approximation of the distribution.
+
 - `maxent_mRNA_dist.py` : Script that takes the mRNA distribution moments as
   inferred from the numerical integration of the dynamical equations and
   computes the corresponding Lagrange multipliers for a maximum entropy
