@@ -55,9 +55,6 @@ for i, mom in enumerate(moments):
 
 #%%
 
-# Indicate if the computation should be performed
-fit_dist = True
-
 # Initialize data frame to save the lagrange multipliers.
 names = ["operator", "binding_energy", "repressor", "inducer_uM"]
 # Add names of the constraints
@@ -75,7 +72,7 @@ def maxEnt_parallel_mRNA(idx, df):
     print("iteration: ", idx)
 
     # Extract constraints
-    constraints = df.loc[constraints_names]
+    constraints = df[constraints_names]
 
     # Perform MaxEnt computation
     # We use the Powell method because despite being slower it is more
@@ -86,7 +83,7 @@ def maxEnt_parallel_mRNA(idx, df):
         algorithm="Powell",
         tol=1e-5,
         paramtol=1e-5,
-        maxiter=8000,
+        maxiter=10000,
     )
     # Save Lagrange multipliers into dataframe
     series = pd.Series(Lagrange, index=names[4::])
