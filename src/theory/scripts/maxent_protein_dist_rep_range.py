@@ -25,7 +25,7 @@ datadir = '../../../data/csv_maxEnt_dist/'
 #%%
 # Load moments for multi-promoter level
 df_constraints = pd.read_csv(
-    f'{datadir}MaxEnt_multi_prom_constraints.csv'
+    f'{datadir}MaxEnt_constraints_mult_protein_ext_R.csv'
 )
 
 # Remove the zeroth moment column
@@ -34,13 +34,13 @@ df_constraints = df_constraints.drop(labels="m0p0", axis=1)
 #%%
 
 # Extract protein moments in constraints
-mRNA_mom =  [x for x in df_constraints.columns if 'p0' in x]
+prot_mom = [x for x in df_constraints.columns if "m0" in x]
 # Define index of moments to be used in the computation
-moments = [tuple(map(int, re.findall(r'\d+', s))) for s in mRNA_mom]
+moments = [tuple(map(int, re.findall(r"\d+", s))) for s in prot_mom]
 
 # Define sample space
-mRNA_space = np.arange(0, 1E2)
-protein_space = np.array([0])  # Dummy space
+mRNA_space = np.array([0])  # Dummy space
+protein_space = np.arange(0, 10e4)
 
 # Generate sample space as a list of pairs using itertools.
 samplespace = list(itertools.product(mRNA_space, protein_space))
@@ -67,7 +67,7 @@ df_maxEnt = pd.DataFrame([], columns=names)
 constraints_names = ["m" + str(m[0]) + "p" + str(m[1]) for m in moments]
 
 # Define function for parallel computation
-def maxEnt_parallel_mRNA(idx, df):
+def maxEnt_parallel(idx, df):
     # Report on progress
     print("iteration: ", idx)
 
@@ -80,10 +80,10 @@ def maxEnt_parallel_mRNA(idx, df):
     Lagrange = ccutils.maxent.MaxEnt_bretthorst(
         constraints,
         features,
-        algorithm='Powell',
+        algorithm="Powell",
         tol=1e-5,
         paramtol=1e-5,
-        maxiter=8000,
+        maxiter=10000,
     )
     # Save Lagrange multipliers into dataframe
     series = pd.Series(Lagrange, index=names[4::])
@@ -95,7 +95,7 @@ def maxEnt_parallel_mRNA(idx, df):
 
 # Run the function in parallel
 maxEnt_series = Parallel(n_jobs=6)(
-    delayed(maxEnt_parallel_mRNA)(idx, df)
+    delayed(maxEnt_parallel)(idx, df)
     for idx, df in df_constraints.iterrows()
 )
 
@@ -105,5 +105,5 @@ df_maxEnt = pd.DataFrame([], columns=names)
 for s in maxEnt_series:
     df_maxEnt = df_maxEnt.append(s, ignore_index=True)
 
-df_maxEnt.to_csv(datadir + 'MaxEnt_Lagrange_mult_mRNA.csv', index=False)
-print('done!')
+df_maxEnt.to_csv(datadir + 'MaxEnt_Lagrange_mult_protein_ext_R.csv', 
+                 index=False)

@@ -105,7 +105,4 @@ df_maxEnt = pd.DataFrame([], columns=names)
 for s in maxEnt_series:
     df_maxEnt = df_maxEnt.append(s, ignore_index=True)
 
-df_maxEnt.to_csv(datadir + "MaxEnt_Lagrange_mult_protein.csv", index=False)
-
-# Read resulting values for the multipliers.
-df_maxEnt = pd.read_csv(datadir + "MaxEnt_Lagrange_mult_protein.csv")
+df_maxEnt.to_csv(datadir + 'MaxEnt_Lagrange_mult_protein.csv', index=False)

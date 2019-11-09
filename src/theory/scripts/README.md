@@ -41,4 +41,9 @@ they derive.
   computes the corresponding Lagrange multipliers for a maximum entropy
   approximation of the distribution.
 
+- `maxent_protein_dist_rep_range.py` : Script that takes the protein
+  distribution moments as inferred from the numerical integration of the
+  dynamical equations and computes the corresponding Lagrange multipliers for a
+  maximum entropy approximation of the distribution for a larger span of
+  repressor copy numbers.
 
