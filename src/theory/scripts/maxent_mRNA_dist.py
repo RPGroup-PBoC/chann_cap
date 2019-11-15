@@ -37,9 +37,11 @@ df_constraints = df_constraints.drop(labels="m0p0", axis=1)
 mRNA_mom =  [x for x in df_constraints.columns if 'p0' in x]
 # Define index of moments to be used in the computation
 moments = [tuple(map(int, re.findall(r'\d+', s))) for s in mRNA_mom]
+# Keep only the first three moments
+moments = moments[0:3]
 
 # Define sample space
-mRNA_space = np.arange(0, 1E2)
+mRNA_space = np.arange(0, 2E2)
 protein_space = np.array([0])  # Dummy space
 
 # Generate sample space as a list of pairs using itertools.
