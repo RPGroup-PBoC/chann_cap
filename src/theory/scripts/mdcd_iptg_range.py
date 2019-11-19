@@ -172,6 +172,4 @@ for s in constraint_series:
 df_constraints.to_csv(datadir + 'MaxEnt_multi_prom_IPTG_range.csv',
             index=False)
 
-df_constraints = pd.read_csv(datadir + 'MaxEnt_multi_prom_IPTG_range.csv')
-
 print('done!')
