@@ -32,11 +32,11 @@ print('reading distribution moments')
 # Remove the zeroth moment column
 df_constraints = df_constraints.drop(labels="m0p0", axis=1)
 
-print('removing other repressor copy numbers')
-rep = [0, 22, 260, 1740]
-idx = [x in rep for x in df_constraints.repressor.values]
-df_constraints = df_constraints[idx]
-print(df_constraints.shape)
+# print('removing other repressor copy numbers')
+# rep = [0, 22, 260, 1740]
+# idx = [x in rep for x in df_constraints.repressor.values]
+# df_constraints = df_constraints[idx]
+# print(df_constraints.shape)
 print('Increasing noise')
 # Compute variance
 p_var = df_constraints['m0p2'] - df_constraints['m0p1']**2
