@@ -106,31 +106,37 @@ for i, op in enumerate(operators):
 thresh = 1e-1
 
 #%%
-## Initialize figure
-fig, ax = plt.subplots(1, 3, figsize=(7, 2.5), sharex=True, sharey=True)
-
+# Initialize figure
+fig, ax = plt.subplots(
+    2,
+    3,
+    figsize=(7, 2.5),
+    sharex=True,
+    sharey="row",
+    gridspec_kw={"height_ratios": [1, 5], "wspace": 0.05, "hspace": 0},
+)
+ax = ax.ravel()
 # Loop through groups on multi-promoter
 for i, (group, data) in enumerate(df_group):
     # Log scale
-    ax[op_idx[group[0]]].plot(
+    ax[op_idx[group[0]] + 3].plot(
         data[data.inducer_uM >= thresh].inducer_uM,
         data[data.inducer_uM >= thresh].p_noise,
         color=col_dict[group[0]][group[1]],
         label=int(group[1]),
     )
-    # linear scale
-    ax[op_idx[group[0]]].plot(
+    # Linear scale
+    ax[op_idx[group[0]] + 3].plot(
         data[data.inducer_uM <= thresh].inducer_uM,
         data[data.inducer_uM <= thresh].p_noise,
         color=col_dict[group[0]][group[1]],
         label="",
         linestyle=":",
     )
-
 # Loop through groups on single-promoter
 for i, (group, data) in enumerate(df_group_single):
     # Log scale
-    ax[op_idx[group[0]]].plot(
+    ax[op_idx[group[0]] + 3].plot(
         data[data.inducer_uM >= thresh].inducer_uM,
         data[data.inducer_uM >= thresh].p_noise,
         linestyle="--",
@@ -148,9 +154,12 @@ for i, (group, data) in enumerate(df_group_single):
         label="",
     )
 
+# Set threshold for data
+dthresh = 10
 # Loop through groups on experimental data
 for i, (group, data) in enumerate(df_group_exp):
-    ax[op_idx[group[0]]].errorbar(
+    # Plot data points on lower plot
+    ax[op_idx[group[0]] + 3].errorbar(
         x=data.IPTG_uM,
         y=data.noise,
         yerr=[data.noise - data.noise_lower, data.noise_upper - data.noise],
@@ -159,28 +168,44 @@ for i, (group, data) in enumerate(df_group_exp):
         color=col_dict[group[0]][group[1]],
         label="",
     )
+    # Plot same data points with different plotting style on the upper row
+    ax[op_idx[group[0]]].plot(
+        data[data.noise > dthresh].IPTG_uM,
+        data[data.noise > dthresh].noise,
+        linestyle="--",
+        color="w",
+        label="",
+        lw=0,
+        marker="o",
+        markersize=3,
+        markeredgecolor=col_dict[group[0]][group[1]],
+    )
 
+# Set scales of reference plots and the other ones will follow
+ax[0].set_xscale("symlog", linthreshx=thresh, linscalex=1)
+ax[0].set_yscale("log")
+ax[3].set_yscale("log")
 
-for i, a in enumerate(ax):
-    # Generate legend for single vs double promoter
-    ax[i].plot([], [], color="k", linestyle="--", label="single", alpha=0.5)
-    ax[i].plot([], [], color="k", label="multi")
-    # systematically change axis for all subplots
-    ax[i].set_xscale("symlog", linthreshx=thresh, linscalex=0.5)
-    ax[i].set_yscale("log")
-    # Set legend
-    leg = ax[i].legend(title="rep./cell", fontsize=8)
-    # Set legend font size
-    plt.setp(leg.get_title(), fontsize=8)
+# Set limits of reference plots and the rest will folow
+ax[3].set_ylim(top=6)
+ax[0].set_ylim([6, 5e2])
 
+# Set ticks for the upper plot
+ax[0].set_yticks([1e1, 1e2])
+
+# Define location for secondary legend
+leg2_loc = ["lower left"] * 2 + ["upper left"]
+
+for i in range(3):
     # Set title
     label = r"$\Delta\epsilon_r$ = {:.1f} $k_BT$".format(energies[i])
     ax[i].set_title(label, bbox=dict(facecolor="#ffedce"))
     # Label axis
-    ax[i].set_xlabel(r"IPTG (µM)")
-ax[0].set_ylabel(r"noise")
+    ax[i + 3].set_xlabel(r"IPTG ($\mu$M)")
+    # Set legend
+    leg = ax[i + 3].legend(title="rep./cell", fontsize=6)
+    # Set legend font size
+    plt.setp(leg.get_title(), fontsize=6)
+ax[3].set_ylabel(r"noise")
 
-# Change spacing between plots
-plt.subplots_adjust(wspace=0.05)
-
-plt.savefig(figdir + "figS13.pdf", bbox_inches="tight")
+plt.savefig(figdir + "figS13_v2.pdf", bbox_inches="tight")
