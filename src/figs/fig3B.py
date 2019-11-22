@@ -31,7 +31,7 @@ repo = git.Repo("./", search_parent_directories=True)
 homedir = repo.working_dir
 
 # Define directories for data and figure 
-figdir = f'{homedir}/fig/moment_dynamics_numeric/'
+figdir = f'{homedir}/fig/main/'
 datadir = f'{homedir}/data/csv_maxEnt_dist/'
 
 # %%
@@ -43,6 +43,8 @@ with open(f'{homedir}/src/theory/pkl_files/binom_coeff_matrix.pkl',
     expo_binom = unpickler.load()
 
 # %%
+# Load constants
+param = ccutils.model.load_constants()
 
 # Integrate dynamics for single promoter steady state
 
@@ -78,9 +80,6 @@ mp_sol = sp.integrate.odeint(ccutils.model.rhs_dmomdt, mom_init, t,
 
 mp_init = mp_sol[-1, :]
 #%%
-# Load constants
-param = ccutils.model.load_constants()
-
 # Define doubling time
 doubling_time = 100
 # Define fraction of cell cycle spent with one copy
