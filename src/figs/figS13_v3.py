@@ -211,9 +211,9 @@ for i in range(3):
     # Label axis
     ax[i + 3].set_xlabel(r"IPTG ($\mu$M)")
     # Set legend
-    leg = ax[i + 3].legend(title="rep./cell", fontsize=5)``
+    leg = ax[i + 3].legend(title="rep./cell", fontsize=6)
     # Set legend font size
-    plt.setp(leg.get_title(), fontsize=5)
+    plt.setp(leg.get_title(), fontsize=6)
 ax[3].set_ylabel(r"noise")
 
 plt.savefig(figdir + "figS13_v3.pdf", bbox_inches="tight")
