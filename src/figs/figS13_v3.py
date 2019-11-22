@@ -184,10 +184,10 @@ for i, (group, data) in enumerate(df_group_exp):
 # Set scales of reference plots and the other ones will follow
 ax[0].set_xscale("symlog", linthreshx=thresh, linscalex=1)
 ax[0].set_yscale("log")
-ax[3].set_yscale("log")
+# ax[3].set_yscale("log")
 
 # Set limits of reference plots and the rest will folow
-ax[3].set_ylim(top=6)
+ax[3].set_ylim([-0.5, 6])
 ax[0].set_ylim([6, 5e2])
 
 # Set ticks for the upper plot
@@ -211,9 +211,9 @@ for i in range(3):
     # Label axis
     ax[i + 3].set_xlabel(r"IPTG ($\mu$M)")
     # Set legend
-    leg = ax[i + 3].legend(title="rep./cell", fontsize=5)
+    leg = ax[i + 3].legend(title="rep./cell", fontsize=5)``
     # Set legend font size
     plt.setp(leg.get_title(), fontsize=5)
 ax[3].set_ylabel(r"noise")
 
-plt.savefig(figdir + "figS13_v2.pdf", bbox_inches="tight")
+plt.savefig(figdir + "figS13_v3.pdf", bbox_inches="tight")
