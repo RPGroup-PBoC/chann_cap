@@ -145,7 +145,7 @@ for i, (group, data) in enumerate(df_group_single):
         label="",
     )
     # Linear scale
-    ax[op_idx[group[0]]].plot(
+    ax[op_idx[group[0]] + 3].plot(
         data[data.inducer_uM <= thresh].inducer_uM,
         data[data.inducer_uM <= thresh].p_noise,
         linestyle=":",
