@@ -22,3 +22,10 @@ for each of the data sets.
 This folder contains all of the code used to compute quantities related to the
 theoretical model for the simple-repression motif. From analytical calculations
 done using `sympy`, to numerical integration of differential equations.
+
+## `figs`
+
+This folder contains plain `Python` scripts to reproduce all figures in the
+paper, including all of the SI material and further figures that didn't make it
+to the final publication but are useful for talks and different version of
+visualizations.
