@@ -258,8 +258,12 @@ Then any moment after cell division $\ee{m^{x'} p^{y'}}_{t_o}$ for $x' \leq x$ a
 $$
 \ee{m^{x'} p^{y'}}_{t_o} = \bb{z}_{x'y'} \cdot \bb{\ee{m^x p^y}}_{t_d},
 $$
-where we define the vector $\bb{z}_{x'y'}$ as the vector containing all the coefficients that we obtain with the product of the two binomial distributions.
-For example for the case of the third protein moment $\ee{p^3}_{t_o}$ the vector $\bb{z}_{x'y'}$ would have zeros for all entries except for the corresponding entry for $\ee{p^2}_{t_d}$ and for $\ee{p^3}_{t_d}$, where it would have $3/8$ and $1/8$ accordingly.
+where we define the vector $\bb{z}_{x'y'}$ as the vector containing all the
+coefficients that we obtain with the product of the two binomial distributions.
+For example for the case of the third protein moment $\ee{p^3}_{t_o}$ the
+vector $\bb{z}_{x'y'}$ would have zeros for all entries except for the
+corresponding entry for $\ee{p^2}_{t_d}$ and for $\ee{p^3}_{t_d}$, where it
+would have $3/8$ and $1/8$ accordingly.
 
 If we want then to compute all the moments after the cell division up to
 $\ee{m^x p^y}_{t_o}$ let us define an equivalent vector
@@ -345,14 +349,14 @@ always more younger than older cells.
 
 Our numerical integration of the moment equations gave us a time evolution of
 the moments as cells progress through the cell cycle. Since experimentally we
-sample asynchronous cells that follow \eref{seq_age_prob}, each time point along
-the moment dynamic must be weighted by the probability of having sampled a cell
-at such specific time point of the cell cycle. Without loss of generality let's
-focus on the first mRNA moment $\ee{m(t)}$ (the same can be applied to all other
-moments). As mentioned before, in order to calculate the first moment across the
-entire cell cycle we must weigh each time point by the corresponding probability
-that a cell is found in such point of its cell cycle. This translates to
-computing the integral
+sample asynchronous cells that follow \eref{seq_age_prob}, each time point
+along the moment dynamic must be weighted by the probability of having sampled
+a cell at such specific time point of the cell cycle. Without loss of
+generality let's focus on the first mRNA moment $\ee{m(t)}$ (the same can be
+applied to all other moments). As mentioned before, in order to calculate the
+first moment across the entire cell cycle we must weigh each time point by the
+corresponding probability that a cell is found in such point of its cell cycle.
+This translates to computing the integral
 \begin{equation}
   \ee{m}_c = \int_{\text{beginning cell cycle}}^{\text{end cell cycle}}
                        \ee{m(t)} P(t) dt,
@@ -403,16 +407,16 @@ a dynamical system of the form
 where as before $r_m$ and $\gm$ are the mRNA production and degradation rates
 respectively, and $\pbound$ is the probability of finding the RNAP bound to the
 promoter \cite{Bintu2005a}. This dynamical system is predicted to have a single
-stable fixed point that we can find by computing the steady state. When we solve
-for the mean mRNA copy number at steady state $\ee{m}_{ss}$ we find
+stable fixed point that we can find by computing the steady state. When we
+solve for the mean mRNA copy number at steady state $\ee{m}_{ss}$ we find
 \begin{equation}
   \ee{m}_{ss} = {r_m \over \gm} \pbound.
 \end{equation}
 
 Since we assume that the only effect that the repressor has over the regulation
-of the promoter is exclusion of the RNAP from binding to the promoter, we assume
-that only $\pbound$ depends on the repressor copy number $R$. Therefore when
-computing the fold-change in gene expression we  are left with
+of the promoter is exclusion of the RNAP from binding to the promoter, we
+assume that only $\pbound$ depends on the repressor copy number $R$. Therefore
+when computing the fold-change in gene expression we  are left with
 \begin{equation}
   \foldchange = {\ee{m (R \neq 0)}_{ss} \over \ee{m (R = 0)}_{ss}}
               = {\pbound (R \neq 0) \over \pbound (R = 0)}.
@@ -423,8 +427,9 @@ equilibrium statistical mechanics as
   \foldchange = \left(1 + {R \over \Nns}e^{-\beta \eR}  \right)^{-1},
   \label{seq_fold_change_thermo}
 \end{equation}
-where $\beta \equiv (k_BT)^{-1}$, $\eR$ is the repressor-DNA binding energy, and
-$\Nns$ is the number of non-specific binding sites where the repressor can bind.
+where $\beta \equiv (k_BT)^{-1}$, $\eR$ is the repressor-DNA binding energy,
+and $\Nns$ is the number of non-specific binding sites where the repressor can
+bind.
 
 To arrive at \eref{seq_fold_change_thermo} we ignore the physiological changes
 that occur during the cell cycle; one of the most important being the
@@ -435,19 +440,19 @@ in \fref{sfig_first_mom_cycles} can be reconciled with the predictions made by
 
 \fref{sfig_lacI_titration} compares the predictions of both theoretical
 frameworks for varying repressor copy numbers and repressor-DNA affinities. The
-solid lines are directly computed from \eref{seq_fold_change_thermo}. The hollow
-triangles and the solid circles, represent the fold-change in mRNA and protein
-respectively as computed from the moment dynamics. To compute the fold-change
-from the kinetic picture we first numerically integrate the moment dynamics for
-both the two- and the three-state promoter (See \fref{sfig_first_mom_cycles} for
-the unregulated case) and then average the time series accounting for the
-probability of cells being sampled at each stage of the cell cycle as defined in
-\eref{seq_moment_avg}. The small systematic deviations between both models come
-partly from the simplifying assumption that the repressor copy number, and
-therefore the repressor on rate $\kron$ remains constant during the cell cycle.
-In principle the gene producing the repressor protein itself is also subjected
-to the same duplication during the cell cycle, changing therefore the mean
-repressor copy number for both stages.
+solid lines are directly computed from \eref{seq_fold_change_thermo}. The
+hollow triangles and the solid circles, represent the fold-change in mRNA and
+protein respectively as computed from the moment dynamics. To compute the
+fold-change from the kinetic picture we first numerically integrate the moment
+dynamics for both the two- and the three-state promoter (See
+\fref{sfig_first_mom_cycles} for the unregulated case) and then average the
+time series accounting for the probability of cells being sampled at each stage
+of the cell cycle as defined in \eref{seq_moment_avg}. The small systematic
+deviations between both models come partly from the simplifying assumption that
+the repressor copy number, and therefore the repressor on rate $\kron$ remains
+constant during the cell cycle. In principle the gene producing the repressor
+protein itself is also subjected to the same duplication during the cell cycle,
+changing therefore the mean repressor copy number for both stages.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -463,13 +468,13 @@ repressor copy number for both stages.
   \label{sfig_lacI_titration}
 \end{figure}
 
-For completeness \fref{sfig_IPTG_titration} compares the kinetic and equilibrium
-models for the extended model of \cite{Razo-Mejia2018} in which the inducer
-concentration enters into the equation. The solid line is directly computed from
-Eq. 5 of \cite{Razo-Mejia2018}. The hollow triangles and solid points follow the
-same procedure as for \fref{sfig_lacI_titration}, where the only effect that the
-inducer is assume to have in the kinetics is an effective change in the number
-of active repressors, affecting therefore $\kron$.
+For completeness \fref{sfig_IPTG_titration} compares the kinetic and
+equilibrium models for the extended model of \cite{Razo-Mejia2018} in which the
+inducer concentration enters into the equation. The solid line is directly
+computed from Eq. 5 of \cite{Razo-Mejia2018}. The hollow triangles and solid
+points follow the same procedure as for \fref{sfig_lacI_titration}, where the
+only effect that the inducer is assume to have in the kinetics is an effective
+change in the number of active repressors, affecting therefore $\kron$.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -506,21 +511,22 @@ reproduce the results of the single-promoter model at this level (See
 moments. A useful metric to consider for gene expression variability is the
 noise in gene expression \cite{Shahrezaei2008}. This quantity, defined as the
 standard deviation divided by the mean, is a dimensionless metric of how much
-variability there is with respect to the mean of a distribution. As we will show
-below this quantity differs from the also commonly used metric known as the Fano
-factor (variance / mean) in the sense that for experimentally determined
-expression levels in fluorescent arbitrary units, the noise is a dimensionless
-quantity while the Fano factor is not.
+variability there is with respect to the mean of a distribution. As we will
+show below this quantity differs from the also commonly used metric known as
+the Fano factor (variance / mean) in the sense that for experimentally
+determined expression levels in fluorescent arbitrary units, the noise is a
+dimensionless quantity while the Fano factor is not.
 
-\fref{sfig_noise_comparison} shows the comparison of the predicted protein noise
-between  the single- (dashed lines) and the multi-promoter model (solid lines)
-for different operators and repressor copy numbers. A striking difference
-between both is that the single-promoter model predicts that as the inducer
-concentration increases, the standard deviation grows much slower than the mean,
-giving a very small noise. In comparison the multi-promoter model has a much
-higher floor for the lowest value of the noise, reflecting the expected result
-that the variability in gene copy number across the cell cycle should increase
-the cell-to-cell variability in gene expression \cite{Peterson2015, Jones2014a}
+\fref{sfig_noise_comparison} shows the comparison of the predicted protein
+noise between  the single- (dashed lines) and the multi-promoter model (solid
+lines) for different operators and repressor copy numbers. A striking
+difference between both is that the single-promoter model predicts that as the
+inducer concentration increases, the standard deviation grows much slower than
+the mean, giving a very small noise. In comparison the multi-promoter model has
+a much higher floor for the lowest value of the noise, reflecting the expected
+result that the variability in gene copy number across the cell cycle should
+increase the cell-to-cell variability in gene expression \cite{Peterson2015,
+Jones2014a}
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -540,11 +546,11 @@ the cell-to-cell variability in gene expression \cite{Peterson2015, Jones2014a}
 Having shown that the kinetic model presented in this section can reproduce the
 results from the equilibrium picture at the mean level (See
 \fref{sfig_lacI_titration} and \fref{sfig_IPTG_titration}), but changes the
-prediction for the cell-to-cell variability as quantified by the noise
-(See \fref{sfig_noise_comparison}), we can assess whether or not this model is
-able to predict experimental measurements of the noise. For this we take the
-single cell intensity measurements (See Methods) to compute the noise at the
-protein level.
+prediction for the cell-to-cell variability as quantified by the noise (See
+\fref{sfig_noise_comparison}), we can assess whether or not this model is able
+to predict experimental measurements of the noise. For this we take the single
+cell intensity measurements (See Methods) to compute the noise at the protein
+level.
 
 As mentioned before this metric differs from the Fano factor since for
 fluorescent arbitrary units the noise is a dimensionless quantity. To see why
@@ -588,32 +594,32 @@ compute
                     \ee{I - \ee{I_\text{auto}}}^2 \right)} \over
                 \ee{I - \ee{I_\text{auto}}}}.
 \end{equation}
-where $I$ is the intensity of the strain of interest and $\ee{I_\text{auto}}$ is
-the mean autofluorescence intensity, obtained from a strain that does not carry
-the fluorescent reporter gene.
+where $I$ is the intensity of the strain of interest and $\ee{I_\text{auto}}$
+is the mean autofluorescence intensity, obtained from a strain that does not
+carry the fluorescent reporter gene.
 
-\fref{sfig_noise_delta} shows the comparison between theoretical predictions and
-experimental measurements for the unregulated promoter. The reason we split the
-data by operator despite the fact that since these are unregulated promoters,
-they should in principle have identical expression profiles is to precisely make
-sure that this is the case. We have found in the past that sequences downstream
-of the RNAP binding site can affect the expression level of constitutively
-expressed genes. We can see that the single-promoter model that ignores gene
-copy number variability greatly underestimates the measured noise at the protein
-level despite the fact that it can capture the noise at the mRNA level (See
-\siref{supp_param_inference}). On the other hand the zero parameter fit
-prediction from the multi-promoter level presented in this section has a much
-better agreement with the experimental values. This indicates that changes in
-gene copy number along the cell cycle are important contributors to the
-cell-to-cell variability.
+\fref{sfig_noise_delta} shows the comparison between theoretical predictions
+and experimental measurements for the unregulated promoter. The reason we split
+the data by operator despite the fact that since these are unregulated
+promoters, they should in principle have identical expression profiles is to
+precisely make sure that this is the case. We have found in the past that
+sequences downstream of the RNAP binding site can affect the expression level
+of constitutively expressed genes. We can see that the single-promoter model
+that ignores gene copy number variability greatly underestimates the measured
+noise at the protein level despite the fact that it can capture the noise at
+the mRNA level (See \siref{supp_param_inference}). On the other hand the zero
+parameter fit prediction from the multi-promoter level presented in this
+section has a much better agreement with the experimental values. This
+indicates that changes in gene copy number along the cell cycle are important
+contributors to the cell-to-cell variability.
 
 \begin{figure}[h!]
 	\centering \includegraphics
   {../fig/moment_dynamics_numeric/noise_delta_microscopy.pdf}
-	\caption{\textbf{Protein noise of the unregulated promoter.} Comparison of the
-	experimental noise for different operators with the theoretical
-  predictions for the single-promoter (gray dotted line) and the
-  multi-promoter model (black dashed line).}
+	\caption{\textbf{Protein noise of the unregulated promoter.} Comparison of
+	the experimental noise for different operators with the theoretical
+	predictions for the single-promoter (gray dotted line) and the multi-promoter
+	model (black dashed line).}
   \label{sfig_noise_delta}
 \end{figure}
 
@@ -621,9 +627,9 @@ To further test the model predictive power we compare the predictions for the
 three-state regulated promoter. \fref{sfig_noise_reg} shows the theoretical
 predictions for the single- and the multi-promoter model for varying repressor
 copy numbers and repressor-DNA binding affinities as a function of the inducer
-concentration. We can see again that the zero-parameter fit multi-promoter model
-has a good agreement with the experimental data, while the single-promoter model
-again underestimates the noise.
+concentration. We can see again that the zero-parameter fit multi-promoter
+model has a good agreement with the experimental data, while the
+single-promoter model again underestimates the noise.
 
 \begin{figure}[h!]
 	\centering \includegraphics
