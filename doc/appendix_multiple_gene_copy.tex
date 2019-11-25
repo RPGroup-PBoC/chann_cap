@@ -6,13 +6,13 @@ be found in the
 \href{https://www.rpgroup.caltech.edu/chann_cap/src/theory/html/moment_dynamics_cell_division.html}{following
 link} as an anotated Jupter notebook)
 
-When growing in rich media, bacteria can double every $\approx$ 20 minutes. With
-two replication forks each traveling at $\approx$ 1000 bp per second, and a
-genome of $\approx$ 5 Mbp for {\it E. coli} \cite{Moran2010}, a cell would need
-$\approx$ 40 minutes to replicate its genome. The apparent paradox  of growth
-rates faster than one division per 40 minutes is solved by the fact that cells
-have multiple replisomes, i.e. molecular machines that replicate the genome
-running in parallel. Cells can have up to 8 copies of the genome being
+When growing in rich media, bacteria can double every $\approx$ 20 minutes.
+With two replication forks each traveling at $\approx$ 1000 bp per second, and
+a genome of $\approx$ 5 Mbp for {\it E. coli} \cite{Moran2010}, a cell would
+need $\approx$ 40 minutes to replicate its genome. The apparent paradox  of
+growth rates faster than one division per 40 minutes is solved by the fact that
+cells have multiple replisomes, i.e. molecular machines that replicate the
+genome running in parallel. Cells can have up to 8 copies of the genome being
 replicated simultaneously depending on the growth rate \cite{Bremer1996}.
 
 This observation implies that during the cell cycle gene copy number varies.
@@ -20,120 +20,300 @@ This variation depends on the growth rate and the relative position of the gene
 with respect to the replication origin, having genes close to the replication
 origin spending more time with multiple copies compare to genes closer to the
 replication termination site. This change in gene dosage has a direct effect on
-the cell-to-cell variability in gene expression \cite{Jones2014a, Peterson2015}.
+the cell-to-cell variability in gene expression \cite{Jones2014a,
+Peterson2015}.
 
 \subsection{Numerical integration of moment equations}
 
-For our specific locus ({\it galK}) and a doubling time of $\approx$ 100 min for
-our experimental conditions, cells have on average 1.4 copies of the reporter
-gene during the cell cycle. What this means is that cells spend 60\% of the time
-having one copy of the gene and 40\% of the time with two copies. To account for
-this variability in gene copy number across the cell cycle we numerically
-integrate the moment equations derived in \siref{supp_moments} for a time $t =
-[0, t_s]$ with an mRNA production rate $r_m$, where $t_s$ is the time point at
-which the replication fork reaches our specific locus. For the remaining time
-before the cell division $t = [t_s, t_d]$ that the cell spends with two
-promoters, we assume that the only parameter that changes is the mRNA production
-rate from $r_m$ to $2 r_m$. This simplifying assumption ignores potential
-changes in protein translation rate $r_p$ or changes in the repressor copy
-number that would be reflected in changes on the repressor on rate $\kron$.
+For our specific locus ({\it galK}) and a doubling time of $\approx$ 100 min
+for our experimental conditions, cells have on average 1.4 copies of the
+reporter gene during the cell cycle. What this means is that cells spend 60\%
+of the time having one copy of the gene and 40\% of the time with two copies.
+To account for this variability in gene copy number across the cell cycle we
+numerically integrate the moment equations derived in \siref{supp_moments} for
+a time $t = [0, t_s]$ with an mRNA production rate $r_m$, where $t_s$ is the
+time point at which the replication fork reaches our specific locus. For the
+remaining time before the cell division $t = [t_s, t_d]$ that the cell spends
+with two promoters, we assume that the only parameter that changes is the mRNA
+production rate from $r_m$ to $2 r_m$. This simplifying assumption ignores
+potential changes in protein translation rate $r_p$ or changes in the repressor
+copy number that would be reflected in changes on the repressor on rate
+$\kron$.
 
-\subsubsection{Initial conditions for numerical integration}
+\subsubsection{Computing distribution moments after cell division}
 
-In order to define the initial conditions for the numerical integration for each
-of the cell cycle stages we follow a simple procedure:
-\begin{enumerate}
-  \item Initialize the zeroth moment, i.e. the probability of the promoter of
-  being in each of the two (unregulated) or three (regulated) promoter states at
-  any value, constrained such that the sum of all zeroth moments should add up
-  to one. Initialize the rest of the moments with zeros. This initial value does
-  not affect the final result since the dynamics will be integrated to steady
-  state in following steps.
-  \item Numerically integrate the moment dynamics (\eref{eq_mom_dynamics} in the
-  main text) for time longer than the length of the cell cycle in order for the
-  moment values to reach steady state using the parameters corresponding to a
-  single promoter. This will set the initial conditions to be used for the
-  single promoter case.
-  \item Integrate the moment dynamics for a time $t = [0, t_s]$ using the
-  as initial conditions the last time point from step 2.
-  \item Update transcription rate from $r_m$ to $2 r_m$ corresponding to the
-  cell having two promoter copies. In principle the repressor copy number also
-  changes during the cell cycle, but we will neglect these differences and take
-  an effective mean repressor copy number for the entirety of the dynamics.
-  \item Integrate the moment dynamics for a time $t = [t_s, t_d]$ using the
-  last time point of step 3 as initial conditions.
-  \item As a way to represent what the cell division does to the mean mRNA and
-  mean protein copy number, for the last time point of step 5 multiply the mRNA
-  first moment $\ee{\bb{m}}$ and the protein first moment $\ee{\bb{p}}$ by $1
-  \over 2$. In other words if at the end of the n$\th$ cell cycle the mean
-  protein count is $\ee{p}_n$, the next cell cycle starts with a protein count
-  $\ee{p}_{n + 1} = {\ee{p}_n \over 2}$.
-  \item In order to set the initial value of the rest of the moments after the
-  cell division integrate the moment dynamics for a time longer than a single
-  cell cycle with the constraint that the zeroth moment, the mRNA and protein
-  first moments remain unchanged from step 6.
-  \item Repeat process from step 3, using as initial conditions the last time
-  point of the integration in step 7.
-\end{enumerate}
+We have already solved a general form for the dynamics of the moments of the
+distribution, i.e. we wrote differential equations for the moments ${d\ee{m^x
+p^y}\over dt}$. Given that we know all parameters for our model we can simply
+integrate these equations numerically to compute how the moments of the
+distribution evolve as cells progress through their cell cycle. Once the cell
+reaches a time $t_d$ when is going to divide the mRNA and proteins that we are
+interested in undergo a binomial partitioning between the two daughter cells.
+In other words, each molecule flips a coin and decides whether to go to either
+daughter. The question then becomes given that we have a value for the moment
+$\ee{m^x p^y}_{t_d}$ at a time before the cell division, what would the value
+of this moment be after the cell division takes place $\ee{m^x p^y}_{t_o}$?
 
-Step 7 in our procedure serves as a way to determine how higher moments change
-after the cell divides. Only the first moments of both mRNA and protein can
-simply be halved after cell division, but it is less clear how higher moments of
-the distribution change as cells halve their content. To gain intuition for why
-this is not a trivial step let's consider a binomially distributed variable $X
-\sim \text{Bin}(N, p)$. For the first moment, given by $\ee{X} = Np$, it is easy
-to see that upon halving the number of trials $N \rightarrow N/2$, the new first
-moment would simply be $\ee{X}_{\text{new}} = {N \over 2} p$. But for the second
-moment, given by $\ee{X^2} = Np - Np^2 + N^2p^2$, it is obvious that halving the
-number of attempts, i.e. setting $\ee{X^2}_{\text{new}} = {\ee{X^2} \over 2}$ is
-not equivalent to the second moment of a binomial distribution with $N/2$
-trials. The right answer for this case would be to substitute every $N$ with
-$N/2$ obtaining $\ee{X^2}_{\text{new}} = {N \over 2}p - {N \over 2}p^2 +
-\left({N \over 2}\right)^2p^2$.
+The probability distribution of mRNA and protein after the cell division
+$P_{t_o}(m, p)$ must satisfy
+\begin{equation}
+  P_{t_o}(m, p) = \sum_{m'=m}^\infty \sum_{p'=p}^\infty 
+                  P(m, p \mid m', p') P_{t_d}(m', p'),
+\label{eq_dist_post_div}
+\end{equation}
+where we are summing over all the possibilities of having $m'$ mRNA and $p'$
+proteins before cell division. Note that the sums start at $m$ and $p$; this is
+because for a cell to have these copy numbers before cell division it is a
+requirement that the mother cell had at least such copy number since we are not
+assuming that there is any production at the instantaneous cell division time.
+Since we assume that the partition of mRNA is independent from the partition of
+protein, the conditional probability $P(m, p \mid m', p')$ is simply given by a
+product of two binomial distributions, one for the mRNA and one for the
+protein, i.e.
+\begin{equation}
+P(m, p \mid m', p') = {m' \choose m} \left( {1 \over 2} \right)^{m'} \cdot
+                      {p' \choose p} \left( {1 \over 2} \right)^{p'}.
+\label{eq_binom_prod}
+\end{equation}
+Because of these product of binomial probabilities are allowed to extend the
+sum from
+\eref{eq_dist_post_div} to start at $m'=0$ and $p'=0$ as
+\begin{equation}
+  P_{t_o}(m, p) = \sum_{m'=0}^\infty \sum_{p'=0}^\infty 
+                  P(m, p \mid m', p') P_{t_d}(m', p'),
+\end{equation}
+since the product of the binomial distributions in \eref{eq_binom_prod} is zero
+for all $m' < m$ and/or $p' < 0$. So from now on in this section we will assume
+that a sum of the form $\sum_x \equiv \sum_{x=0}^\infty$ to simplify notation.
 
-What step 7 simply does is to set higher moments of the distribution to the
-expected steady state value given a fixed mRNA and protein first moment. In
-other words, in order to map how higher moments of the distribution change as
-cells halve their content we divide the first moments of the mRNA and protein
-counts in half and integrate the rest of the moment dynamics until the values
-reach steady state, keeping the zero and first moments fixed. This is possible
-since, as shown in \siref{supp_moments}, higher moments of the distribution only
-depend on lower moments. Therefore by running the higher moment dynamics while
-keeping the lower moments fixed we converge to the corresponding steady state
-values of the higher moments.
+We can then compute the distribution moments after the cell division $\ee{m^x
+p^y}_{t_o}$ as
+\begin{equation}
+\ee{m^x p^y}_{t_o} = \sum_m \sum_p m^x p^y P_{t_o}(m, p),
+\end{equation}
+for all $x, y \in \mathbb{N}$. Substituting \eref{eq_dist_post_div} results in
+\begin{equation}
+\ee{m^x p^y}_{t_o} = \sum_m \sum_p m^x p^y
+\sum_{m'} \sum_{p'} P(m, p \mid m', p') P_{t_d}(m', p').
+\end{equation}
+We can rearrange the sums to be 
+\begin{equation}
+\ee{m^x p^y}_{t_o} = \sum_{m'} \sum_{p'} P_{t_d}(m', p')
+                     \sum_m \sum_p m^x p^y P(m, p \mid m', p').
+\end{equation}
+The fact that \eref{eq_binom_prod} is the product of two independent events
+allows us to rewrite the joint probability $P(m, p \mid m', p')$ as
+\begin{equation}
+P(m, p \mid m', p') = P(m \mid m') \cdot P(p \mid p').
+\end{equation}
+With this we can then write the moment $\ee{m^x p^y}_{t_o}$ as
+\begin{equation}
+\ee{m^x p^y}_{t_o} = \sum_{m'} \sum_{p'} P_{t_d}(m', p')
+                     \sum_m  m^x  P(m \mid m')
+                     \sum_p p^y P(p \mid p').
+\end{equation}
+Notice that both terms summing over $m$ and over $p$ are the conditional
+expected values, i.e.
+\begin{equation}
+\sum_z  z^x  P(z \mid z') \equiv \ee{z^x \mid z'}, \; 
+{\text{ for } z\in \{m, p \}}.
+\end{equation}
+These conditional expected values are the expected values of a binomial random
+variable $z \sim \text{Bin}(z', 1/2)$, which can be easily computed as we will
+show later in this section. We then rewrite the expected values after the cell
+division in terms of these moments of a binomial distribution
+\begin{equation}
+\ee{m^x p^y}_{t_o} = \sum_{m'} \sum_{p'} \ee{m^x \mid m'} \ee{p^y \mid p'} 
+                     P_{t_d}(m', p').
+  \label{eq_general_binom_mom}
+\end{equation}
+
+To see how this general formula for the moments after the cell division works
+let's compute the mean protein per cell after the cell division $\ee{p}_{t_o}$.
+That is setting $x = 0$, and $y = 1$. This results in
+\begin{equation}
+\ee{p}_{t_o} = \sum_{m'} \sum_{p'} \ee{m^0 \mid m'} \ee{p \mid p'} 
+               P_{t_d}(m', p').
+\end{equation}
+The zeroth moment $\ee{m^0 \mid m'}$ by definition must be one since we have
+\begin{equation}
+\ee{m^0 \mid m'} = \sum_m m^0 P(m \mid m') = \sum_m P(m \mid m') = 1,
+\end{equation}
+since the probability distribution must be normalized. This leaves us then with
+\begin{equation}
+\ee{p}_{t_o} = \sum_{m'} \sum_{p'} P_{t_d}(m', p') \ee{p \mid p'}.
+\end{equation}
+If we take the sum over $m'$ we simply compute the marginal probability
+distribution $\sum_{m'} P_{t_d}(m', p') = P_{t_d}(p')$, then we have
+\begin{equation}
+\ee{p}_{t_o} = \sum_{p'} \ee{p \mid p'} P_{t_d}(p').
+\end{equation}
+For the particular case of the first moment of the binomial distribution with
+parameters $p'$ and $1/2$ we know that
+\begin{equation}
+\ee{p \mid p'} = {p' \over 2}.
+\end{equation}
+Therefore the moment after division is equal to
+\begin{equation}
+\ee{p}_{t_o} = \sum_{p'} {p' \over 2} P_{t_d}(p')
+             = {1 \over 2} \sum_{p'} p' P_{t_d}(p').
+\end{equation}
+Notice that this is just 1/2 of the expected value of $p'$ averaging over the
+distribution prior to cell division, i.e.
+\begin{equation}
+\ee{p}_{t_o} = {\ee{p'}_{t_d} \over 2},
+\end{equation}
+where $\ee{\cdot}_{t_d}$ highlights that is the moment of the distribution
+prior to the cell division. This result makes perfect sense. What this is
+saying is that the mean protein copy number right after the cell divides is
+half of the mean protein copy number just before the cell division. That is
+exactly we would expect. So in principle to know the first moment of either the
+mRNA distribution $\ee{m}_{t_o}$ or the protein distribution $\ee{m}_{t_o}$
+right after cell division it suffices to multiply the moments before the cell
+division $\ee{m}_{t_d}$ or $\ee{p}_{t_d}$ by 1/2. Let's now explore how this
+generalizes to any other moment $\ee{m^x p^y}_{t_o}$.
+
+\subsubsection{Computing the moments of a binomial distribution}
+
+The result from last section was dependent on us knowing the functional form of
+the first moment of the binomial distribution. For higher moments we need some
+systematic way to compute such moments. Luckily for us we can do so by using
+the so-called moment generating function (MGF). The MGF of a random variable
+$X$ is defined as
+\begin{equation}
+M_X(t) = \ee{e^{tX}},
+\end{equation}
+where $t$ is a dummy variable. Once we know the MGF we can obtain any moment of
+the distribution by simply computing
+\begin{equation}
+  \ee{X^n} = \left. {d^n \over dt^n} M_X(t) \right\vert_{t=0},
+  \label{eq_mgf_def}
+\end{equation}
+i.e. taking the $n$-th derivative of the MGF returns the $n$-th moment of the
+distribution. For the particular case of the binomial distribution $X \sim
+\text{Bin}(N, q)$ it can be shown that the MGF is of the form
+\begin{equation}
+M_X(t) = \left[ (1 - q) + qe^{t} \right]^N.
+\end{equation}
+As an example let's compute the first moment of this binomially distributed
+variable. For this, the first derivative of the MGF results in
+\begin{equation}
+  {d M_X(t) \over dt} = N [(1 - q) + qe^t]^{N - 1} q e^t.
+\end{equation}
+We just need to follow \eref{eq_mgf_def} and set $t = 0$ to obtain the first
+moment
+\begin{equation}
+  \left. {d M_X(t) \over dt} \right\vert_{t=0} = N q,
+  \label{eq_mgf_mean}
+\end{equation}
+which is exactly the expected value of a binomially distributed random
+variable.
+
+So according to \eref{eq_general_binom_mom} to compute any moment $\ee{m^x
+p^y}$ after cell division we can just take the $x$-th derivative and the $y$-th
+derivative of the binomial MGF to obtain $\ee{m^x \mid m'}$ and $\ee{p^y \mid
+p'}$, respectively, and take the expected value of the result. Let's follow on
+detail the specific case for the moment $\ee{m p}$. When computing the moment
+after cell division $\ee{mp}_{t_o}$ which is of
+the form
+\begin{equation}
+\ee{mp}_{t_o} = \sum_{m'} \sum{p'} \ee{m \mid m'} \ee{p \mid p'} 
+                P_{t_d}(m', p'),
+\end{equation}
+the product $\ee{m \mid m'} \ee{p \mid p'}$ is then
+\begin{equation}
+\ee{m \mid m'} \ee{p \mid p'} = {m' \over 2} \cdot {p' \over 2},
+\end{equation}
+where we used the result in \eref{eq_mgf_mean}, substituting $m$ and $p$ for
+$X$, respectively, and $q$ for 1/2. Substituting this result into the moment
+gives
+\begin{equation}
+\ee{mp}_{t_o} = \sum_{m'} \sum_{p'} {m' p' \over 4} P_{t_d}(m', p') 
+              = {\ee{m' p'}_{t_d} \over 4}.
+\end{equation}
+Therefore to compute the moment after cell division $\ee{mp}_{t_o}$ we simply
+have to divide by 4 the corresponding equivalent moment before the cell
+division. 
+
+Not all moments after cell division depend only on the equivalent moment before
+cell division. For example if we compute the third moment of the protein
+distribution $\ee{p^3}_{t_o}$, we find
+\begin{equation}
+  \ee{p^3}_{t_o} = {\ee{p^3}_{t_d} \over 8} + {3 \ee{p^2}_{t_d} \over 8}.
+\end{equation}
+So for this particular case the third moment of the protein distribution
+depends on the third moment and the second moment before the cell division. In
+general all moments after cell division $\ee{m^x p^y}_{t_o}$ linearly depend on
+moments before cell division. Furthermore, there is ``moment closure'' for this
+specific case in the sense that all moments after cell division depend on lower
+moments before cell division. To generalize these results to all the moments
+computed in this work let us then define a vector to collect all moments before
+the cell division up the $\ee{m^x p^y}_{t_d}$ moment, i.e.
+\begin{equation}
+\bb{\ee{m^x p^y}}_{t_d} = \left(
+\ee{m^0 p^0}_{t_d}, \ee{m^1}_{t_d}, \ldots , \ee{m^x p^y}_{t_d}
+\right).
+\end{equation}
+Then any moment after cell division $\ee{m^{x'} p^{y'}}_{t_o}$ for $x' \leq x$ and $y' \leq y$ can be computed as
+$$
+\ee{m^{x'} p^{y'}}_{t_o} = \bb{z}_{x'y'} \cdot \bb{\ee{m^x p^y}}_{t_d},
+$$
+where we define the vector $\bb{z}_{x'y'}$ as the vector containing all the coefficients that we obtain with the product of the two binomial distributions.
+For example for the case of the third protein moment $\ee{p^3}_{t_o}$ the vector $\bb{z}_{x'y'}$ would have zeros for all entries except for the corresponding entry for $\ee{p^2}_{t_d}$ and for $\ee{p^3}_{t_d}$, where it would have $3/8$ and $1/8$ accordingly.
+
+If we want then to compute all the moments after the cell division up to
+$\ee{m^x p^y}_{t_o}$ let us define an equivalent vector
+\begin{equation}
+\bb{\ee{m^x p^y}}_{t_o} = \left(
+\ee{m^0 p^0}_{t_o}, \ee{m^1}_{t_o}, \ldots , \ee{m^x p^y}_{t_o}
+\right).
+\end{equation}
+Then we need to build a square matrix $\bb{Z}$ such that each row of the matrix
+contains the corresponding vector $\bb{z}_{x' y'}$ for each of the moments.
+Having this matrix we would simply compute the moments after the cell division
+as
+\begin{equation}
+\bb{\ee{m^x p^x}}_{t_o} = \bb{Z} \cdot \bb{\ee{m^x p^x}}_{t_d}.
+\end{equation}
+In other words, matrix $\bb{Z}$ will contain all the coefficients that we need
+to multiply by the moments before the cell division in order to obtain the
+moments after cell division. Matrix $\bb{Z}$ was then generated automatically
+using Python's analytical math library
+\href{https://www.sympy.org/en/index.html}{\texttt{sympy}}.
 
 \fref{sfig_first_mom_cycles} (adapted from \fref{fig3_cell_cycle}(B)) shows how
 the first moment of both mRNA and protein changes over several cell cycles. The
 mRNA quickly relaxes to the steady state corresponding to the parameters for
-both a single and two promoter copies. This is expected since the parameters for
-the mRNA production were determined in the first place under this assumption
-(See \siref{supp_model}). We note that there is no apparent delay before
-reaching steady state of the mean mRNA count after the cell divides. This is
-because the mean mRNA count for the two promoters copies  state is exactly twice
-the expected mRNA count for the single promoter state (See \siref{supp_model}).
-Therefore once the mean mRNA count is halved after the cell division, it is
-already at the steady state value for the single promoter case. On the other
-hand, given that the relaxation time to steady state is determined by the
-degradation rate, the mean protein count does not reach its corresponding steady
-state value for either promoter copy number state. Interestingly once a couple
-of cell cycles have passed the first moment has a repetitive trajectory over
-cell cycles. We have observed this experimentally by tracking cells as they grow
-under the microscope. Comparing cells at the beginning of the cell cycle with
-the daughter cells that appear after cell division shown that on average all
-cells have the same amount of protein at the beginning of the cell cycle (See
-Fig. 18 of \cite{Phillips2019}), suggesting that these dynamical steady state
-takes place \textit{in vivo}.
+both a single and two promoter copies. This is expected since the parameters
+for the mRNA production were determined in the first place under this
+assumption (See \siref{supp_model}). We note that there is no apparent delay
+before reaching steady state of the mean mRNA count after the cell divides.
+This is because the mean mRNA count for the two promoters copies  state is
+exactly twice the expected mRNA count for the single promoter state (See
+\siref{supp_model}). Therefore once the mean mRNA count is halved after the
+cell division, it is already at the steady state value for the single promoter
+case. On the other hand, given that the relaxation time to steady state is
+determined by the degradation rate, the mean protein count does not reach its
+corresponding steady state value for either promoter copy number state.
+Interestingly once a couple of cell cycles have passed the first moment has a
+repetitive trajectory over cell cycles. We have observed this experimentally by
+tracking cells as they grow under the microscope. Comparing cells at the
+beginning of the cell cycle with the daughter cells that appear after cell
+division shown that on average all cells have the same amount of protein at the
+beginning of the cell cycle (See Fig. 18 of \cite{Phillips2019}), suggesting
+that these dynamical steady state takes place \textit{in vivo}.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/moment_dynamics_numeric/first_mom_cycles.pdf}
-	\caption{\textbf{First moment dynamics over cell the cell cycle.} Mean mRNA
-	(upper panel) and mean protein copy number (lower panel) as the cell cycle
-	progresses. The dark shaded region delimits the fraction of the cell cycle
-	that cells spend with  a single copy of the promoter. The light shaded region
-	delimits the fraction of the cell cycle that cells spend with two copies of
-	the promoter. For a 100 min doubling time at the {\it galK} locus cells spend
-	60\% of the time with one copy of the promoter and the rest with two copies.}
+  {../fig/main/fig03B.pdf}
+	\caption{\textbf{First and second moment dynamics over cell the cell cycle.}
+	Mean $\pm$ standard deviation mRNA (upper panel) and mean $\pm$ standard
+	deviation protein copy number (lower panel) as the cell cycle progresses. The
+	dark shaded region delimits the fraction of the cell cycle that cells spend
+	with  a single copy of the promoter. The light shaded region delimits the
+	fraction of the cell cycle that cells spend with two copies of the promoter.
+	For a 100 min doubling time at the {\it galK} locus cells spend 60\% of the
+	time with one copy of the promoter and the rest with two copies.}
   \label{sfig_first_mom_cycles}
 \end{figure}
 
