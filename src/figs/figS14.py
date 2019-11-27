@@ -6,9 +6,6 @@ import scipy as sp
 import pandas as pd
 import git
 
-# Import library to perform maximum entropy fits
-from maxentropy.skmaxent import FeatureTransformer, MinDivergenceModel
-
 # Import matplotlib stuff for plotting
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
@@ -22,6 +19,7 @@ import ccutils
 
 # Set PBoC plotting format
 ccutils.viz.set_plotting_style()
+# Increase dpi
 
 #%%
 
@@ -31,53 +29,138 @@ homedir = repo.working_dir
 
 # Define directories for data and figure 
 figdir = f'{homedir}/fig/si/'
+datadir = f'{homedir}/data/csv_maxEnt_dist/'
 
 # %%
-# Fit a model p(x) for dice probabilities (x=1,...,6) with the
-# single constraint E(X) = 4.5
-def first_moment_die(x):
-    return np.array(x)
 
+# Read moments for multi-promoter model
+df_mom_rep = pd.read_csv(datadir + 'MaxEnt_multi_prom_constraints.csv')
 
-# Put the constraint functions into an array
-features = [first_moment_die]
-# Write down the constraints (in this case mean of 4.5)
-k = np.array([4.5])
+# Read experimental determination of noise
+df_noise = pd.read_csv(f'{homedir}/data/csv_microscopy/' + 
+                       'microscopy_noise_bootstrap.csv')
 
-# Define the sample space of the die (from 1 to 6)
-samplespace = list(range(1, 7))
+# Find the mean unregulated levels to compute the fold-change
+mean_m_delta = np.mean(df_mom_rep[df_mom_rep.repressor == 0].m1p0)
+mean_p_delta = np.mean(df_mom_rep[df_mom_rep.repressor == 0].m0p1)
 
-# Define the minimum entropy
-model = MinDivergenceModel(features, samplespace)
+# Compute the noise for the multi-promoter data
+df_mom_rep = df_mom_rep.assign(
+    m_noise=(
+        np.sqrt(df_mom_rep.m2p0 - df_mom_rep.m1p0 ** 2) / df_mom_rep.m1p0
+    ),
+    p_noise=(
+        np.sqrt(df_mom_rep.m0p2 - df_mom_rep.m0p1 ** 2) / df_mom_rep.m0p1
+    ),
+    m_fold_change=df_mom_rep.m1p0 / mean_m_delta,
+    p_fold_change=df_mom_rep.m0p1 / mean_p_delta,
+)
 
-# Change the dimensionality of the array
-X = np.atleast_2d(k)
+# Initialize list to save theoretical noise
+thry_noise = list()
+# Iterate through rows
+for idx, row in df_noise.iterrows():
+    # Extract information
+    rep = float(row.repressor)
+    op = row.operator
+    if np.isnan(row.IPTG_uM):
+        iptg = 0
+    else:
+        iptg = row.IPTG_uM
+    
+    # Extract equivalent theoretical prediction
+    thry = df_mom_rep[(df_mom_rep.repressor == rep) &
+                       (df_mom_rep.operator == op) &
+                       (df_mom_rep.inducer_uM == iptg)].p_noise
+    # Append to list
+    thry_noise.append(thry.iloc[0])
+    
+df_noise = df_noise.assign(noise_theory = thry_noise)
 
-# initialize figure
-fig, ax = plt.subplots(1, 2, figsize=(6, 2.5), sharex=True, sharey=True)
+#%%
+# Initialize figure
+fig, ax = plt.subplots(1, 2, figsize=(5, 2))
 
-# Define probability distribution of the "wrong inference"
-prob = [0, 0, 0, 0.5, 0.5, 0]
-# Plot the "wrong" distribution
-ax[0].bar(samplespace, prob)
+# Linear scale
 
-# Plot the max ent distribution
-ax[1].bar(samplespace, model.probdist())
+# Plot reference line
+ax[0].plot([1e-2, 1e2], [1e-2, 1e2], "--", color="gray")
 
-# Label axis
-ax[0].set_xlabel("die face")
-ax[1].set_xlabel("die face")
+# Plot error bars
+ax[0].errorbar(
+    x=df_noise.noise_theory,
+    y=df_noise.noise,
+    yerr=[
+        df_noise.noise - df_noise.noise_lower,
+        df_noise.noise_upper - df_noise.noise,
+    ],
+    color="gray",
+    alpha=0.5,
+    mew=0,
+    zorder=0,
+    fmt=".",
+)
 
-ax[0].set_ylabel("probability")
+# Plot data with color depending on log fold-change
+ax[0].scatter(
+    df_noise.noise_theory,
+    df_noise.noise,
+    c=np.log10(df_noise.fold_change),
+    cmap="viridis",
+    s=10,
+)
 
-# Set title for plots
-ax[0].set_title(r"$\left\langle x \right\rangle = 4.5$")
-ax[1].set_title(r"MaxEnt $\left\langle x \right\rangle = 4.5$")
+ax[0].set_xlabel("theoretical noise")
+ax[0].set_ylabel("experimental noise")
+ax[0].set_title("linear scale")
 
-# Add letter label to subplots
-plt.figtext(0.1, 0.93, "(A)", fontsize=8)
-plt.figtext(0.50, 0.93, "(B)", fontsize=8)
+ax[0].set_xlim(0, 4)
+ax[0].set_ylim(0, 4)
+ax[0].set_xticks([0, 1, 2, 3, 4])
+ax[0].set_yticks([0, 1, 2, 3, 4])
 
-plt.subplots_adjust(wspace=0.05)
+# Log scale
 
+# Plot reference line
+line = [1e-1, 1e2]
+ax[1].loglog(line, line, "--", color="gray")
+# Plot data with color depending on log fold-change
+
+ax[1].errorbar(
+    x=df_noise.noise_theory,
+    y=df_noise.noise,
+    yerr=[
+        df_noise.noise - df_noise.noise_lower,
+        df_noise.noise_upper - df_noise.noise,
+    ],
+    color="gray",
+    alpha=0.5,
+    mew=0,
+    zorder=0,
+    fmt=".",
+)
+
+plot = ax[1].scatter(
+    df_noise.noise_theory,
+    df_noise.noise,
+    c=np.log10(df_noise.fold_change),
+    cmap="viridis",
+    s=10,
+)
+
+ax[1].set_xlabel("theoretical noise")
+ax[1].set_ylabel("experimental noise")
+ax[1].set_title("log scale")
+ax[1].set_xlim([0.1, 10])
+
+# show color scale
+fig.subplots_adjust(right=0.8)
+cbar_ax = fig.add_axes([0.82, 0.15, 0.02, 0.7])
+cbar = fig.colorbar(plot, cax=cbar_ax, ticks=[0, -1, -2, -3])
+
+cbar.ax.set_ylabel("fold-change")
+cbar.ax.set_yticklabels(["1", "0.1", "0.01", "0.001"])
+cbar.ax.tick_params(width=0)
+
+plt.subplots_adjust(wspace=0.4)
 plt.savefig(figdir + "figS14.pdf", bbox_inches="tight")
