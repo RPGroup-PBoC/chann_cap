@@ -4,7 +4,6 @@ import glob
 import numpy as np
 import scipy as sp
 import pandas as pd
-import re
 import git
 
 # Import matplotlib stuff for plotting
@@ -20,6 +19,7 @@ import ccutils
 
 # Set PBoC plotting format
 ccutils.viz.set_plotting_style()
+# Increase dpi
 
 #%%
 
@@ -32,145 +32,158 @@ figdir = f'{homedir}/fig/si/'
 datadir = f'{homedir}/data/csv_maxEnt_dist/'
 
 # %%
-# Read resulting values for the multipliers.
-df_maxEnt = pd.read_csv(datadir + "MaxEnt_Lagrange_mult_protein.csv")
 
-# Extract protein moments in constraints
-prot_mom = [x for x in df_maxEnt.columns if "lambda_m0" in x]
-# Define index of moments to be used in the computation
-moments = [tuple(map(int, re.findall(r"\d+", s))) for s in prot_mom]
+# Read moments for multi-promoter model
+df_mom_iptg = pd.read_csv(datadir + 'MaxEnt_multi_prom_IPTG_range.csv')
 
-# Define operators to be included
-operators = ["O1", "O2", "O3"]
-
-# Define repressors to be included
-repressors = [22, 260, 1740]
-
-# Define concnentration to include in plot
-inducer = np.sort(df_maxEnt.inducer_uM.unique())[::2]
-
-# Define color for operators
-# Generate list of colors
-col_list = ["Blues", "Oranges", "Greens"]
-col_dict = dict(zip(operators, col_list))
-
-# Define binstep for plot, meaning how often to plot
-# an entry
-binstep = 100
-
-# Define sample space
-mRNA_space = np.array([0])
-protein_space = np.arange(0, 1.3e4)
-
-# Initialize plot
-fig, ax = plt.subplots(
-    len(repressors), len(operators), figsize=(5, 5), sharex=True, sharey=True
+# Find the mean unregulated levels to compute the fold-change
+mean_m_delta = np.mean(
+    df_mom_iptg[df_mom_iptg.repressor==0].m1p0
+)
+mean_p_delta = np.mean(
+    df_mom_iptg[df_mom_iptg.repressor==0].m0p1
 )
 
-# Define displacement
-displacement = 5e-5
+# Compute the noise for the multi-promoter data
+df_mom_iptg = df_mom_iptg.assign(
+    m_noise=np.sqrt(df_mom_iptg.m2p0 - df_mom_iptg.m1p0**2) / 
+            df_mom_iptg.m1p0,
+    p_noise=np.sqrt(df_mom_iptg.m0p2 - df_mom_iptg.m0p1**2) / 
+            df_mom_iptg.m0p1,
+    m_fold_change=df_mom_iptg.m1p0 / mean_m_delta,
+    p_fold_change=df_mom_iptg.m0p1 / mean_p_delta
+)
 
-# Loop through operators
-for j, op in enumerate(operators):
-    # Loop through repressors
-    for i, rep in enumerate(repressors):
+# Read experimental determination of noise
+df_noise = pd.read_csv(f'{homedir}/data/csv_microscopy/' + 
+                       'microscopy_noise_bootstrap.csv')
 
-        # Extract the multipliers for a specific strain
-        df_sample = df_maxEnt[
-            (df_maxEnt.operator == op)
-            & (df_maxEnt.repressor == rep)
-            & (df_maxEnt.inducer_uM.isin(inducer))
-        ]
+#%%
+# Extract regulated promoter information
+df_noise_reg = df_noise[df_noise.repressor > 0]
+# Define repressor copy numbers to include
+rep = df_noise_reg["repressor"].unique()
 
-        # Group multipliers by inducer concentration
-        df_group = df_sample.groupby("inducer_uM", sort=True)
+# Group moments by operator and repressor
+df_group_exp = (
+    df_noise_reg[df_noise_reg.noise > 0]
+    .sort_values("IPTG_uM")
+    .groupby(["operator", "repressor"])
+)
 
-        # Extract and invert groups to start from higher to lower
-        groups = np.flip([group for group, data in df_group])
+df_group = (
+    df_mom_iptg[df_mom_iptg["repressor"].isin(rep)]
+    .sort_values("inducer_uM")
+    .groupby(["operator", "repressor"])
+)
 
-        # Define colors for plot
-        colors = sns.color_palette(col_dict[op], n_colors=len(df_group) + 1)
+# Generate index for each opeartor
+operators = ["O1", "O2", "O3"]
+op_idx = dict(zip(operators, np.arange(3)))
 
-        # Initialize matrix to save probability distributions
-        Pp = np.zeros([len(df_group), len(protein_space)])
+# List energies
+energies = [-15.3, -13.9, -9.7]
 
-        # Loop through each of the entries
-        for k, group in enumerate(groups):
-            data = df_group.get_group(group)
+# Generate list of colors
+col_list = ["Blues_r", "Oranges_r", "Greens_r"]
+# Loop through operators generating dictionary of colors for each
+col_dict = {}
+for i, op in enumerate(operators):
+    col_dict[op] = dict(
+        zip(rep, sns.color_palette(col_list[i], n_colors=len(rep) + 1)[0:3])
+    )
 
-            # Select the Lagrange multipliers
-            lagrange_sample = data.loc[
-                :, [col for col in data.columns if "lambda" in col]
-            ].values[0]
+# Define threshold to separate log scale from linear scale
+thresh = 1e-1
 
-            # Compute distribution from Lagrange multipliers values
-            Pp[k, :] = ccutils.maxent.maxEnt_from_lagrange(
-                mRNA_space, protein_space, lagrange_sample, exponents=moments
-            ).T
+#%%
+# Initialize figure
+fig, ax = plt.subplots(
+    2,
+    3,
+    figsize=(7, 2.5),
+    sharex=True,
+    sharey="row",
+    gridspec_kw={"height_ratios": [1, 5], "wspace": 0.05, "hspace": 0},
+)
+ax = ax.ravel()
+# Loop through groups on multi-promoter
+for i, (group, data) in enumerate(df_group):
+    # Log scale
+    ax[op_idx[group[0]] + 3].plot(
+        data[data.inducer_uM >= thresh].inducer_uM,
+        data[data.inducer_uM >= thresh].p_noise * 2,
+        color=col_dict[group[0]][group[1]],
+        label=int(group[1]),
+    )
+    # Linear scale
+    ax[op_idx[group[0]] + 3].plot(
+        data[data.inducer_uM <= thresh].inducer_uM,
+        data[data.inducer_uM <= thresh].p_noise * 2,
+        color=col_dict[group[0]][group[1]],
+        label="",
+        linestyle=":",
+    )
+# Set threshold for data
+dthresh = 10
+# Loop through groups on experimental data
+for i, (group, data) in enumerate(df_group_exp):
+    # Plot data points on lower plot
+    ax[op_idx[group[0]] + 3].errorbar(
+        x=data.IPTG_uM,
+        y=data.noise,
+        yerr=[data.noise - data.noise_lower, data.noise_upper - data.noise],
+        fmt="o",
+        ms=3.5,
+        color=col_dict[group[0]][group[1]],
+        label="",
+    )
+    # Plot same data points with different plotting style on the upper row
+    ax[op_idx[group[0]]].plot(
+        data[data.noise > dthresh].IPTG_uM,
+        data[data.noise > dthresh].noise,
+        linestyle="--",
+        color="w",
+        label="",
+        lw=0,
+        marker="o",
+        markersize=3,
+        markeredgecolor=col_dict[group[0]][group[1]],
+    )
 
-            # Generate PMF plot
-            ax[i, j].plot(
-                protein_space[0::binstep],
-                Pp[k, 0::binstep] + k * displacement,
-                drawstyle="steps",
-                lw=1,
-                color="k",
-                zorder=len(df_group) * 2 - (2 * k),
-            )
-            # Fill between each histogram
-            ax[i, j].fill_between(
-                protein_space[0::binstep],
-                Pp[k, 0::binstep] + k * displacement,
-                [displacement * k] * len(protein_space[0::binstep]),
-                color=colors[k],
-                alpha=1,
-                step="pre",
-                zorder=len(df_group) * 2 - (2 * k + 1),
-            )
+# Set scales of reference plots and the other ones will follow
+ax[0].set_xscale("symlog", linthreshx=thresh, linscalex=1)
+ax[0].set_yscale("log")
+# ax[3].set_yscale("log")
 
-        # Add x label to lower plots
-        if i == 2:
-            ax[i, j].set_xlabel("protein / cell")
+# Set limits of reference plots and the rest will folow
+ax[3].set_ylim([-0.5, dthresh])
+ax[0].set_ylim([dthresh, 5e2])
 
-        # Add y label to left plots
-        if j == 0:
-            ax[i, j].set_ylabel("[IPTG] ($\mu$M)")
+# Set ticks for the upper plot
+ax[0].set_yticks([1e1, 1e2])
 
-        # Add operator top of colums
-        if i == 0:
-            label = r"$\Delta\epsilon_r$ = {:.1f} $k_BT$".format(
-                df_sample.binding_energy.unique()[0]
-            )
-            ax[i, j].set_title(label, bbox=dict(facecolor="#ffedce"))
+# Define location for secondary legend
+leg2_loc = ["lower left"] * 2 + ["upper left"]
 
-        # Add repressor copy number to right plots
-        if j == 2:
-            # Generate twin axis
-            axtwin = ax[i, j].twinx()
-            # Remove ticks
-            axtwin.get_yaxis().set_ticks([])
-            # Set label
-            axtwin.set_ylabel(
-                r"rep. / cell = {:d}".format(rep),
-                bbox=dict(facecolor="#ffedce"),
-            )
-            # Remove residual ticks from the original left axis
-            ax[i, j].tick_params(color="w", width=0)
-
-# Change lim
-ax[0, 0].set_ylim([-3e-5, 7.5e-4 + len(df_group) * displacement])
-# Adjust spacing between plots
-plt.subplots_adjust(hspace=0.02, wspace=0.02)
-
-# Set y axis ticks
-yticks = np.arange(len(df_group)) * displacement
-yticklabels = [int(x) for x in groups]
-
-ax[0, 0].yaxis.set_ticks(yticks)
-ax[0, 0].yaxis.set_ticklabels(yticklabels)
-
-# Set x axis ticks
-xticks = [0, 5e3, 1e4, 1.5e4]
-ax[0, 0].xaxis.set_ticks(xticks)
+for i in range(3):
+    # Generate legend for single vs double promoter
+    ax[i+3].plot([], [], color="k", linestyle="--", 
+                   label="single", alpha=0.5)
+    ax[i+3].plot([], [], color="k", label="multi")
+    # Set legend
+    leg = ax[i+3].legend(title="rep./cell", fontsize=6)
+    # Set legend font size
+    plt.setp(leg.get_title(), fontsize=6)
+    # Set title
+    label = r"$\Delta\epsilon_r$ = {:.1f} $k_BT$".format(energies[i])
+    ax[i].set_title(label, bbox=dict(facecolor="#ffedce"))
+    # Label axis
+    ax[i + 3].set_xlabel(r"IPTG ($\mu$M)")
+    # Set legend
+    leg = ax[i + 3].legend(title="rep./cell", fontsize=6)
+    # Set legend font size
+    plt.setp(leg.get_title(), fontsize=6)
+ax[3].set_ylabel(r"noise")
 
 plt.savefig(figdir + "figS16.pdf", bbox_inches="tight")
