@@ -6,9 +6,14 @@ what I have already tried and what work or didn't work.
 
 ## 2019/11
 
-**2019/11/25**
-- Today I worked on the Poisson-Gaussian noise model. The algebra gets messy,
-  I'll need to use `sympy` to work through it.
+**2019/11/27**
+- Today I explored the idea that there could be a systematic deviation when
+  cells binomially partition their content given that two cells in the
+  population are perfectly correlated. But from numerical analysis I guess this
+  hypothesis doesn't make sense anymore.
+- I also worked on the Gillespie simulations that I wrote before. Cleaning the
+  code and re-running the simulations with the 100% established parameters.
+  This will definitely be added to the SI.
 
 **2019/11/26**
 - Today I hit a wall with respect to the Poisson Gaussian model. I tried a
@@ -20,3 +25,8 @@ what I have already tried and what work or didn't work.
   partitioning of the proteins. I have an idea that all events after the
   binomial partitioning are not i.i.d. since in principle **two** daughter
   cells are perfectly correlated.
+
+**2019/11/25**
+- Today I worked on the Poisson-Gaussian noise model. The algebra gets messy,
+  I'll need to use `sympy` to work through it.
+
