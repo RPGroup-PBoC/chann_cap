@@ -53,6 +53,9 @@ model = MinDivergenceModel(features, samplespace)
 # Change the dimensionality of the array
 X = np.atleast_2d(k)
 
+# Fit the model
+model.fit(X)
+
 # initialize figure
 fig, ax = plt.subplots(1, 2, figsize=(6, 2.5), sharex=True, sharey=True)
 
@@ -80,4 +83,4 @@ plt.figtext(0.50, 0.93, "(B)", fontsize=8)
 
 plt.subplots_adjust(wspace=0.05)
 
-plt.savefig(figdir + "figS14.pdf", bbox_inches="tight")
+plt.savefig(figdir + "figS19.pdf", bbox_inches="tight")

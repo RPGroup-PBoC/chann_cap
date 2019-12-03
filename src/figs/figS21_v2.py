@@ -61,13 +61,22 @@ protein_space = np.arange(0, 1.3e4)
 
 # Initialize plot
 fig, ax = plt.subplots(
-    len(repressors), len(operators), figsize=(5, 5), sharex=True, sharey=True
+    len(repressors),
+    len(operators),
+    figsize=(5, 5),
+    sharex=True,
+    sharey=True
 )
 
 # Loop through operators
 for j, op in enumerate(operators):
     # Loop through repressors
     for i, rep in enumerate(repressors):
+        # Set ticks in scientific notation
+        ax[i, j].yaxis.set_major_formatter(
+            mpl.ticker.ScalarFormatter(useMathText=True, useOffset=False)
+        )
+
         # Extract the multipliers for a specific strain
         df_sample = df_maxEnt[
             (df_maxEnt.operator == op) & (df_maxEnt.repressor == rep)
@@ -94,13 +103,19 @@ for j, op in enumerate(operators):
                 mRNA_space, protein_space, lagrange_sample, exponents=moments
             ).T
 
-            # CDF plot
             ax[i, j].plot(
                 protein_space[0::binstep],
-                np.cumsum(Pp[k, :])[0::binstep],
+                Pp[k, 0::binstep],
                 drawstyle="steps",
+                color="k",
+            )
+            # Fill between each histogram
+            ax[i, j].fill_between(
+                protein_space[0::binstep],
+                Pp[k, 0::binstep],
                 color=colors[k],
-                linewidth=2,
+                alpha=0.8,
+                step="pre",
             )
 
         # Add x label to lower plots
@@ -109,7 +124,7 @@ for j, op in enumerate(operators):
 
         # Add y label to left plots
         if j == 0:
-            ax[i, j].set_ylabel("CDF")
+            ax[i, j].set_ylabel("probability")
 
         # Add operator top of colums
         if i == 0:
@@ -132,7 +147,9 @@ for j, op in enumerate(operators):
             # Remove residual ticks from the original left axis
             ax[i, j].tick_params(color="w", width=0)
 
+# Change limits
+ax[0, 0].set_ylim([0, 1e-3])
 # Adjust spacing between plots
-plt.subplots_adjust(hspace=0.02, wspace=0.02)
+plt.subplots_adjust(hspace=0.08, wspace=0.02)
 
-plt.savefig(figdir + "figS16_v3.pdf", bbox_inches="tight")
+plt.savefig(figdir + "figS21_v2.pdf", bbox_inches="tight")

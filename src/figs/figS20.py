@@ -172,4 +172,4 @@ ax[0, 0].yaxis.set_ticklabels(yticklabels)
 # Set x ticks every 10 mRNA
 ax[0, 0].xaxis.set_ticks(np.arange(0, 50, 10))
 
-plt.savefig(figdir + "figS15.pdf", bbox_inches="tight")
+plt.savefig(figdir + "figS20.pdf", bbox_inches="tight")
