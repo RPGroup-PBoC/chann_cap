@@ -4,6 +4,7 @@ import itertools
 import cloudpickle
 import re
 import glob
+import git
 
 # Our numerical workhorses
 import numpy as np
@@ -19,8 +20,12 @@ from joblib import Parallel, delayed
 # Import the project utils
 import ccutils
 
-tmpdir = '../../../tmp/'
-datadir = '../../../data/csv_maxEnt_dist/'
+# Find home directory for repo
+repo = git.Repo("./", search_parent_directories=True)
+homedir = repo.working_dir
+
+# Define directories for data and figure 
+datadir = f'{homedir}/data/csv_maxEnt_dist'
 
 #%%
 # Load moments for multi-promoter level
@@ -123,5 +128,5 @@ df_maxEnt = pd.DataFrame([], columns=names)
 for s in maxEnt_series:
     df_maxEnt = df_maxEnt.append(s, ignore_index=True)
 
-df_maxEnt.to_csv(datadir + 'MaxEnt_Lagrange_mult_protein_noise.csv',
+df_maxEnt.to_csv(f'{datadir}MaxEnt_Lagrange_mult_protein_correction.csv',
                  index=False)

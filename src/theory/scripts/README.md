@@ -53,7 +53,7 @@ they derive.
   maximum entropy approximation of the distribution for a finer grid of inducer
   concentrations.
     
-- `maxent_protein_noise_dist.py` : Script that updates the second and third
+- `maxent_protein_dist_correction.py` : Script that updates the second and third
   moment of the protein distribution to match the factor of two in the
   deviation between the original theoretical prediction and the experimental
   data. It then uses these updated moments along with the first protein moment
