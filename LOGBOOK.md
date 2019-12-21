@@ -4,6 +4,22 @@ This markdown file is a late addition to the project. I'll keep track of all
 what I'm working on the project in order to have a record and a better track of
 what I have already tried and what work or didn't work.
 
+## 2019/12
+
+**2019/12/19**
+- Today I worked through the derivation of the one-state bursty gene expression
+  following Charlotte's notes. After brainstorming with Muir about this idea,
+  it became it's own little project. So look for a future paper on bursty
+  transcription!
+
+**2019/12/01**
+- Today I cleaned the figures from the mRNA distribution MCMC fit notebook and
+  generated independent scripts for each of them.
+- I also finished the section that talks about the skewness and its systematic
+  deviation with the data.
+- I then cleaned the figures from the MaxEnt notebook and generated individual
+  scripts for all these.
+
 ## 2019/11
 
 **2019/11/27**
