@@ -309,7 +309,7 @@ that these dynamical steady state takes place \textit{in vivo}.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/main/fig03B.pdf}
+  {../fig/si/figS08.pdf}
 	\caption{\textbf{First and second moment dynamics over cell the cell cycle.}
 	Mean $\pm$ standard deviation mRNA (upper panel) and mean $\pm$ standard
 	deviation protein copy number (lower panel) as the cell cycle progresses. The
@@ -456,7 +456,7 @@ changing therefore the mean repressor copy number for both stages.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/moment_dynamics_numeric/lacI_titration.pdf}
+  {../fig/si/figS09.pdf}
 	\caption{\textbf{Comparison of the equilibrium and kinetic reressor titration
 	predictions.} The equilibrium model (solid lines) and the kinetic model with
 	variation over the cell cycle (solid circles and white triangles) predictions
@@ -478,7 +478,7 @@ change in the number of active repressors, affecting therefore $\kron$.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/moment_dynamics_numeric/IPTG_titration.pdf}
+  {../fig/si/figS10.pdf}
 	\caption{\textbf{Comparison of the equilibrium and kinetic inducer titration
 	predictions.} The equilibrium model (solid lines) and the kinetic model with
 	variation over the cell cycle (solid circles and white triangles) predictions
@@ -530,7 +530,7 @@ Jones2014a}
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/moment_dynamics_numeric/noise_comparison.pdf}
+  {../fig/si/figS11.pdf}
 	\caption{\textbf{Comparison of the predicted protein noise between a single-
 	and a multi-promoter kinetic model.} Comparison of the noise
 	(standard deviation/mean) between a kinetic model that considers a single
@@ -604,43 +604,200 @@ the data by operator despite the fact that since these are unregulated
 promoters, they should in principle have identical expression profiles is to
 precisely make sure that this is the case. We have found in the past that
 sequences downstream of the RNAP binding site can affect the expression level
-of constitutively expressed genes. We can see that the single-promoter model
-that ignores gene copy number variability greatly underestimates the measured
-noise at the protein level despite the fact that it can capture the noise at
-the mRNA level (See \siref{supp_param_inference}). On the other hand the zero
-parameter fit prediction from the multi-promoter level presented in this
-section has a much better agreement with the experimental values. This
-indicates that changes in gene copy number along the cell cycle are important
-contributors to the cell-to-cell variability.
+of constitutively expressed genes. We can see that both models, the
+single-promoter (gray dotted line) and the multi-promoter (black dashed line)
+underestimate the experimental noise to different degrees. The single-promoter
+model does a worse job at predicting the experimental data since it doesn't
+account for the differences in gene dosage during the cell cycle. But still we
+can see that accounting for this variability takes us to within a factor of two
+of the experimentally determined noise for these unregulated strains.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/moment_dynamics_numeric/noise_delta_microscopy.pdf}
+  {../fig/si/figS12.pdf}
 	\caption{\textbf{Protein noise of the unregulated promoter.} Comparison of
 	the experimental noise for different operators with the theoretical
 	predictions for the single-promoter (gray dotted line) and the multi-promoter
-	model (black dashed line).}
+	model (black dashed line). Each datum represents a single date measurement of
+	the corresponding $\Delta lacI$ strain with $\geq 300$ cells. The points
+	correspond to the median, and the error bars correspond to the 95\%
+	confidence interval as determined by 10,000 bootstrap samples.}
   \label{sfig_noise_delta}
 \end{figure}
 
 To further test the model predictive power we compare the predictions for the
 three-state regulated promoter. \fref{sfig_noise_reg} shows the theoretical
-predictions for the single- and the multi-promoter model for varying repressor
+predictions for the single- and multi-promoter model for varying repressor
 copy numbers and repressor-DNA binding affinities as a function of the inducer
-concentration. We can see again that the zero-parameter fit multi-promoter
-model has a good agreement with the experimental data, while the
-single-promoter model again underestimates the noise.
+concentration. We can see again that our zero-parameter fits systematically
+underestimates the noise for all strains and all inducer concentrations. We
+highlight that the $y$-axis is shown in a log-scale to emphasize more this
+deviation; but, as we will show in the next section, our predictions still fall
+within a factor of two from the experimental data.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/moment_dynamics_numeric/noise_comparison_exp_scale.pdf}
+  {../fig/si/figS13_v2.pdf}
 	\caption{\textbf{Protein noise of the regulated promoter.} Comparison of the
-	experimental noise for different operators ((A) O1,  $\eR = -15.3 \;
-	k_BT$, (B) O2, $\eR = -13.9 \; k_BT$, (C) O3, $\eR = -9.7 \; k_BT$) with the
+	experimental noise for different operators ((A) O1,  $\eR = -15.3 \; k_BT$,
+	(B) O2, $\eR = -13.9 \; k_BT$, (C) O3, $\eR = -9.7 \; k_BT$) with the
 	theoretical predictions for the single-promoter (dashed lines) and the
-  multi-promoter model (solid lines). Points represent the experimental noise
-  as computed from single-cell fluorescence measurements of different {\it E.
-  coli} strains under 12 different inducer concentrations. Dotted line
-  indicates plot in linear rather than logarithmic scale.}
+	multi-promoter model (solid lines). Points represent the experimental noise
+	as computed from single-cell fluorescence measurements of different {\it E.
+	coli} strains under 12 different inducer concentrations. Dotted line
+	indicates plot in linear rather than logarithmic scale. Each datum represents
+	a single date measurement of the corresponding strain and IPTG concentration
+	with $\geq 300$ cells. The points correspond to the median, and the error
+	bars correspond to the 95\% confidence interval as determined by 10,000
+	bootstrap samples. White-filled dots are plot at a different scale for better
+	visualization.}
   \label{sfig_noise_reg}
+\end{figure}
+
+\subsubsection{Systematic deviation of the noise in gene expression}
+
+\fref{sfig_noise_delta} and \fref{sfig_noise_reg} highlight that our model
+underestimates the cell-to-cell variability as measured by the noise. To
+further explore this systematic deviation \fref{sfig_noise_comparison} shows
+the theoretical vs. experimental noise both in linear and log scale. As we can
+see the data is systematically above the identity line. The data is colored by
+their corresponding experimental fold-change values. The data that has the
+largest deviations from the identity line also corresponds to the data with the
+largest error bars and the smallest fold-change. This is because measurements
+with very small fold-changes correspond to intensities very close to the
+autofluorescence background. Therefore minimal changes when computing the noise
+are amplified given the ratio of std/mean.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/si/figS14.pdf}
+	\caption{\textbf{Systematic comparison of theoretical vs experimental noise
+	in gene expression.} Theoretical vs. experimental noise both in linear (left)
+	and log (right) scale. The dashed line shows the identity line of slope 1 and
+	intercept zero. All data are colored by the corresponding value of the
+	experimental fold-change in gene expression as indicated by the color bar.
+	Each datum represents a single date measurement of the corresponding strain
+	and IPTG concentration with $\geq 300$ cells. The points correspond to the
+	median, and the error bars correspond to the 95\% confidence interval as
+	determined by 10,000 bootstrap samples.}
+  \label{sfig_noise_comparison}
+\end{figure}
+
+\subsubsection{Multiplicative factor for the noise}
+\label{supp_mult_factor_noise}
+
+The data, especially in \fref{sfig_noise_delta} suggests that our predictions
+are within a factor of two from the experimental data. To further check that
+intuition we performed a weighted linear regression between the experimental
+and theoretical noise measurements. The weight for each datum was taken to be
+proportional to the fold-change, this to have poorly determined noises weigh
+less during the regression. The result of this regression with no intercept
+shows exactly that a factor of two systematically improves the theoretical vs.
+experimental predictions. \fref{sfig_noise_mult_factor} shows the improved
+agreement when the theoretical predictions for the noise are multiplied by two.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/si/figS15.pdf}
+	\caption{\textbf{Multiplicative factor to improve theoretical vs.
+	experimental comparison of noise in gene expression.} Theoretical vs.
+	experimental noise both in linear (left) and log (right) scale. The dashed
+	line shows the identity line of slope 1 and intercept zero. All data are
+	colored by the corresponding value of the experimental fold-change in gene
+	expression as indicated by the color bar. The $x$-axis was multiplied by a
+	factor of two as determined by a linear regression from the data in
+	\fref{sfig_noise_comparison}. Each datum represents a single date measurement
+	of the corresponding strain and IPTG concentration with $\geq 300$ cells. The
+	points correspond to the median, and the error bars correspond to the 95\%
+	confidence interval as determined by 10,000 bootstrap samples.}
+  \label{sfig_noise_mult_factor}
+\end{figure}
+
+For completeness \fref{sfig_noise_reg_corrected} shows the noise in gene
+expression as a function of the inducer concentration including this factor of
+two. It is clear that overall a simple multiplicative factor improves the
+predictive power of the model.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/si/figS16.pdf}
+	\caption{\textbf{Protein noise of the regulated promoter with multiplicative
+	factor.} Comparison of the experimental noise for different operators ((A)
+	O1,  $\eR = -15.3 \; k_BT$, (B) O2, $\eR = -13.9 \; k_BT$, (C) O3, $\eR =
+	-9.7 \; k_BT$) with the theoretical predictions for the  the multi-promoter
+	model. A linear regression revealed that multiplying the theoretical noise
+	prediction by a factor of two would improve agreement between theory and
+	data. Points represent the experimental noise as computed from single-cell
+	fluorescence measurements of different {\it E. coli} strains under 12
+	different inducer concentrations. Dotted line indicates plot in linear rather
+	than logarithmic scale. Each datum represents a single date measurement of
+	the corresponding strain and IPTG concentration with $\geq 300$ cells. The
+	points correspond to the median, and the error bars correspond to the 95\%
+	confidence interval as determined by 10,000 bootstrap samples. White-filled
+	dots are plot at a different scale for better visualization.}
+  \label{sfig_noise_reg_corrected}
+\end{figure}
+
+\subsubsection{Systematic deviation of the distribution skewness}
+\label{supp_mult_factor_skew}
+
+Another relevant statistic we can compare between our theoretical predictions
+and the experimental data is the skewness. The skewness $S(X)$ is defined as
+\begin{equation}
+  S(X) \equiv \ee{ \left( {X - \mu \over \sigma} \right)^3},
+\end{equation}
+where $\mu$ and $\sigma$ are the corresponding mean and standard deviation of
+the random variable $X$. The skewness can also be computed in terms of the
+third moment of the distribution $\ee{X^3}$ as
+\begin{equation}
+  S(X) = {\ee{X^3} - 3 \mu \sigma^2 - \mu^3 \over \sigma^3}.
+\end{equation}
+We computed this quantity from the numerical integration of the moment
+equations. \fref{sfig_skew_reg} shows that as in \fref{sfig_noise_reg} there is
+a systematic deviation between our theoretical predictions and the experimental
+skewness. It again seems to be a systematic underestimation of the baseline.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/si/figS17.pdf}
+	\caption{\textbf{Skewness of the regulated promoter.} Comparison of the
+	experimental skewness for different operators ((A) O1,  $\eR = -15.3 \;
+	k_BT$, (B) O2, $\eR = -13.9 \; k_BT$, (C) O3, $\eR = -9.7 \; k_BT$) with the
+	theoretical predictions for the  the multi-promoter model. Points represent
+	the experimental noise as computed from single-cell fluorescence measurements
+	of different {\it E. coli} strains under 12 different inducer concentrations.
+	Dotted line indicates plot in linear rather than logarithmic scale. Each
+	datum represents a single date measurement of the corresponding strain and
+	IPTG concentration with $\geq 300$ cells. The points correspond to the
+	median, and the error bars correspond to the 95\% confidence interval as
+	determined by 10,000 bootstrap samples.}
+  \label{sfig_skew_reg}
+\end{figure}
+
+Interestingly enough if we follow the same procedure that we followed for the
+noise with a linear regression with a fixed origin, we find that a factor of 2
+again can fix the systematic deviation. \fref{sfig_skew_reg_corr} shows the
+improved agreement for the skewness when this multiplicative factor is
+included. The origin of this factor of two as well as the one for the noise are
+limitations of our current state-of-the-art modeling approach. It would be very
+interesting to dissect whether or not the model can account for these changes.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/si/figS18.pdf}
+	\caption{\textbf{Skewness of the regulated promoter with a multiplicative
+	factor.} Comparison of the experimental skewness for different operators ((A)
+	O1,  $\eR = -15.3 \; k_BT$, (B) O2, $\eR = -13.9 \; k_BT$, (C) O3, $\eR =
+	-9.7 \; k_BT$) with the theoretical predictions for the  the multi-promoter
+	model corrected by a multiplicative factor. A linear regression determined
+	that multiplying the theoretical skewness by a factor of two was enough to
+	improve the agreement between theory and experiments. Points represent the
+	experimental noise as computed from single-cell fluorescence measurements of
+	different {\it E. coli} strains under 12 different inducer concentrations.
+	Dotted line indicates plot in linear rather than logarithmic scale. Each
+	datum represents a single date measurement of the corresponding strain and
+	IPTG concentration with $\geq 300$ cells. The points correspond to the
+	median, and the error bars correspond to the 95\% confidence interval as
+	determined by 10,000 bootstrap samples.}
+  \label{sfig_skew_reg_corr}
 \end{figure}

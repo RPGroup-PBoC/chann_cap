@@ -5,9 +5,9 @@ be found in the
 \href{https://www.rpgroup.caltech.edu/chann_cap/src/theory/html/MaxEnt_approx_joint.html}{following
 link} as an anotated Jupter notebook)
 
-On the one hand the solution of chemical master equations like the one
-in \secref{sec_model} represent a hard mathematical challenge. As presented
-in \siref{supp_param_inference} Peccoud and Ycart derived a closed-form solution
+On the one hand the solution of chemical master equations like the one in
+\secref{sec_model} represent a hard mathematical challenge. As presented in
+\siref{supp_param_inference} Peccoud and Ycart derived a closed-form solution
 for the two-state promoter at the mRNA level \cite{Peccoud1995}. In an
 impressive display of mathematical skills, Shahrezaei and Swain were able to
 derive an approximate solution for the one- (not considered in this work) and
@@ -18,17 +18,17 @@ hypergeometric functions.
 
 On the other hand there has been a great deal of work to generate methods that
 can approximate the solution of these discrete state Markovian models
-\cite{Ale2013, Andreychenko2017, Frohlich2016, Schnoerr2017, Smadbeck2013}. In particular for master equations like the one that
-concerns us here whose moments can be easily computed, the moment expansion
-method provides a simple method to approximate the full joint distribution of
-mRNA and protein \cite{Smadbeck2013}. In this section we will explain the
-principles behind this method and show the implementation for our particular
-case study.
+\cite{Ale2013, Andreychenko2017, Frohlich2016, Schnoerr2017, Smadbeck2013}. In
+particular for master equations like the one that concerns us here whose
+moments can be easily computed, the moment expansion method provides a simple
+method to approximate the full joint distribution of mRNA and protein
+\cite{Smadbeck2013}. In this section we will explain the principles behind this
+method and show the implementation for our particular case study.
 
 \subsection{The MaxEnt principle}
 
-The principle of maximum entropy (MaxEnt) first proposed by E. T. Jaynes in 1957
-tackles the question of given limited information what is the least biased
+The principle of maximum entropy (MaxEnt) first proposed by E. T. Jaynes in
+1957 tackles the question of given limited information what is the least biased
 inference one can make about a particular probability distribution
 \cite{Jaynes1957}. In particular Jaynes used this principle to show the
 correspondence between statistical mechanics and information theory,
@@ -55,12 +55,12 @@ such that
 i.e. that the more moments we add to our approximation, the more the estimator
 distribution converges to the real distribution.
 
-The MaxEnt principle tells us that our best guess for this estimator is to build
-it on the base of maximizing the Shannon entropy, constrained by the information
-we have about these $m$ moments. The maximization of Shannon's entropy
-guarantees that we are the least committed possible to information that we do
-not posses. The Shannon entropy for an univariate discrete distribution is
-given by \cite{Shannon1948}
+The MaxEnt principle tells us that our best guess for this estimator is to
+build it on the base of maximizing the Shannon entropy, constrained by the
+information we have about these $m$ moments. The maximization of Shannon's
+entropy guarantees that we are the least committed possible to information that
+we do not posses. The Shannon entropy for an univariate discrete distribution
+is given by \cite{Shannon1948}
 \begin{equation}
   H(x) \equiv - \sum_x P_X(x) \log P_X(x).
 \end{equation}
@@ -100,13 +100,13 @@ substituting this solution into the normalization constraint. This results in
   \sum_x \exp \left( - \sum_{i=1}^m \lambda_i x^i \right).
 \end{equation}
 
-\eref{eq_maxEnt} is the general form of the MaxEnt distribution for a univariate
-distribution. The computational challenge then consists in finding numerical
-values for the Lagrange multipliers $\{ \lambda_i \}$ such that $P_H(x)$
-satisfies our constraints. In other words, the Lagrange multipliers weight the
-contribution of each term in the exponent such that when computing any of the
-moments we recover the value of our constraint. Mathematically what this means
-is that $P_H(x)$ must satisfy
+\eref{eq_maxEnt} is the general form of the MaxEnt distribution for a
+univariate distribution. The computational challenge then consists in finding
+numerical values for the Lagrange multipliers $\{ \lambda_i \}$ such that
+$P_H(x)$ satisfies our constraints. In other words, the Lagrange multipliers
+weight the contribution of each term in the exponent such that when computing
+any of the moments we recover the value of our constraint. Mathematically what
+this means is that $P_H(x)$ must satisfy
 \begin{equation}
   \sum_x x^n P_H(x) =
   \sum_x {x^n \over \mathcal{Z}}
@@ -116,7 +116,7 @@ is that $P_H(x)$ must satisfy
 As an example of how to apply the MaxEnt principle let us use the classic
 problem of a six-face die. If we are only told that after a large number of die
 rolls the mean value of the face is $\ee{x} = 4.5$ (note that a fair die has a
-mean of $3.5$), what would the least biased guess fot the distribution look
+mean of $3.5$), what would the least biased guess for the distribution look
 like? The MaxEnt principle tells us that our best guess would be of the form
 \begin{equation}
   P_H(x) = {1 \over \mathcal{Z}} \exp \left( \lambda x \right).
@@ -124,18 +124,18 @@ like? The MaxEnt principle tells us that our best guess would be of the form
 Using any numerical minimization package we can easily find the value of the
 Lagrange multiplier $\lambda$  that satisfies our constraint.
 \fref{fig_maxent_die} shows two two examples of distributions that satisfy the
-constraint. Panel (A) shows a distribution consistent with the 4.5 average where
-both 4 and 5 are equally likely. Nevertheless in the information we got about
-the nature of the die it was never stated that some of the faces were forbidden.
-In that sense the distribution is committing to information about the process
-that we do not posses. Panel (B) by contrast shows the MaxEnt distribution that
-satisfies this constraint. Since this distribution maximizes Shannon's entropy
-it is guaranteed to be the least biased distribution given the available
-information.
+constraint. Panel (A) shows a distribution consistent with the 4.5 average
+where both 4 and 5 are equally likely. Nevertheless in the information we got
+about the nature of the die it was never stated that some of the faces were
+forbidden. In that sense the distribution is committing to information about
+the process that we do not posses. Panel (B) by contrast shows the MaxEnt
+distribution that satisfies this constraint. Since this distribution maximizes
+Shannon's entropy it is guaranteed to be the least biased distribution given
+the available information.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/MaxEnt_approx_joint/biased_die_dist.pdf}
+  {../fig/si/figS19.pdf}
 	\caption{\textbf{Maximum entropy distribution of six-face die.} (A)biased
   distribution consistent with the constraint $\ee{x} = 4.5$. (B) MaxEnt
   distribution also consistent with the constraint.}
@@ -145,7 +145,8 @@ information.
 \subsubsection{The mRNA and protein joint distribution}
 
 The MaxEnt principle can easily be extended to multivariate distributions. For
-our particular case we are interested in the mRNA and protein joint distribution
+our particular case we are interested in the mRNA and protein joint
+distribution
 $P(m, p)$. The definition of a moment $\ee{m^x p^y}$ is a natural extension of
 \eref{eq_mom_ref} of the form
 \begin{equation}
@@ -171,30 +172,31 @@ that define the moment constraints for the distribution.
 
 The determination of the Lagrange multipliers suffer from a numerical under and
 overflow problem due to the difference in magnitude between the constraints.
-This becomes a problem when higher moments are taken into account. The resulting
-numerical values for the Lagrange multipliers end up being separated by several
-orders of magnitude. For routines such as Newton-Raphson or other minimization
-algorithms that can be used to find these Lagrange multipliers these different
-scales become problematic.
+This becomes a problem when higher moments are taken into account. The
+resulting numerical values for the Lagrange multipliers end up being separated
+by several orders of magnitude. For routines such as Newton-Raphson or other
+minimization algorithms that can be used to find these Lagrange multipliers
+these different scales become problematic.
 
-To get around this problem we implemented a variation to the algorithm due to G.
-Larry Bretthorst, E.T. Jaynes' last student. With a very simple argument we can
-show that linearly rescaling the constraints, the Lagrange multipliers and the
-``rules'' for how to compute each of the moments, i.e. each of the individual
-products that go into the moment calculation, should converge to the same MaxEnt
-distribution. In order to see this let's consider again a univariate
-distribution $P_X(x)$ that we are trying to reconstruct given the first two
-moments $\ee{x}$, and $\ee{x^2}$. The MaxEnt distribution can be written as
+To get around this problem we implemented a variation to the algorithm due to
+G. Larry Bretthorst, E.T. Jaynes' last student. With a very simple argument we
+can show that linearly rescaling the constraints, the Lagrange multipliers and
+the ``rules'' for how to compute each of the moments, i.e. each of the
+individual products that go into the moment calculation, should converge to the
+same MaxEnt distribution. In order to see this let's consider again a
+univariate distribution $P_X(x)$ that we are trying to reconstruct given the
+first two moments $\ee{x}$, and $\ee{x^2}$. The MaxEnt distribution can be
+written as
 \begin{equation}
   P_H(x) = {1 \over \mathcal{Z}}
   \exp \left(- \lambda_1 x - \lambda_2 x^2 \right) =
   {1 \over \mathcal{Z}}
   \exp \left(- \lambda_1 x \right) \exp \left( - \lambda_2 x^2 \right).
 \end{equation}
-We can always rescale the terms in any way and obtain the same result. Let's say
-that for some reason we want to rescale the quadratic terms by a factor $a$. We
-can define a new Lagrange multiplier $\lambda_2' \equiv {\lambda_2 \over a}$
-that compensates for the rescaling of the terms, obtaining
+We can always rescale the terms in any way and obtain the same result. Let's
+say that for some reason we want to rescale the quadratic terms by a factor
+$a$. We can define a new Lagrange multiplier $\lambda_2' \equiv {\lambda_2
+\over a}$ that compensates for the rescaling of the terms, obtaining
 \begin{equation}
   P_H(x) = {1 \over \mathcal{Z}}
   \exp \left(- \lambda_1 x \right) \exp \left( - \lambda_2' ax^2 \right).
@@ -208,15 +210,15 @@ then we can rescale back to obtain the value of the Lagrange multipliers. The
 key to the Bretthorst algorithm lies in the selection of what rescaling factor
 to choose in order to make the numerical inference more efficient.
 
-Bretthorst's algorithm goes even further by further transforming the constraints
-and the variables to make the constraints orthogonal, making the computation
-much more effective. We now explain the implementation of the algorithm for our
-joint distribution of interest $P(m, p)$.
+Bretthorst's algorithm goes even further by further transforming the
+constraints and the variables to make the constraints orthogonal, making the
+computation much more effective. We now explain the implementation of the
+algorithm for our joint distribution of interest $P(m, p)$.
 
 \subsubsection{Algorithm implementation}
 
-Let the $M \times N$ matrix $\bb{A}$ contain all the factors used to compute the
-moments that serve as constraints, where each entry is of the form
+Let the $M \times N$ matrix $\bb{A}$ contain all the factors used to compute
+the moments that serve as constraints, where each entry is of the form
 \begin{equation}
   A_{ij} = m_i^{x_j} \cdot p_i^{y_j}.
   \label{seq_maxent_rules}
@@ -225,9 +227,9 @@ In other words, recall that to obtain any moment $\ee{m^x p^y}$ we compute
 \begin{equation}
   \ee{m^x p^y} = \sum_m \sum_p m^x p^y P(m, x).
 \end{equation}
-If we have $M$ possible $(m, p)$ pairs in our truncated sample space (because we
-can't include the sample space up to infinity) $\{(m, p)_1, (m, p)_2, \ldots (m,
-p)_N \}$, and we have $N$ exponent pairs $(x, y)$ corresponding to the $N$
+If we have $M$ possible $(m, p)$ pairs in our truncated sample space (because
+we can't include the sample space up to infinity) $\{(m, p)_1, (m, p)_2, \ldots
+(m, p)_N \}$, and we have $N$ exponent pairs $(x, y)$ corresponding to the $N$
 moments used to constraint the maximum entropy distribution $\{(x, y)_1, (x,
 y)_2, \ldots, (x, y)_N \}$, then matrix $\bb{A}$ contains all the possible $M$
 by $N$ terms of the form described in \eref{seq_maxent_rules}. Let also
@@ -251,14 +253,14 @@ are specified in matrix $\bb{A}$.
 With this notation in hand we now proceed to rescale the problem. The first
 step consists of rescaling the terms to compute the entries of matrix $\bb{A}$.
 As mentioned before, this is the key feature of the Bretthorst algorithm; the
-particular choice of rescaling factor used in the algorithm empirically promotes
-that the rescaled Lagrange multipliers are of the same order of magnitude. The
-rescaling takes the form
+particular choice of rescaling factor used in the algorithm empirically
+promotes that the rescaled Lagrange multipliers are of the same order of
+magnitude. The rescaling takes the form
 \begin{equation}
   A_{ij}' = {A_{ij} \over G_j},
 \end{equation}
-where $G_j$ serves to rescale the moments, providing numerical stability to
-the inference problem. Bretthorst proposes an empirical rescaling that satisfies
+where $G_j$ serves to rescale the moments, providing numerical stability to the
+inference problem. Bretthorst proposes an empirical rescaling that satisfies
 \begin{equation}
 G_j^2 = \sum_i A_{ij}^2,
 \end{equation}
@@ -281,12 +283,12 @@ $\lambda_j$ terms as
 \lambda_j' = \lambda_j G_j,
 \end{equation}
 such that any $\lambda_j A_{ij} = \lambda_j' A_{ij}'$. If this empirical value
-for the rescaling factor makes the rescaled Lagrange multipliers $\lambda_j'$ be
-of the same order of magnitude, this by itself would already improve the
-algorithm convergence. Bretthorst proposes another linear transformation to make
-the optimization routine even more efficient. For this we generate orthogonal
-constraints that make Newton-Raphson and similar algorithms converge faster. The
-transformation is as follows
+for the rescaling factor makes the rescaled Lagrange multipliers $\lambda_j'$
+be of the same order of magnitude, this by itself would already improve the
+algorithm convergence. Bretthorst proposes another linear transformation to
+make the optimization routine even more efficient. For this we generate
+orthogonal constraints that make Newton-Raphson and similar algorithms converge
+faster. The transformation is as follows
 \begin{equation}
   A_{ik}'' = \sum_j {e}_{jk} A_{ij}',
 \end{equation}
@@ -317,36 +319,40 @@ convergence speed.
 Having explained the theoretical background along with the practical
 difficulties and a workaround strategy proposed by Bretthorst, we implemented
 the inference using the moments obtained from averaging over the variability
-along the cell cycle (See \siref{supp_multi_gene}).
-\fref{fig_pmf_mRNA} and \fref{fig_pmf_protein} present these inferences for
-both mRNA and protein levels respectively for different values of the
-repressor-DNA binding energy and repressor copy numbers per cell. From these
-plots we can easily appreciate that despite the fact that the mean of each
-distribution changes as the induction level changes, there is a lot of overlap
-between distributions. This as a consequence means that at the single-cell level
-cells cannot perfectly resolve between different inputs.
+along the cell cycle (See \siref{supp_multi_gene}). \fref{fig_pmf_mRNA} and
+\fref{fig_pmf_protein} present these inferences for both mRNA and protein
+levels respectively for different values of the repressor-DNA binding energy
+and repressor copy numbers per cell. From these plots we can easily appreciate
+that despite the fact that the mean of each distribution changes as the
+induction level changes, there is a lot of overlap between distributions. This
+as a consequence means that at the single-cell level cells cannot perfectly
+resolve between different inputs.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/MaxEnt_approx_joint/PMF_grid_joyplot_mRNA.pdf}
+  {../fig/si/figS20.pdf}
 	\caption{\textbf{Maximum entropy mRNA distributions for simple repression
 	constructs.} mRNA distributions for different biophysical parameters. From
 	left to right the repressor-DNA affinity decreases as defined by the three
 	lacI operators O1 ($-15.3 \; k_BT$), O2 ($ -13.9 \; k_BT$), and O3 ($-9.7 \;
 	k_BT$). From top to bottom the mean repressor copy number per cell increases.
-	The curves on each plot represent different IPTG concentrations.}
+	The curves on each plot represent different IPTG concentrations. Each
+	distribution was fitted using the first three moments of the mRNA
+	distribution.}
   \label{fig_pmf_mRNA}
 \end{figure}
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/MaxEnt_approx_joint/PMF_grid_joyplot_protein.pdf}
+  {../fig/si/figS21.pdf}
 	\caption{\textbf{Maximum entropy protein distributions for simple repression
 	constructs.} Protein distributions for different biophysical parameters. From
 	left to right the repressor-DNA affinity decreases as defined by the three
 	lacI operators O1 ($-15.3 \; k_BT$), O2 ($ -13.9 \; k_BT$), and O3 ($-9.7 \;
 	k_BT$). From top to bottom the mean repressor copy number per cell increases.
-	The curves on each plot represent different IPTG concentrations.}
+	The curves on each plot represent different IPTG concentrations. Each
+	distribution was fitted using the first six moments of the protein
+	distribution.}
   \label{fig_pmf_protein}
 \end{figure}
 
@@ -357,57 +363,65 @@ $P(m, p)$ we can compare this with our experimental measurements. But just as
 detailed in \siref{supp_theory_vs_data_mom} the single-cell microscopy
 measurements are given in arbitrary units of fluorescence. Therefore we cannot
 compare directly our predicted protein distributions with these values. To get
-around this issue we recall that the fold-change in gene expression that we
-defined as the ratio of the gene expression level in the presence of the
+around this issue we use the fact that the fold-change in gene expression that
+we defined as the ratio of the gene expression level in the presence of the
 repressor and the expression level of a knockout strain is a non-dimensional
-quantity. Therefore we normalize all of our single-cell measurements by the mean
-fluorescence value of the $\Delta lacI$ strain with the proper background
+quantity. Therefore we normalize all of our single-cell measurements by the
+mean fluorescence value of the $\Delta lacI$ strain with the proper background
 fluorescence subtracted as explained in \siref{supp_theory_vs_data_mom} for the
 noise measurements. In the case of the theoretical predictions of the protein
 distribution we also normalize each protein value by the predicted mean protein
-level $\ee{p}$, having now non-dimensional scales that can be directly compared.
-\fref{sfig_cdf_O1}, \fref{sfig_cdf_O2}, and \fref{sfig_cdf_O3} show comparison
-of the cumulative distribution functions for different repressor binding sites
-(different figures), repressor copy numbers (rows), and inducer concentrations
-(columns).
+level $\ee{p}$, having now non-dimensional scales that can be directly
+compared. \fref{sfig_cdf_delta} shows the experimental (color curves) and
+theoretical (dark dashed line) cumulative distribution functions for the three
+$\Delta lacI$ strains. As in \fref{sfig_noise_delta}, we do not expect
+differences between the operators, but we explicitly plot them separately to
+make sure that this is the case. We can see right away that as we would expect
+given the limitations of the model to accurately predict the noise and skewness
+of the distribution, the model doesn't accurately predict the data. Our model
+predicts a narrower distribution compared to what we measured with single-cell
+microscopy. 
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/MaxEnt_approx_joint/ECDF_O1_theory_experiment.pdf}
-	\caption{\textbf{Experiment vs. theory comparison for operator O1.}
+  {../fig/si/figS22.pdf}
+	\caption{\textbf{Experiment vs. theory comparison for $\Delta lacI$ strain.}
   Example fold-change empirical cumulative distribution functions (ECDF) for
-  strains with the O1 operator ($\eR = -15.3 \; k_BT$) as a function of
-  repressor copy numbers (rows) and inducer concentrations (columns). The color
-  curves represent single-cell microscopy measurements while the dashed black
-  lines represent the theoretical distributions as reconstructed by the maximum
-  entropy principle.}
-  \label{sfig_cdf_O1}
+  strains with no repressors and different operators. The color curves
+  represent single-cell microscopy measurements while the dashed black lines
+  represent the theoretical distributions as reconstructed by the maximum
+  entropy principle. The theoretical distributions were fitted using the first
+  six moments of the protein distribution.}
+  \label{sfig_cdf_delta}
 \end{figure}
 
+The same narrower prediction applies to the regulated promoters.
+\fref{sfig_cdf_reg}, shows the theory-experiment comparison of the cumulative
+distribution functions for different repressor binding sites (different
+figures), repressor copy numbers (rows), and inducer concentrations (columns).
+In general the predictions are systematically narrower compared to the actual
+experimental data.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/MaxEnt_approx_joint/ECDF_O2_theory_experiment.pdf}
-  \caption{\textbf{Experiment vs. theory comparison for operator O2.}
+  {../fig/si/figS23_v2.pdf}
+	\caption{\textbf{Experiment vs. theory comparison for regulated promoters.}
   Example fold-change empirical cumulative distribution functions (ECDF) for
-  strains with the O2 operator ($\eR = -13.9 \; k_BT$) as a function of
-  repressor copy numbers (rows) and inducer concentrations (columns). The color
-  curves represent single-cell microscopy measurements while the dashed black
-  lines represent the theoretical distributions as reconstructed by the maximum
-  entropy principle.}
-  \label{sfig_cdf_O2}
+  regulated strains with the three operators (different colors) as a function
+  of repressor copy numbers (rows) and inducer concentrations (columns). The
+  color curves represent single-cell microscopy measurements while the dashed
+  black lines represent the theoretical distributions as reconstructed by the
+  maximum entropy principle. The theoretical distributions were fitted using
+  the first six moments of the protein distribution}
+  \label{sfig_cdf_reg}
 \end{figure}
 
 
-\begin{figure}[h!]
-	\centering \includegraphics
-  {../fig/MaxEnt_approx_joint/ECDF_O3_theory_experiment.pdf}
-	\caption{\textbf{Experiment vs. theory comparison for operator O3.}
-  Example fold-change empirical cumulative distribution functions (ECDF) for
-  strains with the O3 operator ($\eR = -9.7 \; k_BT$) as a function of
-  repressor copy numbers (rows) and inducer concentrations (columns). The color
-  curves represent single-cell microscopy measurements while the dashed black
-  lines represent the theoretical distributions as reconstructed by the maximum
-  entropy principle.}
-  \label{sfig_cdf_O3}
-\end{figure}
+\subsubsection{Correction factor for distribution moments}
+
+In \siref{supp_mult_factor_noise} and \siref{supp_mult_factor_skew} we showed
+how simple multiplicative factors could improve the agreement between
+predictions and measurements for the noise and the skewness of the protein
+distribution. The question now becomes if applying the equivalent correction
+factors to the moments could improve the agreement between the maximum entropy
+distributions and the experimental distributions.
