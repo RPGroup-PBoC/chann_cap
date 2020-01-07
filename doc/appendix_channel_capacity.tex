@@ -113,7 +113,7 @@ I_{\text{biased}} \approx I_\infty + \frac{a_1}{N} + \mathcal{O}(N^{-2}).
 \end{equation}
 This means that if this particular arbitrary choice of functional form is  a
 good approximation, when computing the mutual information for varying number of
-samples, by taking subsamples of the experimental data, we expect to find a
+samples - by taking subsamples of the experimental data - we expect to find a
 linear relationship as a function of the inverse of these number of data
 points. From this linear relationship the intercept is a bias-corrected
 estimate of the mutual information. We can therefore bootstrap the data by
@@ -130,7 +130,7 @@ build matrix $\bb{Q}$.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/channel_capacity_experiment/O2_RBS1027_distribution_microscopy.pdf}
+  {../fig/si/figS29.pdf}
 	\caption{\textbf{Single cell fluorescence distributions for different inducer
 	concentrations.} Fluorescence distribution histogram (A) and cumulative
 	distribution function (B) for a strain with 260 repressors per cell and a
@@ -154,7 +154,7 @@ times to get a better estimate of the channel capacity.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/channel_capacity_experiment/bootstrap_ecdf_channcap.pdf}
+  {../fig/si/figS30.pdf}
 	\caption{\textbf{Channel capacity bootstrap for experimental data.}
 	Cumulative distribution function of the resulting channel capacity estimates
 	obtained by subsampling 200 times 50\% of each distribution shown in
@@ -178,7 +178,7 @@ on the number of bins.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/channel_capacity_experiment/I_infty_lin_reg.pdf}
+  {../fig/si/figS31.pdf}
 	\caption{\textbf{Inverse sample size vs channel capacity.} As indicated in
 	\eref{seq_mutual_biased} if the channel capacity obtained for different
 	subsample sizes of the data is plotted against the inverse sample size there
@@ -224,7 +224,7 @@ best unbiased estimate of the channel capacity from this experimental dataset.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/channel_capacity_experiment/bins_vs_channcap.pdf}
+  {../fig/si/figS32.pdf}
   \caption{\textbf{Channel capacity as a function of the number of bins.}
   Unbiased channel capacity estimates obtained from linear regressions as in
   \fref{sfig_channcap_lin_reg}. The blue curve show the estimates obtained from
