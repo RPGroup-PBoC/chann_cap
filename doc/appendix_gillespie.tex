@@ -7,7 +7,7 @@ resulting distribution of the master equation. A more conventional approach to
 work with master equations whose closed-form solutions are not known or not
 computable is to use stochastic simulations commonly known as Gillespie
 simulations. To benchmark the performance of our approach based on distribution
-moments and maximum entropy we implemented a Gillespie algorithm. Our
+moments and maximum entropy we implemented the Gillespie algorithm. Our
 implementation as detailed in the corresponding Jupyter notebook makes use of
 just-in-time compilation as implemented with the Python package
 \href{http://numba.pydata.org}{numba}.
@@ -36,11 +36,11 @@ before the division event.
   \label{sfig_gillespie_mRNA}
 \end{figure}
 
-In order to check the implementation of our stochastic algorithm we generated
-several of these stochastic trajectories in order to reconstruct the mRNA
-steady-state distribution. These reconstructed distributions for a single- and
-double-copy of the promoter can be compared with \eref{seq_two_state_mRNA} -
-the steady-state distribution for the two-state promoter.
+To check the implementation of our stochastic algorithm we generated several of
+these stochastic trajectories in order to reconstruct the mRNA steady-state
+distribution. These reconstructed distributions for a single- and double-copy
+of the promoter can be compared with \eref{seq_two_state_mRNA} - the
+steady-state distribution for the two-state promoter.
 \fref{sfig_gillespie_mRNA_dist} shows the great agreement between the
 stochastic simulation and the analytical result, confirming that our
 implementation of the Gillespie simulation is correct.
@@ -73,7 +73,6 @@ very similar.
 	\centering \includegraphics
   {../fig/si/figS27.pdf}
 	\caption{\textbf{Stochastic trajectories of mRNA and protein counts.} 2500
-	stochastic trajectories generated with the Gillespie algorithm for mRNA and
 	protein counts over time for a two-state unregulated promoter. Cells spend
 	a fraction of the cell cycle with a single copy of the promoter (light
 	brown) and the rest of the cell cycle with two copies (light yellow). When
@@ -84,11 +83,24 @@ very similar.
 
 From these trajectories we can compute the protein steady-state distribution,
 taking into account the cell-age distribution as detailed in
-\siref{supp_maxent}. \fref{sfig_gillespie_proteins_dist} show
+\siref{supp_maxent}. \fref{sfig_gillespie_proteins_dist} shows the comparison
+between this distribution and the one generated using the maximum entropy
+algorithm. Despite the notorious differences between the distributions, the
+Gillespie simulation and the maximum entropy results are indistinguishable in
+terms of the mean, variance, and skewness of the distribution. We remind the
+reader that the maximum entropy is an approximation of the distribution that
+gets better the more moments we add. We therefore claim that the approximation
+works sufficiently well for our purpose. The enormous advantage of the maximum
+entropy approach comes from the computation time. for the number of
+distributions that were needed for our calculations the Gillespie algorithm
+proved to be a very inefficient method given the large sample space. Our
+maximum entropy approach reduces the computation time by several orders of
+magnitude, allowing us to extensively explore different parameters of the
+regulatory model.
 
 \begin{figure}[h!]
 	\centering \includegraphics
   {../fig/si/figS28.pdf}
-	\caption{\textbf{Comparison of protein distributions.} Comparison of the protein distribution generated with Gillespie stochastic simulations (blue curve) and the maximum entropy approach presented in \siref{supp_maxent} (orange curve).}
+	\caption{\textbf{Comparison of protein distributions.} Comparison of the protein distribution generated with Gillespie stochastic simulations (blue curve) and the maximum entropy approach presented in \siref{supp_maxent} (orange curve). The upper panel shows the probability mass function. The lower panel compares the cumulative distribution functions.}
   \label{sfig_gillespie_proteins_dist}
 \end{figure}
