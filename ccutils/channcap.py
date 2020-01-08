@@ -3,7 +3,7 @@
 Title:
     channcap.py
 Last update:
-    2018-11-22
+    2019-01-08
 Author(s):
     Manuel Razo-Mejia
 Purpose:
@@ -14,7 +14,7 @@ Purpose:
 
 import numpy as np
 import pandas as pd
-
+from . import maxent
 
 # BLAHUT-ARIMOTO ALGORITHM
 def channel_capacity(QmC, epsilon=1E-3, info=1E4):
@@ -82,6 +82,66 @@ def channel_capacity(QmC, epsilon=1E-3, info=1E4):
     Il = Il / np.log(2)
     return Il, pC, loop_count
 
+def trans_matrix_maxent(df_lagrange, mRNA_space, protein_space, m_dist=True):
+    """
+    Function that builds the transition matrix Qg|c for a series of
+    concentrations c. It builds the matrix by using the tidy data-frames
+    containing the list of Lagrange multipliers.
+    
+    Parameters
+    ----------
+    df_lagrange : pandas DataFrame.
+        Data Frame containing the lagrange multipliers for a single straing,
+        i.e. single operator and repressor copy number value.
+    mRNA_space, protein_space : array-like.
+        Array containing the sample space for the mRNA and the protein
+        respectively
+    m_dist : Bool. Default = True.
+        Boolean indicating if the mRNA input-output matrix should be 
+        returned. If false the protein matrix is returned.
+    
+    Returns
+    -------
+    Qg|c : input output matrix in which each row represents a concentration
+    and each column represents the probability of mRNA or protein copy 
+    number.
+    """
+    # Extract unique concentrations
+    c_array = df_lagrange["inducer_uM"].unique()
+
+    # Extract the list of Lagrange multipliers
+    lagrange_mult = [col for col in df_lagrange.columns if "lambda" in col]
+    # Extract the exponents corresponding to each Lagrange multiplier
+    exponents = []
+    for s in lagrange_mult:
+        exponents.append([int(n) for n in list(s) if n.isdigit()])
+
+    # Initialize input-output matrix
+    if m_dist:
+        Qgc = np.zeros([len(mRNA_space), len(c_array)])
+    else:
+        Qgc = np.zeros([len(protein_space), len(c_array)])
+
+    # Group data frame by inducer concentration
+    df_group = df_lagrange.groupby("inducer_uM")
+
+    # Loop through each of the concentrations computing the distribution
+    for i, (group, data) in enumerate(df_group):
+        # Extract the Lagrange multiplier columns
+        lagrange = data.loc[:, lagrange_mult].values[0]
+
+        # Compute the distribution
+        Pmp = maxent.maxEnt_from_lagrange(
+            mRNA_space, protein_space, lagrange, exponents=exponents
+        )
+
+        # Marginalize and add marignal distribution to Qg|c
+        if m_dist:
+            Qgc[:, i] = Pmp.sum(axis=0)
+        else:
+            Qgc[:, i] = Pmp.sum(axis=1)
+
+    return Qgc
 
 # EXPERIMENTAL CHANNEL CAPACITY
 
