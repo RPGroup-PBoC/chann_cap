@@ -58,3 +58,27 @@ they derive.
   deviation between the original theoretical prediction and the experimental
   data. It then uses these updated moments along with the first protein moment
   to infer the maximum entropy distribution.
+
+### `blahut_arimoto_channel_capacity.ipynb` (`channcap`)
+
+- `channcap_protein_multi_prom.py` : Script that computes the channel capacity
+  for the protein distributions generated with the output of the
+  `maxent_protein_dist.py` script.
+
+- `channcap_mRNA_multi_prom.py` : Script that computes the channel capacity for
+  the mRNA distributions generated with the output of the `maxent_mRNA_dist.py`
+  script.
+
+- `channcap_protein_multi_prom_rep_range.py`: Script that computes the channel
+  capacity for the protein distributions generated with the output of the
+  `maxent_protein_dist_rep_range.py` script.
+
+- `channcap_protein_multi_prom_iptg_range.py`: Script that computes the channel
+  capacity for the protein distributions generated with the output of the
+  `maxent_protein_dist_iptg_range.py` script.
+
+- `channcap_protein_single_prom.py`: Script that computes the channel capacity
+  for the protein distributions generated assuming a single promoter that
+  reaches steady state. These calculations do not include the gene dosage
+  variability during the cell cycle, and assume a Poissonian degradation of the
+  proteins.
