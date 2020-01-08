@@ -4,6 +4,7 @@ import itertools
 import cloudpickle
 import re
 import glob
+import git
 
 # Our numerical workhorses
 import numpy as np
@@ -19,8 +20,12 @@ from joblib import Parallel, delayed
 # Import the project utils
 import ccutils
 
-tmpdir = '../../../tmp/'
-datadir = '../../../data/csv_maxEnt_dist/'
+# Find home directory for repo
+repo = git.Repo("./", search_parent_directories=True)
+homedir = repo.working_dir
+
+tmpdir = f'{homedir}/tmp/'
+datadir = f'{homedir}/data/csv_maxEnt_dist/'
 
 #%%
 # Load moments for multi-promoter level

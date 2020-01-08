@@ -11,7 +11,11 @@ from joblib import Parallel, delayed
 import ccutils
 import git
 
-datadir = '../../../data/csv_maxEnt_dist/'
+# Find home directory for repo
+repo = git.Repo("./", search_parent_directories=True)
+homedir = repo.working_di
+
+datadir = f'{homedir}/data/csv_maxEnt_dist/'
 #%%
 # Read protein ununregulated matrix 
 with open('../pkl_files/three_state_protein_dynamics_matrix.pkl',
@@ -224,7 +228,7 @@ for s in constraint_series:
     df_constraints = df_constraints.append(s, ignore_index=True)
 
 # Save progress at each step
-df_constraints.to_csv(datadir + 'MaxEnt_multi_prom_ogorman.csv',
+df_constraints.to_csv(f'{datadir}MaxEnt_multi_prom_ogorman.csv',
             index=False)
 
 print('done!')
