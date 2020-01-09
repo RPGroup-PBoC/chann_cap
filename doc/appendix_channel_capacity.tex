@@ -244,8 +244,8 @@ follows we describe the relevance of four important aspects that all affect the
 predictions of the information processing capacity.
 
 \paragraph{(i) Cell cycle variability.}
-The inclusion of the gene copy number variability during the cell cycle and
-the non-Poissoninan protein degradation is a key component for the correct
+We think that the inclusion of the gene copy number variability during the cell
+cycle and the non-Poissoninan protein degradation is a key component to our
 estimation of the input-output functions and as a consequence of the channel
 capacity. This variability in gene copy number is an additional source of noise
 that systematically decreases the ability of the system to resolve different
@@ -257,7 +257,7 @@ capture the experimental channel capacities with no further fit parameters.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/blahut_algorithm_channel_capacity/channcap_single_vs_multi.pdf}
+  {../fig/si/figS33.pdf}
   \caption{\textbf{Comparison of channel capacity predictions for single- and
   multi-promoter models.} Channel capacity for the multi-promoter model (solid
   lines) vs. the single-promoter steady state model (dot-dashed lines) as a
@@ -304,7 +304,7 @@ important feature for our inferences.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/MaxEnt_approx_joint/num_moments_vs_KL_div.pdf}
+  {../fig/si/figS34.pdf}
 	\caption{\textbf{Measuring the loss of information by using different number
 	of constraints.} The Kullback-Leibler divergence was computed between the
 	maximum entropy distribution constructed using the first 6 moments of the
@@ -327,11 +327,10 @@ single state with a geometrically distributed burst-size.
 The relevance of having use the Blahut-Arimoto algorithm to predict the maximum
 mutual information between input and outputs was just to understand the best
 case scenario. We show the comparison between theoretical and experimental
-input-output functions $P(p \mid c)$ in \fref{sfig_cdf_O1}, \fref{sfig_cdf_O2},
-and \fref{sfig_cdf_O3}. Given the good agreement between these distributions we
-could compute the mutual information $I(c; p)$ for any arbitrary input
-distribution $P(c)$ and obtain a good agreement with the corresponding
-experimental mutual information.
+input-output functions $P(p \mid c)$ in \fref{sfig_cdf_reg}. Given the good
+agreement between these distributions we could compute the mutual information
+$I(c; p)$ for any arbitrary input distribution $P(c)$ and obtain a good
+agreement with the corresponding experimental mutual information.
 
 The reason we opted to specifically report the mutual information at channel
 capacity was to puts the results in a context. By reporting the upper bound in
