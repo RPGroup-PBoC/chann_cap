@@ -165,24 +165,26 @@ p_var = p_second - p_mean**2
 # Define colors
 colors = sns.color_palette('Paired', n_colors=2)
 
+# Define stepsize for plotting
+step = 100
 # Initialize figure
 fig, ax = plt.subplots(2, 1, figsize=(2.5, 2), sharex=True)
 
 # Plot mean as solid line
-ax[0].plot(df_p_unreg.time / 60, m_mean, label='', lw=1.25,
+ax[0].plot(df_p_unreg.time[::step] / 60, m_mean[::step], label='', lw=1.25,
            color=colors[1])
-ax[1].plot(df_p_unreg.time / 60, p_mean, label='', lw=1.25,
+ax[1].plot(df_p_unreg.time[::step] / 60, p_mean[::step], label='', lw=1.25,
            color=colors[1])
 
 # Plot +- standard deviation 
-ax[0].fill_between(df_p_unreg.time / 60, 
-                   y1=m_mean + np.sqrt(m_var),
-                   y2=m_mean - np.sqrt(m_var),
+ax[0].fill_between(df_p_unreg.time[::step] / 60, 
+                   y1=m_mean[::step] + np.sqrt(m_var[::step]),
+                   y2=m_mean[::step] - np.sqrt(m_var[::step]),
                    label='', color=colors[0], alpha=0.85,
                    zorder=2)
-ax[1].fill_between(df_p_unreg.time / 60, 
-                   y1=p_mean + np.sqrt(p_var),
-                   y2=p_mean - np.sqrt(p_var),
+ax[1].fill_between(df_p_unreg.time[::step] / 60, 
+                   y1=p_mean[::step] + np.sqrt(p_var[::step]),
+                   y2=p_mean[::step] - np.sqrt(p_var[::step]),
                    label='', color=colors[0], alpha=0.85,
                    zorder=2)
 
@@ -251,8 +253,7 @@ ax[0].legend(loc='upper left', ncol=2, frameon=False,
              bbox_to_anchor=(-0.12, 0, 0, 1.3), fontsize=6.5)
 
 plt.subplots_adjust(hspace=0.05)
-plt.savefig(figdir + 'fig03B.svg', bbox_inches='tight',
-            transparent=True)
+plt.savefig(figdir + 'fig03B.svg', bbox_inches='tight', format='svg')
 plt.savefig(figdir + 'fig03B.png', bbox_inches='tight',
             transparent=True)
 plt.savefig(figdir + 'fig03B.pdf', bbox_inches='tight')
