@@ -27,7 +27,7 @@ production rate $2 r_m$). This inference was performed considering that at each
 cell state the mRNA level immediately reaches the steady state value for the
 corresponding mRNA production rate. This assumption is justified since the
 timescale to reach this steady state depends only on the degradation rate
-$\gm$, which for the mRNA  is much shorter ($\approx 3$ min ) than the length
+$\gm$, which for the mRNA  is much shorter ($\approx 3$ min) than the length
 of the cell cycle (100 min for our experimental conditions) \cite{Dong1995}.
 \siref{supp_param_inference} shows that a model accounting for this gene copy
 number variability is able to capture the experimental data from single
@@ -79,11 +79,12 @@ division, and $P(t)$ represents the probability of any cell being at time $t
 \in [t_o, t_d]$ of their cell cycle. We do not consider cells uniformly
 distributed along the cell cycle since it is known that cells follow an
 exponential distribution, having more younger than older cells at any time
-point \cite{Powell1956}. All computations hereafter are therefore done by
-applying an averaging like the one in \eref{eq_time_avg} for the span of a cell
-cycle. We remind the reader that these time averages are done under a fixed
-environmental state. It is the trajectory of cells over cell cycles under a
-constant environment what we need to account for.
+point \cite{Powell1956} (See \siref{supp_cell_age_dist} for further details).
+All computations hereafter are therefore done by applying an averaging like the
+one in \eref{eq_time_avg} for the span of a cell cycle. We remind the reader
+that these time averages are done under a fixed environmental state. It is the
+trajectory of cells over cell cycles under a constant environment what we need
+to account for.
 
 \fref{fig3_cell_cycle}(C) compares zero-parameter fit predictions (lines) with
 experimentally determined quantities (points). The upper row shows the
@@ -109,10 +110,18 @@ goes beyond the equilibrium picture to generate predictions for moments of the
 distribution other than the mean mRNA or mean protein count. To test this
 extended predictive power the lower row of \fref{fig3_cell_cycle}(C) shows the
 noise in gene expression defined as the standard deviation over the mean
-protein count. The good correspondence between the zero-parameter fit
-theoretical predictions and the experimental data is only achieved when
-considering the gene copy number variability introduced in this section. (See
-\siref{supp_multi_gene} for comparison when this variability is not included).
+protein count. For the noise our model tracks the experimental data up to a
+systematic multiplicative factor (See \siref{supp_multi_gene}). The physical or
+biological origin of this systematic deviation is still not fully understood.
+Possible origins could be the intrinsic cell-to-cell variability of rate
+parameters given the variability in the molecular components of the central
+dogma machinery \cite{Jones2014a}. Nevertheless we remind the reader that all
+predictions presented in this paper are zero parameter fits; making the model 
+still highly informative about the physical nature of how cells regulate their
+gene expression. This lack of exact numerical agreement between theory and data
+open an opportunity to gain new insights into the biophysical origin of
+cell-to-cell variability. To see the effect of accounting for the cell cycle
+dependent gene dosage we direct the reader to \siref{supp_multi_gene}.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -122,16 +131,18 @@ considering the gene copy number variability introduced in this section. (See
 	progress through the cell cycle the genome is replicated, duplicating gene
 	copies for a fraction of the cell cycle. {\it oriC} indicates the
 	replication origin, and {\it galK} indicates the locus at which the
-	reporter construct was integrated. (B) mean mRNA (upper panel) and mean
-	protein (lower panel) dynamics. Cells spend a fraction of the cell cycle
-	with a single copy of the promoter (light brown) and the rest of the cell
-	cycle with two copies (light yellow). Black arrows indicate time of cell
-	division. (C) Zero parameter-fit predictions (lines) and experimental data
-	(circles) of the gene expression fold-change (upper row) and noise (lower
-	row) for repressor binding sites with different affinities (different
-	columns) and different repressor copy numbers per cell (different lines on
-	each panel). Dotted lines indicate linear scale while solid lines indicate
-	logarithmic scale. White dots on the lower row are plotted on a different
-	scale for visual clarity.}
+	reporter construct was integrated. (B) mean (solid line) $\pm$ standard
+	deviation (shaded region) for the mRNA (upper panel) and protein (lower
+	panel) dynamics. Cells spend a fraction of the cell cycle with a single
+	copy of the promoter (light brown) and the rest of the cell cycle with two
+	copies (light yellow). Black arrows indicate time of cell division. (C)
+	Zero parameter-fit predictions (lines) and experimental data (circles) of
+	the gene expression fold-change (upper row) and noise (lower row) for
+	repressor binding sites with different affinities (different columns) and
+	different repressor copy numbers per cell (different lines on each panel).
+	Error bars in data come from bootstrap estimates generated from the
+	single-cell fluorescence measurements. Dotted lines in curves indicate
+	linear scale while solid lines indicate logarithmic scale. White dots on
+	the lower row are plotted on a different scale for visual clarity.}
 	\label{fig3_cell_cycle}
 \end{figure}
