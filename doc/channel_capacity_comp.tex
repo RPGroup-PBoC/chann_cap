@@ -8,13 +8,14 @@
 % References
 \usepackage[
 	backend=bibtex,
-	style=numeric-comp, % show references as [1-3] instead of [1,2,3]
+	style=phys, 
 	sorting=none,				% Do not sort bibliography
 	url=false, 					% Do not show url in reference
 	doi=false, 					% Do not show doi in reference
 	isbn=false, 				% Do not show isbn link in reference
 	eprint=false, 			% Do not show eprint link in reference
 	maxbibnames=9, 			% Include up to 9 names in citation
+	firstinits=true,
 ]{biblatex}
 % Add library
 \addbibresource{./chann_cap_bib}
@@ -125,13 +126,13 @@
 capacity of a simple genetic circuit}}
 % Authors
 \author[1]{Manuel Razo-Mejia}
-\author[2]{Sarah Marzen}
+% \author[2]{Sarah Marzen}
 \author[1, 3, 4, *]{Rob Phillips}
 
 % Affiliations
 \affil[1]{Division of Biology and Biological Engineering, California Institute
 of Technology, Pasadena, CA 91125, USA}
-\affil[2]{Department of Physics, W. M. Keck Science Department}
+% \affil[2]{Department of Physics, W. M. Keck Science Department}
 \affil[3]{Department of Physics, California Institute of Technology, Pasadena,
 CA 91125, USA}
 \affil[4]{Department of Applied Physics, California Institute of Technology,
@@ -164,8 +165,8 @@ Pasadena, CA 91125, USA}
 		\ifthenelse{\boolean{maintext}}{
 		\maketitle % Set title for paper
 
-		% \input{abstract}
-		% \input{section_00_introduction}
+		\input{abstract}
+		\input{section_00_introduction}
 		% \input{section_01_minimal_model.tex}
 		% \input{section_02_distribution_moments.tex}
 		% \input{section_03_cell_cycle.tex}
@@ -203,13 +204,13 @@ information processing capacity of a simple genetic circuit}}
 		% Set equation, table and figure counters to begin with "S"
 		\beginsupplement
 		\tableofcontents
-		\input{appendix_model.tex}
-		\input{appendix_moment_cme.tex}
-		\input{appendix_multiple_gene_copy.tex}
-		\input{appendix_maxent.tex}
-		\input{appendix_gillespie.tex}
-		\input{appendix_channel_capacity.tex}
-		\input{appendix_cell_age_dist.tex}
+		% \input{appendix_model.tex}
+		% \input{appendix_moment_cme.tex}
+		% \input{appendix_multiple_gene_copy.tex}
+		% \input{appendix_maxent.tex}
+		% \input{appendix_gillespie.tex}
+		% \input{appendix_channel_capacity.tex}
+		% \input{appendix_cell_age_dist.tex}
 		% Print supplemental references changing the title
 		\printbibliography[title={Supplemental References},
 		segment=\therefsegment, filter=notother]
