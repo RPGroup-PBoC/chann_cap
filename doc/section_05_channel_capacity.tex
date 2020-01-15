@@ -5,10 +5,11 @@ As a useful measure of the ability of the genetic circuit to allow the cell to
 infer the environmental state, i.e. the inducer concentration, we turn to the
 channel capacity. The channel capacity is defined as the mutual information
 between input and output, maximized over all possible input distributions.
-Putting this into mathematical terms we define $c$ as the inducer concentration.
-$P(c)$ represents the distribution of inducer and $P(p \mid c)$ the distribution
-of protein counts given a fixed inducer concentration - effectively the
-distributions shown in \fref{fig4_maxent}. The channel capacity is then given by
+Putting this into mathematical terms we define $c$ as the inducer
+concentration. $P(c)$ represents the distribution of inducer and $P(p \mid c)$
+the distribution of protein counts given a fixed inducer concentration -
+effectively the distributions shown in \fref{fig4_maxent}. The channel capacity
+is then given by
 \begin{equation}
   C \equiv \max_{P(c)} I(p; c),
   \label{eq_chann_cap}
@@ -19,14 +20,14 @@ concentration is given by \eref{eq_mutual_info}.
 If used as a metric of how reliably a signaling system can infer the state of
 the external signal, the channel capacity, when measured in bits, is commonly
 interpreted as the logarithm of the number of states that the signaling system
-can properly resolve. For example, a signaling system with a channel capacity of
-$C$ bits is interpreted as being able to resolve $2^C$ states, though channel
-capacities with fractional values are allowed. As a result, we prefer the
-Bayesian interpretation that the mutual information, and as a consequence the
-channel capacity, quantifies the improvement in the inference of the input when
-considering the output compared to just using the prior distribution of the
-input by itself for prediction \cite{Voliotis2014a, Bowsher2014}. Under this
-interpretation a channel capacity of a fractional bit still quantifies an
+can properly resolve. For example, a signaling system with a channel capacity
+of $C$ bits is interpreted as being able to resolve $2^C$ states, though
+channel capacities with fractional values are allowed. As a result, we prefer
+the Bayesian interpretation that the mutual information, and as a consequence
+the channel capacity, quantifies the improvement in the inference of the input
+when considering the output compared to just using the prior distribution of
+the input by itself for prediction \cite{Voliotis2014a, Bowsher2014}. Under
+this interpretation a channel capacity of a fractional bit still quantifies an
 improvement of the ability of the signaling system to infer the value of the
 extracellular signal compared to having no sensing system at all.
 
@@ -36,56 +37,58 @@ cases in which the noise is small compared to the dynamic range, approximate
 analytical equations have been derived \cite{Tkacik2008a}. But given the high
 cell-to-cell variability that our model predicts, the conditions of the
 so-called small noise approximation are not satisfied. We therefore appeal to a
-numerical solution known as the Blahut-Arimoto algorithm \cite{Blahut1972}. This
-algorithm, starting on any (discrete) distribution $P(c)$, converges to the
-distribution at channel capacity. \fref{fig5_channcap}(A) shows zero-parameter
-fit predictions of the channel capacity as a function of the number of
-repressors for different repressor-DNA affinities (solid lines). These
-predictions are contrasted with experimental determinations of the channel
-capacity as inferred from single-cell fluorescence intensity distributions taken
-over 12 different concentrations of inducer. Briefly, from single-cell
-fluorescent measurements we can approximate the input-output distribution $P(p
-\mid c)$. Once these conditional distributions are fixed, the task of finding
-the input distribution at channel capacity become a computational minimization
-routine that can be undertaken using conjugate gradient or similar algorithms.
-For the particular case of the channel capacity on a system with a discrete
-number of inputs and outputs the Blahut-Arimoto algorithm is built in such a way
-that it guarantees the convergence towards the optimal input distribution (See
-\siref{supp_channcap} for further details). \fref{fig5_channcap}(B) shows
-example input-output functions for different values of the channel capacity.
-This illustrates that having access to no information (zero channel capacity) is
-a consequence of having overlapping input-output functions (lower panel). On the
-other hand, the more separated the input-output distributions are (upper panel)
-the higher the channel capacity can be.
+numerical solution known as the Blahut-Arimoto algorithm \cite{Blahut1972}.
+This algorithm, starting on any (discrete) distribution $P(c)$, converges to
+the distribution at channel capacity. \fref{fig5_channcap}(A) shows
+zero-parameter fit predictions of the channel capacity as a function of the
+number of repressors for different repressor-DNA affinities (solid lines).
+These predictions are contrasted with experimental determinations of the
+channel capacity as inferred from single-cell fluorescence intensity
+distributions taken over 12 different concentrations of inducer. Briefly, from
+single-cell fluorescent measurements we can approximate the input-output
+distribution $P(p \mid c)$. Once these conditional distributions are fixed, the
+task of finding the input distribution at channel capacity become a
+computational minimization routine that can be undertaken using conjugate
+gradient or similar algorithms. For the particular case of the channel capacity
+on a system with a discrete number of inputs and outputs the Blahut-Arimoto
+algorithm is built in such a way that it guarantees the convergence towards the
+optimal input distribution (See \siref{supp_channcap} for further details).
+\fref{fig5_channcap}(B) shows example input-output functions for different
+values of the channel capacity. This illustrates that having access to no
+information (zero channel capacity) is a consequence of having overlapping
+input-output functions (lower panel). On the other hand, the more separated the
+input-output distributions are (upper panel) the higher the channel capacity
+can be.
 
-\fref{fig5_channcap}(A) has interesting features that are worth highlighting. On
-one extreme for cells with no transcription factors there is no information
+\fref{fig5_channcap}(A) has interesting features that are worth highlighting.
+On one extreme for cells with no transcription factors there is no information
 processing potential as this simple genetic circuit would be constitutively
 expressed regardless of the environmental state. As cells increase the
 transcription factor copy number, the channel capacity increases until it
-reaches a maximum to then fall back down at high repressor copy number since the
-promoter would be permanently repressed. The steepness of the increment in
+reaches a maximum to then fall back down at high repressor copy number since
+the promoter would be permanently repressed. The steepness of the increment in
 channel capacity as well as the height of the maximum expression highly depend
 on the repressor-DNA affinity. For strong binding sites (blue curve in
-\fref{fig5_channcap}(A)) there is a rapid increment in the channel capacity, but
-the maximum value reached is smaller compared to a weaker binding site (orange
-curve in \fref{fig5_channcap}(A)).
+\fref{fig5_channcap}(A)) there is a rapid increment in the channel capacity,
+but the maximum value reached is smaller compared to a weaker binding site
+(orange curve in \fref{fig5_channcap}(A)).
 
 \begin{figure}[h!]
 	\centering \includegraphics
   {./fig/main/fig5_channcap.pdf}
-	\caption{\textbf{Comparison of theoretical and experimental channel capacity.}
-	(A) Channel capacity as inferred using the Blahut-Arimoto algorithm
-	\cite{Blahut1972} for varying number of repressors and repressor-DNA
-	affinities. All inferences were performed using 12 IPTG concentrations as
-	detailed in the Methods. Lines represent zero-parameter fit predictions done
-	with the maximum entropy distributions as those shown in \fref{fig4_maxent}.
-	Points represent inferences made from single cell fluorescence distributions
-	(See \siref{supp_channcap} for further details). Solid lines indicate plot in
-	logarithmic scale, while dashed line indicates linear scale. (B) Example
-  input-output functions of opposite limits of channel capacity. Lower panel
-  illustrates that zero channel capacity indicates that all distributions
-  overlap. Upper panel illustrates that as the channel capacity increases, the
-  separation between distributions increases as well.}
+	\caption{\textbf{Comparison of theoretical and experimental channel
+	capacity.} (A) Channel capacity as inferred using the Blahut-Arimoto
+	algorithm \cite{Blahut1972} for varying number of repressors and
+	repressor-DNA affinities. All inferences were performed using 12 IPTG
+	concentrations as detailed in the Methods. Lines represent zero-parameter
+	fit predictions done with the maximum entropy distributions as those shown
+	in \fref{fig4_maxent}. Points represent inferences made from single cell
+	fluorescence distributions (See \siref{supp_channcap} for further details).
+	Solid lines indicate plot in logarithmic scale, while dashed line indicates
+	linear scale. (B) Example input-output functions of opposite limits of
+	channel capacity. Lower panel illustrates that zero channel capacity
+	indicates that all distributions overlap. Upper panel illustrates that as
+	the channel capacity increases, the separation between distributions
+	increases as well.}
   \label{fig5_channcap}
 \end{figure}
