@@ -20,74 +20,76 @@ series of studies on this circuit spanning diverse experimental methods for
 measuring gene expression under a myriad of different conditions, we infer all
 parameter values of our model - allowing us to generate parameter-free
 predictions for processes related to information processing. Some of the model
-parameters for our kinetic formulation of the input-output function are informed
-by inferences made from equilibrium models. We use the fact that if both,
-kinetic and thermodynamic languages describe the same system, the predictions
-must be self-consistent. In other words, if the equilibrium model can only make
-statements about the mean mRNA and mean protein copy number because of the way
-these models are constructed, those predictions must be equivalent to what the
-kinetic model has to say about these same quantities. This condition therefore
-constrains the values that the kinetic rates in the model can take. To test
-whether or not the equilibrium picture can reproduce the predictions made by the
-kinetic model we compare the experimental and theoretical fold-change in protein
-copy number for a suite of biophysical parameters and environmental conditions.
-The agreement between theory and experiment demonstrates that these two
-frameworks can indeed make consistent predictions.
+parameters for our kinetic formulation of the input-output function are
+informed by inferences made from equilibrium models. We use the fact that if
+both, kinetic and thermodynamic languages describe the same system, the
+predictions must be self-consistent. In other words, if the equilibrium model
+can only make statements about the mean mRNA and mean protein copy number
+because of the way these models are constructed, those predictions must be
+equivalent to what the kinetic model has to say about these same quantities.
+This condition therefore constrains the values that the kinetic rates in the
+model can take. To test whether or not the equilibrium picture can reproduce
+the predictions made by the kinetic model we compare the experimental and
+theoretical fold-change in protein copy number for a suite of biophysical
+parameters and environmental conditions. The agreement between theory and
+experiment demonstrates that these two frameworks can indeed make consistent
+predictions.
 
 The kinetic treatment of the system brings with it increasing predictive power
 compared to the equilibrium picture. Under the kinetic formulation, the
 predictions are not limited only to the mean but to any moment of the mRNA and
 protein distribution. We first test these novel predictions by comparing the
-noise in protein copy number (standard deviation / mean) with experimental data.
-Since the model is able to accurately predict the noise in protein count we
-extended our analysis to infer entire protein distributions at different input
-signal concentrations by using the maximum entropy principle. What this means is
-that we compute moments of the protein distribution, and then use these
-moments to build an approximation to the full distribution. These predicted
-distributions are then compared with experimental single-cell distributions as
-shown in \siref{supp_maxent}. The agreement between our predictions and the
-experimental data at the full protein distribution means that we can use our
-model to predict the information processing capacity of the genetic circuit.
+noise in protein copy number (standard deviation / mean) with experimental
+data. Since the model is able to accurately predict the noise in protein count
+we extended our analysis to infer entire protein distributions at different
+input signal concentrations by using the maximum entropy principle. What this
+means is that we compute moments of the protein distribution, and then use
+these moments to build an approximation to the full distribution. These
+predicted distributions are then compared with experimental single-cell
+distributions as shown in \siref{supp_maxent}. The agreement between our
+predictions and the experimental data at the full protein distribution means
+that we can use our model to predict the information processing capacity of the
+genetic circuit.
 
 By maximizing the mutual information between input signal concentration and
 output protein distribution over all possible input distributions we predict
 the channel capacity for a suite of biophysical parameters such as varying
 repressor protein copy number and repressor-DNA binding affinity. We compare
-these theoretical channel capacity predictions with experimental determinations,
-finding that our minimal model is able to predict with no free parameters this
-quantity. In principle since our predicted input-output distributions were in
-close agreement with experimental data we could have chosen any arbitrary input
-distribution $P(c)$ and compute the mutual information between input and
-outputs. The relevance of the channel capacity comes from its interpretation as
-a metric of the limits of how precise the inference that cells can make about
-what the state of the environment is given this simple genetic circuit. Our
-model makes non-trivial predictions such as the existence of an optimal
-repressor copy number for a given repressor-DNA binding energy (See
-\fref{fig5_channcap}). We note that this differs from previous theoretical
-results since this optimal combination does not come from adding a cost term for
-the regulation \cite{Tkacik2011}. This is a consequence of the parameters
-inferred in \cite{Razo-Mejia2018} for the allosteric repressor never allowing
-all repressors to go into the inactive (non-DNA binding) state. That means that
-even at saturating concentrations of inducer, as the number of repressors
-increases, a significant number of them are still able to bind to the promoter.
-This causes all of the input-output functions to be biased towards low
-expression levels, decreasing the amount of information that the circuit is able
-to process.
+these theoretical channel capacity predictions with experimental
+determinations, finding that our minimal model is able to predict with no free
+parameters this quantity. In principle since our predicted input-output
+distributions were in close agreement with experimental data we could have
+chosen any arbitrary input distribution $P(c)$ and compute the mutual
+information between input and outputs. The relevance of the channel capacity
+comes from its interpretation as a metric of the limits of how precise the
+inference that cells can make about what the state of the environment is given
+this simple genetic circuit. Our model makes non-trivial predictions such as
+the existence of an optimal repressor copy number for a given repressor-DNA
+binding energy (See \fref{fig5_channcap}). We note that this differs from
+previous theoretical results since this optimal combination does not come from
+adding a cost term for the regulation \cite{Tkacik2011}. This is a consequence
+of the parameters inferred in \cite{Razo-Mejia2018} for the allosteric
+repressor never allowing all repressors to go into the inactive (non-DNA
+binding) state. That means that even at saturating concentrations of inducer,
+as the number of repressors increases, a significant number of them are still
+able to bind to the promoter. This causes all of the input-output functions to
+be biased towards low expression levels, decreasing the amount of information
+that the circuit is able to process.
 
 It is important to highlight the limitations of the work presented here. As
 first reported in \cite{Razo-Mejia2018}, our model fails to capture the
 steepness of the fold-change induction curve for the weakest repressor binding
-site (See \fref{fig3_cell_cycle}(B)). This systematic deviation for weak binding
-sites remains an unresolved problem that deserves further investigation. Also
-the minimal model in \fref{fig2_minimal_model}(A), despite being widely used,
-is an oversimplification of the physical picture of how the transcriptional
-machinery works. The coarse-graining of all the kinetic steps involved in the
-transcription initiation into two effective promoter states - active and
-inactive - ignores potential kinetic regulatory mechanisms of intermediary
-states \cite{Scholes2017}. Furthermore it has been argued that despite the fact
-that the mRNA count distribution does not follow a Poisson distribution, this
-effect could be caused by unknown factors not at the level of transcriptional
-regulation \cite{Choubey2018}.
+site (See \fref{fig3_cell_cycle}(B)). This systematic deviation for weak
+binding sites remains an unresolved problem that deserves further
+investigation. Also the minimal model in \fref{fig2_minimal_model}(A), despite
+being widely used, is an oversimplification of the physical picture of how the
+transcriptional machinery works. The coarse-graining of all the kinetic steps
+involved in the transcription initiation into two effective promoter states -
+active and inactive - ignores potential kinetic regulatory mechanisms of
+intermediary states \cite{Scholes2017}. Furthermore it has been argued that
+despite the fact that the mRNA count distribution does not follow a Poisson
+distribution, this effect could be caused by unknown factors not at the level
+of transcriptional regulation \cite{Choubey2018}.
 
 The findings of this work open the opportunity to accurately test intriguing
 ideas that connect Shannon's metric of how accurately a signaling system can
@@ -95,9 +97,9 @@ infer the state of the environment, with Darwinian fitness \cite{Taylor2007}.
 Beautiful work along these lines has been done in the context of the
 developmental program of the early {\it Drosophila} embryo \cite{Tkacik2008,
 Petkova2019}. These studies demonstrated that the input-output function of the
-pair-rule genes works at channel capacity, suggesting that selection has
-acted on these signaling pathways, pushing them to operate at the limit of what
-the physics of these systems allows. Our system differs from the early embryo in
+pair-rule genes works at channel capacity, suggesting that selection has acted
+on these signaling pathways, pushing them to operate at the limit of what the
+physics of these systems allows. Our system differs from the early embryo in
 the sense that we have a tunable circuit with variable amounts of information
 processing capabilities. Furthermore, compared with the fly embryo in which the
 organism tunes both the input and output distributions over evolutionary time,
@@ -105,6 +107,6 @@ we have experimental control of the distribution of inputs that the cells are
 exposed to. What this means is that instead of seeing the final result of the
 evolutionary process, we can set different environmental challenges, and track
 over time the evolution of the population. These experiments could shed light
-into the suggestive hypothesis of information bits as a metric on which
-natural selection acts. We see this exciting direction as part of the overall
-effort in quantitative biology of predicting evolution \cite{Lassig2017}.
+into the suggestive hypothesis of information bits as a metric on which natural
+selection acts. We see this exciting direction as part of the overall effort in
+quantitative biology of predicting evolution \cite{Lassig2017}.
