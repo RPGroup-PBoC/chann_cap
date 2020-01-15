@@ -206,6 +206,9 @@ ax.set_ylabel("channel capacity (bits)")
 ax.set_xscale("symlog", linthreshx=thresh, linscalex=0.3)
 ax.legend(loc="upper left", title=r"$\Delta\epsilon_r \; (k_BT)$")
 
+# Upate axis range
+ax.set_ylim(top=2.2)
+
 # Save figure
 plt.savefig(
     f"{figdir}theory_vs_data_channcap_protein_multiprom.pdf",
