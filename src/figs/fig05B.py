@@ -131,7 +131,7 @@ for i, rep in enumerate(repressors):
     ax[i].tick_params(axis="y", labelsize=5.5)
 
 # Change lim
-ax[0].set_ylim([-3e-5, 5.5e-4 + len(df_group) * displacement])
+ax[0].set_ylim([-3e-5, 3.5e-4 + len(df_group) * displacement])
 # Adjust spacing between plots
 plt.subplots_adjust(hspace=0.1, wspace=0.04)
 
