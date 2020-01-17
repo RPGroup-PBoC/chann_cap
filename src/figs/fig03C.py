@@ -57,6 +57,9 @@ df_mom_iptg = df_mom_iptg.assign(
 # Read experimental determination of noise
 df_noise = pd.read_csv(f'{homedir}/data/csv_microscopy/' + 
                        'microscopy_noise_bootstrap.csv')
+# Keep only percentile required
+percentile = 0.95
+df_noise = df_noise[df_noise.percentile == percentile]
 
 #%%
 # Extract regulated promoter information
