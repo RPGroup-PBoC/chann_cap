@@ -53,7 +53,7 @@ Nevertheless it is interesting to observe that after a couple of cell cycles
 the trajectory from cycle to cycle follows a repetitive pattern (See
 \fref{fig3_cell_cycle}(B) lower panel). Previously we have experimentally
 observe this repetitive pattern by tracking the expression level over time with
-video microscopy as shown in Fig. 18 of \cite{Phillips2019}.
+video microscopy as observed in Fig. 18 of \cite{Phillips2019}.
 
 To test the effects of including this gene copy number variability in our model
 we now compare the predictions of the model with experimental data.
@@ -73,18 +73,19 @@ span of the cell cycle. Mathematically this is expressed as
 	\ee{p}_c = \int_{t_o}^{t_d} \ee{p(t)} P(t) dt,
 	\label{eq_time_avg}
 \end{equation}
-where $\ee{p}_c$ represents the average protein copy number over a cell cycle,
-$t_o$ represents the start of the cell cycle, $t_d$ represents the time of cell
-division, and $P(t)$ represents the probability of any cell being at time $t
-\in [t_o, t_d]$ of their cell cycle. We do not consider cells uniformly
-distributed along the cell cycle since it is known that cells follow an
-exponential distribution, having more younger than older cells at any time
-point \cite{Powell1956} (See \siref{supp_cell_age_dist} for further details).
-All computations hereafter are therefore done by applying an averaging like the
-one in \eref{eq_time_avg} for the span of a cell cycle. We remind the reader
-that these time averages are done under a fixed environmental state. It is the
-trajectory of cells over cell cycles under a constant environment what we need
-to account for.
+where $\ee{p(t)}$ represents the first moment of the protein distribution as
+computed from \eref{eq_gral_mom}, $\ee{p}_c$ represents the average protein
+copy number over a cell cycle, $t_o$ represents the start of the cell cycle,
+$t_d$ represents the time of cell division, and $P(t)$ represents the
+probability of any cell being at time $t \in [t_o, t_d]$ of their cell cycle.
+We do not consider cells uniformly distributed along the cell cycle since it is
+known that cells follow an exponential distribution, having more younger than
+older cells at any time point \cite{Powell1956} (See \siref{supp_cell_age_dist}
+for further details). All computations hereafter are therefore done by applying
+an average like the one in \eref{eq_time_avg} for the span of a cell cycle. We
+remind the reader that these time averages are done under a fixed environmental
+state. It is the trajectory of cells over cell cycles under a constant
+environment what we need to account for.
 
 \fref{fig3_cell_cycle}(C) compares zero-parameter fit predictions (lines) with
 experimentally determined quantities (points). The upper row shows the
@@ -129,20 +130,22 @@ dependent gene dosage we direct the reader to \siref{supp_multi_gene}.
 	\caption{\textbf{Accounting for gene copy number variability during the
 	cell cycle.} (A) Schematic of a replicating bacterial genome. As cells
 	progress through the cell cycle the genome is replicated, duplicating gene
-	copies for a fraction of the cell cycle. {\it oriC} indicates the
-	replication origin, and {\it galK} indicates the locus at which the
-	reporter construct was integrated. (B) mean (solid line) $\pm$ standard
-	deviation (shaded region) for the mRNA (upper panel) and protein (lower
-	panel) dynamics. Cells spend a fraction of the cell cycle with a single
-	copy of the promoter (light brown) and the rest of the cell cycle with two
-	copies (light yellow). Black arrows indicate time of cell division. (C)
-	Zero parameter-fit predictions (lines) and experimental data (circles) of
-	the gene expression fold-change (upper row) and noise (lower row) for
-	repressor binding sites with different affinities (different columns) and
-	different repressor copy numbers per cell (different lines on each panel).
-	Error bars in data come from bootstrap estimates generated from the
-	single-cell fluorescence measurements. Dotted lines in curves indicate
-	linear scale while solid lines indicate logarithmic scale. White dots on
-	the lower row are plotted on a different scale for visual clarity.}
+	copies for a fraction of the cell cycle. The purple sections represent two
+	copies of a gene, {\it oriC} indicates the replication origin, and {\it
+	galK} indicates the locus at which the reporter construct was
+	integrated.(B) mean (solid line) $\pm$ standard deviation (shaded region)
+	for the mRNA (upper panel) and protein (lower panel) dynamics. Cells spend
+	a fraction of the cell cycle with a single copy of the promoter (light
+	brown) and the rest of the cell cycle with two copies (light yellow). Black
+	arrows indicate time of cell division. (C) Zero parameter-fit predictions
+	(lines) and experimental data (circles) of the gene expression fold-change
+	(upper row) and noise (lower row) for repressor binding sites with
+	different affinities (different columns) and different repressor copy
+	numbers per cell (different lines on each panel). Error bars in data
+	represent the 95\% confidence interval on the quantities as computed from
+	bootstrap estiamates generated from the single-cell fluorescence
+	measurements. In the theory curves dotted lines indicate plot in linear
+	scale to include zero while solid lines indicate logarithmic scale. White
+	dots on the lower row are plotted on a different scale for visual clarity.}
 	\label{fig3_cell_cycle}
 \end{figure}
