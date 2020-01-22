@@ -28,11 +28,10 @@ Abstract: >
   capacity of the genetic circuit for a suite of biophysical parameters such as
   protein copy number and protein-DNA affinity. We compare these parameter-free
   predictions with an experimental determination of protein distributions and
-  the information processing capacity of {\it E. coli} cells, and find that our
+  the information processing capacity of *E. coli* cells, and find that our
   minimal model describes the experimental data within a systematic
   multiplicative deviation. This work assembles insights from state-of-the-art
   models of gene regulation and exposes unresolved questions.
-Summary:  >
 Acknowledgments: > 
   The authors would like to acknowledge Griffin Chure, Muir Morrison, and
   Nathan Belliveau for fruitful discussions. We would like to also thank
