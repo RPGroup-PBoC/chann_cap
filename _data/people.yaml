@@ -16,6 +16,14 @@
   other_info:
      Email Address: "mrazomej {at} caltech [dot] edu"
 - author:
+  name: Sarah Marzen
+  link: https://sarahmarzen.weebly.com
+  title: Assistant Professor of Physics
+  img: sarah.jpg
+  institute: W. M. Keck Science Department at the Claremont colleges
+  other_info:
+     Email Address: "smarzen {at} kecksci [dot] claremont [dot] edu"
+- author:
   name: Rob Phillips
   link: "http://rpgroup.caltech.edu/"
   title: Fred & Nancy Morris Professor of Biology and Physics

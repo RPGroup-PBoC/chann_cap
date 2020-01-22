@@ -17,28 +17,30 @@ authors: >
 Abstract: >
   Given the stochastic nature of gene expression, genetically identical cells
   exposed to the same environmental inputs will produce different outputs. This
-  heterogeneity has consequences for how cells are able to survive in changing
-  environments. Recent work has explored the use of information theory as a
-  framework to understand the accuracy with which cells can ascertain the state
-  of their surroundings. Yet the predictive power of these approaches is
-  limited and has not been rigorously tested using precision measurements. To
-  that end, we generate a minimal model for a simple genetic circuit in which
-  all parameter values for the model come from independently published data
-  sets. We then predict the information processing capacity of the genetic
-  circuit for a suite of biophysical parameters such as protein copy number and
-  protein-DNA affinity. We compare these parameter-free predictions with an
-  experimental determination of the information processing capacity of E. coli
-  cells, and find that our minimal model accurately captures the experimental
-  data.
+  heterogeneity has been hypothesized to have consequences for how cells are
+  able to survive in changing environments. Recent work has explored the use of
+  information theory as a framework to understand the accuracy with which cells
+  can ascertain the state of their surroundings. Yet the predictive power of
+  these approaches is limited and has not been rigorously tested using
+  precision measurements. To that end, we generate a minimal model for a simple
+  genetic circuit in which all parameter values for the model come from
+  independently published data sets. We then predict the information processing
+  capacity of the genetic circuit for a suite of biophysical parameters such as
+  protein copy number and protein-DNA affinity. We compare these parameter-free
+  predictions with an experimental determination of protein distributions and
+  the information processing capacity of {\it E. coli} cells, and find that our
+  minimal model describes the experimental data within a systematic
+  multiplicative deviation. This work assembles insights from state-of-the-art
+  models of gene regulation and exposes unresolved questions.
 Summary:  >
 Acknowledgments: > 
   The authors would like to acknowledge Griffin Chure, Muir Morrison, and
   Nathan Belliveau for fruitful discussions. We would like to also thank
   William Bialek, Emanuel Flores, Hernan Garcia, Alejandro Granados, Jane
-  Kondev, Sarah Marzen, Porfirio Quintero, Alvaro Sanchez, Rachel Taubman,
-  Gašper Tkačik, Catherine Triandafillou, and Ned Wingreen for useful advice
-  and discussion. We thank Rob Brewster for providing the raw mRNA FISH data
-  for inferences, Heun-Jin Lee for support with the quantitative microscopy,
-  and David Drabold for advice on the maximum entropy inferences. This work was
-  supported by La Fondation Pierre-Gilles de Gennes, the Rosen Center at
-  Caltech, and the NIH 1R35 GM118043 (MIRA).
+  Kondev, Porfirio Quintero, Alvaro Sanchez, Rachel Taubman, Gašper Tkačik,
+  Catherine Triandafillou, and Ned Wingreen for useful advice and discussion.
+  We thank Rob Brewster for providing the raw mRNA FISH data for inferences,
+  Heun-Jin Lee for support with the quantitative microscopy, and David Drabold
+  for advice on the maximum entropy inferences. This work was supported by La
+  Fondation Pierre-Gilles de Gennes, the Rosen Center at Caltech, and the NIH
+  1R35 GM118043 (MIRA).
