@@ -11,9 +11,9 @@ sidebar: true
 {% if site.data.code %}
 ## Jupyter Notebooks
 {% for script in site.data.code %}
-* [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/{{script.name}.html})
+* [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/{{script.name}}.html)
   \| {{script.desc}}
-    + [`ipynb` file]({{site.url}}/{{site.baseurl}}/software/{{script.name}.ipynb})
+    + [`ipynb` file]({{site.url}}/{{site.baseurl}}/software/{{script.name}}.ipynb)
     {% if script.dataset %} + [data]({{script.dataset}}){% endif %}
 {% endfor %}
 {% endif %}
