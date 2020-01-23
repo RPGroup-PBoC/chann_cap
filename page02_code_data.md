@@ -10,6 +10,14 @@ sidebar: true
 
 {% if site.data.code %}
 ## Jupyter Notebooks
+
+This section contains detailed code in the format of Jupyter notebooks. These
+notebooks extensively explain the logic behind the computations that went into
+each of the sections with highly annotated Markdown text. The notebooks can be
+viewed as *html* files or can be downloaded as *ipynb* to be executed. When
+necessary, there is a link to download the data used for the computations in
+the notebook.
+
 {% for script in site.data.code %}
 * [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/{{script.name}}.html)
   \| [[ipynb file]]({{site.url}}/{{site.baseurl}}/software/{{script.name}}.ipynb)
