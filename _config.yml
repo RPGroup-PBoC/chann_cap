@@ -1,15 +1,15 @@
 title: First-principles prediction of the information processing capacity of a simple genetic circuit
-description: First-principles prediction of the information processing capacity of a simple genetic circuit  
-
+description: > # this means to ignore newlines until "baseurl:"
+  This website is an online repositor for the manuscript "First-principles prediction of the 
+  information processing capacity of a simple genetic circuit"
 # permalink: ':title/'
-baseurl:  "/channcap" # the subpath of your site, e.g. /blog
-url: "https://www.rpgroup.caltech.edu" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl:  "/" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
 
 # You can include social icons
 site-twitter: #if your site has a twitter account, enter it here
 social-twitter: mrazomej
-social-github: mrazomej # add your Github handle here.
-email: mrazomej@caltech.edu
+social-github: RPGroup-PBoC # add your Github handle here.
 
 # If you are using google analytics to track website traffic, you can insert the
 # tracking key below. It will be automatically inserted into the header of every
