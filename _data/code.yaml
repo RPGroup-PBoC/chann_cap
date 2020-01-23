@@ -2,5 +2,34 @@
   name: chemical_master_mRNA_FISH_mcmc
   desc: >
     Bayesian inference of the RNAP parameters based on single-molecule FISH
-    data.
+    data. See SI section S2.
   dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/Jones_Brewster_2014.csv
+
+- script:
+  name: chemical_master_steady_state_moments_general
+  desc: >
+    Analytical computation of the moments of the steady state mRNA and protein
+    distribution assuming no variability in gene dosage. See SI section S3.
+
+- script:
+  name: moment_dynamics_system
+  desc: >
+    Analytical computation of the dynamical equations describing the time
+    evolution of the moments of the mRNA and protein distribution. See SI
+    section S3.
+
+- script:
+  name: binomial_moments
+  desc: >
+    Analytical computation of the prefactors to compute the moments of the mRNA
+    and protein distribution after the binomial partitioning of the mRNA and
+    protein that takes place during cell division. See SI section S4.1
+
+- script:
+  name: moment_dynamics_cell_division
+  desc: >
+    Numerical integration of the mRNA and protein moment dynamical equations
+    taking into account gene dosage variability during the cell cycle. See SI
+    section S4.
+  dataset: TBD
+
