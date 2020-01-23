@@ -33,3 +33,21 @@
     section S4).
   dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/microscopy_noise_bootstrap.csv
 
+- script:
+  name: MaxEnt_approx_joint
+  desc: >
+    Numerical calculation of the Lagrange multipliers to reconstruc the maximum
+    entropy mRNA and protein distribution based on the moments of the
+    distribution (See SI section S5).
+
+- script:
+  name: gillespie_simulation
+  desc: >
+    Implementation of the Gillespie algorithm to generate stochastic dynamical
+    trajectories of the mRNA and protein counts (See SI section S6).
+
+- script:
+  name: blahut_algorithm_channel_capacity
+  desc: >
+    Numerical computation of the predicted channel capacity using the
+    Blahut-Arimoto algorithm (See SI section S7).
