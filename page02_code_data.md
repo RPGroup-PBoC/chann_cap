@@ -12,9 +12,9 @@ sidebar: true
 ## Jupyter Notebooks
 {% for script in site.data.code %}
 * [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/{{script.name}}.html)
-  \| {{script.desc}}
-    + [`ipynb` file]({{site.url}}/{{site.baseurl}}/software/{{script.name}}.ipynb)
-    {% if script.dataset %} + [data]({{script.dataset}}){% endif %}
+  \| [`ipynb` file]({{site.url}}/{{site.baseurl}}/software/{{script.name}}.ipynb)
+    + {{script.desc}}
+    + {% if script.dataset %} + [data]({{script.dataset}}){% endif %}
 {% endfor %}
 {% endif %}
 
