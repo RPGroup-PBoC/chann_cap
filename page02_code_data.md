@@ -9,12 +9,12 @@ sidebar: true
 ---
 
 {% if site.data.code %}
-## Code
+## Jupyter Notebooks
 {% for script in site.data.code %}
-* [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/{{script.name}})
+* [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/{{script.name}.html})
   \| {{script.desc}}
-    {% if script.notebook %} + [Jupyter Notebook]({{site.url}}/{{site.baseurl}}/software/{{script.notebook}}){% endif %}
-    {% if script.dataset %} + [Necessary data]({{script.dataset}}){% endif %}
+    + [`ipynb` file]({{site.url}}/{{site.baseurl}}/software/{{script.name}.ipynb})
+    {% if script.dataset %} + [data]({{script.dataset}}){% endif %}
 {% endfor %}
 {% endif %}
 

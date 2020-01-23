@@ -1,13 +1,6 @@
 - script:
-  name: chemical_master_mRNA_FISH_mcmc.html
+  name: chemical_master_mRNA_FISH_mcmc
   desc: >
     Bayesian inference of the RNAP parameters based on single-molecule FISH
     data.
-  notebook: chemical_master_mRNA_FISH_mcmc.ipynb
   dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/Jones_Brewster_2014.csv
-- script:
-  name: script2.py
-  desc: >
-    Yet another script that does something-or-other.
-
-
