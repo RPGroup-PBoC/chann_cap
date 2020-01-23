@@ -1,8 +1,10 @@
 - script:
-  name: script1.py
+  name: chemical_master_mRNA_FISH_mcmc.html
   desc: >
-    Super fancy script which calcualate some complicated stuff with
-    well-documented code.
+    Bayesian inference of the RNAP parameters based on single-molecule FISH
+    data.
+  notebook: chemical_master_mRNA_FISH_mcmc.ipynb
+    
 - script:
   name: script2.py
   desc: >
