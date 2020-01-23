@@ -2,8 +2,8 @@ title: First-principles prediction of the information processing capacity of a s
 description: First-principles prediction of the information processing capacity of a simple genetic circuit  
 
 # permalink: ':title/'
-baseurl:  "/" # the subpath of your site, e.g. /blog
-url: "https://www.rpgroup.caltech.edu/chann_cap" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl:  "/channcap" # the subpath of your site, e.g. /blog
+url: "https://www.rpgroup.caltech.edu/" # the base hostname & protocol for your site, e.g. http://example.com
 
 # You can include social icons
 site-twitter: #if your site has a twitter account, enter it here
