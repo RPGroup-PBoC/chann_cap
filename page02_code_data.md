@@ -13,7 +13,7 @@ sidebar: true
 {% for script in site.data.code %}
 * [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/{{script.name}}.html)
   \| [[ipynb file]]({{site.url}}/{{site.baseurl}}/software/{{script.name}}.ipynb)
-    {% if script.dataset %} [data]({{script.dataset}}){% endif %}
+    {% if script.dataset %} [[data]]({{script.dataset}}){% endif %}
     + {{script.desc}}
 {% endfor %}
 {% endif %}
