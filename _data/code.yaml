@@ -51,3 +51,14 @@
   desc: >
     Numerical computation of the predicted channel capacity using the
     Blahut-Arimoto algorithm (See SI section S7).
+
+- script:
+  name: image_analysis_pipeline
+  desc: >
+    Image processing pipeline to extract single-cell fluorescence values.
+
+- script:
+  name: channel_capacity_bias_correction
+  desc: >
+    Numerical determination of the channel capacity from single-cell fluoresence
+    values. (See SI section S7)
