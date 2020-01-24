@@ -16,6 +16,28 @@
   other_info:
      Email Address: "mrazomej {at} caltech [dot] edu"
 - author:
+  name: Griffin Chure
+  link: http://gchure.github.io
+  title: Graduate student
+  img: griffin.jpg
+  institute: California Institute of Technology
+  other_info:
+     Email Address: "gchure {at} caltech [dot] edu"
+- author:
+  name: Muir Morrison
+  title: Graduate student
+  img: muir.jpg
+  institute: California Institute of Technology
+  other_info:
+     Email Address: "muir {at} caltech [dot] edu"
+- author:
+  name: Rachel Taubman
+  title: Undergraduate student
+  img: rachel.jpg
+  institute: Scripps College
+  other_info:
+     Email Address: "muir {at} caltech [dot] edu"
+- author:
   name: Sarah Marzen
   link: https://sarahmarzen.weebly.com
   title: Assistant Professor of Physics
