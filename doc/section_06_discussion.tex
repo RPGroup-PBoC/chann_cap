@@ -6,7 +6,7 @@ information processing capabilities of biological systems, and the evolutionary
 consequences for organisms harboring signal transduction systems
 \cite{Bergstrom2004, Taylor2007, Tkacik2008, Polani2009, Nemenman2010,
 Rivoire2011}. Recently, with the mechanistic dissection of molecular signaling
-pathways significant progress has been made on the question of the physical
+pathways, significant progress has been made on the question of the physical
 limits of cellular detection and the role that features such as feedback loops
 play in this task \cite{Bialek2005, Libby2007, Tkacik2011, Rhee2012a,
 Voliotis2014a}. But the field still lacks a rigorous experimental test of these
@@ -31,30 +31,34 @@ This condition therefore constrains the values that the kinetic rates in the
 model can take. To test whether or not the equilibrium picture can reproduce
 the predictions made by the kinetic model we compare the experimental and
 theoretical fold-change in protein copy number for a suite of biophysical
-parameters and environmental conditions. The agreement between theory and
-experiment demonstrates that these two frameworks can indeed make consistent
-predictions.
+parameters and environmental conditions (\fref{fig3_cell_cycle}(C) upper row).
+The agreement between theory and experiment demonstrates that these two
+frameworks can indeed make consistent predictions.
 
 The kinetic treatment of the system brings with it increasing predictive power
 compared to the equilibrium picture. Under the kinetic formulation, the
-predictions are not limited only to the mean but to any moment of the mRNA and
-protein distribution. We first test these novel predictions by comparing the
-noise in protein copy number (standard deviation / mean) with experimental
-data. Our minimal predicts the noise up to a systematic deviation. The physical
-or biological source of this lack of agreement remains an open question. In
-that way the work presented here exposes the status quo of our understanding of
-gene regulation in bacteria, posing new questions to be answered with future
-refinements of the model. We extended our analysis to infer entire protein
-distributions at different input signal concentrations by using the maximum
-entropy principle. What this means is that we compute moments of the protein
-distribution, and then use these moments to build an approximation to the full
-distribution. These predicted distributions are then compared with experimental
-single-cell distributions as shown in \siref{supp_maxent}. Again here although
-our minimal model systematically underestimates the width of the distributions,
-it serves to inform how to expect changes in parameters such as protein copy
-number or protein-DNA binding affinity will affect the full probabilistic
-input-output function of the genetic circuit. We then use our model to predict
-the information processing capacity.
+predictions are not limited only to the mean but to any of the moments of the
+mRNA and protein distributions. We first test these novel predictions by
+comparing the noise in protein copy number (standard deviation / mean) with
+experimental data. Our minimal predicts the noise up to a systematic deviation.
+The physical or biological origins of this discrepancy remains an open
+question. In that way the work presented here exposes the status quo of our
+understanding of gene regulation in bacteria, posing new questions to be
+answered with future refinements of the model. We extended our analysis to
+infer entire protein distributions at different input signal concentrations by
+using the maximum entropy principle. What this means is that we compute moments
+of the protein distribution, and then use these moments to build an
+approximation to the full distribution. These predicted distributions are then
+compared with experimental single-cell distributions as shown in
+\siref{supp_maxent}. Again here although our minimal model systematically
+underestimates the width of the distributions, it serves to inform how to
+expect changes in parameters such as protein copy number or protein-DNA binding
+affinity will affect the full probabilistic input-output function of the
+genetic circuit. We then use our model to predict the information processing
+capacity.
+\rp{If I were a reviewer, I would be wondering about why to accept this as a 
+helpful contribution? Is there a way to tighten up our discussion of
+implications?}
 
 By maximizing the mutual information between input signal concentration and
 output protein distribution over all possible input distributions we predict
@@ -62,8 +66,8 @@ the channel capacity for a suite of biophysical parameters such as varying
 repressor protein copy number and repressor-DNA binding affinity. The relevance
 of the channel capacity comes from its interpretation as a metric of the limits
 of how precise the inference that cells can make about what the state of the
-environment is given this simple genetic circuit. Our model, despite the
-expected systematic deviations, makes non-trivial predictions such as the
+environment is, given this simple genetic circuit. Our model, despite the
+systematic deviations, makes non-trivial predictions such as the
 existence of an optimal repressor copy number for a given repressor-DNA binding
 energy (See \fref{fig5_channcap}). We note that this differs from previous
 theoretical results since this optimal combination does not come from adding a
@@ -89,7 +93,7 @@ minimal model in \fref{fig2_minimal_model}(A), despite being widely used, is an
 oversimplification of the physical picture of how the transcriptional machinery
 works. The coarse-graining of all the kinetic steps involved in the
 transcription initiation into two effective promoter states - active and
-inactive - ignores potential kinetic regulatory mechanisms of intermediary
+inactive - ignores potential kinetic regulatory mechanisms of intermediate
 states \cite{Scholes2017}. Moreover it has been argued that despite the fact
 that the mRNA count distribution does not follow a Poisson distribution, this
 effect could be caused by unknown factors not at the level of transcriptional
@@ -111,6 +115,6 @@ we have experimental control of the distribution of inputs that the cells are
 exposed to. What this means is that instead of seeing the final result of the
 evolutionary process, we can set different environmental challenges, and track
 over time the evolution of the population. These experiments could shed light
-into the suggestive hypothesis of information bits as a metric on which natural
+into the suggestive hypothesis of information bits as a trait on which natural
 selection acts. We see this exciting direction as part of the overall effort in
 quantitative biology of predicting evolution \cite{Lassig2017}.
