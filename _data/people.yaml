@@ -16,6 +16,14 @@
   other_info:
      Email Address: "mrazomej {at} caltech [dot] edu"
 - author:
+  name: Sarah Marzen
+  link: https://sarahmarzen.weebly.com
+  title: Assistant Professor of Physics
+  img: sarah.jpg
+  institute: W. M. Keck Science Department at the Claremont colleges
+  other_info:
+     Email Address: "smarzen {at} kecksci [dot] claremont [dot] edu"
+- author:
   name: Griffin Chure
   link: http://gchure.github.io
   title: Graduate student
@@ -24,13 +32,6 @@
   other_info:
      Email Address: "gchure {at} caltech [dot] edu"
 - author:
-  name: Muir Morrison
-  title: Graduate student
-  img: muir.jpg
-  institute: California Institute of Technology
-  other_info:
-     Email Address: "muir {at} caltech [dot] edu"
-- author:
   name: Rachel Taubman
   title: Undergraduate student
   img: rachel.jpg
@@ -38,13 +39,12 @@
   other_info:
      Email Address: "muir {at} caltech [dot] edu"
 - author:
-  name: Sarah Marzen
-  link: https://sarahmarzen.weebly.com
-  title: Assistant Professor of Physics
-  img: sarah.jpg
-  institute: W. M. Keck Science Department at the Claremont colleges
+  name: Muir Morrison
+  title: Graduate student
+  img: muir.jpg
+  institute: California Institute of Technology
   other_info:
-     Email Address: "smarzen {at} kecksci [dot] claremont [dot] edu"
+     Email Address: "muir {at} caltech [dot] edu"
 - author:
   name: Rob Phillips
   link: "http://rpgroup.caltech.edu/"
