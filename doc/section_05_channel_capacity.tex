@@ -11,7 +11,7 @@ inducer concentration. $P(c)$ represents the distribution of inducer and $P(p
 -- effectively the distributions shown in \fref{fig4_maxent}. The channel
 capacity is then given by
 \begin{equation}
-  C \equiv \max_{P(c)} I,
+  C \equiv \sup_{P(c)} I,
   \label{eq_chann_cap}
 \end{equation}
 where $I$, the mutual information between protein count and inducer
@@ -75,6 +75,10 @@ highly depend on the repressor-DNA affinity. For strong binding sites (blue
 curve in \fref{fig5_channcap}(A)) there is a rapid increment in the channel
 capacity, but the maximum value reached is smaller compared to a weaker binding
 site (orange curve in \fref{fig5_channcap}(A)). 
+\sm{Can you show that the systematic multiplicative error in moments of p(g|c)
+leads to a systematic additive error in C, maybe if only for small noise
+approximation?  I think this might be done very simply, if I remember the
+equation for C in the small noise approximation correctly.}
 
 \begin{figure}[h!]
 	\centering \includegraphics
