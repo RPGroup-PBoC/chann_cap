@@ -2,24 +2,25 @@
 
 \subsection{Minimal model of transcriptional regulation}\label{sec_model}
 
-We begin by defining the simple repression genetic circuit to be used throughout
-this work. As a tractable circuit for which we have control over the parameters
-both theoretically and experimentally we chose the so-called simple  repression
-motif, a common regulatory scheme among prokaryotes \cite{Rydenfelt2014}. This
-circuit consists of a single promoter with an RNA-polymerase (RNAP) binding site
-and a single binding site for a transcriptional repressor \cite{Garcia2011c}.
-The regulation due to the repressor occurs via exclusion of the RNAP from its
-binding site when the repressor is bound, decreasing the likelihood of having a
-transcription event. As with many important macromolecules, we consider the
-repressor to be allosteric, meaning that it can exist in two conformations, one
-in which the repressor is able to bind to the specific binding site (active
-state) and one in which it cannot bind the specific binding site (inactive
-state). The environmental signaling occurs via passive import of an
-extracellular inducer that binds the repressor, shifting the equilibrium between
-the two conformations of the repressor \cite{Razo-Mejia2018}. In previous
-publications we have extensively characterized the mean response of this circuit
-under different conditions using equilibrium based models \cite{Phillips2019}.
-In this work we build upon these models to characterize the full distribution of
+We begin by defining the simple repression genetic circuit to be used
+throughout this work. As a tractable circuit for which we have control over the
+parameters both theoretically and experimentally we chose the so-called simple
+repression motif, a common regulatory scheme among prokaryotes
+\cite{Rydenfelt2014}. This circuit consists of a single promoter with an
+RNA-polymerase (RNAP) binding site and a single binding site for a
+transcriptional repressor \cite{Garcia2011c}. The regulation due to the
+repressor occurs via exclusion of the RNAP from its binding site when the
+repressor is bound, decreasing the likelihood of having a transcription event.
+As with many important macromolecules, we consider the repressor to be
+allosteric, meaning that it can exist in two conformations, one in which the
+repressor is able to bind to the specific binding site (active state) and one
+in which it cannot bind the specific binding site (inactive state). The
+environmental signaling occurs via passive import of an extracellular inducer
+that binds the repressor, shifting the equilibrium between the two
+conformations of the repressor \cite{Razo-Mejia2018}. In previous publications
+we have extensively characterized the mean response of this circuit under
+different conditions using equilibrium based models \cite{Phillips2019}. In
+this work we build upon these models to characterize the full distribution of
 gene expression with parameters such as repressor copy number and its affinity
 for the DNA being systematically varied.
 
@@ -28,7 +29,7 @@ chemical master equations have emerged as a useful tool to model the inherent
 probability distribution of these counts \cite{Sanchez2013}. In
 \fref{fig2_minimal_model}(A) we show the minimal model and the necessary set of
 parameters needed to predict mRNA and protein distributions. Specifically, we
-assume a three-state model where the promoter can be found 1) In a
+assume a three-state model where the promoter can be found 1) in a
 transcriptionally active state  ($A$ state), 2) in a transcriptionally inactive
 state without the repressor bound ($I$ state) and 3) with the repressor bound
 ($R$ state). We do not assume that the transition between the active state $A$
