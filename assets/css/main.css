@@ -457,9 +457,10 @@ template {
 }
 
 .highlighter-rouge {
+  font-size: 0.75em; 
   color: #ce887b;
   font-weight: 400;
-  border: 1px solid #607D8B;
+  /* border: 1px solid #607D8B; */
   -webkit-border-radius: 3px;
           border-radius: 3px;
   padding: 0.1rem 0.5rem;
@@ -1231,6 +1232,7 @@ a.newer-posts:hover {
 /* - - - - - - - - - - Post Page Styles - - - - - - - - - - */
 .wrap-content {
   padding: 20px;
+  max-width: 1000px;
 }
 
 .header-page {

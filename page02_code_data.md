@@ -19,7 +19,7 @@ necessary, there is a link to download the data used for the computations in
 the notebook.
 
 {% for script in site.data.code %}
-* [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/{{script.name}}.html)
+* [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/notebooks/{{script.name}})
   \| [[ipynb file]]({{site.url}}/{{site.baseurl}}/software/{{script.name}}.ipynb)
     {% if script.dataset %} [[data]]({{script.dataset}}){% endif %}
     + {{script.desc}}
