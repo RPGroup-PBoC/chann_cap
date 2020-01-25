@@ -23,19 +23,22 @@ outputs? The abstract answer to this question was worked out in 1948 by Claude
 Shannon who, in his seminal work, founded the field of information theory
 \cite{Shannon1948}. Shannon developed a general framework for how to analyze
 information transmission through noisy communication channels. In his work,
-Shannon showed that the only quantity that satisfies simple conditions of how a
-metric for information should behave, was of the same functional form as the
+Shannon showed that the only quantity that satisfies three reasonable axioms
+for a measure of uncertainty, was of the same functional form as the
 thermodynamic entropy -- thereby christening his metric the information entropy
 \cite{MacKay2003}. He also gave a definition, based on this information
 entropy, for the relationship between inputs and outputs known as the mutual
-information. The mutual information $I(p; c)$ between input $c$ and output $p$,
-given by
+information. The mutual information $I$ between input $c$ and output $p$, given
+by
 \begin{equation}
   I = \sum_c P(c) \sum_p P(p \mid c) \log_2 {P(p \mid c) \over P(p)},
 	\label{eq_mutual_info}
 \end{equation}
 quantifies how much we learn about the state of the input $c$ given that we get
-to observe the output $p$.
+to observe the output $p$. In other words, the mutual information can be
+thought as a generalize correlation coefficient that quantifies how much does
+the uncertainty about a random event decreases when we get to know the outcome
+of another random event on average \cite{Kinney2010}.
 
 It is natural to conceive of scenarios in which living organisms that can
 better resolve signals might have an evolutionary benefit, making it more
@@ -50,29 +53,31 @@ have explored the role that molecular players and regulatory architectures have
 on these information processing tasks \cite{Rieckh2014, Ziv2007, Voliotis2014a,
 Tostevin2009, Tkacik2011, Tkacik2008a, Tabbaa2014}. Despite the great advances
 in our understanding of the information processing capabilities of molecular
-mechanisms, the field still lacks a rigorous experimental test of these ideas
-with precision measurements on a simple system tractable both theoretically and
-experimentally.
+mechanisms, the field still lacks a rigorous experimental test of these
+detailed models with precision measurements on a simple system tractable both
+theoretically and experimentally in which molecular parameters can be varied in
+a controlled manner.
+\mrm{This is a long sentence. Not sure how to break it into two.}
 
 Over the last decade the dialogue between theory and experiments in gene
-regulation has led to predictive power not only over the mean, but the noise in
-gene expression as a function of relevant parameters such as regulatory protein
-copy numbers, affinity of these proteins to the DNA promoter, as well as the
-extracellular concentrations of inducer molecules \cite{Golding2005,
-Garcia2011c, Vilar2013, Xu2015}. These models based on equilibrium and
-non-equilibrium statistical physics have reached a predictive accuracy level
-such that for simple cases it is now possible to design input-output functions
-\cite{Brewster2012, Barnes2019}. This opens the possibility to exploit these
-predictive models to tackle the question of how much information genetic
-circuits can process. The question lays at the heart of understanding the
-precision of the cellular response to environmental signals.
-\fref{fig1_intro}(C) schematizes a scenario in which two bacterial strains
-respond with different levels of precision to three possible environmental
-states, i.e. inducer concentrations. The overlap between the three different
-responses is what precisely determines the resolution with which cells can
-distinguish different inputs. This is analogous to how for an imaging system
-the point spread function limits the ability to resolve two light emitting
-point sources.
+regulation has led to predictive power of models not only over the mean, but
+the noise in gene expression as a function of relevant parameters such as
+regulatory protein copy numbers, affinity of these proteins to the DNA
+promoter, as well as the extracellular concentrations of inducer molecules
+\cite{Golding2005, Garcia2011c, Vilar2013, Xu2015}. These models based on
+equilibrium and non-equilibrium statistical physics have reached a predictive
+accuracy level such that for simple cases it is now possible to design
+input-output functions \cite{Brewster2012, Barnes2019}. This opens the
+possibility to exploit these predictive models to tackle the question of how
+much information genetic circuits can process. The question lays at the heart
+of understanding the precision of the cellular response to environmental
+signals. \fref{fig1_intro}(C) schematizes a scenario in which two bacterial
+strains respond with different levels of precision to three possible
+environmental states, i.e. inducer concentrations. The overlap between the
+three different responses is what precisely determines the resolution with
+which cells can distinguish different inputs. This is analogous to how for an
+imaging system the point spread function limits the ability to resolve two
+light emitting point sources.
 
 In this work we follow the same philosophy of theory-experiment dialogue used
 to determine model parameters to predict from first principles the effect that
@@ -96,16 +101,20 @@ for our model were inferred from a series of studies that span several
 experimental techniques \cite{Garcia2011c, Jones2014a, Brewster2014,
 Razo-Mejia2018}, allowing us to perform parameter-free predictions of this
 information processing capacity \cite{Phillips2019}.
+\sm{This need more justification because it is unlikely that E coli can shape
+lactose concentration of environment. More likely that we can claim this is
+related to Cramer-Rao bound, thus to Wingreen PRL bounds on chemical sensory
+processing.}
 
 These predictions are then contrasted with experimental data, where the channel
 capacity is inferred from single-cell fluorescence distributions taken at
 different concentrations of inducer for cells with previously characterized
 biophysical parameters \cite{Garcia2011c, Razo-Mejia2018}. We find that our
 parameter-free predictions quantitatively track the experimental data up to a
-systematic deviation. Rather than a defeat, we find that the lack of numerical
-agreement between our model and the experimental data poses new challenges
-towards the goal of having a foundational first-principles understanding of the
-physics of cellular decision-making.
+systematic deviation. We find that the lack of numerical agreement between our
+model and the experimental data poses new challenges towards the goal of having
+a foundational first-principles understanding of the physics of cellular
+decision-making.
 
 The reminder of the paper is organized as follows. In \secref{sec_model} we
 define the minimal theoretical model and parameter inference for a simple
