@@ -37,6 +37,7 @@
     numerical integration of the dynamical equations and computes the
     corresponding Lagrange multipliers for a maximum entropy approximation of
     the distribution.
+  dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/MaxEnt_multi_prom_constraints.csv 
 
 - script:
   name: maxent_mRNA_dist.py
@@ -45,6 +46,7 @@
     numerical integration of the dynamical equations and computes the
     corresponding Lagrange multipliers for a maximum entropy approximation of
     the distribution.
+  dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/MaxEnt_multi_prom_constraints.csv 
 
 - script: 
   name: maxent_protein_dist_rep_range.py
@@ -53,6 +55,7 @@
     numerical integration of the dynamical equations and computes the
     corresponding Lagrange multipliers for a maximum entropy approximation of
     the distribution for a larger span of repressor copy numbers.
+  dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/MaxEnt_constraints_mult_protein_ext_R.csv
 
 - script:
   name: maxent_protein_dist_iptg_range.py
@@ -61,6 +64,7 @@
     numerical integration of the dynamical equations and computes the
     corresponding Lagrange multipliers for a maximum entropy approximation of
     the distribution for a finer grid of inducer concentrations.
+  dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/MaxEnt_multi_prom_IPTG_range.csv
     
 - script:
   name: maxent_protein_dist_correction.py
@@ -70,3 +74,42 @@
     theoretical prediction and the experimental data. It then uses these
     updated moments along with the first protein moment to infer the maximum
     entropy distribution.
+  dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/MaxEnt_multi_prom_constraints.csv 
+
+- script:
+  name: channcap_protein_multi_prom.py
+  desc: >
+    Script that computes the channel capacity for the protein distributions
+    generated with the output of the `maxent_protein_dist.py` script.
+  dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/MaxEnt_Lagrange_mult_protein.csv 
+
+- script:
+  name: channcap_mRNA_multi_prom.py
+  desc: >
+    Script that computes the channel capacity for the mRNA distributions
+    generated with the output of the `maxent_mRNA_dist.py` script.
+  dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/MaxEnt_Lagrange_mult_mRNA.csv 
+
+- script: 
+  name: channcap_protein_multi_prom_rep_range.py
+  desc: >
+    Script that computes the channel capacity for the protein distributions
+    generated with the output of the `maxent_protein_dist_rep_range.py` script.
+  dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/MaxEnt_Lagrange_mult_protein_ext_R.csv 
+
+- script:
+  name: channcap_protein_multi_prom_iptg_range.py
+  desc: >
+    Script that computes the channel capacity for the protein distributions
+    generated with the output of the `maxent_protein_dist_iptg_range.py`
+    script.
+  dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/MaxEnt_Lagrange_mult_protein_IPTG_range.csv 
+
+- script: 
+  name: channcap_protein_single_prom.py
+  desc: >
+    Script that computes the channel capacity for the protein distributions
+    generated assuming a single promoter that reaches steady state. These
+    calculations do not include the gene dosage variability during the cell
+    cycle, and assume a Poissonian degradation of the proteins.
+  dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/MaxEnt_Lagrange_single_protein.csv 
