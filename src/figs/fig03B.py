@@ -257,6 +257,4 @@ plt.savefig(figdir + 'fig03B.svg', bbox_inches='tight', format='svg')
 plt.savefig(figdir + 'fig03B.png', bbox_inches='tight',
             transparent=True)
 plt.savefig(figdir + 'fig03B.pdf', bbox_inches='tight')
-
-
-# %%
+plt.savefig(figdir + 'fig03B.png', bbox_inches='tight')

@@ -211,3 +211,4 @@ ax.set_ylim(top=2.2)
 
 # Save figure
 plt.savefig(figdir + "fig05A.pdf", bbox_inches="tight")
+plt.savefig(figdir + "fig05A.png", bbox_inches="tight")
