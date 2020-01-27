@@ -200,15 +200,13 @@ for group, data in df_group:
 
 # Set axis range
 ax.set_xlim(left=10)
+ax.set_ylim([-0.1, 3])
 
 # Label plot
 ax.set_xlabel("repressor copy number")
 ax.set_ylabel("channel capacity (bits)")
 ax.set_xscale("symlog", linthreshx=thresh, linscalex=0.3)
-ax.legend(loc="lower right", title=r"$\Delta\epsilon_r \; (k_BT)$")
-
-# Upate axis range
-ax.set_ylim(top=2.2)
+ax.legend(loc="upper left", title=r"$\Delta\epsilon_r \; (k_BT)$")
 
 # Save figure
 plt.savefig(
