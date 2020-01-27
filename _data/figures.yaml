@@ -2,7 +2,7 @@
   title: "Fig. 1: Paleo cardigan kombucha, pickled brunch shabby chic "
   filename: script1.py
   desc:  Used to generate the figure1
-  pic: fig1.png
+  pic: fig01.png
   req:
     - ds: 
       storage: remote
@@ -14,7 +14,7 @@
   filename: script2.py
   desc: 
       Used to generate Figure 2, illustrating activated kombucha on tap.
-  pic: fig2.png
+  pic: fig02.png
   req:
     - ds:
       title: Kombucha tempura desconstructed measures
@@ -30,7 +30,7 @@
   filename: script1.py
   desc:
         Used to generate Figure 5, 
-  pic: fig3.png
+  pic: fig03.png
   req:
     - ds:
       title: Summarized dataset 1
