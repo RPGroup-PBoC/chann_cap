@@ -35,7 +35,7 @@ used for the computations in the notebook.
 
 {% for script in site.data.scripts %}
 * [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/scripts/{{script.name}})
-  \| {% if script.dataset %} [[data]]({{script.dataset}}){% endif %}
+  {% if script.dataset %} \| [[data]]({{script.dataset}}){% endif %}
     + {{script.desc}}
 {% endfor %}
 {% endif %}
