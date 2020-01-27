@@ -210,8 +210,4 @@ ax.legend(loc="upper left", title=r"$\Delta\epsilon_r \; (k_BT)$")
 ax.set_ylim(top=2.2)
 
 # Save figure
-plt.savefig(
-    f"{figdir}theory_vs_data_channcap_protein_multiprom.pdf",
-    bbox_inches="tight",
-)
 plt.savefig(figdir + "fig05A.pdf", bbox_inches="tight")

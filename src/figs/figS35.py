@@ -174,16 +174,9 @@ for group, data in df_group:
     # Plot Log scale
     ax.plot(
         data[data.repressor >= thresh].repressor,
-        channcap_gauss,
+        channcap_gauss - 0.56,
         label=op_dict[group],
         color=col_dict[group],
-    )
-    # Plot Log scale
-    ax.plot(
-        data[data.repressor >= thresh].repressor,
-        channcap_gauss - 0.56,
-        color=col_dict[group],
-        linestyle='--',
     )
     # Plot data from operator
     ax.plot(
@@ -200,7 +193,7 @@ for group, data in df_group:
 
 # Set axis range
 ax.set_xlim(left=10)
-ax.set_ylim([-0.1, 3])
+ax.set_ylim([-0.1, 2.5])
 
 # Label plot
 ax.set_xlabel("repressor copy number")
