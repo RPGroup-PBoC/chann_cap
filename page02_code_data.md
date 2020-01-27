@@ -34,7 +34,7 @@ the Jupyter notebooks. When necessary, there is a link to download the data
 used for the computations in the notebook.
 
 {% for script in site.data.scripts %}
-* [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/notebooks/{{script.name}})
+* [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/scripts/{{script.name}})
   \| {% if script.dataset %} [[data]]({{script.dataset}}){% endif %}
     + {{script.desc}}
 {% endfor %}
