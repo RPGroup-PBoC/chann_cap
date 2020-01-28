@@ -13,10 +13,9 @@
     - ds:
         title: Matrix to compute moment dynamics.
         storage: local 
-        link: two_state_protein_dynamics_matrix
+        link: two_state_protein_dynamics_matrix.pkl
     - ds:
-        title: Coefficient matrix to compute mRNA and protein distribution
-        moments after cell division.
+        title: Coefficient matrix to compute mRNA and protein distribution moments after cell division.
         storage: local 
         link: binom_coeff_matrix.pkl
 
