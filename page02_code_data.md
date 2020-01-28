@@ -26,31 +26,6 @@ the notebook.
 {% endfor %}
 {% endif %}
 
-{% if site.data.scripts %}
-## Python scripts
-
-This section lists python scripts used to compute repetitive tasks explained in
-the Jupyter notebooks. When necessary, there is a link to download the data
-used for the computations in the notebook.
-
-{% for script in site.data.scripts %}
-* [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/scripts/{{script.name}})
-  {% if script.dataset %} \| [[data]]({{script.dataset}}){% endif %}
-    + {{script.desc}}
-{% endfor %}
-{% endif %}
-
-{% if site.data.datasets %}
-## Data Sets
-{% for ds in site.data.datasets %}
-* [{{ds.name}}]({%if ds.storage !=
-  'remote'%}{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}{%
-  else%}{{site.link}}{% endif %}) \| {% if ds.filetype %}(filetype:
-  {{ds.filetype}}){%endif%}{% if ds.filesize %}({{ds.filesize}}){%endif%}{%
-  if ds.storage.remote %} DOI: {{ds.DOI}}{%endif%}
-{% endfor %}
-{% endif %}
-
 {% if site.data.figures %}
 ## Figure Generation
 
@@ -75,4 +50,28 @@ used for the computations in the notebook.
 </div>
 </article>
 {%endfor%}
+{% endif %}
+
+{% if site.data.scripts %}
+## Python scripts
+This section lists python scripts used to compute repetitive tasks explained in
+the Jupyter notebooks. When necessary, there is a link to download the data
+used for the computations in the notebook.
+
+{% for script in site.data.scripts %}
+* [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/scripts/{{script.name}})
+  {% if script.dataset %} \| [[data]]({{script.dataset}}){% endif %}
+    + {{script.desc}}
+{% endfor %}
+{% endif %}
+
+{% if site.data.datasets %}
+## Data Sets
+{% for ds in site.data.datasets %}
+* [{{ds.name}}]({%if ds.storage !=
+  'remote'%}{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}{%
+  else%}{{site.link}}{% endif %}) \| {% if ds.filetype %}(filetype:
+  {{ds.filetype}}){%endif%}{% if ds.filesize %}({{ds.filesize}}){%endif%}{%
+  if ds.storage.remote %} DOI: {{ds.DOI}}{%endif%}
+{% endfor %}
 {% endif %}
