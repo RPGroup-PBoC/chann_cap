@@ -11,9 +11,9 @@
   pdf: fig03B.pdf
   req:
     - ds:
-        title: Matrix to compute moment dynamics.
-        storage: local 
-        link: two_state_protein_dynamics_matrix.zip
+      title: Matrix to compute moment dynamics.
+      storage: local 
+      link: two_state_protein_dynamics_matrix.zip
     - ds:
       title: Coefficient matrix to compute mRNA and protein distribution moments after cell division.
       storage: local 
