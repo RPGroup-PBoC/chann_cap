@@ -32,7 +32,7 @@ the notebook.
 {% for fig in site.data.figures %}
 <article class="post">
 
-<a class="post-thumbnail" style="background-image: url({{site.url}}/{{site.baseurl}}/assets/img/{{fig.pic}})" href="{{site.baseurl}}/assets/img/{{fig.pdf}}"> </a>
+<a class="post-thumbnail" style="background-image: url({{site.url}}/{{site.baseurl}}/assets/img/{{fig.pic}})" href="{{site.baseurl}}/assets/pdf/{{fig.pdf}}"> </a>
 
 <div class="post-content">
 <b class="post-title"><a href="{{site.url}}/{{site.baseurl}}/software/figs/{{fig.filename}}">{{fig.title}}</a></b>
