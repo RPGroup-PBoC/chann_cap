@@ -1,19 +1,29 @@
 - fig:
-  title: "Fig. 3(B): mRNA and protein moment dynamics"
+  title: "Fig. 3(B): mRNA and protein moment dynamics."
   filename: script1.py
   desc:  mean (solid line) ± standard deviation (shaded region) for the mRNA
   (upper panel) and protein (lower panel) dynamics. Cells spend a fraction of
   the cell cycle with a single copy of the promoter (light brown) and the rest
   of the cell cycle with two copies (light yellow). Black arrows indicate time
   of cell division. 
-  pic: fig01.png
+  pic: fig03B.png
 
 - fig:
-  title: "Fig. 2: Activated charcoal tilde kombucha. "
+  title: "Fig. 3(C): Theory vs data comparison of fold-change and noise in gene
+  expression"
   filename: script2.py
-  desc: 
-      Used to generate Figure 2, illustrating activated kombucha on tap.
-  pic: fig02.png
+  desc: >
+      Zero parameter-fit predictions (lines) and experimental data (circles) of
+      the gene expression fold-change (upper row) and noise (lower row) for
+      repressor binding sites with different affinities (different columns) and
+      different repressor copy numbers per cell (different lines on each
+      panel). Error bars in data represent the 95% confidence interval on the
+      quantities as computed from bootstrap estiamates generated from the
+      single-cell fluorescence measurements. In the theory curves dotted lines
+      indicate plot in linear scale to include zero while solid lines indicate
+      logarithmic scale. White dots on the lower row are plotted on a different
+      scale for visual clarity.
+  pic: fig03C.png
   req:
     - ds:
       title: Kombucha tempura desconstructed measures
@@ -23,20 +33,3 @@
       storage: local
       title: Gravitational wave lo-fi beats to chill and study to
       link: dataset2.csv
-
-- fig: 
-  title: "Fig. 5: Sustainable pour-over VHS"
-  filename: script1.py
-  desc:
-        Used to generate Figure 5, 
-  pic: fig03.png
-  req:
-    - ds:
-      title: Summarized dataset 1
-      storage: local
-      link: dataset1.csv
-
-    - ds:
-      title: Summarized dataset 2
-      storage: remote
-      link: "http://zenodo.org" 
