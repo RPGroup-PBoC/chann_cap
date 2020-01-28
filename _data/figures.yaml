@@ -1,11 +1,12 @@
 - fig:
   title: "Fig. 3(B): mRNA and protein moment dynamics."
   filename: script1.py
-  desc:  mean (solid line) ± standard deviation (shaded region) for the mRNA
-  (upper panel) and protein (lower panel) dynamics. Cells spend a fraction of
-  the cell cycle with a single copy of the promoter (light brown) and the rest
-  of the cell cycle with two copies (light yellow). Black arrows indicate time
-  of cell division. 
+  desc: >
+    mean (solid line) $\pm$ standard deviation (shaded region) for the mRNA
+    (upper panel) and protein (lower panel) dynamics. Cells spend a fraction of
+    the cell cycle with a single copy of the promoter (light brown) and the
+    rest of the cell cycle with two copies (light yellow). Black arrows
+    indicate time of cell division.
   pic: fig03B.png
 
 - fig:
