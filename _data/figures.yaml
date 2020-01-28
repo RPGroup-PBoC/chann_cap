@@ -1,8 +1,8 @@
 - fig:
   title: "Fig. 3(B): mRNA and protein moment dynamics."
-  filename: script1.py
+  filename: fig03B.py
   desc: >
-    mean (solid line) $\pm$ standard deviation (shaded region) for the mRNA
+    Mean (solid line) $\pm$ standard deviation (shaded region) for the mRNA
     (upper panel) and protein (lower panel) dynamics. Cells spend a fraction of
     the cell cycle with a single copy of the promoter (light brown) and the
     rest of the cell cycle with two copies (light yellow). Black arrows
@@ -12,7 +12,7 @@
 - fig:
   title: "Fig. 3(C): Theory vs data comparison of fold-change and noise in gene
   expression"
-  filename: script2.py
+  filename: fig03C.py
   desc: >
       Zero parameter-fit predictions (lines) and experimental data (circles) of
       the gene expression fold-change (upper row) and noise (lower row) for
@@ -27,10 +27,45 @@
   pic: fig03C.png
   req:
     - ds:
-      title: Kombucha tempura desconstructed measures
+      title: Moments of mRNA and protein distribution over cell cycle.
       storage: local 
-      link: dataset2.csv
-    - ds: 
-      storage: local
-      title: Gravitational wave lo-fi beats to chill and study to
-      link: dataset2.csv
+      link: MaxEnt_multi_prom_IPTG_range.csv
+    - ds:
+      title: Bootstrap gene expression fold-change and gene expression noise.
+      storage: local 
+      link: microscopy_noise_bootstrap.csv
+
+- fig:
+  title: "Fig. 4: Maximum entropy protein distributions for varying physical
+  parameters"
+  filename: fig04.py
+  desc: >
+      Predicted protein distributions under different inducer (IPTG)
+      concentrations for different combinations of repressor-DNA affinities
+      (columns) and repressor copy numbers (rows).
+  pic: fig04.png
+  req:
+    - ds:
+      title: Maximum entropy Lagrange multipliers for protein distribution.
+      storage: local 
+      link: MaxEnt_Lagrange_mult_protein.csv
+
+- fig:
+  title: "Fig. 5(A): Comparison of theoretical and experimental channel
+  capacity."
+  filename: fig05A.py
+  desc: >
+      Channel capacity as inferred using the Blahut-Arimoto algorithm [41] for
+      varying number of repressors and repressor-DNA affinities. All inferences
+      were performed using 12 IPTG concentrations as detailed in the Methods.
+      Lines represent zero-parameter fit predictions done with the maximum
+      entropy distributions as those shown in Fig. 4. Points represent
+      inferences made from single cell fluorescence distributions (See Appendix
+      S7 for further details). Solid lines indicate plot in logarithmic scale,
+      while dashed line indicates linear scale ton include zero.
+  pic: fig05A.png
+  req:
+    - ds:
+      title: Theoretical channel capacity for different biophysical parameters.
+      storage: local 
+      link: chann_cap_multi_prom_protein.csv
