@@ -9,6 +9,15 @@
     indicate time of cell division.
   pic: fig03B.png
   pdf: fig03B.pdf
+  - ds:
+      title: Matrix to compute moment dynamics.
+      storage: local 
+      link: two_state_protein_dynamics_matrix
+  - ds:
+      title: Coefficient matrix to compute mRNA and protein distribution
+      moments after cell division.
+      storage: local 
+      link: binom_coeff_matrix.pkl
 
 - fig:
   title: "Fig. 3(C): Theory vs data comparison of fold-change and noise in gene
@@ -73,3 +82,20 @@
       title: Theoretical channel capacity for different biophysical parameters.
       storage: local 
       link: chann_cap_multi_prom_protein.csv
+
+- fig:
+  title: "Fig. B(A): Example input-output functions of opposite limits of
+  channel capacity."
+  filename: fig05B.py
+  desc: >
+      Lower panel illustrates that zero channel capacity indicates that all
+      distributions overlap. Upper panel illustrates that as the channel
+      capacity increases, the separation between distributions increases as
+      well.
+  pic: fig05B.png
+  pdf: fig05B.pdf
+  req:
+    - ds:
+      title: Maximum entropy Lagrange multipliers for protein distribution.
+      storage: local 
+      link: MaxEnt_Lagrange_mult_protein.csv
