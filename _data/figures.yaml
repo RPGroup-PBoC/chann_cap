@@ -15,9 +15,9 @@
         storage: local 
         link: two_state_protein_dynamics_matrix.zip
     - ds:
-        title: Coefficient matrix to compute mRNA and protein distribution moments after cell division.
-        storage: local 
-        link: binom_coeff_matrix.zip
+      title: Coefficient matrix to compute mRNA and protein distribution moments after cell division.
+      storage: local 
+      link: binom_coeff_matrix.zip
 
 - fig:
   title: "Fig. 3(C): Theory vs data comparison of fold-change and noise in gene
