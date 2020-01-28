@@ -8,6 +8,7 @@
     rest of the cell cycle with two copies (light yellow). Black arrows
     indicate time of cell division.
   pic: fig03B.png
+  pdf: fig03B.pdf
 
 - fig:
   title: "Fig. 3(C): Theory vs data comparison of fold-change and noise in gene
@@ -25,6 +26,7 @@
       logarithmic scale. White dots on the lower row are plotted on a different
       scale for visual clarity.
   pic: fig03C.png
+  pdf: fig03C.pdf
   req:
     - ds:
       title: Moments of mRNA and protein distribution over cell cycle.
@@ -44,6 +46,7 @@
       concentrations for different combinations of repressor-DNA affinities
       (columns) and repressor copy numbers (rows).
   pic: fig04.png
+  pdf: fig04.pdf
   req:
     - ds:
       title: Maximum entropy Lagrange multipliers for protein distribution.
@@ -64,6 +67,7 @@
       S7 for further details). Solid lines indicate plot in logarithmic scale,
       while dashed line indicates linear scale ton include zero.
   pic: fig05A.png
+  pdf: fig05A.pdf
   req:
     - ds:
       title: Theoretical channel capacity for different biophysical parameters.
