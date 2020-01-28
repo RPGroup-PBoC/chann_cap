@@ -9,15 +9,16 @@
     indicate time of cell division.
   pic: fig03B.png
   pdf: fig03B.pdf
-  - ds:
-      title: Matrix to compute moment dynamics.
-      storage: local 
-      link: two_state_protein_dynamics_matrix
-  - ds:
-      title: Coefficient matrix to compute mRNA and protein distribution
-      moments after cell division.
-      storage: local 
-      link: binom_coeff_matrix.pkl
+  req:
+    - ds:
+        title: Matrix to compute moment dynamics.
+        storage: local 
+        link: two_state_protein_dynamics_matrix
+    - ds:
+        title: Coefficient matrix to compute mRNA and protein distribution
+        moments after cell division.
+        storage: local 
+        link: binom_coeff_matrix.pkl
 
 - fig:
   title: "Fig. 3(C): Theory vs data comparison of fold-change and noise in gene
