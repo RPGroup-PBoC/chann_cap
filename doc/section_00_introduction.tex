@@ -11,14 +11,14 @@ stochastic fluctuations \cite{Nemenman2010}. This means that two genetically
 identical cells exposed to the same stimulus will not have an identical
 response \cite{Eldar2010}.
 
-The implication of this biological noise is that cells do not have an infinite
-resolution to distinguish signals and, as a consequence, there is a one-to-many
-mapping between inputs and outputs. Furthermore, given the limited number of
-possible outputs, there are overlapping responses between different inputs. In
-that sense, one might think of cells performing a Bayesian inference of the
-state of the environment given their phenotypic response, as schematized in
-\fref{fig1_intro}(B). The question then becomes how to analyze this
-probabilistic rather than deterministic relationship between inputs and
+The implication of this noise in biological systems is that cells do not have
+an infinite resolution to distinguish signals and, as a consequence, there is a
+one-to-many mapping between inputs and outputs. Furthermore, given the limited
+number of possible outputs, there are overlapping responses between different
+inputs. In that sense, one may think of cells performing a Bayesian inference
+of the state of the environment given their phenotypic response, as schematized
+in \fref{fig1_intro}(B). The question then becomes this: how can one analyze
+this probabilistic rather than deterministic relationship between inputs and
 outputs? The abstract answer to this question was worked out in 1948 by Claude
 Shannon who, in his seminal work, founded the field of information theory
 \cite{Shannon1948}. Shannon developed a general framework for how to analyze
@@ -36,9 +36,9 @@ by
 \end{equation}
 quantifies how much we learn about the state of the input $c$ given that we get
 to observe the output $p$. In other words, the mutual information can be
-thought as a generalize correlation coefficient that quantifies how much does
-the uncertainty about a random event decreases when we get to know the outcome
-of another random event on average \cite{Kinney2010}.
+thought as a generalize correlation coefficient that quantifies the degree to
+which the uncertainty about a random event decreases given the knowledge of the
+outcome of another random event on average \cite{Kinney2010}.
 
 It is natural to conceive of scenarios in which living organisms that can
 better resolve signals might have an evolutionary benefit, making it more
@@ -54,30 +54,29 @@ on these information processing tasks \cite{Rieckh2014, Ziv2007, Voliotis2014a,
 Tostevin2009, Tkacik2011, Tkacik2008a, Tabbaa2014}. Despite the great advances
 in our understanding of the information processing capabilities of molecular
 mechanisms, the field still lacks a rigorous experimental test of these
-detailed models with precision measurements on a simple system tractable both
-theoretically and experimentally in which molecular parameters can be varied in
-a controlled manner.
-\mrm{This is a long sentence. Not sure how to break it into two.}
+detailed models with precision measurements. In this work we approach this task
+with a simple system tractable both theoretically and experimentally in which
+molecular parameters can be varied in a controlled manner.
 
 Over the last decade the dialogue between theory and experiments in gene
-regulation has led to predictive power of models not only over the mean, but
-the noise in gene expression as a function of relevant parameters such as
+regulation has led to predictive power of models not only over the mean level
+of gene expression, but the noise as a function of relevant parameters such as
 regulatory protein copy numbers, affinity of these proteins to the DNA
 promoter, as well as the extracellular concentrations of inducer molecules
 \cite{Golding2005, Garcia2011c, Vilar2013, Xu2015}. These models based on
 equilibrium and non-equilibrium statistical physics have reached a predictive
-accuracy level such that for simple cases it is now possible to design
+accuracy level such that, for simple cases, it is now possible to design
 input-output functions \cite{Brewster2012, Barnes2019}. This opens the
-possibility to exploit these predictive models to tackle the question of how
-much information genetic circuits can process. The question lays at the heart
+opportunity to exploit these predictive models to tackle the question of how
+much information genetic circuits can process. This question lays at the heart
 of understanding the precision of the cellular response to environmental
 signals. \fref{fig1_intro}(C) schematizes a scenario in which two bacterial
 strains respond with different levels of precision to three possible
 environmental states, i.e. inducer concentrations. The overlap between the
 three different responses is what precisely determines the resolution with
-which cells can distinguish different inputs. This is analogous to how for an
-imaging system the point spread function limits the ability to resolve two
-light emitting point sources.
+which cells can distinguish different inputs. This is analogous to how the
+point spread function limits the ability to resolve two light emitting point
+sources.
 
 In this work we follow the same philosophy of theory-experiment dialogue used
 to determine model parameters to predict from first principles the effect that
@@ -95,7 +94,7 @@ between inputs and outputs $I(c; p)$ for any arbitrary input distribution
 $P(c)$. We opt to compute the channel capacity, i.e. the maximum information
 that can be processed by this gene regulatory architecture, defined as
 \eref{eq_mutual_info} maximized over all possible input distributions $P(c)$.
-By doing so we can examine the physical limits of what cells can do in terms of
+By doing so we examine the physical limits of what cells can do in terms of
 information processing by harboring these genetic circuits. All parameters used
 for our model were inferred from a series of studies that span several
 experimental techniques \cite{Garcia2011c, Jones2014a, Brewster2014,
