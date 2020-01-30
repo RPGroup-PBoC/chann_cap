@@ -25,7 +25,7 @@ repo = git.Repo("./", search_parent_directories=True)
 homedir = repo.working_dir
 
 # Define directories for data and figure 
-datadir = f'{homedir}/data/csv_maxEnt_dist'
+datadir = f'{homedir}/data/csv_maxEnt_dist/'
 
 #%%
 # Load moments for multi-promoter level
