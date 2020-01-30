@@ -168,7 +168,7 @@ for group, data in df_group:
     x = np.log10(data[data.repressor >= thresh].repressor.values)
     y = data[data.repressor >= thresh].channcap.values
     # Define lambda parameter for smoothing
-    lam = 0.13
+    lam = 0.21
     # Smooth the channel capacity
     channcap_gauss = ccutils.stats.nw_kernel_smooth(x, x, y, lam)
     # Plot Log scale
