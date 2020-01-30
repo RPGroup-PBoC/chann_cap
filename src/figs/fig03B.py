@@ -238,7 +238,7 @@ ax[0].set_xlim(df_p_unreg['time'].min() / 60, df_p_unreg['time'].max() / 60)
 ax[0].set_ylim([0, 40])
 #protein
 ax[1].set_xlim(df_p_unreg['time'].min() / 60, df_p_unreg['time'].max() / 60)
-ax[1].set_ylim([5000, 14000])
+ax[1].set_ylim([5000, 16000])
 
 # Label plot
 ax[1].set_xlabel('time (min)')
