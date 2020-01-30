@@ -391,7 +391,7 @@ def load_constants():
     gm=1 / (3 * 60)
     k0=2.7E-3
     Vcell=2.15
-    rp=0.05768706295740175
+    rp=0.0965084635096711
     # Load MCMC parameters
     with open(homedir + '/data/mcmc/lacUV5_constitutive_mRNA_double_expo.pkl',
               'rb') as file:
