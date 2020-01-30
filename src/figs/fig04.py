@@ -60,7 +60,7 @@ binstep = 100
 
 # Define sample space
 mRNA_space = np.array([0])
-protein_space = np.arange(0, 1.3e4)
+protein_space = np.arange(0, 1.5e4)
 
 # Initialize plot
 fig, ax = plt.subplots(
