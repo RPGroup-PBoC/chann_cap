@@ -251,10 +251,4 @@ fig.align_ylabels()
 # Set legend for both plots
 ax[0].legend(loc='upper left', ncol=2, frameon=False,
              bbox_to_anchor=(-0.12, 0, 0, 1.3), fontsize=6.5)
-
-plt.subplots_adjust(hspace=0.05)
-plt.savefig(figdir + 'fig03B.svg', bbox_inches='tight', format='svg')
-plt.savefig(figdir + 'fig03B.png', bbox_inches='tight',
-            transparent=True)
-plt.savefig(figdir + 'fig03B.pdf', bbox_inches='tight')
-plt.savefig(figdir + 'fig03B.png', bbox_inches='tight')
+plt.savefig(figdir + 'figS08.pdf', bbox_inches='tight')
