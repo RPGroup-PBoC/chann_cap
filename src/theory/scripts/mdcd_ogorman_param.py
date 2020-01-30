@@ -13,7 +13,7 @@ import git
 
 # Find home directory for repo
 repo = git.Repo("./", search_parent_directories=True)
-homedir = repo.working_di
+homedir = repo.working_dir
 
 datadir = f'{homedir}/data/csv_maxEnt_dist/'
 #%%
@@ -48,7 +48,8 @@ Ki=5.5
 gm=1 / (3 * 60)
 k0=2.7E-3
 Vcell=2.15
-rp=0.05768706295740175
+rp=0.0965084635096711
+
 # Load MCMC parameters
 with open(homedir + '/data/mcmc/lacUV5_constitutive_mRNA_double_expo.pkl',
           'rb') as file:
@@ -97,9 +98,9 @@ operators = ['O1', 'O2', 'O3']
 var =  [t for t in itertools.product(*[operators, repressors, inducer])]
 
 # Define doubling time
-doubling_time = 100
+doubling_time = 60
 # Define fraction of cell cycle spent with one copy
-t_single_frac = 0.6
+t_single_frac = 1 / 3
 # Define time for single-promoter state
 t_single = 60 * t_single_frac * doubling_time # sec
 t_double = 60 * (1 - t_single_frac) * doubling_time # sec
