@@ -81,9 +81,9 @@ mp_sol = sp.integrate.odeint(ccutils.model.rhs_dmomdt, mom_init, t,
 mp_init = mp_sol[-1, :]
 #%%
 # Define doubling time
-doubling_time = 100
+doubling_time = 60
 # Define fraction of cell cycle spent with one copy
-t_single_frac = 0.6
+t_single_frac = 1 / 3
 # Define time for single-promoter state
 t_single = 60 * t_single_frac * doubling_time # sec
 t_double = 60 * (1 - t_single_frac) * doubling_time # sec
