@@ -68,7 +68,7 @@ fig, ax = plt.subplots(
 )
 
 # Define displacement
-displacement = 5e-5
+displacement = 1e-4
 
 # Loop through operators
 for j, op in enumerate(operators):
