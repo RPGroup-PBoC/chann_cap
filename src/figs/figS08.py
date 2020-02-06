@@ -31,7 +31,7 @@ repo = git.Repo("./", search_parent_directories=True)
 homedir = repo.working_dir
 
 # Define directories for data and figure 
-figdir = f'{homedir}/fig/main/'
+figdir = f'{homedir}/fig/si/'
 datadir = f'{homedir}/data/csv_maxEnt_dist/'
 
 # %%
