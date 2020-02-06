@@ -25,7 +25,7 @@ repressor copy number and its affinity for the DNA being systematically varied.
 As the copy number of molecular species is a discrete quantity, chemical master
 equations have emerged as a useful tool to model their inherent probability
 distribution \cite{Sanchez2013}. In \fref{fig2_minimal_model}(A) we show the
-minimal model and the necessary set of parameters needed to predict the full
+minimal model and the necessary set of parameters needed to compute the full
 distribution of mRNA and its protein gene product. Specifically, we assume a
 three-state model where the promoter can be found in a 1) transcriptionally
 active state  ($A$ state), 2) a transcriptionally inactive state without the
@@ -113,6 +113,8 @@ written as (See \siref{supp_model} for full definition of these matrices)
   \end{aligned}
   \label{eq_cme_matrix}
 \end{equation}
+Having defined the gene expression dynamics we now proceed to determine all 
+rate parameters in \eref{eq_cme_matrix}.
 
 \subsection{Inferring parameters from published data sets}
 \label{sec_param}
@@ -164,7 +166,8 @@ functional form as the equilibrium model cast in the language of binding
 energies \cite{Phillips2015}. Therefore the value of the repressor-DNA binding
 energy $\eR$ constrains the value of the repressor off rate $\kroff$. These
 constraints on the rates allow us to make self-consistent predictions under
-both, the equilibrium and the kinetic framework.
+both, the equilibrium and the kinetic framework. Having all parameters in hand
+we can now proceed to solving the gene expression dynamics.
 
 \begin{figure}[h!]
 	\centering \includegraphics
