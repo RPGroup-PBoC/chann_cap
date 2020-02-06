@@ -170,7 +170,7 @@ ax[0, 0].yaxis.set_ticks(yticks)
 ax[0, 0].yaxis.set_ticklabels(yticklabels)
 
 # Set x axis ticks
-xticks = [0, 5e3, 1e4, 1.5e4]
+xticks = [0, 4e3, 8e3, 1.2e4]
 ax[0, 0].xaxis.set_ticks(xticks)
 
 plt.savefig(figdir + "fig04.pdf", bbox_inches="tight")
