@@ -199,6 +199,7 @@ ax.legend(loc="upper left", title=r"$\Delta\epsilon_r \; (k_BT)$")
 
 # Upate axis range
 ax.set_ylim([-0.05, 2.2])
+ax.set_xlim(right=2200)
 
 # Save figure
 plt.savefig(figdir + "fig05A.pdf", bbox_inches="tight")
