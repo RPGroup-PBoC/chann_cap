@@ -178,7 +178,6 @@ for group, data in df_group:
         label=op_dict[group],
         color=col_dict[group],
     )
-
     # Plot data from operator
     ax.plot(
         df_cc_exp[df_cc_exp["operator"] == group]["repressors"],
@@ -199,7 +198,7 @@ ax.set_xscale("log")
 ax.legend(loc="upper left", title=r"$\Delta\epsilon_r \; (k_BT)$")
 
 # Upate axis range
-ax.set_ylim(top=2.2)
+ax.set_ylim([-0.05, 2.2])
 
 # Save figure
 plt.savefig(figdir + "fig05A.pdf", bbox_inches="tight")

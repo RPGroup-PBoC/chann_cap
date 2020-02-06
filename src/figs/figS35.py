@@ -174,7 +174,7 @@ for group, data in df_group:
     # Plot Log scale
     ax.plot(
         data[data.repressor >= thresh].repressor,
-        channcap_gauss - 0.56,
+        channcap_gauss - 0.43,
         label=op_dict[group],
         color=col_dict[group],
     )
@@ -192,8 +192,8 @@ for group, data in df_group:
     )
 
 # Set axis range
-ax.set_xlim(left=10)
-ax.set_ylim([-0.1, 2.5])
+ax.set_xlim(left=1)
+ax.set_ylim([-0.05, 2.5])
 
 # Label plot
 ax.set_xlabel("repressor copy number")
@@ -202,8 +202,4 @@ ax.set_xscale("symlog", linthreshx=thresh, linscalex=0.3)
 ax.legend(loc="upper left", title=r"$\Delta\epsilon_r \; (k_BT)$")
 
 # Save figure
-plt.savefig(
-    f"{figdir}theory_vs_data_channcap_protein_multiprom.pdf",
-    bbox_inches="tight",
-)
 plt.savefig(figdir + "figS35.pdf", bbox_inches="tight")
