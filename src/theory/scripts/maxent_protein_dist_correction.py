@@ -4,6 +4,7 @@ import itertools
 import cloudpickle
 import re
 import glob
+import statsmodels.api as sm
 import git
 
 # Our numerical workhorses
@@ -37,21 +38,144 @@ print('reading distribution moments')
 # Remove the zeroth moment column
 df_constraints = df_constraints.drop(labels="m0p0", axis=1)
 
-# print('removing other repressor copy numbers')
-# rep = [0, 22, 260, 1740]
-# idx = [x in rep for x in df_constraints.repressor.values]
-# df_constraints = df_constraints[idx]
-# print(df_constraints.shape)
+# %%
+print('Finding multiplicative factor for noise')
+
+# Read moments for multi-promoter model
+df_mom_rep = pd.read_csv(datadir + 'MaxEnt_multi_prom_constraints.csv')
+
+# Read experimental determination of noise
+df_noise = pd.read_csv(f'{homedir}/data/csv_microscopy/' + 
+                       'microscopy_noise_bootstrap.csv')
+
+# Find the mean unregulated levels to compute the fold-change
+mean_m_delta = np.mean(df_mom_rep[df_mom_rep.repressor == 0].m1p0)
+mean_p_delta = np.mean(df_mom_rep[df_mom_rep.repressor == 0].m0p1)
+
+# Compute the noise for the multi-promoter data
+df_mom_rep = df_mom_rep.assign(
+    m_noise=(
+        np.sqrt(df_mom_rep.m2p0 - df_mom_rep.m1p0 ** 2) / df_mom_rep.m1p0
+    ),
+    p_noise=(
+        np.sqrt(df_mom_rep.m0p2 - df_mom_rep.m0p1 ** 2) / df_mom_rep.m0p1
+    ),
+    m_fold_change=df_mom_rep.m1p0 / mean_m_delta,
+    p_fold_change=df_mom_rep.m0p1 / mean_p_delta,
+)
+
+# Initialize list to save theoretical noise
+thry_noise = list()
+# Iterate through rows
+for idx, row in df_noise.iterrows():
+    # Extract information
+    rep = float(row.repressor)
+    op = row.operator
+    if np.isnan(row.IPTG_uM):
+        iptg = 0
+    else:
+        iptg = row.IPTG_uM
+    
+    # Extract equivalent theoretical prediction
+    thry = df_mom_rep[(df_mom_rep.repressor == rep) &
+                       (df_mom_rep.operator == op) &
+                       (df_mom_rep.inducer_uM == iptg)].p_noise
+    # Append to list
+    thry_noise.append(thry.iloc[0])
+df_noise = df_noise.assign(noise_theory = thry_noise)
+
+# Linear regression to find multiplicative factor
+
+# Extract fold-change
+fc = df_noise.fold_change.values
+# Set values for ∆lacI to be fold-change 1
+fc[np.isnan(fc)] = 1
+# Normalize weights
+weights = fc / fc.sum()
+
+# Declare linear regression model
+wls_model = sm.WLS(df_noise.noise.values,
+                   df_noise.noise_theory.values,
+                   weights=weights)
+# Fit parameter
+results = wls_model.fit()
+noise_factor = results.params[0]
+# %%
 print('Increasing noise')
 # Compute variance
 p_var = df_constraints['m0p2'] - df_constraints['m0p1']**2
 # Update second moment
-df_constraints['m0p2'] = (4 * df_constraints['m0p2'] - 
-                          3 * df_constraints['m0p1']**2)
+df_constraints['m0p2'] = (noise_factor**2) * df_constraints['m0p2'] - \
+                         (noise_factor**2 - 1) * df_constraints['m0p1']**2
+
+# %%
+print('Finding multiplicative factor for skewness')
+
+# Read moments for multi-promoter model
+df_mom_rep = pd.read_csv(datadir + 'MaxEnt_multi_prom_constraints.csv')
+
+# Read experimental determination of noise
+df_noise = pd.read_csv(f'{homedir}/data/csv_microscopy/' + 
+                       'microscopy_noise_bootstrap.csv')
+
+# Find the mean unregulated levels to compute the fold-change
+mean_m_delta = np.mean(df_mom_rep[df_mom_rep.repressor == 0].m1p0)
+mean_p_delta = np.mean(df_mom_rep[df_mom_rep.repressor == 0].m0p1)
+
+# Compute the skewness for the multi-promoter data
+m_mean = df_mom_rep.m1p0
+p_mean = df_mom_rep.m0p1
+m_var = df_mom_rep.m2p0 - df_mom_rep.m1p0 ** 2
+p_var = df_mom_rep.m0p2 - df_mom_rep.m0p1 ** 2
+
+df_mom_rep = df_mom_rep.assign(
+    m_skew=(df_mom_rep.m3p0 - 3 * m_mean * m_var - m_mean**3)
+    / m_var**(3 / 2),
+    p_skew=(df_mom_rep.m0p3 - 3 * p_mean * p_var - p_mean**3)
+    / p_var**(3 / 2),
+)
+
+# Initialize list to save theoretical noise
+thry_skew = list()
+# Iterate through rows
+for idx, row in df_noise.iterrows():
+    # Extract information
+    rep = float(row.repressor)
+    op = row.operator
+    if np.isnan(row.IPTG_uM):
+        iptg = 0
+    else:
+        iptg = row.IPTG_uM
+    
+    # Extract equivalent theoretical prediction
+    thry = df_mom_rep[(df_mom_rep.repressor == rep) &
+                       (df_mom_rep.operator == op) &
+                       (df_mom_rep.inducer_uM == iptg)].p_skew
+    # Append to list
+    thry_skew.append(thry.iloc[0])
+    
+df_noise = df_noise.assign(skew_theory = thry_skew)
+
+# Extract fold-change
+fc = df_noise.fold_change.values
+# Set values for ∆lacI to be fold-change 1
+fc[np.isnan(fc)] = 1
+# Normalize weights
+weights = fc / fc.sum()
+
+# Declare linear regression model
+wls_model = sm.WLS(df_noise.skewness.values,
+                   df_noise.skew_theory.values,
+                   weights=weights)
+# Fit parameter
+results = wls_model.fit()
+skew_factor = results.params[0]
 
 # Update third moment
-df_constraints['m0p3'] = (16 * df_constraints['m0p3'] -
-36 * df_constraints['m0p1'] * p_var - 15 * df_constraints['m0p1']**3)
+print('Increasing skewness')
+df_constraints['m0p3'] = (8 * skew_factor * df_constraints['m0p3'] - \
+                (24 * skew_factor - 12) * df_constraints['m0p1'] * p_var - \
+                (8 * skew_factor - 1) * df_constraints['m0p1']**3)
 
 #%%
 
