@@ -4,6 +4,7 @@ import glob
 import numpy as np
 import scipy as sp
 import pandas as pd
+import statsmodels.api as sm
 import git
 
 # Import matplotlib stuff for plotting
@@ -32,6 +33,68 @@ figdir = f'{homedir}/fig/si/'
 datadir = f'{homedir}/data/csv_maxEnt_dist/'
 
 # %%
+# Read predictions for linear regression to find multiplicative factor
+
+# Read moments for multi-promoter model
+df_mom_rep = pd.read_csv(datadir + 'MaxEnt_multi_prom_constraints.csv')
+
+# Read experimental determination of noise
+df_noise = pd.read_csv(f'{homedir}/data/csv_microscopy/' + 
+                       'microscopy_noise_bootstrap.csv')
+
+# Find the mean unregulated levels to compute the fold-change
+mean_m_delta = np.mean(df_mom_rep[df_mom_rep.repressor == 0].m1p0)
+mean_p_delta = np.mean(df_mom_rep[df_mom_rep.repressor == 0].m0p1)
+
+# Compute the skewness for the multi-promoter data
+m_mean = df_mom_rep.m1p0
+p_mean = df_mom_rep.m0p1
+m_var = df_mom_rep.m2p0 - df_mom_rep.m1p0 ** 2
+p_var = df_mom_rep.m0p2 - df_mom_rep.m0p1 ** 2
+
+df_mom_rep = df_mom_rep.assign(
+    m_skew=(df_mom_rep.m3p0 - 3 * m_mean * m_var - m_mean**3)
+    / m_var**(3 / 2),
+    p_skew=(df_mom_rep.m0p3 - 3 * p_mean * p_var - p_mean**3)
+    / p_var**(3 / 2),
+)
+
+# Initialize list to save theoretical noise
+thry_skew = list()
+# Iterate through rows
+for idx, row in df_noise.iterrows():
+    # Extract information
+    rep = float(row.repressor)
+    op = row.operator
+    if np.isnan(row.IPTG_uM):
+        iptg = 0
+    else:
+        iptg = row.IPTG_uM
+    
+    # Extract equivalent theoretical prediction
+    thry = df_mom_rep[(df_mom_rep.repressor == rep) &
+                       (df_mom_rep.operator == op) &
+                       (df_mom_rep.inducer_uM == iptg)].p_skew
+    # Append to list
+    thry_skew.append(thry.iloc[0])
+    
+df_noise = df_noise.assign(skew_theory = thry_skew)
+
+# Extract fold-change
+fc = df_noise.fold_change.values
+# Set values for ∆lacI to be fold-change 1
+fc[np.isnan(fc)] = 1
+# Normalize weights
+weights = fc / fc.sum()
+
+# Declare linear regression model
+wls_model = sm.WLS(df_noise.skewness.values,
+                   df_noise.skew_theory.values,
+                   weights=weights)
+# Fit parameter
+results = wls_model.fit()
+factor = results.params[0]
+
 #%%
 # Read moments for multi-promoter model
 df_mom_iptg = pd.read_csv(datadir + 'MaxEnt_multi_prom_IPTG_range.csv')
@@ -44,9 +107,9 @@ p_var = df_mom_iptg.m0p2 - df_mom_iptg.m0p1 ** 2
 
 df_mom_iptg = df_mom_iptg.assign(
     m_skew=(df_mom_iptg.m3p0 - 3 * m_mean * m_var - m_mean**3)
-    / m_var**(3 / 2) * 2,
+    / m_var**(3 / 2) * factor,
     p_skew=(df_mom_iptg.m0p3 - 3 * p_mean * p_var - p_mean**3)
-    / p_var**(3 / 2) * 2,
+    / p_var**(3 / 2) * factor,
 )
 
 # Read experimental determination of noise
