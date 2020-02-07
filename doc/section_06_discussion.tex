@@ -15,10 +15,10 @@ experimentally and theoretically.
 
 In this paper we take advantage of the recent progress on the quantitative
 modeling of input-output functions of genetic circuits to build a minimal model
-of the so-called simple repression motif \cite{Phillips2019}. By combining a
-series of studies on this circuit spanning diverse experimental methods for
-measuring gene expression under a myriad of different conditions, we infer all
-parameter values of our model - allowing us to generate parameter-free
+of the simple repression motif \cite{Phillips2019}. By combining a series of
+studies on this circuit spanning diverse experimental methods for measuring
+gene expression under a myriad of different conditions, we possess complete a
+priori parametric knowledge - allowing us to generate parameter-free
 predictions for processes related to information processing. Some of the model
 parameters for our kinetic formulation of the input-output function are
 informed by inferences made from equilibrium models. We use the fact that if
@@ -50,35 +50,33 @@ using the maximum entropy principle. What this means is that we compute moments
 of the protein distribution, and then use these moments to build an
 approximation to the full distribution. These predicted distributions are then
 compared with experimental single-cell distributions as shown in
-\siref{supp_maxent}. Again here although our minimal model systematically
-underestimates the width of the distributions, it serves to inform how to
-expect changes in parameters such as protein copy number or protein-DNA binding
-affinity will affect the full probabilistic input-output function of the
-genetic circuit. We then use our model to predict the information processing
-capacity.
-\rp{If I were a reviewer, I would be wondering about why to accept this as a 
-helpful contribution? Is there a way to tighten up our discussion of
-implications?}
+\fref{fig4_maxent}(B) and \siref{supp_maxent}. Again here although our minimal
+model systematically underestimates the width of the distributions, it serves
+to inform how to expect changes in parameters such as protein copy number or
+protein-DNA binding affinity will affect the full probabilistic input-output
+function of the genetic circuit up to a multiplicative constant. We then use
+our model to predict the information processing capacity.
 
 By maximizing the mutual information between input signal concentration and
 output protein distribution over all possible input distributions we predict
-the channel capacity for a suite of biophysical parameters such as varying
-repressor protein copy number and repressor-DNA binding affinity. The relevance
-of the channel capacity comes from its interpretation as a metric of the limits
-of how precise the inference that cells can make about what the state of the
-environment is, given this simple genetic circuit. Our model, despite the
-systematic deviations, makes non-trivial predictions such as the
+the channel capacity of the system over a suite of biophysical parameters such
+as varying repressor protein copy number and repressor-DNA binding affinity.
+The relevance of the channel capacity comes from its interpretation as a metric
+of the limits of how precise the inference that cells can make about what the
+state of the environment is, given this simple genetic circuit. Our model,
+despite the systematic deviations, makes non-trivial predictions such as the
 existence of an optimal repressor copy number for a given repressor-DNA binding
-energy (See \fref{fig5_channcap}). We note that this differs from previous
-theoretical results since this optimal combination does not come from adding a
-cost term for the regulation \cite{Tkacik2011}. This is a consequence of the
-parameters inferred in \cite{Razo-Mejia2018} for the allosteric repressor never
-allowing all repressors to go into the inactive (non-DNA binding) state. That
-means that even at saturating concentrations of inducer, as the number of
-repressors increases, a significant number of them are still able to bind to
-the promoter. This causes all of the input-output functions to be biased
-towards low expression levels, decreasing the amount of information that the
-circuit is able to process.
+energy, predicting the channel capacity up to an additive constant (See
+\fref{fig5_channcap}). We note that this differs from previous theoretical
+results since this optimal combination does not come from adding a cost term
+for the regulation \cite{Tkacik2011}. This is a consequence of the parameters
+inferred in \cite{Razo-Mejia2018} for the allosteric repressor never allowing
+all repressors to go into the inactive (non-DNA binding) state. That means that
+even at saturating concentrations of inducer, as the number of repressors
+increases, a significant number of them are still able to bind to the promoter.
+This causes all of the input-output functions to be biased towards low
+expression levels, decreasing the amount of information that the circuit is
+able to process.
 
 As we have done throughout this work, we consider important to highlight the
 limitations of the work presented here. The previously discussed systematic
@@ -88,8 +86,8 @@ channel capacity remains an unresolved question that deserves to be addressed
 in further iterations of our minimal model. Also, as first reported in
 \cite{Razo-Mejia2018}, our model fails to capture the steepness of the
 fold-change induction curve for the weakest repressor binding site (See
-\fref{fig3_cell_cycle}(B)). Furthermore the
-minimal model in \fref{fig2_minimal_model}(A), despite being widely used, is an
+\fref{fig3_cell_cycle}(B)). Furthermore the minimal model in
+\fref{fig2_minimal_model}(A), despite being widely used, is an
 oversimplification of the physical picture of how the transcriptional machinery
 works. The coarse-graining of all the kinetic steps involved in the
 transcription initiation into two effective promoter states - active and
@@ -112,9 +110,9 @@ the sense that we have a tunable circuit with variable amounts of information
 processing capabilities. Furthermore, compared with the fly embryo in which the
 organism tunes both the input and output distributions over evolutionary time,
 we have experimental control of the distribution of inputs that the cells are
-exposed to. What this means is that instead of seeing the final result of the
-evolutionary process, we can set different environmental challenges, and track
-over time the evolution of the population. These experiments could shed light
-into the suggestive hypothesis of information bits as a trait on which natural
-selection acts. We see this exciting direction as part of the overall effort in
-quantitative biology of predicting evolution \cite{Lassig2017}.
+exposed to. Consequently this means that instead of seeing the final result of
+the evolutionary process, we can set different environmental challenges, and
+track over time the evolution of the population. These experiments could shed
+light into the suggestive hypothesis of information bits as a trait on which
+natural selection acts. We see this exciting direction as part of the overall
+effort in quantitative biology of predicting evolution \cite{Lassig2017}.
