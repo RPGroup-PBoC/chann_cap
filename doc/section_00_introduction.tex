@@ -54,9 +54,10 @@ on these information processing tasks \cite{Rieckh2014, Ziv2007, Voliotis2014a,
 Tostevin2009, Tkacik2011, Tkacik2008a, Tabbaa2014}. Despite the great advances
 in our understanding of the information processing capabilities of molecular
 mechanisms, the field still lacks a rigorous experimental test of these
-detailed models with precision measurements. In this work we approach this task
-with a simple system tractable both theoretically and experimentally in which
-molecular parameters can be varied in a controlled manner.
+detailed models with precision measurements on a simple system in which
+physical parameters can be perturb. In this work we approach this task with a
+system tractable both theoretically and experimentally in which molecular
+parameters can be varied in a controlled manner.
 
 Over the last decade the dialogue between theory and experiments in gene
 regulation has led to predictive power of models not only over the mean level
@@ -90,20 +91,19 @@ master-equation-based model to construct the protein copy number distribution
 as a function of an extracellular inducer concentration for different
 combinations of transcription factor copy numbers and binding sites. Having
 these input-output distributions allows us to compute the mutual information
-between inputs and outputs $I(c; p)$ for any arbitrary input distribution
-$P(c)$. We opt to compute the channel capacity, i.e. the maximum information
-that can be processed by this gene regulatory architecture, defined as
+between inputs and outputs $I$ for any arbitrary input distribution $P(c)$. We
+opt to compute the channel capacity, i.e. the maximum information that can be
+processed by this gene regulatory architecture, defined as
 \eref{eq_mutual_info} maximized over all possible input distributions $P(c)$.
 By doing so we examine the physical limits of what cells can do in terms of
-information processing by harboring these genetic circuits. All parameters used
-for our model were inferred from a series of studies that span several
-experimental techniques \cite{Garcia2011c, Jones2014a, Brewster2014,
-Razo-Mejia2018}, allowing us to perform parameter-free predictions of this
-information processing capacity \cite{Phillips2019}.
-\sm{This need more justification because it is unlikely that E coli can shape
-lactose concentration of environment. More likely that we can claim this is
-related to Cramer-Rao bound, thus to Wingreen PRL bounds on chemical sensory
-processing.}
+information processing by harboring these genetic circuits. Nevertheless, given
+the generality of the input-output function $P(p \mid c)$ we derive, the model
+presented here can be used to compute the mutual information for any arbitrary
+input distribution $P(c)$. All parameters used for our model were inferred from
+a series of studies that span several experimental techniques
+\cite{Garcia2011c, Jones2014a, Brewster2014, Razo-Mejia2018}, allowing us to
+perform parameter-free predictions of this information processing capacity
+\cite{Phillips2019}.
 
 These predictions are then contrasted with experimental data, where the channel
 capacity is inferred from single-cell fluorescence distributions taken at

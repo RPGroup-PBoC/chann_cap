@@ -23,7 +23,10 @@ constraints, the more accurate the approximation resulting from
 
 The computational challenge then becomes a minimization routine in which the
 values for the Lagrange multipliers $\lambda_{(x,y)}$ that are consistent with
-the constraints set by the moments values $\ee{m^x p^y}$ need to be found.
+the constraints set by the moments values $\ee{m^x p^y}$ need to be found. This
+is computationally more efficient than sampling directly out of the master
+equation with a stochastic algorithm (see \siref{supp_gillespie} for further
+comparison between maximum entropy estimates and the Gillespie algorithm).
 \siref{supp_maxent} details our implementation of a robust algorithm to find
 such values. \fref{fig4_maxent}(A) shows example predicted protein
 distributions reconstructed using the first six moments of the protein
@@ -48,7 +51,7 @@ we show the comparison of these predicted distributions with the experimental
 single-cell fluorescence distributions. Given the systematic deviation of the
 predicted noise as shown in \fref{fig3_cell_cycle}, the predicted distributions
 in \fref{fig4_maxent}(B) underestimate the width of the experimental
-distributions.In the following section we formalize the notion of how well
+distributions. In the following section we formalize the notion of how well
 cells can resolve different inputs from an information theoretic perspective
 via the channel capacity.
 
