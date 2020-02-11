@@ -218,7 +218,7 @@ for k, op in enumerate(operators):
                 axtwin.set_ylabel(
                     r"rep. / cell = {:d}".format(r),
                     bbox=dict(facecolor="#ffedce"),
-                    fontsize=6
+                    fontsize=5
                 )
                 # Remove residual ticks from the original left axis
                 ax.tick_params(color="w", width=0)
