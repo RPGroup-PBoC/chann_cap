@@ -104,7 +104,7 @@ expression level with respect to an unregulated promoter. For protein this is
 where $\ee{p(R \neq 0)}_c$ represents the mean protein count for cells with
 non-zero repressor copy number count $R$ over the entire cell cycle, and
 $\ee{p(R = 0)}_c$ represents the equivalent for a strain with no repressors
-present. The experimental points were determined from the fluorescent
+present. The experimental points were determined from the YFP fluorescent
 intensities of cells with varying repressor copy number and a $\Delta lacI$
 strain with no repressor gene present (See Methods for further details). The
 fold-change in gene expression has previously served as a metric to test the
@@ -119,16 +119,17 @@ extended predictive power the lower row of \fref{fig3_cell_cycle}(C) shows the
 noise in gene expression defined as the standard deviation over the mean
 protein count accounting for the changes in gene dosage during the cell cycle.
 \siref{supp_multi_gene} shows the equivalent results when this gene duplication
-is not taken into account. For the noise our model tracks the experimental data
-up to a systematic multiplicative factor (See \siref{supp_multi_gene} for
-details). Possible origins could be the intrinsic cell-to-cell variability of
-rate parameters given the variability in the molecular components of the
-central dogma machinery \cite{Jones2014a}. Nevertheless we remind the reader
-that all predictions presented in this paper are zero parameter fits; making
-the model still highly informative about the physical nature of how cells
-regulate their gene expression. This lack of exact numerical agreement between
-theory and data open an opportunity to gain new insights into the biophysical
-origin of cell-to-cell variability. 
+due to the replication of the genome is not taken into account. For the noise
+our model tracks the experimental data up to a systematic multiplicative factor
+(See \siref{supp_multi_gene} for details). Possible origins of this systematic
+discrepancy could be the intrinsic cell-to-cell variability of rate parameters
+given the variability in the molecular components of the central dogma
+machinery \cite{Jones2014a}. Nevertheless we remind the reader that all
+predictions presented in this paper are zero parameter fits; making the model
+still highly informative about the physical nature of how cells regulate their
+gene expression. This lack of exact numerical agreement between theory and data
+open an opportunity to gain new insights into the biophysical origin of
+cell-to-cell variability. 
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -136,22 +137,23 @@ origin of cell-to-cell variability.
 	\caption{\textbf{Accounting for gene copy number variability during the
 	cell cycle.} (A) Schematic of a replicating bacterial genome. As cells
 	progress through the cell cycle the genome is replicated, duplicating gene
-	copies for a fraction of the cell cycle. {\it oriC} indicates the
-	replication origin, and {\it galK} indicates the locus at which the
-	reporter construct was integrated.(B) mean (solid line) $\pm$ standard
-	deviation (shaded region) for the mRNA (upper panel) and protein (lower
-	panel) dynamics. Cells spend a fraction of the cell cycle with a single
-	copy of the promoter (light brown) and the rest of the cell cycle with two
-	copies (light yellow). Black arrows indicate time of cell division. (C)
-	Zero parameter-fit predictions (lines) and experimental data (circles) of
-	the gene expression fold-change (upper row) and noise (lower row) for
-	repressor binding sites with different affinities (different columns) and
-	different repressor copy numbers per cell (different lines on each panel).
-	Error bars in data represent the 95\% confidence interval on the quantities
-	as computed from 10,000 bootstrap estimates generated from > 500
-	single-cell fluorescence measurements. In the theory curves dotted lines
-	indicate plot in linear scale to include zero while solid lines indicate
-	logarithmic scale. For visual clarity, data points in the noise panel with
-	really large values were plot on a separate panel with a log scale.}
+	copies for a fraction of the cell cycle before the cell divides. {\it oriC}
+	indicates the replication origin, and {\it galK} indicates the locus at
+	which the YFP reporter construct was integrated. (B) mean (solid line)
+	$\pm$ standard deviation (shaded region) for the mRNA (upper panel) and
+	protein (lower panel) dynamics. Cells spend a fraction of the cell cycle
+	with a single copy of the promoter (light brown) and the rest of the cell
+	cycle with two copies (light yellow). Black arrows indicate time of cell
+	division. (C) Zero parameter-fit predictions (lines) and experimental data
+	(circles) of the gene expression fold-change (upper row) and noise (lower
+	row) for repressor binding sites with different affinities (different
+	columns) and different repressor copy numbers per cell (different lines on
+	each panel). Error bars in data represent the 95\% confidence interval on
+	the quantities as computed from 10,000 bootstrap estimates generated from
+	$> 500$ single-cell fluorescence measurements. In the theory curves dotted
+	lines indicate plot in linear scale to include zero while solid lines
+	indicate logarithmic scale. For visual clarity, data points in the noise
+	panel with really large values were plot on a separate panel with a log
+	scale.}
 	\label{fig3_cell_cycle}
 \end{figure}

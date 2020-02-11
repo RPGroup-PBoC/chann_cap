@@ -40,13 +40,14 @@ results in a ODE for any moment of the distribution of the form (See
 \end{equation}
 
 Given that all transitions in our stochastic model are first order reactions,
-\eref{eq_gral_mom} has no moment-closure problem \cite{Voliotis2014a}.  that the dynamical equation for a given moment only depends on
-lower moments (See \siref{supp_moments} for full proof). This feature of our
-model implies, for example, that the second moment of the protein distribution
+\eref{eq_gral_mom} has no moment-closure problem \cite{Voliotis2014a}. This
+means that the dynamical equation for a given moment only depends on lower
+moments (See \siref{supp_moments} for full proof). This feature of our model
+implies, for example, that the second moment of the protein distribution
 $\ee{p^2}$ depends only on the first two moments of the mRNA distribution
 $\ee{m}$, and $\ee{m^2}$, the first protein moment $\ee{p}$  and the
 cross-correlation term $\ee{mp}$. We can therefore define $\bmu$ to be a vector
- containing all moments up to $\bb{\ee{m^x p^y}}$ for all promoter states,
+containing all moments up to $\bb{\ee{m^x p^y}}$ for all promoter states,
 \begin{equation}
 \bmu = \left[ \bb{\ee{m^0 p^0}},
 							\bb{\ee{m^1 p^0}},

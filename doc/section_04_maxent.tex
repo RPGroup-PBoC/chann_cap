@@ -28,11 +28,11 @@ is computationally more efficient than sampling directly out of the master
 equation with a stochastic algorithm (see \siref{supp_gillespie} for further
 comparison between maximum entropy estimates and the Gillespie algorithm).
 \siref{supp_maxent} details our implementation of a robust algorithm to find
-such values. \fref{fig4_maxent}(A) shows example predicted protein
-distributions reconstructed using the first six moments of the protein
-distribution for a suite of different biophysical parameters and environmental
-inducer concentrations. As repressor-DNA binding affinity (columns in
-\fref{fig4_maxent}(A)) and repressor copy number (rows in
+the values of the Lagrange multipliers. \fref{fig4_maxent}(A) shows example
+predicted protein distributions reconstructed using the first six moments of
+the protein distribution for a suite of different biophysical parameters and
+environmental inducer concentrations. As repressor-DNA binding affinity
+(columns in \fref{fig4_maxent}(A)) and repressor copy number (rows in
 \fref{fig4_maxent}(A)) are varied, the responses to different signals, i.e.
 inducer concentrations, overlap to varying degrees. For example, the upper
 right corner frame with a weak binding site ($\eR = -9.7 \; k_BT$) and a low
@@ -51,9 +51,9 @@ we show the comparison of these predicted distributions with the experimental
 single-cell fluorescence distributions. Given the systematic deviation of the
 predicted noise as shown in \fref{fig3_cell_cycle}, the predicted distributions
 in \fref{fig4_maxent}(B) underestimate the width of the experimental
-distributions. In the following section we formalize the notion of how well
-cells can resolve different inputs from an information theoretic perspective
-via the channel capacity.
+distributions by a constant multiplicative facto. In the following section we
+formalize the notion of how well cells can resolve different inputs from an
+information theoretic perspective via the channel capacity.
 
 \begin{figure}[h!]
 	\centering \includegraphics
