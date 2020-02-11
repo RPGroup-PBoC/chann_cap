@@ -47,15 +47,31 @@
       link: microscopy_noise_bootstrap.csv
 
 - fig:
-  title: "Fig. 4: Maximum entropy protein distributions for varying physical
+  title: "Fig. 4(A): Maximum entropy protein distributions for varying physical
   parameters"
-  filename: fig04.py
+  filename: fig04A.py
   desc: >
       Predicted protein distributions under different inducer (IPTG)
       concentrations for different combinations of repressor-DNA affinities
       (columns) and repressor copy numbers (rows).
-  pic: fig04.png
-  pdf: fig04.pdf
+  pic: fig04A.png
+  pdf: fig04A.pdf
+  req:
+    - ds:
+      title: Maximum entropy Lagrange multipliers for protein distribution.
+      storage: local 
+      link: MaxEnt_Lagrange_mult_protein.csv
+
+- fig:
+  title: "Fig. 4(B): Theory-experiment comparison of normalized gene expression
+  distributions"
+  filename: fig04B.py
+  desc: >
+      Predicted protein cumulative distributions (color dots) with
+      corresponding theoretical predictions (dashed lines) for unindiced and
+      fully induced conditions.
+  pic: fig04B.png
+  pdf: fig04B.pdf
   req:
     - ds:
       title: Maximum entropy Lagrange multipliers for protein distribution.
