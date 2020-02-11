@@ -687,14 +687,15 @@ are amplified given the ratio of std/mean.
 \label{supp_mult_factor_noise}
 
 The data, especially in \fref{sfig_noise_delta} suggests that our predictions
-are within a factor of two from the experimental data. To further check that
-intuition we performed a weighted linear regression between the experimental
-and theoretical noise measurements. The weight for each datum was taken to be
-proportional to the fold-change, this to have poorly determined noises weigh
-less during the regression. The result of this regression with no intercept
-shows exactly that a factor of two systematically improves the theoretical vs.
-experimental predictions. \fref{sfig_noise_mult_factor} shows the improved
-agreement when the theoretical predictions for the noise are multiplied by two.
+are within a factor of $\approx$ two fromd the experimental data. To further
+check that intuition we performed a weighted linear regression between the
+experimental and theoretical noise measurements. The weight for each datum was
+taken to be proportional to the fold-change, this to have poorly determined
+noises weigh less during the regression. The result of this regression with no
+intercept shows exactly that a factor of two systematically improves the
+theoretical vs. experimental predictions. \fref{sfig_noise_mult_factor} shows
+the improved agreement when the theoretical predictions for the noise are
+multiplied by $\approx$ two.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -715,8 +716,8 @@ agreement when the theoretical predictions for the noise are multiplied by two.
 
 For completeness \fref{sfig_noise_reg_corrected} shows the noise in gene
 expression as a function of the inducer concentration including this factor of
-two. It is clear that overall a simple multiplicative factor improves the
-predictive power of the model.
+$\approx$ two. It is clear that overall a simple multiplicative factor improves
+the predictive power of the model.
 
 \begin{figure}[h!]
 	\centering \includegraphics
