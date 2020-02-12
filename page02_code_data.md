@@ -8,6 +8,32 @@ sidebar: true
 
 ---
 
+## Figure Generation
+
+{% for fig in site.data.figures %}
+<article class="post">
+
+<a class="post-thumbnail" style="background-image: url({{site.url}}/{{site.baseurl}}/assets/img/{{fig.pic}})" href="{{site.baseurl}}/assets/pdf/{{fig.pdf}}"> </a>
+
+<div class="post-content">
+<b class="post-title"><a href="{{site.url}}/{{site.baseurl}}/software/figs/{{fig.filename}}">{{fig.title}}</a></b>
+<p> {{fig.desc}}</p>
+
+<i>Necessary Data Sets </i><br/>
+{% for ds in fig.req %}
+{% if ds.storage == 'local' %}
+{% assign link = "{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}" %}
+{% else %}
+{% assign link = "{{ds.link}}" %}
+{% endif %}
+<a style="font-size: 0.9em;" href="{{link}}"> - {{ds.title}} </a><br/>
+{% endfor %}
+</div>
+</article>
+{%endfor%}
+{% endif %}
+
+
 {% if site.data.code %}
 ## Jupyter Notebooks
 
@@ -36,42 +62,18 @@ the notebook.
 {% endfor %}
 {% endif %}
 {% if site.data.figures %}
-## Figure Generation
-
-{% for fig in site.data.figures %}
-<article class="post">
-
-<a class="post-thumbnail" style="background-image: url({{site.url}}/{{site.baseurl}}/assets/img/{{fig.pic}})" href="{{site.baseurl}}/assets/pdf/{{fig.pdf}}"> </a>
-
-<div class="post-content">
-<b class="post-title"><a href="{{site.url}}/{{site.baseurl}}/software/figs/{{fig.filename}}">{{fig.title}}</a></b>
-<p> {{fig.desc}}</p>
-
-<i>Necessary Data Sets </i><br/>
-{% for ds in fig.req %}
-{% if ds.storage == 'local' %}
-{% assign link = "{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}" %}
-{% else %}
-{% assign link = "{{ds.link}}" %}
-{% endif %}
-<a style="font-size: 0.9em;" href="{{link}}"> - {{ds.title}} </a><br/>
-{% endfor %}
-</div>
-</article>
-{%endfor%}
-{% endif %}
 
 {% if site.data.scripts %}
-## Python scripts
-This section lists python scripts used to compute repetitive tasks explained in
-the Jupyter notebooks. When necessary, there is a link to download the data
-used for the computations in the notebook.
+  ## Python scripts
+  This section lists python scripts used to compute repetitive tasks explained in
+  the Jupyter notebooks. When necessary, there is a link to download the data
+  used for the computations in the notebook.
 
-{% for script in site.data.scripts %}
-* [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/scripts/{{script.name}})
-  {% if script.dataset %} \| [[data]]({{script.dataset}}){% endif %}
-    + {{script.desc}}
-{% endfor %}
+  {% for script in site.data.scripts %}
+  * [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/scripts/{{script.name}})
+    {% if script.dataset %} \| [[data]]({{script.dataset}}){% endif %}
+      + {{script.desc}}
+  {% endfor %}
 {% endif %}
 
 {% if site.data.datasets %}
