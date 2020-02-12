@@ -29,7 +29,8 @@ the notebook.
           {% assign link = "{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}" %}
         {% else %}
           {% assign link = "{{ds.link}}" %}
-        {% endfor %}
+        {% endif %}
+      {% endfor %}
     {% endif %}
     <a style="font-size: 0.9em;" href="{{link}}"> - {{ds.title}} </a><br/>
 
