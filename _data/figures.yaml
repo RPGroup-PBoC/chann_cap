@@ -77,6 +77,10 @@
       title: Maximum entropy Lagrange multipliers for protein distribution.
       storage: local 
       link: MaxEnt_Lagrange_mult_protein.csv
+    - ds:
+      title: Single-cell fluorescence intensities.
+      storage: local 
+      link: single_cell_microscopy_data.csv
 
 - fig:
   title: "Fig. 5(A): Comparison of theoretical and experimental channel
