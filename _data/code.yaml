@@ -35,7 +35,11 @@
     Numerical integration of the mRNA and protein moment dynamical equations
     taking into account gene dosage variability during the cell cycle (See SI
     section S4).
-  # dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/microscopy_noise_bootstrap.csv
+  req:
+    - ds:
+      title: Bootstrap gene expression fold-change and gene expression noise.
+      storage: local 
+      link: microscopy_noise_bootstrap.csv
 
 - script:
   name: MaxEnt_approx_joint
@@ -43,18 +47,37 @@
     Numerical calculation of the Lagrange multipliers to reconstruc the maximum
     entropy mRNA and protein distribution based on the moments of the
     distribution (See SI section S5).
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle.
+      storage: local 
+      link: MaxEnt_multi_prom_IPTG_range.csv
+    - ds:
+      title: Single-cell fluorescence intensities.
+      storage: local 
+      link: single_cell_microscopy_data.csv
 
 - script:
   name: gillespie_simulation
   desc: >
     Implementation of the Gillespie algorithm to generate stochastic dynamical
     trajectories of the mRNA and protein counts (See SI section S6).
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle.
+      storage: local 
+      link: MaxEnt_multi_prom_IPTG_range.csv
 
 - script:
   name: blahut_algorithm_channel_capacity
   desc: >
     Numerical computation of the predicted channel capacity using the
     Blahut-Arimoto algorithm (See SI section S7).
+  req:
+    - ds:
+      title: Theoretical channel capacity for different biophysical parameters.
+      storage: local 
+      link: chann_cap_multi_prom_protein.csv
 
 - script:
   name: image_analysis_pipeline
