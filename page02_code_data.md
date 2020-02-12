@@ -21,18 +21,19 @@ the notebook.
 {% for script in site.data.code %}
 * [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/{{script.name}}.html)
   \| [[ipynb file]]({{site.url}}/{{site.baseurl}}/software/{{script.name}}.ipynb)
-    + {{script.desc}}
-    {% if script.req %} 
-      <i>Necessary Data Sets </i><br/>
-      {% for ds in script.req %}
-        {% if ds.storage == 'local' %}
-          {% assign link = "{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}" %}
-        {% else %}
-          {% assign link = "{{ds.link}}" %}
-        {% endif %}
-      {% endfor %}
-    {% endif %}
-    <a style="font-size: 0.9em;" href="{{link}}"> - {{ds.title}} </a><br/>
+  + {{script.desc}}
+  {% if script.req %} 
+    <i>Necessary Data Sets </i><br/>
+    {% for ds in script.req %}
+      {% if ds.storage == 'local' %}
+        {% assign link = "{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}" %}
+      {% else %}
+        {% assign link = "{{ds.link}}" %}
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+  <a style="font-size: 0.9em;" href="{{link}}"> - {{ds.title}} </a><br/>
+{% endfor %}
 
 {% if site.data.figures %}
 ## Figure Generation
