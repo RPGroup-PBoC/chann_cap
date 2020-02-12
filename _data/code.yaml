@@ -3,7 +3,11 @@
   desc: >
     Bayesian inference of the RNAP parameters based on single-molecule FISH
     data (See SI section S2).
-  dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/Jones_Brewster_2014.csv
+  req:
+    - ds:
+      title: single-molecule mRNA FISH data for unregulated promoter.
+      storage: local 
+      link: Jones_Brewster_2014.csv
 
 - script:
   name: chemical_master_steady_state_moments_general
@@ -31,7 +35,7 @@
     Numerical integration of the mRNA and protein moment dynamical equations
     taking into account gene dosage variability during the cell cycle (See SI
     section S4).
-  dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/microscopy_noise_bootstrap.csv
+  # dataset: https://www.rpgroup.caltech.edu/chann_cap/datasets/microscopy_noise_bootstrap.csv
 
 - script:
   name: MaxEnt_approx_joint
