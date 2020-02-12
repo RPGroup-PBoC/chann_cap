@@ -100,7 +100,7 @@
       link: chann_cap_multi_prom_protein.csv
 
 - fig:
-  title: "Fig. B(A): Example input-output functions of opposite limits of
+  title: "Fig. 5(B): Example input-output functions of opposite limits of
   channel capacity."
   filename: fig05B.py
   desc: >
