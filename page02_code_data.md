@@ -34,7 +34,7 @@ the notebook.
   {% endif %}
   <a style="font-size: 0.9em;" href="{{link}}"> - {{ds.title}} </a><br/>
 {% endfor %}
-
+{% endif %}
 <!-- {% if site.data.figures %}
 ## Figure Generation
 
