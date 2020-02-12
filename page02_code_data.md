@@ -35,7 +35,7 @@ the notebook.
   <a style="font-size: 0.9em;" href="{{link}}"> - {{ds.title}} </a><br/>
 {% endfor %}
 
-{% if site.data.figures %}
+<!-- {% if site.data.figures %}
 ## Figure Generation
 
 {% for fig in site.data.figures %}
@@ -83,4 +83,4 @@ used for the computations in the notebook.
   {{ds.filetype}}){%endif%}{% if ds.filesize %}({{ds.filesize}}){%endif%}{%
   if ds.storage.remote %} DOI: {{ds.DOI}}{%endif%}
 {% endfor %}
-{% endif %}
+{% endif %} -->
