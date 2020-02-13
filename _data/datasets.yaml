@@ -1,20 +1,129 @@
 - dataset:
   storage: local
-  name: Sampling statistics from some fancy experiment
+  name: Single-molecule mRNA counts from Jones et al., 2014.
   filetype: ".csv"
-  link: dataset1.csv
-  filesize: "24 MB"
-
-- dataset:
-  storage: local
-  name: Table of measurements from an old-school study for comparison
-  filetype: ".csv"
-  link: dataset2.csv
+  link: Jones_Brewster_2014.csv
+  filesize: "4.1 MB"
 
 - dataset:
   storage: remote 
-  link: "https://data.caltech.edu"
-  DOI:  "10.1.1./journal.0000"
-  name: "Anonymized data from web scraping"
+  link: "https://data.caltech.edu/records/1184"
+  DOI:  "10.22002/D1.1184"
+  name: "Raw microscopy images"
   filetype: .zip 
-  filesize: 2 gb
+
+- dataset:
+  storage: local
+  name: Single-cell microscopy fluorescence values.
+  filetype: ".csv"
+  link: single_cell_microscopy_data.csv
+  filesize: "28 MB"
+
+- dataset:
+  storage: local
+  name: Bootstrap gene expression fold-change and gene expression noise.
+  filetype: ".csv"
+  link: microscopy_noise_bootstrap.csv
+
+- dataset:
+  storage: local
+  name: sympy-generated matrix to compute moments after cell division
+  filetype: ".zip"
+  link: binom_coeff_matrix.zip
+
+- dataset:
+  storage: local
+  name: mRNA and protein joint distribution moments as computed from dynamical
+  equations over an entire cell cycle.
+  filetype: ".csv"
+  link: MaxEnt_multi_prom_constraints.csv
+
+- dataset:
+  storage: local
+  name: mRNA and protein joint distribution moments as computed from dynamical equations over an entire cell cycle over a finer inducer concentration grid.
+  filetype: ".csv"
+  link: MaxEnt_multi_prom_IPTG_range.csv
+
+- dataset:
+  storage: local
+  name: mRNA and protein joint distribution moments as computed from dynamical equations over an entire cell cycle over a larger repressor copy number grid.
+  filetype: ".csv"
+  link: MaxEnt_constraints_mult_protein_ext_R.csv
+
+- dataset:
+  storage: local
+  name: Lagrange multipliers for maximum entropy mRNA disributions.
+  filetype: ".csv"
+  link: MaxEnt_Lagrange_mult_mRNA.csv
+
+- dataset:
+  storage: local
+  name: Lagrange multipliers for maximum entropy protein disributions.
+  filetype: ".csv"
+  link: MaxEnt_Lagrange_mult_protein.csv
+
+- dataset:
+  storage: local
+  name: Lagrange multipliers for maximum entropy protein disributions assuming a single-promoter at steady state.
+  filetype: ".csv"
+  link: MaxEnt_Lagrange_single_protein.csv
+
+- dataset:
+  storage: local
+  name: Lagrange multipliers for maximum entropy protein disributions for finer inducer concentration range.
+  filetype: ".csv"
+  link: MaxEnt_Lagrange_mult_protein_IPTG_range.csv
+
+- dataset:
+  storage: local
+  name: Lagrange multipliers for maximum entropy protein disributions for extended repressor count.
+  filetype: ".csv"
+  link: MaxEnt_Lagrange_mult_protein_ext_R.csv
+
+- dataset:
+  storage: local
+  name: Lagrange multipliers for maximum entropy protein disributions with a numerical correction for the 2nd and 3rd moment of the distribution.
+  filetype: ".csv"
+  link: MaxEnt_Lagrange_mult_protein_correction.csv
+
+- dataset:
+  storage: local
+  name: Theoretical channel capacity at mRNA level for multi-promoter model.
+  filetype: ".csv"
+  link: chann_cap_multi_prom_mRNA.csv
+
+- dataset:
+  storage: local
+  name: Theoretical channel capacity at protien level for multi-promoter model.
+  filetype: ".csv"
+  link: chann_cap_multi_prom_protein.csv
+
+- dataset:
+  storage: local
+  name: Theoretical channel capacity at protien level for single-promoter model.
+  filetype: ".csv"
+  link: chann_cap_single_prom_protein.csv
+
+- dataset:
+  storage: local
+  name: Theoretical channel capacity at protien level for multi-promoter model for a finer grid of inducer concentrations.
+  filetype: ".csv"
+  link: chann_cap_multi_prom_protein_IPTG_range.csv
+
+- dataset:
+  storage: local
+  name: Theoretical channel capacity at protien level for multi-promoter model for a larger grid of repressor copy numbers.
+  filetype: ".csv"
+  link: chann_cap_multi_prom_protein_ext_R.csv
+
+- dataset:
+  storage: local
+  name: sympy-generated matrix to compute distribution moment dynamics for two-state unregulated promoter model
+  filetype: ".zip"
+  link: two_state_protein_dynamics_matrix.zip
+
+- dataset:
+  storage: local
+  name: sympy-generated matrix to compute distribution moment dynamics for three-state regulated promoter model
+  filetype: ".zip"
+  link: three_state_protein_dynamics_matrix.zip
