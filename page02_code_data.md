@@ -8,6 +8,7 @@ sidebar: true
 
 ---
 
+{% if site.data.figures %}
 ## Figure Generation
 
 {% for fig in site.data.figures %}
@@ -21,16 +22,16 @@ sidebar: true
 
 <i>Necessary Data Sets </i><br/>
 {% for ds in fig.req %}
-{% if ds.storage == 'local' %}
-{% assign link = "{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}" %}
-{% else %}
-{% assign link = "{{ds.link}}" %}
-{% endif %}
-<a style="font-size: 0.9em;" href="{{link}}"> - {{ds.title}} </a><br/>
+  {% if ds.storage == 'local' %}
+    {% assign link = "{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}" %}
+  {% else %}
+    {% assign link = "{{ds.link}}" %}
+  {% endif %}
+  <a style="font-size: 0.9em;" href="{{link}}"> - {{ds.title}} </a><br/>
 {% endfor %}
 </div>
 </article>
-{%endfor%}
+{% endfor %}
 {% endif %}
 
 
@@ -61,7 +62,6 @@ the notebook.
   {% endif %}
 {% endfor %}
 {% endif %}
-{% if site.data.figures %}
 
 {% if site.data.scripts %}
   ## Python scripts
