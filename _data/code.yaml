@@ -41,8 +41,7 @@
       storage: local 
       link: microscopy_noise_bootstrap.csv
     - ds:
-      title: sympy-generated matrix to compute moments of the mRNA and
-      protein distribution after cell division
+      title: sympy-generated matrix to compute moments of the mRNA and protein distribution after cell division.
       storage: local 
       link: binom_coeff_matrix.zip
 
