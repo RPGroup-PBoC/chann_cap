@@ -64,16 +64,16 @@ the notebook.
 {% endif %}
 
 {% if site.data.scripts %}
-  ## Python scripts
-  This section lists python scripts used to compute repetitive tasks explained in
-  the Jupyter notebooks. When necessary, there is a link to download the data
-  used for the computations in the notebook.
+## Python scripts
+This section lists python scripts used to compute repetitive tasks explained in
+the Jupyter notebooks. When necessary, there is a link to download the data
+used for the computations in the notebook.
 
-  {% for script in site.data.scripts %}
-  * [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/scripts/{{script.name}})
-    {% if script.dataset %} \| [[data]]({{script.dataset}}){% endif %}
-      + {{script.desc}}
-  {% endfor %}
+{% for script in site.data.scripts %}
+* [**{{script.name}}**]({{site.url}}/{{site.baseurl}}/software/scripts/{{script.name}})
+  {% if script.dataset %} \| [[data]]({{script.dataset}}){% endif %}
+    + {{script.desc}}
+{% endfor %}
 {% endif %}
 
 {% if site.data.datasets %}
