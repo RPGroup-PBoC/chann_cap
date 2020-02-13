@@ -33,8 +33,7 @@
 
 - dataset:
   storage: local
-  name: mRNA and protein joint distribution moments as computed from dynamical
-  equations over an entire cell cycle.
+  name: mRNA and protein joint distribution moments as computed from dynamical equations over an entire cell cycle.
   filetype: ".csv"
   link: MaxEnt_multi_prom_constraints.csv
 
