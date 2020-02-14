@@ -242,8 +242,8 @@ ax[1].set_ylim([5000, 16000])
 
 # Label plot
 ax[1].set_xlabel('time (min)')
-ax[0].set_ylabel(r'$\left\langle \right.$mRNA$\left. \right\rangle$/cell')
-ax[1].set_ylabel(r'$\left\langle \right.$protein$\left. \right\rangle$/cell')
+ax[0].set_ylabel(r'mRNA/cell')
+ax[1].set_ylabel(r'protein/cell')
 
 # Align y axis labels
 fig.align_ylabels()
