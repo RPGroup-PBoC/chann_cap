@@ -4,6 +4,7 @@ import glob
 import numpy as np
 import scipy as sp
 import pandas as pd
+import statsmodels.api as sm
 import git
 
 # Import matplotlib stuff for plotting
@@ -78,6 +79,24 @@ for idx, row in df_noise.iterrows():
 df_noise = df_noise.assign(noise_theory = thry_noise)
 
 #%%
+# Linear regression to find multiplicative factor
+
+# Extract fold-change
+fc = df_noise.fold_change.values
+# Set values for ∆lacI to be fold-change 1
+fc[np.isnan(fc)] = 1
+# Normalize weights
+weights = fc / fc.sum()
+
+# Declare linear regression model
+wls_model = sm.WLS(df_noise.noise.values,
+                   df_noise.noise_theory.values,
+                   weights=weights)
+# Fit parameter
+results = wls_model.fit()
+factor = results.params[0]
+print(factor)
+#%%
 # Initialize figure
 fig, ax = plt.subplots(1, 2, figsize=(5, 2))
 
@@ -88,7 +107,7 @@ ax[0].plot([1e-2, 1e2], [1e-2, 1e2], "--", color="gray")
 
 # Plot error bars
 ax[0].errorbar(
-    x=df_noise.noise_theory * 2,
+    x=df_noise.noise_theory * factor,
     y=df_noise.noise,
     yerr=[
         df_noise.noise - df_noise.noise_lower,

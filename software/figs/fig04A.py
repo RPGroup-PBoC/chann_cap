@@ -28,7 +28,7 @@ repo = git.Repo("./", search_parent_directories=True)
 homedir = repo.working_dir
 
 # Define directories for data and figure 
-figdir = f'{homedir}/fig/si/'
+figdir = f'{homedir}/fig/main/'
 datadir = f'{homedir}/data/csv_maxEnt_dist/'
 
 # %%
@@ -173,4 +173,5 @@ ax[0, 0].yaxis.set_ticklabels(yticklabels)
 xticks = [0, 4e3, 8e3, 1.2e4]
 ax[0, 0].xaxis.set_ticks(xticks)
 
-plt.savefig(figdir + "figS21.pdf", bbox_inches="tight")
+plt.savefig(figdir + "fig04A.pdf", bbox_inches="tight")
+plt.savefig(figdir + "fig04A.png", bbox_inches="tight")

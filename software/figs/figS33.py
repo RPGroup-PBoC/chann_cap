@@ -68,7 +68,7 @@ for group, data in df_group:
     x = np.log10(data[data.repressor >= thresh].repressor.values)
     y = data[data.repressor >= thresh].channcap.values
     # Define lambda parameter for smoothing
-    lam = 0.13
+    lam = 0.21
     # Smooth the channel capacity
     channcap_gauss = ccutils.stats.nw_kernel_smooth(x, x, y,lam)
     # Plot Log scale
@@ -76,12 +76,6 @@ for group, data in df_group:
                channcap_gauss, 
                label=op_dict[group], color=op_col_dict[group])
     
-    # Plot linear scale
-    ax.plot(data[data.repressor <= thresh].repressor, 
-            data[data.repressor <= thresh].channcap,
-            label='', color=op_col_dict[group], 
-            linestyle='--')
-
 #  # Group data by operator
 df_group = df_cc_single.groupby('operator')
 
@@ -91,7 +85,7 @@ for group, data in df_group:
     x = np.log10(data[data.repressor >= thresh].repressor.values)
     y = data[data.repressor >= thresh].channcap.values
     # Define lambda parameter for smoothing
-    lam = 0.15
+    lam = 0.21
     # Smooth the channel capacity
     channcap_gauss = ccutils.stats.nw_kernel_smooth(x, x, y,lam)
     # Plot Log scale
@@ -100,12 +94,6 @@ for group, data in df_group:
             label=op_dict[group], color=op_col_dict[group],
             linestyle='-.')
     
-    # Plot linear scale
-    ax.plot(data[data.repressor <= thresh].repressor, 
-            data[data.repressor <= thresh].channcap,
-            label='', color=op_col_dict[group], 
-            linestyle='--')
-
 # Add artificial plots to add legend
 ax.plot([], [], linestyle='-.', color='k', label='single-promoter')
 ax.plot([], [], linestyle='-', color='k', label='multi-promoter')
@@ -115,7 +103,7 @@ ax.plot([], [], linestyle='-', color='k', label='multi-promoter')
 # Label plot
 ax.set_xlabel('repressor copy number')
 ax.set_ylabel('channel capacity (bits)')
-ax.set_xscale('symlog', linthreshx=thresh, linscalex=0.3)
+ax.set_xscale('log')
 ax.legend(loc='upper left', title=r'$\Delta\epsilon_r \; (k_BT)$',
           bbox_to_anchor=(1, 0.75))
     

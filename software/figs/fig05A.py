@@ -168,7 +168,7 @@ for group, data in df_group:
     x = np.log10(data[data.repressor >= thresh].repressor.values)
     y = data[data.repressor >= thresh].channcap.values
     # Define lambda parameter for smoothing
-    lam = 0.13
+    lam = 0.21
     # Smooth the channel capacity
     channcap_gauss = ccutils.stats.nw_kernel_smooth(x, x, y, lam)
     # Plot Log scale
@@ -177,15 +177,6 @@ for group, data in df_group:
         channcap_gauss,
         label=op_dict[group],
         color=col_dict[group],
-    )
-
-    # Plot linear scale
-    ax.plot(
-        data[data.repressor <= thresh].repressor,
-        data[data.repressor <= thresh].channcap,
-        label="",
-        color=op_col_dict[group],
-        linestyle="--",
     )
     # Plot data from operator
     ax.plot(
@@ -203,11 +194,12 @@ for group, data in df_group:
 # Label plot
 ax.set_xlabel("repressor copy number")
 ax.set_ylabel("channel capacity (bits)")
-ax.set_xscale("symlog", linthreshx=thresh, linscalex=0.3)
+ax.set_xscale("log")
 ax.legend(loc="upper left", title=r"$\Delta\epsilon_r \; (k_BT)$")
 
 # Upate axis range
-ax.set_ylim(top=2.2)
+ax.set_ylim([-0.05, 2.2])
+ax.set_xlim(right=2200)
 
 # Save figure
 plt.savefig(figdir + "fig05A.pdf", bbox_inches="tight")

@@ -81,9 +81,9 @@ mp_sol = sp.integrate.odeint(ccutils.model.rhs_dmomdt, mom_init, t,
 mp_init = mp_sol[-1, :]
 #%%
 # Define doubling time
-doubling_time = 100
+doubling_time = 60
 # Define fraction of cell cycle spent with one copy
-t_single_frac = 0.6
+t_single_frac = 1 / 3
 # Define time for single-promoter state
 t_single = 60 * t_single_frac * doubling_time # sec
 t_double = 60 * (1 - t_single_frac) * doubling_time # sec
@@ -238,12 +238,12 @@ ax[0].set_xlim(df_p_unreg['time'].min() / 60, df_p_unreg['time'].max() / 60)
 ax[0].set_ylim([0, 40])
 #protein
 ax[1].set_xlim(df_p_unreg['time'].min() / 60, df_p_unreg['time'].max() / 60)
-ax[1].set_ylim([5000, 14000])
+ax[1].set_ylim([5000, 16000])
 
 # Label plot
 ax[1].set_xlabel('time (min)')
-ax[0].set_ylabel(r'$\left\langle \right.$mRNA$\left. \right\rangle$/cell')
-ax[1].set_ylabel(r'$\left\langle \right.$protein$\left. \right\rangle$/cell')
+ax[0].set_ylabel(r'mRNA/cell')
+ax[1].set_ylabel(r'protein/cell')
 
 # Align y axis labels
 fig.align_ylabels()
@@ -254,5 +254,7 @@ ax[0].legend(loc='upper left', ncol=2, frameon=False,
 
 plt.subplots_adjust(hspace=0.05)
 plt.savefig(figdir + 'fig03B.svg', bbox_inches='tight', format='svg')
+plt.savefig(figdir + 'fig03B.png', bbox_inches='tight',
+            transparent=True)
 plt.savefig(figdir + 'fig03B.pdf', bbox_inches='tight')
 plt.savefig(figdir + 'fig03B.png', bbox_inches='tight')

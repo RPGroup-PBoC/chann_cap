@@ -81,9 +81,9 @@ mp_sol = sp.integrate.odeint(ccutils.model.rhs_dmomdt, mom_init, t,
 mp_init = mp_sol[-1, :]
 #%%
 # Define doubling time
-doubling_time = 100
+doubling_time = 60
 # Define fraction of cell cycle spent with one copy
-t_single_frac = 0.6
+t_single_frac = 1 / 3
 # Define time for single-promoter state
 t_single = 60 * t_single_frac * doubling_time # sec
 t_double = 60 * (1 - t_single_frac) * doubling_time # sec
@@ -165,24 +165,26 @@ p_var = p_second - p_mean**2
 # Define colors
 colors = sns.color_palette('Paired', n_colors=2)
 
+# Define stepsize for plotting
+step = 100
 # Initialize figure
 fig, ax = plt.subplots(2, 1, figsize=(2.5, 2), sharex=True)
 
 # Plot mean as solid line
-ax[0].plot(df_p_unreg.time / 60, m_mean, label='', lw=1.25,
+ax[0].plot(df_p_unreg.time[::step] / 60, m_mean[::step], label='', lw=1.25,
            color=colors[1])
-ax[1].plot(df_p_unreg.time / 60, p_mean, label='', lw=1.25,
+ax[1].plot(df_p_unreg.time[::step] / 60, p_mean[::step], label='', lw=1.25,
            color=colors[1])
 
 # Plot +- standard deviation 
-ax[0].fill_between(df_p_unreg.time / 60, 
-                   y1=m_mean + np.sqrt(m_var),
-                   y2=m_mean - np.sqrt(m_var),
+ax[0].fill_between(df_p_unreg.time[::step] / 60, 
+                   y1=m_mean[::step] + np.sqrt(m_var[::step]),
+                   y2=m_mean[::step] - np.sqrt(m_var[::step]),
                    label='', color=colors[0], alpha=0.85,
                    zorder=2)
-ax[1].fill_between(df_p_unreg.time / 60, 
-                   y1=p_mean + np.sqrt(p_var),
-                   y2=p_mean - np.sqrt(p_var),
+ax[1].fill_between(df_p_unreg.time[::step] / 60, 
+                   y1=p_mean[::step] + np.sqrt(p_var[::step]),
+                   y2=p_mean[::step] - np.sqrt(p_var[::step]),
                    label='', color=colors[0], alpha=0.85,
                    zorder=2)
 
@@ -236,12 +238,12 @@ ax[0].set_xlim(df_p_unreg['time'].min() / 60, df_p_unreg['time'].max() / 60)
 ax[0].set_ylim([0, 40])
 #protein
 ax[1].set_xlim(df_p_unreg['time'].min() / 60, df_p_unreg['time'].max() / 60)
-ax[1].set_ylim([5000, 14000])
+ax[1].set_ylim([5000, 16000])
 
 # Label plot
 ax[1].set_xlabel('time (min)')
-ax[0].set_ylabel(r'$\left\langle \right.$mRNA$\left. \right\rangle$/cell')
-ax[1].set_ylabel(r'$\left\langle \right.$protein$\left. \right\rangle$/cell')
+ax[0].set_ylabel(r'mRNA/cell')
+ax[1].set_ylabel(r'protein/cell')
 
 # Align y axis labels
 fig.align_ylabels()
@@ -249,6 +251,4 @@ fig.align_ylabels()
 # Set legend for both plots
 ax[0].legend(loc='upper left', ncol=2, frameon=False,
              bbox_to_anchor=(-0.12, 0, 0, 1.3), fontsize=6.5)
-
-plt.subplots_adjust(hspace=0.05)
 plt.savefig(figdir + 'figS08.pdf', bbox_inches='tight')

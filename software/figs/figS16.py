@@ -4,6 +4,7 @@ import glob
 import numpy as np
 import scipy as sp
 import pandas as pd
+import statsmodels.api as sm
 import git
 
 # Import matplotlib stuff for plotting
@@ -32,6 +33,31 @@ figdir = f'{homedir}/fig/si/'
 datadir = f'{homedir}/data/csv_maxEnt_dist/'
 
 # %%
+# Read predictions for linear regression to find multiplicative factor
+
+# Read moments for multi-promoter model
+df_mom_rep = pd.read_csv(datadir + 'MaxEnt_multi_prom_constraints.csv')
+
+# Read experimental determination of noise
+df_noise = pd.read_csv(f'{homedir}/data/csv_microscopy/' + 
+                       'microscopy_noise_bootstrap.csv')
+
+# Find the mean unregulated levels to compute the fold-change
+mean_m_delta = np.mean(df_mom_rep[df_mom_rep.repressor == 0].m1p0)
+mean_p_delta = np.mean(df_mom_rep[df_mom_rep.repressor == 0].m0p1)
+
+# Compute the noise for the multi-promoter data
+df_mom_rep = df_mom_rep.assign(
+    m_noise=(
+        np.sqrt(df_mom_rep.m2p0 - df_mom_rep.m1p0 ** 2) / df_mom_rep.m1p0
+    ),
+    p_noise=(
+        np.sqrt(df_mom_rep.m0p2 - df_mom_rep.m0p1 ** 2) / df_mom_rep.m0p1
+    ),
+    m_fold_change=df_mom_rep.m1p0 / mean_m_delta,
+    p_fold_change=df_mom_rep.m0p1 / mean_p_delta,
+)
+# %%
 
 # Read moments for multi-promoter model
 df_mom_iptg = pd.read_csv(datadir + 'MaxEnt_multi_prom_IPTG_range.csv')
@@ -57,6 +83,45 @@ df_mom_iptg = df_mom_iptg.assign(
 # Read experimental determination of noise
 df_noise = pd.read_csv(f'{homedir}/data/csv_microscopy/' + 
                        'microscopy_noise_bootstrap.csv')
+
+# Initialize list to save theoretical noise
+thry_noise = list()
+# Iterate through rows
+for idx, row in df_noise.iterrows():
+    # Extract information
+    rep = float(row.repressor)
+    op = row.operator
+    if np.isnan(row.IPTG_uM):
+        iptg = 0
+    else:
+        iptg = row.IPTG_uM
+    
+    # Extract equivalent theoretical prediction
+    thry = df_mom_rep[(df_mom_rep.repressor == rep) &
+                       (df_mom_rep.operator == op) &
+                       (df_mom_rep.inducer_uM == iptg)].p_noise
+    # Append to list
+    thry_noise.append(thry.iloc[0])
+    
+df_noise = df_noise.assign(noise_theory = thry_noise)
+
+#%%
+# Linear regression to find multiplicative factor
+
+# Extract fold-change
+fc = df_noise.fold_change.values
+# Set values for ∆lacI to be fold-change 1
+fc[np.isnan(fc)] = 1
+# Normalize weights
+weights = fc / fc.sum()
+
+# Declare linear regression model
+wls_model = sm.WLS(df_noise.noise.values,
+                   df_noise.noise_theory.values,
+                   weights=weights)
+# Fit parameter
+results = wls_model.fit()
+factor = results.params[0]
 
 #%%
 # Extract regulated promoter information
@@ -112,14 +177,14 @@ for i, (group, data) in enumerate(df_group):
     # Log scale
     ax[op_idx[group[0]] + 3].plot(
         data[data.inducer_uM >= thresh].inducer_uM,
-        data[data.inducer_uM >= thresh].p_noise * 2,
+        data[data.inducer_uM >= thresh].p_noise * factor,
         color=col_dict[group[0]][group[1]],
         label=int(group[1]),
     )
     # Linear scale
     ax[op_idx[group[0]] + 3].plot(
         data[data.inducer_uM <= thresh].inducer_uM,
-        data[data.inducer_uM <= thresh].p_noise * 2,
+        data[data.inducer_uM <= thresh].p_noise * factor,
         color=col_dict[group[0]][group[1]],
         label="",
         linestyle=":",
