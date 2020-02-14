@@ -9,7 +9,12 @@ sidebar: true
 ---
 
 {% if site.data.figures %}
-## Figure Generation
+## Main Text Figure Generation
+
+This section contains all of the scripts necessary along with the required
+datasets to reproduce all plots from the main text. Click on the preview images
+to obtain a PDF version of the figure, or click on the script title to download
+the *.py* file to reproduce the figure. 
 
 {% for fig in site.data.figures %}
 <article class="post">
@@ -78,6 +83,12 @@ used for the computations in the notebook.
 
 {% if site.data.datasets %}
 ## Data Sets
+
+This section lists all datasets used for this work. From the raw microscopy
+images, to the processed single-cell fluorescence values. Also here we list all
+values generated from theoretical calculations that are computationally
+expensive to reproduce every single time.
+
 {% for ds in site.data.datasets %}
 * [{{ds.name}}]({%if ds.storage !=
   'remote'%}{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}{%
