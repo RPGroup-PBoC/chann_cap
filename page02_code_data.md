@@ -62,7 +62,7 @@ the notebook.
       {% else %}
         {% assign link = "{{ds.link}}" %}
       {% endif %}
-    <a style="font-size: 0.9em;" href="{{link}}"> - {{ds.title}} </a><br/>
+    <a style="font-size: 0.9em;" href="{{link}}"> <span>&#8226;</span> {{ds.title}} </a><br/>
     {% endfor %}
   {% endif %}
 {% endfor %}
