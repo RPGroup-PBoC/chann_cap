@@ -265,7 +265,7 @@
     Example distribution for a six-face die inferred from the value of the mean
     face value using Maximum Entropy.
 
-- fig:
+- sifig:
   title: "Fig. S20. Maximum entropy mRNA distributions for simple repression constructs"
   filename: figS20.py
   desc: >
@@ -278,7 +278,7 @@
       storage: local 
       link: MaxEnt_Lagrange_mult_mRNA.csv
 
-- fig:
+- sifig:
   title: "Fig. 21. Maximum entropy protein distributions for varying physical
   parameters"
   filename: figS21.py
@@ -292,8 +292,8 @@
       storage: local 
       link: MaxEnt_Lagrange_mult_protein.csv
 
-- fig:
-  title: "Fig. 22. Experiment vs. theory comparison for ∆lacI strain"
+- sifig:
+  title: "Fig. 22. Experiment vs. theory comparison for ∆lacI strain."
   filename: figS22.py
   desc: >
       Comparison of experimental and theoretical cumulative distribution
@@ -307,3 +307,93 @@
       title: Single-cell fluorescence intensities.
       storage: local 
       link: single_cell_microscopy_data.csv
+
+- sifig:
+  title: "Fig. 23. Experiment vs. theory comparison for regulated strain."
+  filename: figS23.py
+  desc: >
+      Comparison of experimental and theoretical cumulative distribution
+      functions for the regulated promoter.
+  req:
+    - ds:
+      title: Maximum entropy Lagrange multipliers for protein distribution.
+      storage: local 
+      link: MaxEnt_Lagrange_mult_protein.csv
+    - ds:
+      title: Single-cell fluorescence intensities.
+      storage: local 
+      link: single_cell_microscopy_data.csv
+
+- sifig:
+  title: "Fig. 24. Experiment vs. theory comparison for regulated strain with multiplicative factor correction for second and third moment."
+  filename: figS24.py
+  desc: >
+      Comparison of experimental and theoretical cumulative distribution
+      functions for the regulated promoter with a multiplicative factor for the
+      second and third moment.
+  req:
+    - ds:
+      title: Maximum entropy Lagrange multipliers for protein distribution as inferred from the modified moments.
+      storage: local 
+      link: MaxEnt_Lagrange_mult_protein_correction.csv
+    - ds:
+      title: Single-cell fluorescence intensities.
+      storage: local 
+      link: single_cell_microscopy_data.csv
+
+- sifig:
+  title: "Fig. 25. Stochastic trajectories of mRNA counts."
+  filename: figS25.py
+  desc: >
+      mRNA count trajectories over several cell cycles simulated with the
+      Gillespie algorithm.
+
+- sifig:
+  title: "Fig. 26. Comparison of analytical and simulated mRNA distribution."
+  filename: figS26.py
+  desc: >
+    Comparison of analytical result and Gillespie simulation of mRNA
+    distribution for cells with a single copy and two copies of the gene.
+  req:
+    - ds:
+      title: Maximum entropy Lagrange multipliers for mRNA distribution.
+      storage: local 
+      link: MaxEnt_Lagrange_mult_mRNA.csv
+
+- sifig:
+  title: "Fig. 27. Stochastic trajectories of mRNA and protein counts."
+  filename: figS27.py
+  desc: >
+      mRNA and protein count trajectories over several cell cycles simulated
+      with the Gillespie algorithm.
+
+- sifig:
+  title: "Fig. 28. Comparison of protein distributions."
+  filename: figS28.py
+  desc: >
+    Comparison of maximum entropy and Gillespie simulation of protein 
+    distribution.
+  req:
+    - ds:
+      title: Maximum entropy Lagrange multipliers for mRNA distribution.
+      storage: local 
+      link: MaxEnt_Lagrange_mult_mRNA.csv
+
+- sifig:
+  title: "Fig. 29. Single cell fluorescence distributions for different inducer concentrations."
+  filename: figS29.py
+  desc: >
+    Example fluorescence distribution as obtained for a single strain under
+    different inducer concentrations.
+  req:
+    - ds:
+      title: Single-cell fluorescence intensities.
+      storage: local 
+      link: single_cell_microscopy_data.csv
+
+- sifig:
+  title: "Fig. S30. Channel capacity bootstrap for experimental data."
+  filename: figS30.py
+  desc: >
+    Cumulative distribution function of the resulting channel capacity
+    estimates.
