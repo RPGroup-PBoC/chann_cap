@@ -9,3 +9,90 @@
       title: single-molecule mRNA FISH data for unregulated promoter.
       storage: local 
       link: Jones_Brewster_2014.csv
+
+- sifig:
+  title: "Fig S2. MCMC posterior distribution for RNAP rates."
+  filename: figS02.py
+  desc: >
+    Posterior distribution for rate parameters for unregulated promoter
+    assuming a single gene copy.
+
+- sifig:
+  title: "Fig S3. Experimental vs. theoretical distribution of mRNA per cell using parameters from Bayesian inference"
+  filename: figS03.py
+  desc: >
+    Theoretical vs. experimental mRNA distribution as inferred from the
+    two-state model and the data.
+  req:
+    - ds:
+      title: single-molecule mRNA FISH data for unregulated promoter.
+      storage: local 
+      link: Jones_Brewster_2014.csv
+
+- sifig:
+  title: "Fig S4. Separation of cells based on cell size"
+  filename: figS04.py
+  desc: >
+    Using the area as a proxy for position in the cell cycle, cells can be
+    sorted into two groups – small cells (with one promoter copy) and large
+    cells (with two promoter copies).
+  req:
+    - ds:
+      title: single-molecule mRNA FISH data for unregulated promoter.
+      storage: local 
+      link: Jones_Brewster_2014.csv
+
+- sifig:
+  title: "Fig S5. mRNA distribution for small and large cells"
+  filename: figS04.py
+  desc: >
+    mRNA distributions for two groups of cells separated by cell size.
+  req:
+    - ds:
+      title: single-molecule mRNA FISH data for unregulated promoter.
+      storage: local 
+      link: Jones_Brewster_2014.csv
+
+- sifig:
+  title: "Fig S6. MCMC posterior distribution of RNAP rates for a multi-promoter model."
+  filename: figS06.py
+  desc: >
+    Posterior distribution for rate parameters for unregulated promoter
+    accounting for gene copy number variations during the cell cycle.
+
+- sifig:
+  title: "Figure S7. Experimental vs. theoretical distribution of mRNA per cell using parameters for multi-promoter model"
+  filename: figS07.py
+  desc: >
+    Experimental vs. theoretical mRNA distributions for two groups of cells separated by cell size.
+  req:
+    - ds:
+      title: single-molecule mRNA FISH data for unregulated promoter.
+      storage: local 
+      link: Jones_Brewster_2014.csv
+
+- sifig:
+  title: "Figure S8: mRNA and protein moment dynamics."
+  filename: figS08.py
+  desc: >
+    Mean (solid line) $\pm$ standard deviation (shaded region) for the mRNA
+    (upper panel) and protein (lower panel) dynamics. Cells spend a fraction of
+    the cell cycle with a single copy of the promoter (light brown) and the
+    rest of the cell cycle with two copies (light yellow). Black arrows
+    indicate time of cell division.
+  req:
+    - ds:
+      title: Matrix to compute moment dynamics.
+      storage: local 
+      link: two_state_protein_dynamics_matrix.zip
+    - ds:
+      title: Coefficient matrix to compute mRNA and protein distribution moments after cell division.
+      storage: local 
+      link: binom_coeff_matrix.zip
+
+- sifig:
+  title: "Figure S9. Comparison of the equilibrium and kinetic reressor titration predictions."
+  filename: figS09.py
+  desc: >
+    Repressor titration curve inferred from an equilibrium model (solid lines)
+    and a kinetic non-equilibrium model (dots and triangles).
