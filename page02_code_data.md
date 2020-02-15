@@ -39,7 +39,6 @@ the *.py* file to reproduce the figure.
 {% endfor %}
 {% endif %}
 
-
 {% if site.data.code %}
 ## Jupyter Notebooks
 
@@ -80,6 +79,30 @@ used for the computations in the notebook.
     + {{script.desc}}
 {% endfor %}
 {% endif %}
+
+{% if site.data.sifigures%}
+## Supplemental Information Figure Generation
+
+This section contains the scripts and links to the necessary datasets to
+generate all figures in the supplemental materials.
+
+{% for sifig in site.data.sifig %}
+* [**{{sifig.title}}**]({{site.url}}/{{site.baseurl}}/software/figs/{{sifig.filename}})
+  + {{sifig.desc}}
+  {% if sifig.req %} 
+    <i>Necessary Data Sets </i><br/>
+    {% for ds in sifig.req %}
+      {% if ds.storage == 'local' %}
+        {% assign link = "{{site.url}}/{{site.baseurl}}/datasets/{{ds.link}}" %}
+      {% else %}
+        {% assign link = "{{ds.link}}" %}
+      {% endif %}
+    <a style="font-size: 0.9em;" href="{{link}}"> <span>&#8226;</span> {{ds.title}} </a><br/>
+    {% endfor %}
+  {% endif %}
+{% endfor %}
+{% endif %}
+
 
 {% if site.data.datasets %}
 ## Data Sets
