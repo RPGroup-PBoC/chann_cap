@@ -86,7 +86,7 @@ used for the computations in the notebook.
 This section contains the scripts and links to the necessary datasets to
 generate all figures in the supplemental materials.
 
-{% for sifig in site.data.sifig %}
+{% for sifig in site.data.sifigures %}
 * [**{{sifig.title}}**]({{site.url}}/{{site.baseurl}}/software/figs/{{sifig.filename}})
   + {{sifig.desc}}
   {% if sifig.req %} 
