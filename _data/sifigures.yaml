@@ -194,3 +194,116 @@
       title: Bootstrap gene expression fold-change and gene expression noise.
       storage: local 
       link: microscopy_noise_bootstrap.csv
+
+- sifig:
+  title: "Fig. S15. Multiplicative factor to improve theoretical vs. experimental comparison of noise in gene expression."
+  filename: figS15.py
+  desc: >
+    Theoretical vs. experimental noise with constant multiplicative factor.
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
+      storage: local 
+      link: MaxEnt_multi_prom_constraints.csv
+    - ds:
+      title: Bootstrap gene expression fold-change and gene expression noise.
+      storage: local 
+      link: microscopy_noise_bootstrap.csv
+
+- sifig:
+  title: "Fig. S16. Protein noise of the regulated promoter with multiplicative factor."
+  filename: figS16.py
+  desc: >
+    Comparison of the experimental and theoretical noise for different
+    operators with multiplicative factor.
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
+      storage: local 
+      link: MaxEnt_multi_prom_constraints.csv
+    - ds:
+      title: Bootstrap gene expression fold-change and gene expression noise.
+      storage: local 
+      link: microscopy_noise_bootstrap.csv
+
+- sifig:
+  title: "Fig. S17. Skewness of the regulated promoter."
+  filename: figS17.py
+  desc: >
+    Comparison of the experimental and theoretical skewness for different
+    operators.
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
+      storage: local 
+      link: MaxEnt_multi_prom_constraints.csv
+    - ds:
+      title: Bootstrap gene expression fold-change and gene expression noise.
+      storage: local 
+      link: microscopy_noise_bootstrap.csv
+
+- sifig:
+  title: "Fig. S18. Skewness of the regulated promoter with a multiplicative factor."
+  filename: figS18.py
+  desc: >
+    Comparison of the experimental and theoretical skewness for different
+    operators with multiplicative factor.
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
+      storage: local 
+      link: MaxEnt_multi_prom_constraints.csv
+    - ds:
+      title: Bootstrap gene expression fold-change and gene expression noise.
+      storage: local 
+      link: microscopy_noise_bootstrap.csv
+
+- sifig:
+  title: "Fig. S19. Maximum entropy distribution of six-face die."
+  filename: figS19.py
+  desc: >
+    Example distribution for a six-face die inferred from the value of the mean
+    face value using Maximum Entropy.
+
+- fig:
+  title: "Fig. S20. Maximum entropy mRNA distributions for simple repression constructs"
+  filename: figS20.py
+  desc: >
+      Predicted mRNA distributions under different inducer (IPTG)
+      concentrations for different combinations of repressor-DNA affinities
+      (columns) and repressor copy numbers (rows).
+  req:
+    - ds:
+      title: Maximum entropy Lagrange multipliers for mRNA distribution.
+      storage: local 
+      link: MaxEnt_Lagrange_mult_mRNA.csv
+
+- fig:
+  title: "Fig. 21. Maximum entropy protein distributions for varying physical
+  parameters"
+  filename: figS21.py
+  desc: >
+      Predicted protein distributions under different inducer (IPTG)
+      concentrations for different combinations of repressor-DNA affinities
+      (columns) and repressor copy numbers (rows).
+  req:
+    - ds:
+      title: Maximum entropy Lagrange multipliers for protein distribution.
+      storage: local 
+      link: MaxEnt_Lagrange_mult_protein.csv
+
+- fig:
+  title: "Fig. 22. Experiment vs. theory comparison for ∆lacI strain"
+  filename: figS22.py
+  desc: >
+      Comparison of experimental and theoretical cumulative distribution
+      functions for the unregulated promoter.
+  req:
+    - ds:
+      title: Maximum entropy Lagrange multipliers for protein distribution.
+      storage: local 
+      link: MaxEnt_Lagrange_mult_protein.csv
+    - ds:
+      title: Single-cell fluorescence intensities.
+      storage: local 
+      link: single_cell_microscopy_data.csv
