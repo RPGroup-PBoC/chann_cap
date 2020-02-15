@@ -37,6 +37,12 @@
   filetype: ".csv"
   link: MaxEnt_multi_prom_constraints.csv
 
+ dataset:
+  storage: local
+ name: mRNA and protein joint distribution moments as computed from steady-state solutions of moment equations for a single promoter.
+  filetype: ".csv"
+  link: single_prom_moments.csv
+
 - dataset:
   storage: local
   name: mRNA and protein joint distribution moments as computed from dynamical equations over an entire cell cycle over a finer inducer concentration grid.

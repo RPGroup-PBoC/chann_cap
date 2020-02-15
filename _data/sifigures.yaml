@@ -1,5 +1,5 @@
 - sifig:
-  title: "Fig S1. *lacUV5* mRNA per cell distribution"
+  title: "Fig. S01. *lacUV5* mRNA per cell distribution"
   filename: figS01.py
   desc: >
     Data from Jones et al., 2014 of the unregulated lacUV5 promoter as inferred
@@ -11,14 +11,14 @@
       link: Jones_Brewster_2014.csv
 
 - sifig:
-  title: "Fig S2. MCMC posterior distribution for RNAP rates."
+  title: "Fig. S02. MCMC posterior distribution for RNAP rates."
   filename: figS02.py
   desc: >
     Posterior distribution for rate parameters for unregulated promoter
     assuming a single gene copy.
 
 - sifig:
-  title: "Fig S3. Experimental vs. theoretical distribution of mRNA per cell using parameters from Bayesian inference"
+  title: "Fig. S03. Experimental vs. theoretical distribution of mRNA per cell using parameters from Bayesian inference"
   filename: figS03.py
   desc: >
     Theoretical vs. experimental mRNA distribution as inferred from the
@@ -30,7 +30,7 @@
       link: Jones_Brewster_2014.csv
 
 - sifig:
-  title: "Fig S4. Separation of cells based on cell size"
+  title: "Fig. S04. Separation of cells based on cell size"
   filename: figS04.py
   desc: >
     Using the area as a proxy for position in the cell cycle, cells can be
@@ -43,7 +43,7 @@
       link: Jones_Brewster_2014.csv
 
 - sifig:
-  title: "Fig S5. mRNA distribution for small and large cells"
+  title: "Fig. S05. mRNA distribution for small and large cells"
   filename: figS04.py
   desc: >
     mRNA distributions for two groups of cells separated by cell size.
@@ -54,14 +54,14 @@
       link: Jones_Brewster_2014.csv
 
 - sifig:
-  title: "Fig S6. MCMC posterior distribution of RNAP rates for a multi-promoter model."
+  title: "Fig. S06. MCMC posterior distribution of RNAP rates for a multi-promoter model."
   filename: figS06.py
   desc: >
     Posterior distribution for rate parameters for unregulated promoter
     accounting for gene copy number variations during the cell cycle.
 
 - sifig:
-  title: "Figure S7. Experimental vs. theoretical distribution of mRNA per cell using parameters for multi-promoter model"
+  title: "Fig. S07. Experimental vs. theoretical distribution of mRNA per cell using parameters for multi-promoter model"
   filename: figS07.py
   desc: >
     Experimental vs. theoretical mRNA distributions for two groups of cells separated by cell size.
@@ -72,7 +72,7 @@
       link: Jones_Brewster_2014.csv
 
 - sifig:
-  title: "Figure S8: mRNA and protein moment dynamics."
+  title: "Fig. S08: mRNA and protein moment dynamics."
   filename: figS08.py
   desc: >
     Mean (solid line) $\pm$ standard deviation (shaded region) for the mRNA
@@ -91,8 +91,106 @@
       link: binom_coeff_matrix.zip
 
 - sifig:
-  title: "Figure S9. Comparison of the equilibrium and kinetic reressor titration predictions."
+  title: "Fig. S09. Comparison of the equilibrium and kinetic reressor titration predictions."
   filename: figS09.py
   desc: >
     Repressor titration curve inferred from an equilibrium model (solid lines)
     and a kinetic non-equilibrium model (dots and triangles).
+  req:
+    - ds:
+      title: Matrix to compute moment dynamics.
+      storage: local 
+      link: two_state_protein_dynamics_matrix.zip
+    - ds:
+      title: Coefficient matrix to compute mRNA and protein distribution moments after cell division.
+      storage: local 
+      link: binom_coeff_matrix.zip
+
+- sifig:
+  title: "Fig. S10. Comparison of the equilibrium and kinetic inducer titration predictions."
+  filename: figS10.py
+  desc: >
+    Inducer titration curve inferred from an equilibrium model (solid lines)
+    and a kinetic non-equilibrium model (dots and triangles).
+  req:
+    - ds:
+      title: Matrix to compute moment dynamics.
+      storage: local 
+      link: two_state_protein_dynamics_matrix.zip
+    - ds:
+      title: Coefficient matrix to compute mRNA and protein distribution moments after cell division.
+      storage: local 
+      link: binom_coeff_matrix.zip
+
+- sifig:
+  title: "Fig. S11. Comparison of the predicted protein noise between a single- and a multi-promoter kinetic model."
+  filename: figS11.py
+  desc: >
+    Comparison of the noise (standard deviation/mean) between a kinetic model
+    that considers a single promoter at all times (dashed line) and the
+    multi-promoter model developed in this section (solid line) for different
+    repressor operators.
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
+      storage: local 
+      link: MaxEnt_multi_prom_IPTG_range.csv
+    - ds:
+      title: Moments of mRNA and protein distribution for single-promoter model.
+      storage: local 
+      link: single_prom_moments.csv
+
+- sifig:
+  title: "Fig. S12. Protein noise of the unregulated promoter."
+  filename: figS12.py
+  desc: >
+    Comparison of the experimental noise for different operators with the
+    theoretical predictions for the single-promoter and the multi-promoter
+    model. 
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
+      storage: local 
+      link: MaxEnt_multi_prom_IPTG_range.csv
+    - ds:
+      title: Moments of mRNA and protein distribution for single-promoter model.
+      storage: local 
+      link: single_prom_moments.csv
+    - ds:
+      title: Bootstrap gene expression fold-change and gene expression noise.
+      storage: local 
+      link: microscopy_noise_bootstrap.csv
+
+- sifig:
+  title: "Fig. S13. Protein noise of the regulated promoter."
+  filename: figS13.py
+  desc: >
+    Comparison of the experimental noise for different operators. 
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
+      storage: local 
+      link: MaxEnt_multi_prom_IPTG_range.csv
+    - ds:
+      title: Moments of mRNA and protein distribution for single-promoter model.
+      storage: local 
+      link: single_prom_moments.csv
+    - ds:
+      title: Bootstrap gene expression fold-change and gene expression noise.
+      storage: local 
+      link: microscopy_noise_bootstrap.csv
+
+- sifig:
+  title: "Fig. S14. Systematic comparison of theoretical vs experimental noise in gene expression."
+  filename: figS14.py
+  desc: >
+    Theoretical vs. experimental noise. 
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
+      storage: local 
+      link: MaxEnt_multi_prom_constraints.csv
+    - ds:
+      title: Bootstrap gene expression fold-change and gene expression noise.
+      storage: local 
+      link: microscopy_noise_bootstrap.csv
