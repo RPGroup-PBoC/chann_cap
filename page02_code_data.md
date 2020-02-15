@@ -32,7 +32,7 @@ the *.py* file to reproduce the figure.
   {% else %}
     {% assign link = "{{ds.link}}" %}
   {% endif %}
-  <a style="font-size: 0.9em;" href="{{link}}"> <span>&#8226;</span> {{ds.title}} </a><br/>
+  <span>&#8226;</span> <a style="font-size: 0.9em;" href="{{link}}"> {{ds.title}} </a><br/>
 {% endfor %}
 </div>
 </article>
@@ -61,7 +61,7 @@ the notebook.
       {% else %}
         {% assign link = "{{ds.link}}" %}
       {% endif %}
-    <a style="font-size: 0.9em;" href="{{link}}"> <span>&#8226;</span> {{ds.title}} </a><br/>
+    <span>&#8226;</span> <a style="font-size: 0.9em;" href="{{link}}"> {{ds.title}} </a><br/>
     {% endfor %}
   {% endif %}
 {% endfor %}
@@ -97,7 +97,7 @@ generate all figures in the supplemental materials.
       {% else %}
         {% assign link = "{{ds.link}}" %}
       {% endif %}
-    <a style="font-size: 0.9em;" href="{{link}}"> <span>&#8226;</span> {{ds.title}} </a><br/>
+    <span>&#8226;</span> <a style="font-size: 0.9em;" href="{{link}}"> {{ds.title}} </a><br/>
     {% endfor %}
   {% endif %}
 {% endfor %}
