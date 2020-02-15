@@ -2,8 +2,7 @@
   title: "Fig S1. *lacUV5* mRNA per cell distribution"
   filename: figS01.py
   desc: >
-    Data from Jones et al., 2014 of the unregulated lacUV5 promoter as inferred
-    from single molecule mRNA FISH.
+    Data from Jones et al., 2014 of the unregulated lacUV5 promoter as inferred from single molecule mRNA FISH.
   req:
      - ds:
       title: single-molecule mRNA FISH data for unregulated promoter.
