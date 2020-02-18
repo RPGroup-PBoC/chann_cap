@@ -11,6 +11,7 @@
   DOI:  "10.22002/D1.1184"
   name: "Raw microscopy images"
   filetype: .zip 
+  filesize: "24 GB"
 
 - dataset:
   storage: local
