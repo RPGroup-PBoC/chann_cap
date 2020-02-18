@@ -12,7 +12,7 @@ sidebar: true
 This work required several home-made Python functions. To ensure
 reproducibility, we have written it as a Python module that can be installed
 from the master branch of the [GitHub
-repository](http://wwww.github.com/rpgroup-pboc/chann_cap). Please see the
+repository](https://github.com/RPGroup-PBoC/chann_cap). Please see the
 installation instructions for details. This module is required to execute all
 of the following scripts.
 
