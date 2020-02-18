@@ -410,3 +410,44 @@
   filename: figS32.py
   desc: >
     Unbiased channel capacity estimates obtained from linear regressions.
+
+- sifig:
+  title: "Fig. S33. Comparison of channel capacity predictions for single- and multi-promoter models."
+  filename: figS33.py
+  desc: >
+    Channel capacity for the multi-promoter model vs. the single-promoter
+    steady state model as a function of repressor copy numbers for di↵erent
+    repressor-DNA binding energies.
+  req:
+    - ds:
+      title: Theoretical channel capacity at protein level for multi-promoter model.
+      storage: local 
+      link: chann_cap_multi_prom_protein.csv
+    - ds:
+      title: Theoretical channel capacity at protein level for single-promoter model.
+      storage: local 
+      link: chann_cap_single_prom_protein.csv
+
+- sifig:
+  title: "Fig. S34. Measuring the loss of information by using di↵erent number of constraints."
+  filename: figS34.py
+  desc: >
+    The Kullback-Leibler divergence was computed between the maximum entropy
+    distribution constructed using the first 6 moments of the distribution and
+    a variable number of moments.
+  req:
+    - ds:
+      title: Lagrange multipliers with varying number of constraints.
+      storage: local 
+      link: MaxEnt_Lagrange_mult_protein_var_mom.csv
+
+- sifig:
+  title: "Fig. S35. Additive correction factor for channel capacit."
+  filename: figS35.py
+  desc: >
+    Corrected channel capacity accounting for the systematic deviation of the noise.
+  req:
+    - ds:
+      title: Theoretical channel capacity at protein level for multi-promoter model.
+      storage: local 
+      link: chann_cap_multi_prom_protein.csv
