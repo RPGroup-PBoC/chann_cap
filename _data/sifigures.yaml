@@ -397,6 +397,11 @@
   desc: >
     Cumulative distribution function of the resulting channel capacity
     estimates.
+  req:
+  - ds:
+      title: Experimental determination of the channel capacity.
+      storage: remote
+      link: https://data.caltech.edu/records/1185
 
 - sifig:
   title: "Fig. S31. Inverse sample size vs channel capacity."
@@ -404,12 +409,23 @@
   desc: >
     Channel capacity obtained for different subsample sizes of the data plotted
     against the inverse sample size.
+  req:
+  - ds:
+      title: Experimental determination of the channel capacity.
+      storage: remote
+      link: https://data.caltech.edu/records/1185
+
 
 - sifig:
   title: "Fig. S32. Channel capacity as a function of the number of bins."
   filename: figS32.py
   desc: >
     Unbiased channel capacity estimates obtained from linear regressions.
+  req:
+  - ds:
+      title: Experimental determination of the channel capacity.
+      storage: remote
+      link: https://data.caltech.edu/records/1185
 
 - sifig:
   title: "Fig. S33. Comparison of channel capacity predictions for single- and multi-promoter models."
@@ -451,3 +467,7 @@
       title: Theoretical channel capacity at protein level for multi-promoter model.
       storage: local 
       link: chann_cap_multi_prom_protein.csv
+    - ds:
+      title: Experimental determination of the channel capacity.
+      storage: remote
+      link: https://data.caltech.edu/records/1185
