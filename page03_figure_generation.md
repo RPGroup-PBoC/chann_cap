@@ -1,8 +1,8 @@
 ---
 layout: page
 title: Figure generation
-img: fig04A.png # Add image post (optional)
-permalink: code
+img: figs.png # Add image post (optional)
+permalink: figs
 sidebar: true
 ---
 
