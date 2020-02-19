@@ -12,7 +12,7 @@ sidebar: true
 The code provided here was written to be ran in a particular file structure.
 The structure looks like
 
-![](({{site.url}}/{{site.baseurl}}/assets/img/execute.png)
+![]({{site.baseurl}}/assets/img/execute.png)
 
 The entire repository can be cloned via GitHub. This repo does not contain the
 data, but all data is provided in the links bellow. Please follow the
