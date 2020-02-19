@@ -102,6 +102,10 @@
       title: Theoretical channel capacity for different biophysical parameters.
       storage: local 
       link: chann_cap_multi_prom_protein.csv
+    - ds:
+      title: Experimental determination of the channel capacity.
+      storage: remote
+      link: https://data.caltech.edu/records/1185 
 
 - fig:
   title: "Fig. 5(B): Example input-output functions of opposite limits of
