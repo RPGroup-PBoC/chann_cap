@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Figure generation
-img: code.png # Add image post (optional)
+img: fig04A.png # Add image post (optional)
 permalink: code
 sidebar: true
 ---
