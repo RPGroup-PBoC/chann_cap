@@ -8,6 +8,17 @@ sidebar: true
 
 ---
 
+## Executing the code
+The code provided here was written to be ran in a particular file structure.
+The structure looks like
+
+![](({{site.url}}/{{site.baseurl}}/assets/img/execute.png)
+
+The entire repository can be cloned via GitHub. This repo does not contain the
+data, but all data is provided in the links bellow. Please follow the
+installation instructions on the [GitHub
+repository](https://github.com/RPGroup-PBoC/chann_cap).
+
 ## The `chann_cap` Module
 This work required several home-made Python functions. To ensure
 reproducibility, we have written it as a Python module that can be installed
