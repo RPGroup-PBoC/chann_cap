@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Figure generation
+title: Figure Generation
 img: figs.png # Add image post (optional)
 permalink: figs
 sidebar: true
