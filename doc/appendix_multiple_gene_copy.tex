@@ -30,20 +30,20 @@ be found in the
 \href{https://www.rpgroup.caltech.edu//chann_cap/software/moment_dynamics_cell_division.html}{following
 link} as an anotated Jupter notebook)
 
-For our specific locus ({\it galK}) and a doubling time of $\approx$ 100 min
-for our experimental conditions, cells have on average 1.4 copies of the
-reporter gene during the cell cycle. What this means is that cells spend 60\%
-of the time having one copy of the gene and 40\% of the time with two copies.
-To account for this variability in gene copy number across the cell cycle we
-numerically integrate the moment equations derived in \siref{supp_moments} for
-a time $t = [0, t_s]$ with an mRNA production rate $r_m$, where $t_s$ is the
-time point at which the replication fork reaches our specific locus. For the
-remaining time before the cell division $t = [t_s, t_d]$ that the cell spends
-with two promoters, we assume that the only parameter that changes is the mRNA
-production rate from $r_m$ to $2 r_m$. This simplifying assumption ignores
-potential changes in protein translation rate $r_p$ or changes in the repressor
-copy number that would be reflected in changes on the repressor on rate
-$\kron$.
+For our specific locus ({\it galK}) and a doubling time of $\approx$ 60 min for
+our experimental conditions, cells have on average 1.66 copies of the reporter
+gene during the cell cycle \cite{Jones2014a}. What this means is that cells
+spend 60\% of the time having one copy of the gene and 40\% of the time with
+two copies. To account for this variability in gene copy number across the cell
+cycle we numerically integrate the moment equations derived in
+\siref{supp_moments} for a time $t = [0, t_s]$ with an mRNA production rate
+$r_m$, where $t_s$ is the time point at which the replication fork reaches our
+specific locus. For the remaining time before the cell division $t = [t_s,
+t_d]$ that the cell spends with two promoters, we assume that the only
+parameter that changes is the mRNA production rate from $r_m$ to $2 r_m$. This
+simplifying assumption ignores potential changes in protein translation rate
+$r_p$ or changes in the repressor copy number that would be reflected in
+changes on the repressor on rate $\kron$.
 
 \subsubsection{Computing distribution moments after cell division}
 
@@ -292,8 +292,7 @@ as
 In other words, matrix $\bb{Z}$ will contain all the coefficients that we need
 to multiply by the moments before the cell division in order to obtain the
 moments after cell division. Matrix $\bb{Z}$ was then generated automatically
-using Python's analytical math library
-\href{https://www.sympy.org/en/index.html}{\texttt{sympy}}.
+using Python's analytical math library sympy \cite{sympy}.
 
 \fref{sfig_first_mom_cycles} (adapted from \fref{fig3_cell_cycle}(B)) shows how
 the first moment of both mRNA and protein changes over several cell cycles. The

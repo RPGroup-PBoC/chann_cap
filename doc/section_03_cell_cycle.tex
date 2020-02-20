@@ -58,7 +58,7 @@ observed in Fig. 18 of \cite{Phillips2019}.
 To test the effects of including this gene copy number variability in our model
 we now compare the predictions of the model with experimental data.
 Specifically as detailed in the Methods section we obtained single-cell
-fluorescence values of different {\it E. coli} strains carrying a YFP protein
+fluorescence values of different {\it E. coli} strains carrying a YFP gene 
 under the control of the $lacI$ repressor. Each strain was exposed to twelve
 different inducer concentrations until reaching steady-state expression. The
 strains imaged spanned three orders of magnitude in repressor copy number and
@@ -81,7 +81,7 @@ copy number over a cell cycle, $t_o$ represents the start of the cell cycle,
 $t_d$ represents the time of cell division, and $P(t)$ represents the
 probability of any cell being at time $t \in [t_o, t_d]$ of their cell cycle.
 We do not consider cells uniformly distributed along the cell cycle since it is
-known that cells follow an exponential distribution, having more younger than
+known that cells age is exponentially distributed, having more younger than
 older cells at any time point \cite{Powell1956} (See \siref{supp_cell_age_dist}
 for further details). All computations hereafter are therefore done by applying
 an average like that in \eref{eq_time_avg} for the span of a cell cycle. We
@@ -118,18 +118,18 @@ distribution other than the mean mRNA or mean protein count. To test this
 extended predictive power the lower row of \fref{fig3_cell_cycle}(C) shows the
 noise in gene expression defined as the standard deviation over the mean
 protein count accounting for the changes in gene dosage during the cell cycle.
-\siref{supp_multi_gene} shows the equivalent results when this gene duplication
-due to the replication of the genome is not taken into account. For the noise
-our model tracks the experimental data up to a systematic multiplicative factor
-(See \siref{supp_multi_gene} for details). Possible origins of this systematic
-discrepancy could be the intrinsic cell-to-cell variability of rate parameters
-given the variability in the molecular components of the central dogma
-machinery \cite{Jones2014a}. Nevertheless we remind the reader that all
-predictions presented in this paper are zero parameter fits; making the model
-still highly informative about the physical nature of how cells regulate their
-gene expression. This lack of exact numerical agreement between theory and data
-open an opportunity to gain new insights into the biophysical origin of
-cell-to-cell variability. 
+Our model is able to predict the experimental noise up to a systematic
+multiplicative factor (See \siref{supp_multi_gene} for details). Possible
+origins of this systematic discrepancy could be the intrinsic cell-to-cell
+variability of rate parameters given the variability in the molecular
+components of the central dogma machinery \cite{Jones2014a}. Nevertheless we
+remind the reader that all predictions presented in this paper are zero
+parameter fits; making the model still highly informative about the physical
+nature of how cells regulate their gene expression. This lack of exact
+numerical agreement between theory and data open an opportunity to gain new
+insights into the biophysical origin of cell-to-cell variability.
+We direct the reader to \siref{supp_multi_gene} where equivalent predictions
+are done ignoring the changes in gene dosage due to the replication of the genome.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -153,7 +153,7 @@ cell-to-cell variability.
 	$> 500$ single-cell fluorescence measurements. In the theory curves dotted
 	lines indicate plot in linear scale to include zero while solid lines
 	indicate logarithmic scale. For visual clarity, data points in the noise
-	panel with really large values were plot on a separate panel with a log
-	scale.}
+	panel with exceptionally large values are plotted on a separate panel with
+	a log scale.}
 	\label{fig3_cell_cycle}
 \end{figure}
