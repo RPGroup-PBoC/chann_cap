@@ -1,24 +1,40 @@
-# First-principles prediction of the information processing capacity of a simple genetic circuit
-This repository serves as a record for the experimental and theoretical work
-described in the publication "First-principles prediction of the information
-processing capacity of a simple genetic circuit" by Manuel Razo-Mejia Sarah 
-Marzen and Rob Phillips.
+<p align="center">
+  <img src="logo.png">
+</p>
 
-## Abstract
-Given the stochastic nature of gene expression, genetically identical cells
-exposed to the same environmental inputs will produce different outputs. This
-heterogeneity has been hypothesized to have consequences for how cells are
-able to survive in changing environments. Recent work has explored the use of
-information theory as a framework to understand the accuracy with which cells
-can ascertain the state of their surroundings. Yet the predictive power of
-these approaches is limited and has not been rigorously tested using
-precision measurements. To that end, we generate a minimal model for a simple
-genetic circuit in which all parameter values for the model come from
-independently published data sets. We then predict the information processing
-capacity of the genetic circuit for a suite of biophysical parameters such as
-protein copy number and protein-DNA affinity. We compare these parameter-free
-predictions with an experimental determination of protein distributions and
-the information processing capacity of {\it E. coli} cells, and find that our
-minimal model describes the experimental data within a systematic
-multiplicative deviation. This work assembles insights from state-of-the-art
-models of gene regulation and exposes unresolved questions.
+
+# First-principles prediction of the information processing capacity of a simple genetic circuit 
+Welcome to the GitHub repository for the channel capacity project! This
+repository serves as a record for the experimental and theoretical work
+described in the publication "*First-principles prediction of the information
+processing capacity of a simple genetic circuit*" 
+
+## Branches
+
+This repository contains two main branches -- `master` and `gh-pages`. The
+branch `master` which you are reading right now is the primary branch for the
+project. In here you will find all of the polished and unpolished code used for
+all the calculations and figure generation in the paper. The `gh-pages` branch
+contains all of the [website files](https://www.rpgroup.caltech.edu/chann_cap/index.html).
+What the branch `master` does not contain are the data files for the project.
+But you can download such datasets from the links in the [website](https://www.rpgroup.caltech.edu/chann_cap/code).
+Please see individual directories for more information.
+
+## Installation
+The intend of this repository is to make every step of the publication
+completely transparent and reproducible. The project involved a significant
+amount of home-grown Python code that we wrapped as a module `chann_cap`. To
+install the package first you need to make sure that you have all of the
+required dependencies. To check for this you can use 
+[`pip`](pypi.org/project/pip) by executing the following command:
+
+``` pip install -r requirements.txt ```
+
+Once you have all of the packages installed locally, you can install our custom
+module by running the following command:
+
+``` pip install -e ./ ```
+
+When installed, a new folder `chann_cap.egg-info` will be
+installed. This folder is required for the executing of the code in this
+repository.
