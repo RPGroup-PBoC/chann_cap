@@ -39,10 +39,14 @@ numpy==1.18.1
 GitPython==3.1.0
 mpmath==1.1.0
 skimage==0.0
-joblib==0.14.1
 emcee==2.2.1
 sympy==1.5.1
 cloudpickle==1.2.2
+joblib==0.14.1
+statsmodels==0.10.1
+dill==0.3.1.1
+ccutils==0.1.5
+
 
 # System information
 compiler   : Clang 4.0.1 (tags/RELEASE_401/final)
