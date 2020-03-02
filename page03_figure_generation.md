@@ -8,7 +8,7 @@ sidebar: true
 
 ---
 
-## The `chann_cap` Module
+## The `ccutils` Module
 This work required several home-made Python functions. To ensure
 reproducibility, we have written it as a Python module that can be installed
 from the master branch of the [GitHub
