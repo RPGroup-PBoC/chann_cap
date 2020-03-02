@@ -19,6 +19,41 @@ data, but all data is provided in the links bellow. Please follow the
 installation instructions on the [GitHub
 repository](https://github.com/RPGroup-PBoC/chann_cap).
 
+## Computational environment
+All analysis and data processing was performed with the following software
+configurations.
+
+```
+# Python Version
+CPython 3.7.4
+IPython 7.11.1
+
+# Package versions
+scipy==1.3.1
+scikit_image==0.15.0
+matplotlib==3.1.1
+maxentropy==0.3.0
+seaborn==0.9.0
+pandas==0.25.3
+numpy==1.18.1
+GitPython==3.1.0
+mpmath==1.1.0
+skimage==0.0
+joblib==0.14.1
+emcee==2.2.1
+sympy==1.5.1
+cloudpickle==1.2.2
+
+# System information
+compiler   : Clang 4.0.1 (tags/RELEASE_401/final)
+system     : Darwin
+release    : 18.7.0
+machine    : x86_64
+processor  : i386
+CPU cores  : 8
+interpreter: 64bit
+```
+
 ## The `ccutils` Module
 This work required several home-made Python functions. To ensure
 reproducibility, we have written it as a Python module that can be installed
