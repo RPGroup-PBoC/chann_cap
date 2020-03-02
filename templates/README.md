@@ -22,15 +22,15 @@ stacks for all channels.
   `image_processing.py` pipeline, applies filters on the area and eccentricity
   of cells and outputs a filtered data frame along with some diagnostic plots.
 
-  ## Experimental channel capacity determination
+## Experimental channel capacity determination
 
-  For the experimental determination of the channel capacity we have two
-  scripts that go along with all directories in `src/channcap_exp/`.
+For the experimental determination of the channel capacity we have two
+scripts that go along with all directories in `src/channcap_exp/`.
 
-  - `channcap_metadata.py`: script that extracts the metadata from the directory
-  name such that the user doesn't have to input anything into the other
-  scripts.
-  - `channcap_processing.py` : script that performs the Blahut-Arimoto
-    algorithm over different number of bins on the experimental data. For each
-    number of bins it subsamples the data and performs a bootstrap estimate of
-    the channel capacity in order to interpolate the unbiased estimator.
+- `channcap_metadata.py`: script that extracts the metadata from the directory
+name such that the user doesn't have to input anything into the other
+scripts.
+- `channcap_processing.py` : script that performs the Blahut-Arimoto
+  algorithm over different number of bins on the experimental data. For each
+  number of bins it subsamples the data and performs a bootstrap estimate of
+  the channel capacity in order to interpolate the unbiased estimator.
