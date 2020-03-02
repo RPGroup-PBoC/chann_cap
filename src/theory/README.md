@@ -65,3 +65,8 @@ approximate the full distribution.
 In this notebook we implement the Blahut-Arimoto algorithm to compute the
 channel capacity given an input-output function. This allows us to compute the
 maximum amount of information that a simple-repression motif can process.
+
+#### `gillespie_simulation.ipynb`
+This notebook generates stochastic simulations of the two-state unregulated
+promoter over several cell cycles using the Gillespie algorithm. We use this to
+validate our maximum entropy approximation of the mRNA and protein distribution.
