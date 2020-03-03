@@ -2,6 +2,7 @@
   <img src="logo.png">
 </p>
 
+[![DOI](https://zenodo.org/badge/74631387.svg)](https://zenodo.org/badge/latestdoi/74631387)
 
 # First-principles prediction of the information processing capacity of a simple genetic circuit 
 Welcome to the GitHub repository for the channel capacity project! This
