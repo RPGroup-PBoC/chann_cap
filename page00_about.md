@@ -9,6 +9,7 @@ sidebar: true
 
 ---
 
+[![DOI](https://zenodo.org/badge/74631387.svg)](https://zenodo.org/badge/latestdoi/74631387)
 
 # {{site.data.about.title}}
 {{site.data.about.authors}}
