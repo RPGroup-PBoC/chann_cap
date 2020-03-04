@@ -11,10 +11,7 @@ import matplotlib.cm as cm
 import seaborn as sns
 
 # Import the utils for this project
-import chann_cap_utils as chann_cap
-
-# Set PBoC plotting style
-chann_cap.set_plotting_style()
+import ccutils
 
 # Define mRNA rate
 # gm = 0.00284  # s**-1
@@ -50,9 +47,9 @@ max_idx = np.argmax(gauss_flatlnprobability, axis=0)
 kpon, kpoff, rm = df_mcmc.iloc[max_idx, :]
 
 # ea range
-kpon_hpd = chann_cap.hpd(df_mcmc.iloc[:, 0], 0.95)
-kpoff_hpd = chann_cap.hpd(df_mcmc.iloc[:, 1], 0.95)
-rm_hpd = chann_cap.hpd(df_mcmc.iloc[:, 2], 0.95)
+kpon_hpd = ccutils.stats.hpd(df_mcmc.iloc[:, 0], 0.95)
+kpoff_hpd = ccutils.stats.hpd(df_mcmc.iloc[:, 1], 0.95)
+rm_hpd = ccutils.stats.hpd(df_mcmc.iloc[:, 2], 0.95)
 
 # Print results
 print('Single gene copy parameters: ')
@@ -106,9 +103,9 @@ max_idx = np.argmax(gauss_flatlnprobability, axis=0)
 kpon_double, kpoff_double, rm_double = df_mcmc.iloc[max_idx, :]
 
 # ea range
-kpon_hpd = chann_cap.hpd(df_mcmc.iloc[:, 0], 0.95)
-kpoff_hpd = chann_cap.hpd(df_mcmc.iloc[:, 1], 0.95)
-rm_hpd = chann_cap.hpd(df_mcmc.iloc[:, 2], 0.95)
+kpon_hpd = ccutils.stats.hpd(df_mcmc.iloc[:, 0], 0.95)
+kpoff_hpd = ccutils.stats.hpd(df_mcmc.iloc[:, 1], 0.95)
+rm_hpd = ccutils.stats.hpd(df_mcmc.iloc[:, 2], 0.95)
 
 # Print results
 print('Two-promoter model')
@@ -147,7 +144,7 @@ rm = {6:.1f} -{7:0.1f} +{8:0.1f} s^-1
 energies = {'Oid': -17, 'O1': -15.3, 'O2': -13.9, 'O3': -9.7}
 
 # Compute the rates for each repressor
-kr_offs = {key: chann_cap.kr_off_fun(value, k0, 
+kr_offs = {key: ccutils.model.kr_off_fun(value, k0, 
                                      kpon_double,
                                      kpoff_double,
                                      Vcell=Vcell) for key, value in
