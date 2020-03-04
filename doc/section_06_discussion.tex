@@ -22,7 +22,7 @@ priori parametric knowledge -- allowing us to generate parameter-free
 predictions for processes related to information processing. Some of the model
 parameters for our kinetic formulation of the input-output function are
 informed by inferences made from equilibrium models. We use the fact that if
-both, kinetic and thermodynamic languages describe the same system, the
+both kinetic and thermodynamic languages describe the same system, the
 predictions must be self-consistent. In other words, if the equilibrium model
 can only make statements about the mean mRNA and mean protein copy number
 because of the way these models are constructed, those predictions must be
@@ -40,32 +40,32 @@ compared to the equilibrium picture. Under the kinetic formulation, the
 predictions are not limited only to the mean but to any of the moments of the
 mRNA and protein distributions. We first test these novel predictions by
 comparing the noise in protein copy number (standard deviation / mean) with
-experimental data. Our minimal predicts the noise up to a systematic deviation.
-The physical or biological origins of this discrepancy remains an open
-question. In that way the work presented here exposes the status quo of our
-understanding of gene regulation in bacteria, posing new questions to be
+experimental data. Our minimal model predicts the noise up to a systematic
+deviation. The physical or biological origins of this discrepancy remain an
+open question. In that way the work presented here exposes the status quo of
+our understanding of gene regulation in bacteria, posing new questions to be
 answered with future refinements of the model. We extended our analysis to
 infer entire protein distributions at different input signal concentrations by
 using the maximum entropy principle. What this means is that we compute moments
 of the protein distribution, and then use these moments to build an
 approximation to the full distribution. These predicted distributions are then
 compared with experimental single-cell distributions as shown in
-\fref{fig4_maxent}(B) and \siref{supp_maxent}. Again here although our minimal
+\fref{fig4_maxent}(B) and \siref{supp_maxent}. Again, here although our minimal
 model systematically underestimates the width of the distributions by a
-constant multiplicative factor, it serves to inform how to expect changes in
-parameters such as protein copy number or protein-DNA binding affinity will
-affect the full probabilistic input-output function of the genetic circuit up
-to a multiplicative constant. We then use our model to predict the information
+constant multiplicative factor, it informs how changes in parameters such as
+protein copy number or protein-DNA binding affinity will affect the full
+probabilistic input-output function of the genetic circuit, up to a
+multiplicative constant. We then use our model to predict the information
 processing capacity.
 
 By maximizing the mutual information between input signal concentration and
-output protein distribution over all possible input distributions we predict
+output protein distribution over all possible input distributions, we predict
 the channel capacity of the system over a suite of biophysical parameters such
 as varying repressor protein copy number and repressor-DNA binding affinity.
 Although there is no reason to assume the the simplified synthetic circuit we
 used as an experimental model operates optimally given the distribution of
 inputs, the relevance of the channel capacity comes from its interpretation as
-a metric of the physical limits of how precise the inference that cells can
+a metric of the physical limit of how precise an inference cells can
 make about what the state of the environment is. Our model, despite the
 systematic deviations, makes non-trivial predictions such as the existence of
 an optimal repressor copy number for a given repressor-DNA binding energy,
@@ -85,19 +85,19 @@ As we have done throughout this work, we consider it important to highlight the
 limitations of the work presented here. The previously discussed systematic
 deviation for the noise and skewness of the predicted distributions (See
 \siref{supp_multi_gene}), and therefore of the predicted distributions and
-channel capacity remains an unresolved question that deserves to be addressed
+channel capacity, remains an unresolved question that deserves to be addressed
 in further iterations of our minimal model. Also, as first reported in
 \cite{Razo-Mejia2018}, our model fails to capture the steepness of the
 fold-change induction curve for the weakest repressor binding site (See
 \fref{fig3_cell_cycle}(B)). Furthermore the minimal model in
 \fref{fig2_minimal_model}(A), despite being widely used, is an
 oversimplification of the physical picture of how the transcriptional machinery
-works. The coarse-graining of all the kinetic steps involved in the
-transcription initiation into two effective promoter states -- active and
-inactive -- ignores potential kinetic regulatory mechanisms of intermediate
-states \cite{Scholes2017}. Moreover it has been argued that despite the fact
-that the mRNA count distribution does not follow a Poisson distribution, this
-effect could be caused by unknown factors not at the level of transcriptional
+works. The coarse-graining of all the kinetic steps involved in transcription
+initiation into two effective promoter states -- active and inactive -- ignores
+potential kinetic regulatory mechanisms of intermediate states
+\cite{Scholes2017}. Moreover it has been argued that despite the fact that the
+mRNA count distribution does not follow a Poisson distribution, this effect
+could be caused by unknown factors not at the level of transcriptional
 regulation \cite{Choubey2018}.
 
 The findings of this work open the opportunity to accurately test intriguing

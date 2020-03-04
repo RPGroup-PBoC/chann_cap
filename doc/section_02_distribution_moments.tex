@@ -25,7 +25,7 @@ p^y}_S$ can be computed as
   \label{eq_mom_def}
 \end{equation}
 Summing over all possible values for $m$ and $p$ in \eref{eq_cme_matrix}
-results in a ODE for any moment of the distribution of the form (See
+results in an ODE for any moment of the distribution of the form (See
 \siref{supp_moments} for full derivation)
 \begin{equation}
   \begin{aligned}
@@ -45,7 +45,7 @@ means that the dynamical equation for a given moment only depends on lower
 moments (See \siref{supp_moments} for full proof). This feature of our model
 implies, for example, that the second moment of the protein distribution
 $\ee{p^2}$ depends only on the first two moments of the mRNA distribution
-$\ee{m}$, and $\ee{m^2}$, the first protein moment $\ee{p}$  and the
+$\ee{m}$ and $\ee{m^2}$, the first protein moment $\ee{p}$, and the
 cross-correlation term $\ee{mp}$. We can therefore define $\bmu$ to be a vector
 containing all moments up to $\bb{\ee{m^x p^y}}$ for all promoter states,
 \begin{equation}
@@ -65,7 +65,7 @@ Given this definition we can compute the general moment dynamics as
 \dt{\bmu} = \bb{A} \bmu,
 \label{eq_mom_dynamics}
 \end{equation}
-where $\bb{A}$ is a square matrix that contains all the numeric coefficients
+where $\bb{A}$ is a square matrix that contains all the numerical coefficients
 that relate each of the moments. We can then use \eref{eq_gral_mom} to build
 matrix $\bb{A}$ by iteratively substituting values for the exponents $x$ and
 $y$ up to a specified value. In the next section, we will use

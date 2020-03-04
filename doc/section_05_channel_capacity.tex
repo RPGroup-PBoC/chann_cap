@@ -1,11 +1,11 @@
 \subsection{Theoretical prediction of the channel capacity}
 \label{sec_channcap}
 
-We now turn our focus to the channel capacity which is a metric by which we can
-quantify the degree to which cells can measure the environmental state (in this
-context, the inducer concentration). The channel capacity is defined as the
-mutual information between input and output, maximized over all possible input
-distributions. Putting this into mathematical terms we define $c$ as the
+We now turn our focus to the channel capacity, which is a metric by which we
+can quantify the degree to which cells can measure the environmental state (in
+this context, the inducer concentration). The channel capacity is defined as
+the mutual information between input and output, maximized over all possible
+input distributions. Putting this into mathematical terms we define $c$ as the
 inducer concentration. $P(c)$ represents the distribution of inducer and $P(p
 \mid c)$ the distribution of protein counts given a fixed inducer concentration
 -- effectively the distributions shown in \fref{fig4_maxent}(A). The channel
@@ -28,7 +28,7 @@ the channel capacity, quantifies the improvement in the inference of the input
 when considering the output compared to just using the prior distribution of
 the input by itself for prediction \cite{Voliotis2014a, Bowsher2014}. Under
 this interpretation a channel capacity of a fractional bit still quantifies an
-improvement of the ability of the signaling system to infer the value of the
+improvement in the ability of the signaling system to infer the value of the
 extracellular signal compared to having no sensing system at all.
 
 Computing the channel capacity as defined in \eref{eq_chann_cap} implies
@@ -47,7 +47,7 @@ channel capacity as inferred from single-cell fluorescence intensity
 distributions taken over 12 different concentrations of inducer. Briefly, from
 single-cell fluorescent measurements we can approximate the input-output
 distribution $P(p \mid c)$. Once these conditional distributions are fixed, the
-task of finding the input distribution at channel capacity become a
+task of finding the input distribution at channel capacity becomes a
 computational minimization routine that can be undertaken using conjugate
 gradient or similar algorithms. For the particular case of the channel capacity
 on a system with a discrete number of inputs and outputs the Blahut-Arimoto
@@ -68,19 +68,19 @@ protein distribution, we expect the channel capacity to be off by a constant
 additive factor. This factor of $\approx 0.43$ bits can recover the agreement
 between the model and the experimental data. Although our theoretical
 predictions in \fref{fig5_channcap}(A) do not numerically match the
-experimental inference of the channel capacity, the model capture interesting
-qualitative features of the data that are worth highlighting. On one extreme,
-for cells with no transcription factors, there is no information processing
-potential as this simple genetic circuit would be constitutively expressed
-regardless of the environmental state. As cells increase the transcription
-factor copy number, the channel capacity increases until it reaches a maximum
-to then fall back down at high repressor copy number since the promoter would
-be permanently repressed. The steepness of the increment in channel capacity as
-well as the height of the maximum expression highly depend on the repressor-DNA
-affinity. For strong binding sites (blue curve in \fref{fig5_channcap}(A))
-there is a rapid increment in the channel capacity, but the maximum value
-reached is smaller compared to a weaker binding site (orange curve in
-\fref{fig5_channcap}(A)).
+experimental inference of the channel capacity, the model does capture
+interesting qualitative features of the data that are worth highlighting. On
+one extreme, for cells with no transcription factors, there is no information
+processing potential as this simple genetic circuit would be constitutively
+expressed regardless of the environmental state. As cells increase the
+transcription factor copy number, the channel capacity increases until it
+reaches a maximum before falling back down at high repressor copy number since
+the promoter would be permanently repressed. The steepness of the increment in
+channel capacity as well as the height of the maximum expression is highly
+dependent on the repressor-DNA affinity. For strong binding sites (blue curve
+in \fref{fig5_channcap}(A)) there is a rapid increment in the channel capacity,
+but the maximum value reached is smaller compared to a weaker binding site
+(orange curve in \fref{fig5_channcap}(A)).
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -90,11 +90,11 @@ reached is smaller compared to a weaker binding site (orange curve in
 	algorithm \cite{Blahut1972} for varying number of repressors and
 	repressor-DNA affinities. All inferences were performed using 12 IPTG
 	concentrations as detailed in the Methods. Lines represent zero-parameter
-	fit predictions done with the maximum entropy distributions as those shown
-	in \fref{fig4_maxent}. Points represent inferences made from single cell
+	fit predictions done with the maximum entropy distributions as shown in
+	\fref{fig4_maxent}. Points represent inferences made from single cell
 	fluorescence distributions (See \siref{supp_channcap} for further details).
-	Theoretical curves were smoothed out using a Gaussian kernel to remove
-	numerical precision errors. (B) Example input-output functions of opposite
+	Theoretical curves were smoothed using a Gaussian kernel to remove
+	numerical precision errors. (B) Example input-output functions in opposite
 	limits of channel capacity. Lower panel illustrates that zero channel
 	capacity indicates that all distributions overlap. Upper panel illustrates
 	that as the channel capacity increases, the separation between

@@ -32,10 +32,10 @@ active state  ($A$ state), 2) a transcriptionally inactive state without the
 repressor bound ($I$ state) and 3) a transcriptionally inactive state with the
 repressor bound ($R$ state). We do not assume that the transition between the
 active state $A$ and the inactive state $I$ happens due to RNAP binding to the
-promoter as the transcriptional initiation kinetics involve several more steps
+promoter as the transcription initiation kinetics involve several more steps
 than simple binding \cite{Browning2004}. We coarse-grain all these steps into
-an effective ``on" and ``off" states for the promoter consistent with
-experiments demonstrating the bursty nature of gene expression in {\it E. coli}
+effective ``on" and ``off" states for the promoter, consistent with experiments
+demonstrating the bursty nature of gene expression in {\it E. coli}
 \cite{Golding2005}. These three states generate a system of coupled
 differential equations for each of the three state distributions $P_A(m, p;
 t)$, $P_I(m, p; t)$ and $P_R(m, p; t)$, where $m$ and $p$ are the mRNA and
@@ -140,7 +140,7 @@ techniques used to measure gene expression along with the parameters that can
 be inferred from them.
 
 \siref{supp_param_inference} expands on the details of how the inference was
-performed for each of the parameters. Briefly the promoter activation and
+performed for each of the parameters. Briefly, the promoter activation and
 inactivation rates $\kpon$ and $\kpoff$, as well as the transcription rate
 $r_m$ were obtained in units of the mRNA degradation rate $\gm$ by fitting a
 two-state promoter model (no state $R$ from \fref{fig2_minimal_model}(A))
@@ -159,15 +159,15 @@ such as the open-complex formation processes allow us to model the probability
 of the repressor being in the active state as an equilibrium MWC process. The
 parameters of the MWC model $K_A$, $K_I$ and $\eAI$ were previously
 characterized from video-microscopy and flow-cytometry data
-\cite{Razo-Mejia2018}. For the repressor off rate $\kroff$ we take advantage of
-the fact that the mean mRNA copy number as derived from the model in
+\cite{Razo-Mejia2018}. For the repressor off rate, $\kroff$, we take advantage
+of the fact that the mean mRNA copy number as derived from the model in
 \fref{fig2_minimal_model}(A) cast in the language of rates is of the same
 functional form as the equilibrium model cast in the language of binding
 energies \cite{Phillips2015}. Therefore the value of the repressor-DNA binding
 energy $\eR$ constrains the value of the repressor off rate $\kroff$. These
 constraints on the rates allow us to make self-consistent predictions under
-both, the equilibrium and the kinetic framework. Having all parameters in hand
-we can now proceed to solving the gene expression dynamics.
+both the equilibrium and the kinetic framework. Having all parameters in hand,
+we can now proceed to solve he gene expression dynamics.
 
 \begin{figure}[h!]
 	\centering \includegraphics

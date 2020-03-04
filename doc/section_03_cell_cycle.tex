@@ -43,10 +43,10 @@ rate of $2 r_m$. We therefore use the dynamical equations developed in
 moments of the distribution with the corresponding parameters for each phase of
 the cell cycle. \fref{fig3_cell_cycle}(B) shows an example corresponding to the
 mean mRNA level (upper panel) and the mean protein level (lower panel) for the
-case of the unregulated promoter. Given that we inferred the promoter rates
-parameters considering that mRNA reaches steady state at each stage, we see
+case of the unregulated promoter. Given that we inferred the promoter rate
+parameters considering that mRNA reaches steady state in each stage, we see
 that the numerical integration of the equations is consistent with the
-assumption of having the mRNA reach a stable value at each stage (See
+assumption of having the mRNA reach a stable value in each stage (See
 \fref{fig3_cell_cycle}(B) upper panel). On the other hand, the mean protein
 level does not reach a steady state at either of the cellular stages.
 Nevertheless it is notable that after a couple of cell cycles the trajectory
@@ -56,21 +56,21 @@ pattern by tracking the expression level over time with video microscopy as
 observed in Fig. 18 of \cite{Phillips2019}.
 
 To test the effects of including this gene copy number variability in our model
-we now compare the predictions of the model with experimental data.
-Specifically as detailed in the Methods section we obtained single-cell
-fluorescence values of different {\it E. coli} strains carrying a YFP gene 
-under the control of the $lacI$ repressor. Each strain was exposed to twelve
-different inducer concentrations until reaching steady-state expression. The
-strains imaged spanned three orders of magnitude in repressor copy number and
-three distinct repressor-DNA affinities. Since growth was asynchronous, we
-reason that cells were randomly sampled at all stages of the cell cycle.
-Therefore when computing statistics from the data such as the mean fluorescence
-value, in reality we are averaging over the cell cycle. In other words, as
-depicted in \fref{fig3_cell_cycle}(B) quantities such as the mean protein copy
-number change over time, i.e. $\ee{p} \equiv \ee{p(t)}$. This means that
-computing the mean of a population of unsynchronized cells is equivalent to
-averaging this time dependent mean protein copy number over the span of the
-cell cycle. Mathematically this is expressed as
+we now compare the predictions of the model with experimental data. As detailed
+in the Methods section, we obtained single-cell fluorescence values of
+different {\it E. coli} strains carrying a YFP gene under the control of the
+$lacI$ repressor. Each strain was exposed to twelve different inducer
+concentrations until reaching steady-state expression. The strains imaged
+spanned three orders of magnitude in repressor copy number and three distinct
+repressor-DNA affinities. Since growth was asynchronous, we reason that cells
+were randomly sampled at all stages of the cell cycle. Therefore, when
+computing statistics from the data such as the mean fluorescence value, in
+reality we are averaging over the cell cycle. In other words, as depicted in
+\fref{fig3_cell_cycle}(B), quantities such as the mean protein copy number
+change over time, i.e. $\ee{p} \equiv \ee{p(t)}$. This means that computing the
+mean of a population of unsynchronized cells is equivalent to averaging this
+time dependent mean protein copy number over the span of the cell cycle.
+Mathematically this is expressed as
 \begin{equation}
 	\ee{p}_c = \int_{t_o}^{t_d} \ee{p(t)} P(t) dt,
 	\label{eq_time_avg}
@@ -87,7 +87,7 @@ for further details). All computations hereafter are therefore done by applying
 an average like that in \eref{eq_time_avg} for the span of a cell cycle. We
 remind the reader that these time averages are done under a fixed environmental
 state. It is the trajectory of cells over cell cycles under a constant
-environment what we need to account for. It is through this averaging over the
+environment that we need to account for. It is through this averaging over the
 span of a cell cycle that we turn a periodic process as the one shown in
 \fref{fig3_cell_cycle}(B) into a stationary process that we can compare with
 experimental data and, as we will see later, use to reconstruct the steady
@@ -150,8 +150,8 @@ are done ignoring the changes in gene dosage due to the replication of the genom
 	columns) and different repressor copy numbers per cell (different lines on
 	each panel). Error bars in data represent the 95\% confidence interval on
 	the quantities as computed from 10,000 bootstrap estimates generated from
-	$> 500$ single-cell fluorescence measurements. In the theory curves dotted
-	lines indicate plot in linear scale to include zero while solid lines
+	$> 500$ single-cell fluorescence measurements. In the theory curves, dotted
+	lines indicate plot in linear scale to include zero, while solid lines
 	indicate logarithmic scale. For visual clarity, data points in the noise
 	panel with exceptionally large values are plotted on a separate panel with
 	a log scale.}
