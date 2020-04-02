@@ -44,7 +44,7 @@ experimental data. Our minimal model predicts the noise up to a systematic
 deviation. The physical or biological origins of this discrepancy remain an
 open question. In that way the work presented here exposes the status quo of
 our understanding of gene regulation in bacteria, posing new questions to be
-answered with future refinements of the model. We extended our analysis to
+answered with future refinements of the model. We then extend our analysis to
 infer entire protein distributions at different input signal concentrations by
 using the maximum entropy principle. What this means is that we compute moments
 of the protein distribution, and then use these moments to build an
@@ -70,16 +70,16 @@ make about what the state of the environment is. Our model, despite the
 systematic deviations, makes non-trivial predictions such as the existence of
 an optimal repressor copy number for a given repressor-DNA binding energy,
 predicting the channel capacity up to an additive constant (See
-\fref{fig5_channcap}). We note that this differs from previous theoretical
-results since this optimal combination does not come from adding a cost term
-for the regulation \cite{Tkacik2011}. This is a consequence of the parameters
-inferred in \cite{Razo-Mejia2018} for the allosteric repressor never allowing
-all repressors to go into the inactive (non-DNA binding) state. That means that
-even at saturating concentrations of inducer, as the number of repressors
-increases, a significant number of them are still able to bind to the promoter.
-This causes all of the input-output functions to be biased towards low
-expression levels, decreasing the amount of information that the circuit is
-able to process.
+\fref{fig5_channcap}). The origin of this optimal combination of repressor copy
+number and binding energy differs from previous publications in which an extra
+term associated with the cost of producing protein was included in the model
+\cite{Tkacik2011}. This optimal parameter combination is a direct consequence
+of the fact that the LacI repressor cannot be fully deactivated
+\cite{Razo-Mejia2018}. This implies that as the number of repressors increases,
+a significant number of them are still able to bind to the promoter even at
+saturating concentrations of inducer. This causes all of the input-output
+functions to be shift towards low expression levels, decreasing the amount of
+information that the circuit is able to process.
 
 As we have done throughout this work, we consider it important to highlight the
 limitations of the work presented here. The previously discussed systematic
@@ -114,8 +114,9 @@ processing capabilities. Furthermore, compared with the fly embryo in which the
 organism tunes both the input and output distributions over evolutionary time,
 we have experimental control of the distribution of inputs that the cells are
 exposed to. Consequently this means that instead of seeing the final result of
-the evolutionary process, we can set different environmental challenges, and
-track over time the evolution of the population. These experiments could shed
-light into the suggestive hypothesis of information bits as a trait on which
-natural selection acts. We see this exciting direction as part of the overall
-effort in quantitative biology of predicting evolution \cite{Lassig2017}.
+the evolutionary process, we would be able to set different environmental
+challenges, and track over time the evolution of the population. These
+experiments could shed light into the suggestive hypothesis of information bits
+as a trait on which natural selection acts. We see this exciting direction as
+part of the overall effort in quantitative biology of predicting evolution
+\cite{Lassig2017}.

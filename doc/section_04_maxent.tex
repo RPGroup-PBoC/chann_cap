@@ -2,16 +2,15 @@
 
 Having numerically computed the moments of the mRNA and protein distributions
 as cells progress through the cell cycle, we now proceed to make an
-approximating reconstruction of the full distributions given this limited
+approximate reconstruction of the full distributions given this limited
 information. As hinted in \secref{sec_moments} the maximum entropy principle,
 first proposed by E.T. Jaynes in 1957 \cite{Jaynes1957}, approximates the
 entire distribution by maximizing the Shannon entropy subject to constraints
-given by the values of the moments of the distribution, among other quantities
-\cite{Jaynes1957}. This procedure leads to a probability distribution $P_H$ of
-the form (See
+given by the values of the moments of the distribution \cite{Jaynes1957}. This
+procedure leads to a probability distribution of the form (See
 \siref{supp_maxent} for full derivation)
 \begin{equation}
-  P_H(m, p) = {1 \over \mathcal{Z}}
+  P(m, p) = {1 \over \mathcal{Z}}
               \exp \left( - \sum_{(x,y)} \lambda_{(x,y)} m^x p^y \right),
   \label{eq_maxEnt_joint}
 \end{equation}
@@ -21,7 +20,7 @@ normalization constant. The more moments $\ee{m^x p^y}$ included as
 constraints, the more accurate the approximation resulting from
 \eref{eq_maxEnt_joint} becomes.
 
-The computational challenge then becomes a minimization routine in which the
+The computational challenge then becomes an optimization routine in which the
 values for the Lagrange multipliers $\lambda_{(x,y)}$ that are consistent with
 the constraints set by the moment values $\ee{m^x p^y}$ need to be found. This
 is computationally more efficient than sampling directly out of the master
@@ -44,16 +43,18 @@ degree of overlap between distributions decreases, allowing cells to better
 resolve the value of the signal input. On the opposite extreme the lower left
 panel shows a strong binding site ($\eR = -15.3 \; k_BT$) and a high repressor
 copy number (1740 repressors per cell). This parameter combination shows
-overlap between distributions since the high degree of repression skews all
+overlap between distributions since the high degree of repression centers all
 distributions towards lower copy numbers, again giving little ability for the
 cells to resolve the inputs. In \fref{fig4_maxent}(B) and \siref{supp_maxent}
 we show the comparison of these predicted distributions with the experimental
-single-cell fluorescence distributions. Given the systematic deviation of the
-predicted noise as shown in \fref{fig3_cell_cycle}, the predicted distributions
-in \fref{fig4_maxent}(B) underestimate the width of the experimental
-distributions by a constant multiplicative factor. In the following section we
-formalize the notion of how well cells can resolve different inputs from an
-information theoretic perspective via the channel capacity.
+single-cell fluorescence distributions. The right column compares predictions
+as obtained from the zero-parameter fit. As expected the theoretical
+distributions (dashed lines) underestimate the width of the experimental data.
+The left column shows the predicted distributions when a single multiplicative
+factor for all distributions is fit to the data (See \siref{supp_multi_gene}
+for details), improving the agreement of the predictions. In the following
+section we formalize the notion of how well cells can resolve different inputs
+from an information theoretic perspective via the channel capacity.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -68,9 +69,11 @@ information theoretic perspective via the channel capacity.
 	(B) Theory-experiment comparison of predicted gene expression cumulative
 	distribution functions. Each panel shows two example concentrations of
 	inducer (colored curves) with their corresponding theoretical predictions
-	(dashed lines). Distributions were normalized to the mean expression value
-	of the unregulated strain in order to compare theoretical predictions in
-	discrete protein counts with experimental fluorescent measurements in
-	arbitrary units.}
+	(dashed lines). Left column shows zero-parameter fit predictions. Right
+	column shows predictions with a multiplicative factor on the variance of
+	the distribution fit to the data. Distributions were normalized to the mean
+	expression value of the unregulated strain in order to compare theoretical
+	predictions in discrete protein counts with experimental fluorescent
+	measurements in arbitrary units.}
   \label{fig4_maxent}
 \end{figure}

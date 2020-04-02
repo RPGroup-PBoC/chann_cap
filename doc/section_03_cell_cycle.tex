@@ -49,8 +49,8 @@ that the numerical integration of the equations is consistent with the
 assumption of having the mRNA reach a stable value in each stage (See
 \fref{fig3_cell_cycle}(B) upper panel). On the other hand, the mean protein
 level does not reach a steady state at either of the cellular stages.
-Nevertheless it is notable that after a couple of cell cycles the trajectory
-from cycle to cycle follows a repetitive pattern (See \fref{fig3_cell_cycle}(B)
+Nevertheless it is notable that after several cell cycles the trajectory from
+cycle to cycle follows a repetitive pattern (See \fref{fig3_cell_cycle}(B)
 lower panel). Previously we have experimentally observed this repetitive
 pattern by tracking the expression level over time with video microscopy as
 observed in Fig. 18 of \cite{Phillips2019}.
@@ -59,7 +59,7 @@ To test the effects of including this gene copy number variability in our model
 we now compare the predictions of the model with experimental data. As detailed
 in the Methods section, we obtained single-cell fluorescence values of
 different {\it E. coli} strains carrying a YFP gene under the control of the
-$lacI$ repressor. Each strain was exposed to twelve different inducer
+LacI repressor. Each strain was exposed to twelve different inducer
 concentrations until reaching steady-state expression. The strains imaged
 spanned three orders of magnitude in repressor copy number and three distinct
 repressor-DNA affinities. Since growth was asynchronous, we reason that cells
@@ -69,7 +69,7 @@ reality we are averaging over the cell cycle. In other words, as depicted in
 \fref{fig3_cell_cycle}(B), quantities such as the mean protein copy number
 change over time, i.e. $\ee{p} \equiv \ee{p(t)}$. This means that computing the
 mean of a population of unsynchronized cells is equivalent to averaging this
-time dependent mean protein copy number over the span of the cell cycle.
+time-dependent mean protein copy number over the span of the cell cycle.
 Mathematically this is expressed as
 \begin{equation}
 	\ee{p}_c = \int_{t_o}^{t_d} \ee{p(t)} P(t) dt,
@@ -122,14 +122,18 @@ Our model is able to predict the experimental noise up to a systematic
 multiplicative factor (See \siref{supp_multi_gene} for details). Possible
 origins of this systematic discrepancy could be the intrinsic cell-to-cell
 variability of rate parameters given the variability in the molecular
-components of the central dogma machinery \cite{Jones2014a}. Nevertheless we
-remind the reader that all predictions presented in this paper are zero
-parameter fits; making the model still highly informative about the physical
-nature of how cells regulate their gene expression. This lack of exact
-numerical agreement between theory and data open an opportunity to gain new
-insights into the biophysical origin of cell-to-cell variability.
-We direct the reader to \siref{supp_multi_gene} where equivalent predictions
-are done ignoring the changes in gene dosage due to the replication of the genome.
+components of the central dogma machinery \cite{Jones2014a}. The large errors
+for the highly repressed strains (lower left panel in
+\fref{fig3_cell_cycle}(C)) are a result of having a small number in the
+denominator - mean fluorescence level - when computing the noise. Although the
+model is still highly informative about the physical nature of how cells
+regulate their gene expression, the lack of exact numerical agreement between
+theory and data opens an opportunity to gain new insights into the biophysical
+origin of cell-to-cell variability. We direct the reader to
+\siref{supp_multi_gene} where equivalent predictions are done ignoring the
+changes in gene dosage due to the replication of the genome.
+
+\mrm{Discuss this last section part of the paragraph with Rob}
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -153,7 +157,7 @@ are done ignoring the changes in gene dosage due to the replication of the genom
 	$> 500$ single-cell fluorescence measurements. In the theory curves, dotted
 	lines indicate plot in linear scale to include zero, while solid lines
 	indicate logarithmic scale. For visual clarity, data points in the noise
-	panel with exceptionally large values are plotted on a separate panel with
-	a log scale.}
+	panel with exceptionally large values coming from highly repressed strains
+	are plotted on a separate panel with a log scale.}
 	\label{fig3_cell_cycle}
 \end{figure}

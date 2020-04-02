@@ -31,7 +31,7 @@ three-state model where the promoter can be found in a 1) transcriptionally
 active state  ($A$ state), 2) a transcriptionally inactive state without the
 repressor bound ($I$ state) and 3) a transcriptionally inactive state with the
 repressor bound ($R$ state). We do not assume that the transition between the
-active state $A$ and the inactive state $I$ happens due to RNAP binding to the
+active state $A$ and the inactive state $I$ occurs due to RNAP binding to the
 promoter as the transcription initiation kinetics involve several more steps
 than simple binding \cite{Browning2004}. We coarse-grain all these steps into
 effective ``on" and ``off" states for the promoter, consistent with experiments
@@ -89,9 +89,10 @@ And finally, for the repressor bound state $R$,
   \end{aligned}
 \end{equation}
 As we will discuss later in \secref{sec_cell_cycle} the protein degradation
-term $\gp$ is set to zero since we do not consider protein degradation as a
-Poisson process, but rather we explicitly implement binomial partitioning of
-the proteins into daughter cells upon division.
+term $\gp$ is set to zero since active protein degradation is slow compared to
+the cell cycle of exponentially growing bacteria, but rather we explicitly
+implement binomial partitioning of the proteins into daughter cells upon
+division \cite{Maurizi1992}.
 
 It is convenient to rewrite these equations in a compact matrix notation
 \cite{Sanchez2013}. For this we define the vector $\PP(m, p)$ as
