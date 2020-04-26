@@ -552,10 +552,10 @@ Jones2014a}
 
 \subsection{Comparison with experimental data}\label{supp_theory_vs_data_mom}
 
-Having shown that the kinetic model presented in this section can reproduce the
-results from the equilibrium picture at the mean level (See
-\fref{sfig_lacI_titration} and \fref{sfig_IPTG_titration}), but changes the
-prediction for the cell-to-cell variability as quantified by the noise (See
+Having shown that the kinetic model presented in this section can not only
+reproduce the results from the equilibrium picture at the mean level (See
+\fref{sfig_lacI_titration} and \fref{sfig_IPTG_titration}), but make predictions
+for the cell-to-cell variability as quantified by the noise (See
 \fref{sfig_noise_comparison}), we can assess whether or not this model is able
 to predict experimental measurements of the noise. For this we take the single
 cell intensity measurements (See Methods) to compute the noise at the protein
@@ -667,7 +667,7 @@ within a factor of two from the experimental data.
 
 \fref{sfig_noise_delta} and \fref{sfig_noise_reg} highlight that our model
 underestimates the cell-to-cell variability as measured by the noise. To
-further explore this systematic deviation \fref{sfig_noise_comparison} shows
+further explore this systematic deviation \fref{sfig_noise_pred_vs_data} shows
 the theoretical vs. experimental noise both in linear and log scale. As we can
 see the data is systematically above the identity line. The data is colored by
 their corresponding experimental fold-change values. The data that has the
@@ -681,15 +681,15 @@ are amplified given the ratio of std/mean.
 	\centering \includegraphics
   {../fig/si/figS14.pdf}
 	\caption{\textbf{Systematic comparison of theoretical vs experimental noise
-	in gene expression.} Theoretical vs. experimental noise both in linear (left)
-	and log (right) scale. The dashed line shows the identity line of slope 1 and
-	intercept zero. All data are colored by the corresponding value of the
-	experimental fold-change in gene expression as indicated by the color bar.
-	Each datum represents a single date measurement of the corresponding strain
-	and IPTG concentration with $\geq 300$ cells. The points correspond to the
-	median, and the error bars correspond to the 95\% confidence interval as
-	determined by 10,000 bootstrap samples.}
-  \label{sfig_noise_comparison}
+	in gene expression.} Theoretical vs. experimental noise both in linear
+	(left) and log (right) scale. The dashed line shows the identity line of
+	slope 1 and intercept zero. All data are colored by the corresponding value
+	of the experimental fold-change in gene expression as indicated by the color
+	bar. Each datum represents a single date measurement of the corresponding
+	strain and IPTG concentration with $\geq 300$ cells. The points correspond
+	to the median, and the error bars correspond to the 95\% confidence interval
+	as determined by 10,000 bootstrap samples.}
+  \label{sfig_noise_pred_vs_data}
 \end{figure}
 
 \subsubsection{Multiplicative factor for the noise}
