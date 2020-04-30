@@ -47,18 +47,14 @@ overlap between distributions since the high degree of repression centers all
 distributions towards lower copy numbers, again giving little ability for the
 cells to resolve the inputs. In \fref{fig4_maxent}(B) and \siref{supp_maxent}
 we show the comparison of these predicted cumulative distributions with the
-experimental single-cell fluorescence distributions. The left column compares
-predictions as obtained from the zero-parameter fit. Given the systematic
+experimental single-cell fluorescence distributions. Given the systematic
 deviation of our predictions for the protein copy number noise highlighted in
 \fref{fig3_cell_cycle}(C), the theoretical distributions (dashed lines)
-underestimate the width of the experimental data. The right column shows the
-predicted distributions when the predictions for the variance in protein copy
-number are multiplied by a single data-inferred factor, and then the maximum
-entropy distribution is constructed using these corrected moments (See
-\siref{supp_multi_gene} for details), improving the agreement of the
-predictions. In the following section we formalize the notion of how well cells
-can resolve different inputs from an information theoretic perspective via the
-channel capacity.
+underestimate the width of the experimental data. We again direct the reader to
+\mrm{ref section} for an exploration of empirical changes to the moments that
+improve the agreement of the predictions. In the following section we formalize
+the notion of how well cells can resolve different inputs from an information
+theoretic perspective via the channel capacity.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -73,11 +69,9 @@ channel capacity.
 	(B) Theory-experiment comparison of predicted fold-change empirical
 	cumulative distribution functions (ECDF). Each panel shows two example
 	concentrations of inducer (colored curves) with their corresponding
-	theoretical predictions (dashed lines). Left column shows zero-parameter fit
-	predictions. Right column shows predictions with a multiplicative factor on
-	the variance of the distribution fit to the data. Distributions were
-	normalized to the mean expression value of the unregulated strain in order
-	to compare theoretical predictions in discrete protein counts with
-	experimental fluorescent measurements in arbitrary units.}
+	theoretical predictions (dashed lines). Distributions were normalized to the
+	mean expression value of the unregulated strain in order to compare
+	theoretical predictions in discrete protein counts with experimental
+	fluorescent measurements in arbitrary units.}
   \label{fig4_maxent}
 \end{figure}
