@@ -34,17 +34,11 @@ datadir = f'{homedir}/data/csv_maxEnt_dist/'
 # %%
 # Read resulting values for the multipliers.
 df_maxEnt = pd.read_csv(datadir + "MaxEnt_Lagrange_mult_protein.csv")
-df_maxent_corr = pd.read_csv(
-    datadir + "MaxEnt_Lagrange_mult_protein_correction.csv"
-)
 
 # Extract protein moments in constraints
 prot_mom = [x for x in df_maxEnt.columns if "lambda_m0" in x]
-prot_mom_corr = [x for x in df_maxent_corr.columns if "lambda_m0" in x]
-
 # Define index of moments to be used in the computation
 moments = [tuple(map(int, re.findall(r"\d+", s))) for s in prot_mom]
-moments_corr = [tuple(map(int, re.findall(r"\d+", s))) for s in prot_mom_corr]
 
 # Define operators to be included
 operators = ["O1", "O2", "O3"]
@@ -87,18 +81,10 @@ df_maxEnt_delta = df_maxEnt[
     & (df_maxEnt.repressor == 0)
     & (df_maxEnt.inducer_uM == 0)
 ]
-df_maxEnt_delta_corr = df_maxent_corr[
-    (df_maxent_corr.operator == "O1")
-    & (df_maxent_corr.repressor == 0)
-    & (df_maxent_corr.inducer_uM == 0)
-]
 
 # Select the Lagrange multipliers
 lagrange_sample = df_maxEnt_delta.loc[
     :, [col for col in df_maxEnt_delta.columns if "lambda" in col]
-].values[0]
-lagrange_sample_corr = df_maxEnt_delta_corr.loc[
-    :, [col for col in df_maxEnt_delta_corr.columns if "lambda" in col]
 ].values[0]
 
 # Compute distribution from Lagrange multipliers values
@@ -108,24 +94,15 @@ Pp = ccutils.maxent.maxEnt_from_lagrange(
     lagrange_sample,
     exponents=moments
 ).T
-Pp_corr = ccutils.maxent.maxEnt_from_lagrange(
-    mRNA_space,
-    protein_space,
-    lagrange_sample_corr,
-    exponents=moments_corr
-).T
 
 # Compute mean protein copy number
 mean_delta_p = np.sum(protein_space * Pp)
-mean_delta_p_corr = np.sum(protein_space * Pp_corr)
 
 # Group data by operator
 df_group = df_micro.groupby("operator")
 
 # Initialize figure
-fig, ax = plt.subplots(3, 2, figsize=(2 * 5 / 3, 5), sharex=True, sharey=True)
-# ravel the axis
-ax = ax.ravel(order="F")
+fig, ax = plt.subplots(3, 1, figsize=(5 / 3, 5), sharex=True, sharey=True)
 
 # Define colors for operators
 col_list = ["Blues_r", "Reds_r", "Greens_r"]
@@ -157,18 +134,9 @@ for i, (op, data) in enumerate(df_group):
             alpha=0.3,
             label=f'',
         )
-        ax[i + 3].plot(
-            x[::binstep],
-            y[::binstep],
-            lw=0,
-            marker=".",
-            color=colors[j],
-            alpha=0.3,
-            label=f'',
-        )
         # Add fake plots for legend (to fix the alpha)
         ax[i].plot(
-            [], [], lw=0, marker=".", color=colors[j], label=f'{c} $\mu$M'
+            [], [], lw=0, marker="o", color=colors[j], label=f'{c} $\mu$M'
         )
         # Extract the multipliers for a specific strain
         df_maxEnt_delta = df_maxEnt[
@@ -176,18 +144,10 @@ for i, (op, data) in enumerate(df_group):
             & (df_maxEnt.repressor == rep) 
             & (df_maxEnt.inducer_uM == c)
         ]
-        df_maxEnt_delta_corr = df_maxent_corr[
-            (df_maxent_corr.operator == op)
-            & (df_maxent_corr.repressor == rep) 
-            & (df_maxent_corr.inducer_uM == c)
-        ]
 
         # Select the Lagrange multipliers
         lagrange_sample = df_maxEnt_delta.loc[
             :, [col for col in df_maxEnt_delta.columns if "lambda" in col]
-        ].values[0]
-        lagrange_sample_corr = df_maxEnt_delta_corr.loc[
-            :, [col for col in df_maxEnt_delta_corr.columns if "lambda" in col]
         ].values[0]
 
         # Compute distribution from Lagrange multipliers values
@@ -197,31 +157,13 @@ for i, (op, data) in enumerate(df_group):
             lagrange_sample,
             exponents=moments
         ).T
-        Pp_corr = ccutils.maxent.maxEnt_from_lagrange(
-            mRNA_space,
-            protein_space,
-            lagrange_sample_corr,
-            exponents=moments_corr
-        ).T
 
         # Transform protein_space into fold-change
         fc_space = protein_space / mean_delta_p
-        fc_space_corr = protein_space / mean_delta_p_corr
-
         # Plot theoretical prediction
         ax[i].plot(
             fc_space[0::100],
             np.cumsum(Pp)[0::100],
-            linestyle='--',
-            color='k',
-            linewidth=1.5,
-            label="",
-            alpha=0.75
-        )
-        # Plot theoretical prediction
-        ax[i + 3].plot(
-            fc_space[0::100],
-            np.cumsum(Pp_corr)[0::100],
             linestyle='--',
             color='k',
             linewidth=1.5,
@@ -239,17 +181,15 @@ for i, (op, data) in enumerate(df_group):
 
 # Label y axis of left plot
 ax[2].set_xlabel("fold-change")
-ax[5].set_xlabel("fold-change")
 
 # Change limit
-ax[0].set_xlim(right=2.5)
+ax[0].set_xlim(right=3)
 
 # Set title
 ax[0].set_title(f'rep./cell = {rep}', bbox=dict(facecolor="#ffedce"))
-ax[3].set_title(f'mult. factor', bbox=dict(facecolor="#ffedce"))
 
 # Change spacing between plots
-plt.subplots_adjust(hspace=0.02, wspace=0.03)
+plt.subplots_adjust(hspace=0.02)
 
 plt.savefig(figdir + "fig04B.pdf", bbox_inches="tight")
 plt.savefig(figdir + "fig04B.png", bbox_inches="tight")
