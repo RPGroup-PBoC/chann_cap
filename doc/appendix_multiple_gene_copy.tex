@@ -4,7 +4,7 @@ cycle} \label{supp_multi_gene}
 (Note: The Python code used for the calculations presented in this section can
 be found in the
 \href{https://www.rpgroup.caltech.edu/chann_cap/src/theory/html/moment_dynamics_cell_division.html}{following
-link} as an anotated Jupter notebook)
+link} as an anotated Jupyter notebook)
 
 When growing in rich media, bacteria can double every $\approx$ 20 minutes.
 With two replication forks each traveling at $\approx$ 1000 bp per second, and
@@ -28,7 +28,7 @@ Peterson2015}.
 (Note: The Python code used for the calculations presented in this section can
 be found in the
 \href{https://www.rpgroup.caltech.edu//chann_cap/software/moment_dynamics_cell_division.html}{following
-link} as an anotated Jupter notebook)
+link} as an anotated Jupyter notebook)
 
 For our specific locus ({\it galK}) and a doubling time of $\approx$ 60 min for
 our experimental conditions, cells have on average 1.66 copies of the reporter
@@ -50,7 +50,7 @@ changes on the repressor on rate $\kron$.
 (Note: The Python code used for the calculations presented in this section can
 be found in the
 \href{https://www.rpgroup.caltech.edu//chann_cap/software/binomial_moments.html}{following
-link} as an anotated Jupter notebook)
+link} as an anotated Jupyter notebook)
 
 We have already solved a general form for the dynamics of the moments of the
 distribution, i.e. we wrote differential equations for the moments ${d\ee{m^x
@@ -490,13 +490,13 @@ change in the number of active repressors, affecting therefore $\kron$.
   {../fig/si/figS10.pdf}
 	\caption{\textbf{Comparison of the equilibrium and kinetic inducer titration
 	predictions.} The equilibrium model (solid lines) and the kinetic model with
-	variation over the cell cycle (solid circles and white triangles) predictions
-	are compared for varying repressor copy numbers and inducer concentrations.
-	The equilibrium model is directly computed as Eq. 5 of reference
-	\cite{Razo-Mejia2018} with repressor-DNA binding energy $\eR = -13.5 \; k_BT$
-	while the kinetic model is computed by numerically integrating the moment
-	dynamics over several cell cycles, and then averaging over the extent of a
-	single cell cycle as defined in \eref{seq_moment_avg}.}
+	variation over the cell cycle (solid circles and white triangles)
+	predictions are compared for varying repressor copy numbers and inducer
+	concentrations. The equilibrium model is directly computed as Eq. 5 of
+	reference \cite{Razo-Mejia2018} with repressor-DNA binding energy $\eR =
+	-13.5 \; k_BT$ while the kinetic model is computed by numerically
+	integrating the moment dynamics over several cell cycles, and then averaging
+	over the extent of a single cell cycle as defined in \eref{seq_moment_avg}.}
   \label{sfig_IPTG_titration}
 \end{figure}
 
@@ -675,7 +675,9 @@ largest deviations from the identity line also corresponds to the data with the
 largest error bars and the smallest fold-change. This is because measurements
 with very small fold-changes correspond to intensities very close to the
 autofluorescence background. Therefore minimal changes when computing the noise
-are amplified given the ratio of std/mean.
+are amplified given the ratio of std/mean. In \siref{supp_empirical} we will 
+explore empirical ways to improve the agreement between our minimal model and
+the experimental data to guide future efforts to improve the minimal.
 
 \begin{figure}[h!]
 	\centering \includegraphics
@@ -690,124 +692,4 @@ are amplified given the ratio of std/mean.
 	to the median, and the error bars correspond to the 95\% confidence interval
 	as determined by 10,000 bootstrap samples.}
   \label{sfig_noise_pred_vs_data}
-\end{figure}
-
-\subsubsection{Multiplicative factor for the noise}
-\label{supp_mult_factor_noise}
-
-The data, especially in \fref{sfig_noise_delta} suggests that our predictions
-are within a factor of $\approx$ two fromd the experimental data. To further
-check that intuition we performed a weighted linear regression between the
-experimental and theoretical noise measurements. The weight for each datum was
-taken to be proportional to the fold-change, this to have poorly determined
-noises weigh less during the regression. The result of this regression with no
-intercept shows exactly that a factor of two systematically improves the
-theoretical vs. experimental predictions. \fref{sfig_noise_mult_factor} shows
-the improved agreement when the theoretical predictions for the noise are
-multiplied by $\approx$ two.
-
-\begin{figure}[h!]
-	\centering \includegraphics
-  {../fig/si/figS15.pdf}
-	\caption{\textbf{Multiplicative factor to improve theoretical vs.
-	experimental comparison of noise in gene expression.} Theoretical vs.
-	experimental noise both in linear (left) and log (right) scale. The dashed
-	line shows the identity line of slope 1 and intercept zero. All data are
-	colored by the corresponding value of the experimental fold-change in gene
-	expression as indicated by the color bar. The $x$-axis was multiplied by a
-	factor of two as determined by a linear regression from the data in
-	\fref{sfig_noise_comparison}. Each datum represents a single date measurement
-	of the corresponding strain and IPTG concentration with $\geq 300$ cells. The
-	points correspond to the median, and the error bars correspond to the 95\%
-	confidence interval as determined by 10,000 bootstrap samples.}
-  \label{sfig_noise_mult_factor}
-\end{figure}
-
-For completeness \fref{sfig_noise_reg_corrected} shows the noise in gene
-expression as a function of the inducer concentration including this factor of
-$\approx$ two. It is clear that overall a simple multiplicative factor improves
-the predictive power of the model.
-
-\begin{figure}[h!]
-	\centering \includegraphics
-  {../fig/si/figS16.pdf}
-	\caption{\textbf{Protein noise of the regulated promoter with multiplicative
-	factor.} Comparison of the experimental noise for different operators ((A)
-	O1,  $\eR = -15.3 \; k_BT$, (B) O2, $\eR = -13.9 \; k_BT$, (C) O3, $\eR =
-	-9.7 \; k_BT$) with the theoretical predictions for the  the multi-promoter
-	model. A linear regression revealed that multiplying the theoretical noise
-	prediction by a factor of two would improve agreement between theory and
-	data. Points represent the experimental noise as computed from single-cell
-	fluorescence measurements of different {\it E. coli} strains under 12
-	different inducer concentrations. Dotted line indicates plot in linear rather
-	than logarithmic scale. Each datum represents a single date measurement of
-	the corresponding strain and IPTG concentration with $\geq 300$ cells. The
-	points correspond to the median, and the error bars correspond to the 95\%
-	confidence interval as determined by 10,000 bootstrap samples. White-filled
-	dots are plot at a different scale for better visualization.}
-  \label{sfig_noise_reg_corrected}
-\end{figure}
-
-\subsubsection{Systematic deviation of the distribution skewness}
-\label{supp_mult_factor_skew}
-
-Another relevant statistic we can compare between our theoretical predictions
-and the experimental data is the skewness. The skewness $S(X)$ is defined as
-\begin{equation}
-  S(X) \equiv \ee{ \left( {X - \mu \over \sigma} \right)^3},
-\end{equation}
-where $\mu$ and $\sigma$ are the corresponding mean and standard deviation of
-the random variable $X$. The skewness can also be computed in terms of the
-third moment of the distribution $\ee{X^3}$ as
-\begin{equation}
-  S(X) = {\ee{X^3} - 3 \mu \sigma^2 - \mu^3 \over \sigma^3}.
-\end{equation}
-We computed this quantity from the numerical integration of the moment
-equations. \fref{sfig_skew_reg} shows that as in \fref{sfig_noise_reg} there is
-a systematic deviation between our theoretical predictions and the experimental
-skewness. It again seems to be a systematic underestimation of the baseline.
-
-\begin{figure}[h!]
-	\centering \includegraphics
-  {../fig/si/figS17.pdf}
-	\caption{\textbf{Skewness of the regulated promoter.} Comparison of the
-	experimental skewness for different operators ((A) O1,  $\eR = -15.3 \;
-	k_BT$, (B) O2, $\eR = -13.9 \; k_BT$, (C) O3, $\eR = -9.7 \; k_BT$) with the
-	theoretical predictions for the  the multi-promoter model. Points represent
-	the experimental noise as computed from single-cell fluorescence measurements
-	of different {\it E. coli} strains under 12 different inducer concentrations.
-	Dotted line indicates plot in linear rather than logarithmic scale. Each
-	datum represents a single date measurement of the corresponding strain and
-	IPTG concentration with $\geq 300$ cells. The points correspond to the
-	median, and the error bars correspond to the 95\% confidence interval as
-	determined by 10,000 bootstrap samples.}
-  \label{sfig_skew_reg}
-\end{figure}
-
-Interestingly enough if we follow the same procedure that we followed for the
-noise with a linear regression with a fixed origin, we find that a factor of 2
-again can fix the systematic deviation. \fref{sfig_skew_reg_corr} shows the
-improved agreement for the skewness when this multiplicative factor is
-included. The origin of this factor of two as well as the one for the noise are
-limitations of our current state-of-the-art modeling approach. It would be very
-interesting to dissect whether or not the model can account for these changes.
-
-\begin{figure}[h!]
-	\centering \includegraphics
-  {../fig/si/figS18.pdf}
-	\caption{\textbf{Skewness of the regulated promoter with a multiplicative
-	factor.} Comparison of the experimental skewness for different operators ((A)
-	O1,  $\eR = -15.3 \; k_BT$, (B) O2, $\eR = -13.9 \; k_BT$, (C) O3, $\eR =
-	-9.7 \; k_BT$) with the theoretical predictions for the  the multi-promoter
-	model corrected by a multiplicative factor. A linear regression determined
-	that multiplying the theoretical skewness by a factor of two was enough to
-	improve the agreement between theory and experiments. Points represent the
-	experimental noise as computed from single-cell fluorescence measurements of
-	different {\it E. coli} strains under 12 different inducer concentrations.
-	Dotted line indicates plot in linear rather than logarithmic scale. Each
-	datum represents a single date measurement of the corresponding strain and
-	IPTG concentration with $\geq 300$ cells. The points correspond to the
-	median, and the error bars correspond to the 95\% confidence interval as
-	determined by 10,000 bootstrap samples.}
-  \label{sfig_skew_reg_corr}
 \end{figure}

@@ -4,7 +4,7 @@
 (Note: The Python code used for the calculations presented in this section can
 be found in the
 \href{https://www.rpgroup.caltech.edu//chann_cap/software/blahut_algorithm_channel_capacity.html}{following
-link} as an anotated Jupter notebook)
+link} as an anotated Jupyter notebook)
 
 In this section we detail the computation of the channel capacity of the simple
 genetic circuit shown in \fref{fig5_channcap}. As detailed in
@@ -130,7 +130,7 @@ build matrix $\bb{Q}$.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/si/figS29.pdf}
+  {../fig/si/figS24.pdf}
 	\caption{\textbf{Single cell fluorescence distributions for different inducer
 	concentrations.} Fluorescence distribution histogram (A) and cumulative
 	distribution function (B) for a strain with 260 repressors per cell and a
@@ -154,7 +154,7 @@ times to get a better estimate of the channel capacity.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/si/figS30.pdf}
+  {../fig/si/figS25.pdf}
 	\caption{\textbf{Channel capacity bootstrap for experimental data.}
 	Cumulative distribution function of the resulting channel capacity estimates
 	obtained by subsampling 200 times 50\% of each distribution shown in
@@ -178,7 +178,7 @@ on the number of bins.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/si/figS31.pdf}
+  {../fig/si/figS26.pdf}
 	\caption{\textbf{Inverse sample size vs channel capacity.} As indicated in
 	\eref{seq_mutual_biased} if the channel capacity obtained for different
 	subsample sizes of the data is plotted against the inverse sample size there
@@ -224,7 +224,7 @@ best unbiased estimate of the channel capacity from this experimental dataset.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/si/figS32.pdf}
+  {../fig/si/figS27.pdf}
   \caption{\textbf{Channel capacity as a function of the number of bins.}
   Unbiased channel capacity estimates obtained from linear regressions as in
   \fref{sfig_channcap_lin_reg}. The blue curve show the estimates obtained from
@@ -257,7 +257,7 @@ capture the experimental channel capacities with no further fit parameters.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/si/figS33.pdf}
+  {../fig/si/figS28.pdf}
   \caption{\textbf{Comparison of channel capacity predictions for single- and
   multi-promoter models.} Channel capacity for the multi-promoter model (solid
   lines) vs. the single-promoter steady state model (dot-dashed lines) as a
@@ -304,7 +304,7 @@ important feature for our inferences.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/si/figS34.pdf}
+  {../fig/si/figS29.pdf}
 	\caption{\textbf{Measuring the loss of information by using different number
 	of constraints.} The Kullback-Leibler divergence was computed between the
 	maximum entropy distribution constructed using the first 6 moments of the
@@ -339,92 +339,3 @@ molecular parameters such as repressor-DNA binding affinity or repressor copy
 number affect the ability of this genetic circuit to extract information from
 the environmental state.
 
-\subsection{Correction factor for channel capacity}
-
-As seen in \siref{supp_multi_gene} a constant multiplicative factor can explain
-the discrepancy between the model predictions and the data with respect to the
-noise (standard deviation / mean) in protein copy number. To find the
-equivalent correction would be for the channel capacity requires gaining
-insights from the so-called small noise approximation \cite{Tkacik2008a}. The
-small noise approximation assumes that the input-output function can be modeled
-as a Gaussian distribution in which the standard deviation is small. Using
-these assumptions one can derive a closed-form for the channel capacity.
-Although our data and model predictions do not satisfy the requirements for the
-small noise approximation, we can gain some intuition for how the channel
-capacity would scale given a systematic deviation in the cell-to-cell
-variability predictions compared with the data.
-
-Using the small noise approximation one can derive the form of the input
-distribution at channel capacity $P^*(c)$. To do this we use the fact that
-there is a deterministic relationship between the input inducer concentration
-$c$ and the mean output protein value  $\ee{p}$, therefore we can work with
-$P(\ee{p})$ rather than $P(c)$ since the deterministic relation allows us to
-write
-\begin{equation}
-  P(c) dc = P(\ee{p}) d\ee{p}.
-\end{equation}
-Optimizing over all possible distributions $P(\ee{p})$ using calculus of
-variations results in a distribution of the form
-\begin{equation}
-  P^*(\ee{p}) = {1 \over \mathcal{Z}} {1 \over \sigma_p(\ee{p})},
-\end{equation}
-where $\sigma_p(\ee{p})$ is the standard deviation of the protein distribution
-as a function of the mean protein expression, and $\mathcal{Z}$ is a
-normalization constant defined as
-\begin{equation}
-  \mathcal{Z} \equiv \int_{\ee{p(c=0)}}^{\ee{p(c\rightarrow \infty)}}
-  {1 \over \sigma_p(\ee{p})} d\ee{p}.
-\end{equation}
-Under these assumptions the small noise approximation tells us that the channel
-capacity is of the form \cite{Tkacik2008a}
-\begin{equation}
-  I = \log_2 \left( {\mathcal{Z} \over \sqrt{2 \pi e}} \right).
-\end{equation}
-
-From the theory-experiment comparison in \siref{supp_multi_gene} we know that
-the standard deviation predicted by our model is systematically off by a factor
-of two compared to the experimental data, i.e.
-\begin{equation}
-  \sigma_p^{\exp} = 2 \sigma_p^{\text{theory}}.
-\end{equation}
-This then implies that the normalization constant $\mathcal{Z}$ between theory
-and experiment must follow a relationship of the form
-\begin{equation}
-  \mathcal{Z}^{\exp} = {1 \over 2} \mathcal{Z}^{\text{theory}}.
-\end{equation}
-With this relationship the small noise approximation would predict that the
-difference between the experimental and theoretical channel capacity should be
-of the form
-\begin{equation}
-  I^{\exp} = \log_2 \left( {\mathcal{Z}^{\exp} \over \sqrt{2 \pi e}} \right)
-  = \log_2 \left( {\mathcal{Z}^{\text{theory}} \over \sqrt{2 \pi e}} \right)
-  - \log_2(2).
-\end{equation}
-Therefore under the small noise approximation we would expect our predictions
-for the channel capacity to be off by a constant of 1 bit ($\log_2(2)$) of
-information. Again, the conditions for the small noise approximation do not
-apply to our data given the intrinsic level of cell-to-cell variability in the
-system, nevertheless what this analysis tells is is that we expect that an
-additive constant should be able to explain the discrepancy between our model
-predictions and the experimental channel capacity. To test this hypothesis we
-performed a ``linear regression'' between the model predictions and the
-experimental channel capacity with a fixed slope of 1. The intercept of this
-regression, -0.56 bits, indicates the systematic deviation we expect should
-explain the difference between our model and the data.
-\fref{sfig_channcap_corr} shows the comparison between the original predictions
-shown in \fref{fig5_channcap}(A) and the resulting predictions with this shift.
-Other than the data with zero channel capacity, this shift is able to correct
-the systematic deviation for all data. We therefore conclude that our model
-ends up underestimating the experimentally determined channel capacity by a
-constant amount of 0.43 bits.
-
-\begin{figure}[h!]
-	\centering \includegraphics
-  {../fig/si/figS35.pdf}
-	\caption{\textbf{Additive correction factor for channel capacity.} Solid
-	lines represent the theoretical predictions of the channel capacity shown in
-	\fref{fig5_channcap}(A). The dashed lines show the resulting predictions with
-	a constant shift of -0.43 bits. Points represent single biological replicas
-	of the inferred channel capacity.}
-  \label{sfig_channcap_corr}
-\end{figure}

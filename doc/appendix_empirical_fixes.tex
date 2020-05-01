@@ -1,0 +1,367 @@
+\section{Empirical fits to noise predictions} \label{supp_empirical}
+
+(Note: The Python code used for the calculations presented in this section can
+be found in the
+\href{https://www.rpgroup.caltech.edu/chann_cap/src/theory/html/empirical_constants.html}{following
+link} as an anotated Jupyter notebook)
+
+In \fref{fig3_cell_cycle}(C) in the main text we show that our minimal model has
+a systematic deviation on the gene expression noise predictions compared to the
+experimental data. This systematics will need to be addressed on an improved
+version of the minimal model presented in this work. To guide the insights into
+the origins of this systematic deviation in this appendix we will explore
+empirical modifications of the model to improve the agreement between theory and
+experiment.
+
+\subsection{Multiplicative factor for the noise}
+\label{supp_mult_factor_noise}
+
+The first option we will explore is to modify our noise predictions by a
+constant multiplicative factor. This means that we assume the relationship
+between our minimal model predictions and the data for noise in gene expression
+are of the from
+\begin{equation}
+    \text{noise}_{\text{exp}} = \alpha \cdot \text{noise}_{\text{theory}},
+\end{equation}
+where $\alpha$ is a dimensionless constant to be fit from the data. The data,
+especially in \fref{sfig_noise_delta} suggests that our predictions are within a
+factor of $\approx$ two from the experimental data. To further check that
+intuition we performed a weighted linear regression between the experimental and
+theoretical noise measurements. The weight for each datum was taken to be
+proportional to the bootstrap errors in the noise estimate, this to have poorly
+determined noises weigh less during the regression. The result of this
+regression with no intercept shows exactly that a factor of two systematically
+improves the theoretical vs. experimental predictions.
+\fref{sfig_noise_mult_factor} shows the improved agreement when the theoretical
+predictions for the noise are multiplied by $\approx 1.5$.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/si/figS30.pdf}
+	\caption{\textbf{Multiplicative factor to improve theoretical vs.
+	experimental comparison of noise in gene expression.} Theoretical vs.
+	experimental noise both in linear (left) and log (right) scale. The dashed
+	line shows the identity line of slope 1 and intercept zero. All data are
+	colored by the corresponding value of the experimental fold-change in gene
+	expression as indicated by the color bar. The $x$-axis was multiplied by a
+	factor of $\approx 1.5$ as determined by a linear regression from the data
+	in \fref{sfig_noise_comparison}. Each datum represents a single date
+	measurement of the corresponding strain and IPTG concentration with $\geq
+	300$ cells. The points correspond to the median, and the error bars
+	correspond to the 95\% confidence interval as determined by 10,000 bootstrap
+	samples.}
+  \label{sfig_noise_mult_factor}
+\end{figure}
+
+For completeness \fref{sfig_noise_reg_corrected} shows the noise in gene
+expression as a function of the inducer concentration including this factor of
+$\approx 1.5$. It is clear that overall a simple multiplicative factor improves
+the predictive power of the model.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/si/figS31.pdf}
+	\caption{\textbf{Protein noise of the regulated promoter with multiplicative
+	factor.} Comparison of the experimental noise for different operators ((A)
+	O1,  $\eR = -15.3 \; k_BT$, (B) O2, $\eR = -13.9 \; k_BT$, (C) O3, $\eR =
+	-9.7 \; k_BT$) with the theoretical predictions for the  the multi-promoter
+	model. A linear regression revealed that multiplying the theoretical noise
+	prediction by a factor of $\approx 1.5$ would improve agreement between
+	theory and data. Points represent the experimental noise as computed from
+	single-cell fluorescence measurements of different {\it E. coli} strains
+	under 12 different inducer concentrations. Dotted line indicates plot in
+	linear rather than logarithmic scale. Each datum represents a single date
+	measurement of the corresponding strain and IPTG concentration with $\geq
+	300$ cells. The points correspond to the median, and the error bars
+	correspond to the 95\% confidence interval as determined by 10,000 bootstrap
+	samples. White-filled dots are plot at a different scale for better
+	visualization.}
+  \label{sfig_noise_reg_corrected}
+\end{figure}
+
+\subsection{Additive factor for the noise}
+\label{supp_add_factor_noise}
+
+As an alternative way to empirically improve the predictions of our model we will now test the idea of an additive constant. What this means is that our minimal model underestimates the noise in gene expression as
+\begin{equation}
+    \text{noise}_{\text{exp}} = \beta + \text{noise}_{\text{theory}},
+\end{equation}
+where $\beta$ is an additive constant to be determined from the data. As with
+the multiplicative constant we performed a regression to determine this
+empirical additive constant comparing experimental and theoretical gene
+expression noise values. We use the error in the 95\% bootstrap confidence
+interval as a weight for the linear regression. \fref{sfig_noise_add_factor}
+shows the resulting theoretical vs. experimental noise where $\beta \approx
+0.2$. We can see a great improvement in the agreement between theory and 
+experiment with this additive constant
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/si/figS32.pdf}
+	\caption{\textbf{Additive factor to improve theoretical vs. experimental
+	comparison of noise in gene expression.} Theoretical vs. experimental noise
+	both in linear (left) and log (right) scale. The dashed line shows the
+	identity line of slope 1 and intercept zero. All data are colored by the
+	corresponding value of the experimental fold-change in gene expression as
+	indicated by the color bar. A value of $\approx 0.2$ was added to all values
+	in the $x$-axis as determined by a linear regression from the data in
+	\fref{sfig_noise_comparison}. Each datum represents a single date
+	measurement of the corresponding strain and IPTG concentration with $\geq
+	300$ cells. The points correspond to the median, and the error bars
+	correspond to the 95\% confidence interval as determined by 10,000 bootstrap
+	samples.}
+  \label{sfig_noise_add_factor}
+\end{figure}
+
+For completeness \fref{sfig_noise_reg_add} shows the noise in gene expression as
+a function of the inducer concentration including this additive factor of $\beta
+\approx 0.2$. If anything, the additive factor seems to improve the agreement 
+between theory and data even more than the multiplicative factor.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/si/figS33.pdf}
+	\caption{\textbf{Protein noise of the regulated promoter with additive
+	factor.} Comparison of the experimental noise for different operators ((A)
+	O1,  $\eR = -15.3 \; k_BT$, (B) O2, $\eR = -13.9 \; k_BT$, (C) O3, $\eR =
+	-9.7 \; k_BT$) with the theoretical predictions for the  the multi-promoter
+	model. A linear regression revealed that an additive factor of $\approx 0.2$
+	to the the theoretical noise prediction  would improve agreement between
+	theory and data. Points represent the experimental noise as computed from
+	single-cell fluorescence measurements of different {\it E. coli} strains
+	under 12 different inducer concentrations. Dotted line indicates plot in
+	linear rather than logarithmic scale. Each datum represents a single date
+	measurement of the corresponding strain and IPTG concentration with $\geq
+	300$ cells. The points correspond to the median, and the error bars
+	correspond to the 95\% confidence interval as determined by 10,000 bootstrap
+	samples. White-filled dots are plot at a different scale for better
+	visualization.}
+  \label{sfig_noise_reg_add}
+\end{figure}
+
+\subsection{Correction factor for channel capacity with multiplicative factor}
+
+As seen in \siref{supp_multi_gene} a constant multiplicative factor can reduce
+the discrepancy between the model predictions and the data with respect to the
+noise (standard deviation / mean) in protein copy number. To find the
+equivalent correction would be for the channel capacity requires gaining
+insights from the so-called small noise approximation \cite{Tkacik2008a}. The
+small noise approximation assumes that the input-output function can be modeled
+as a Gaussian distribution in which the standard deviation is small. Using
+these assumptions one can derive a closed-form for the channel capacity.
+Although our data and model predictions do not satisfy the requirements for the
+small noise approximation, we can gain some intuition for how the channel
+capacity would scale given a systematic deviation in the cell-to-cell
+variability predictions compared with the data.
+
+Using the small noise approximation one can derive the form of the input
+distribution at channel capacity $P^*(c)$. To do this we use the fact that
+there is a deterministic relationship between the input inducer concentration
+$c$ and the mean output protein value  $\ee{p}$, therefore we can work with
+$P(\ee{p})$ rather than $P(c)$ since the deterministic relation allows us to
+write
+\begin{equation}
+  P(c) dc = P(\ee{p}) d\ee{p}.
+\end{equation}
+Optimizing over all possible distributions $P(\ee{p})$ using calculus of
+variations results in a distribution of the form
+\begin{equation}
+  P^*(\ee{p}) = {1 \over \mathcal{Z}} {1 \over \sigma_p(\ee{p})},
+\end{equation}
+where $\sigma_p(\ee{p})$ is the standard deviation of the protein distribution
+as a function of the mean protein expression, and $\mathcal{Z}$ is a
+normalization constant defined as
+\begin{equation}
+  \mathcal{Z} \equiv \int_{\ee{p(c=0)}}^{\ee{p(c\rightarrow \infty)}}
+  {1 \over \sigma_p(\ee{p})} d\ee{p}.
+\end{equation}
+Under these assumptions the small noise approximation tells us that the channel
+capacity is of the form \cite{Tkacik2008a}
+\begin{equation}
+  I = \log_2 \left( {\mathcal{Z} \over \sqrt{2 \pi e}} \right).
+\end{equation}
+
+From the theory-experiment comparison in \siref{supp_multi_gene} we know that
+the standard deviation predicted by our model is systematically off by a factor
+of two compared to the experimental data, i.e.
+\begin{equation}
+  \sigma_p^{\exp} = 2 \sigma_p^{\text{theory}}.
+\end{equation}
+This then implies that the normalization constant $\mathcal{Z}$ between theory
+and experiment must follow a relationship of the form
+\begin{equation}
+  \mathcal{Z}^{\exp} = {1 \over 2} \mathcal{Z}^{\text{theory}}.
+\end{equation}
+With this relationship the small noise approximation would predict that the
+difference between the experimental and theoretical channel capacity should be
+of the form
+\begin{equation}
+  I^{\exp} = \log_2 \left( {\mathcal{Z}^{\exp} \over \sqrt{2 \pi e}} \right)
+  = \log_2 \left( {\mathcal{Z}^{\text{theory}} \over \sqrt{2 \pi e}} \right)
+  - \log_2(2).
+\end{equation}
+Therefore under the small noise approximation we would expect our predictions
+for the channel capacity to be off by a constant of 1 bit ($\log_2(2)$) of
+information. Again, the conditions for the small noise approximation do not
+apply to our data given the intrinsic level of cell-to-cell variability in the
+system, nevertheless what this analysis tells is is that we expect that an
+additive constant should be able to explain the discrepancy between our model
+predictions and the experimental channel capacity. To test this hypothesis we
+performed a ``linear regression'' between the model predictions and the
+experimental channel capacity with a fixed slope of 1. The intercept of this
+regression, -0.56 bits, indicates the systematic deviation we expect should
+explain the difference between our model and the data.
+\fref{sfig_channcap_corr} shows the comparison between the original predictions
+shown in \fref{fig5_channcap}(A) and the resulting predictions with this shift.
+Other than the data with zero channel capacity, this shift is able to correct
+the systematic deviation for all data. We therefore conclude that our model
+ends up underestimating the experimentally determined channel capacity by a
+constant amount of 0.43 bits.
+
+\begin{figure}[h!]
+	\centering \includegraphics
+  {../fig/si/figS34.pdf}
+	\caption{\textbf{Additive correction factor for channel capacity.} Solid
+	lines represent the theoretical predictions of the channel capacity shown in
+	\fref{fig5_channcap}(A). The dashed lines show the resulting predictions
+	with a constant shift of -0.43 bits. Points represent single biological
+	replicas of the inferred channel capacity.}
+  \label{sfig_channcap_corr}
+\end{figure}
+
+% \subsubsection{Systematic deviation of the distribution skewness}
+% \label{supp_mult_factor_skew}
+
+% Another relevant statistic we can compare between our theoretical predictions
+% and the experimental data is the skewness. The skewness $S(X)$ is defined as
+% \begin{equation}
+%   S(X) \equiv \ee{ \left( {X - \mu \over \sigma} \right)^3},
+% \end{equation}
+% where $\mu$ and $\sigma$ are the corresponding mean and standard deviation of
+% the random variable $X$. The skewness can also be computed in terms of the
+% third moment of the distribution $\ee{X^3}$ as
+% \begin{equation}
+%   S(X) = {\ee{X^3} - 3 \mu \sigma^2 - \mu^3 \over \sigma^3}.
+% \end{equation}
+% We computed this quantity from the numerical integration of the moment
+% equations. \fref{sfig_skew_reg} shows that as in \fref{sfig_noise_reg} there is
+% a systematic deviation between our theoretical predictions and the experimental
+% skewness. It again seems to be a systematic underestimation of the baseline.
+
+% \begin{figure}[h!]
+% 	\centering \includegraphics
+%   {../fig/si/figS17.pdf}
+% 	\caption{\textbf{Skewness of the regulated promoter.} Comparison of the
+% 	experimental skewness for different operators ((A) O1,  $\eR = -15.3 \;
+% 	k_BT$, (B) O2, $\eR = -13.9 \; k_BT$, (C) O3, $\eR = -9.7 \; k_BT$) with the
+% 	theoretical predictions for the  the multi-promoter model. Points represent
+% 	the experimental noise as computed from single-cell fluorescence measurements
+% 	of different {\it E. coli} strains under 12 different inducer concentrations.
+% 	Dotted line indicates plot in linear rather than logarithmic scale. Each
+% 	datum represents a single date measurement of the corresponding strain and
+% 	IPTG concentration with $\geq 300$ cells. The points correspond to the
+% 	median, and the error bars correspond to the 95\% confidence interval as
+% 	determined by 10,000 bootstrap samples.}
+%   \label{sfig_skew_reg}
+% \end{figure}
+
+% Interestingly enough if we follow the same procedure that we followed for the
+% noise with a linear regression with a fixed origin, we find that a factor of 2
+% again can fix the systematic deviation. \fref{sfig_skew_reg_corr} shows the
+% improved agreement for the skewness when this multiplicative factor is
+% included. The origin of this factor of two as well as the one for the noise are
+% limitations of our current state-of-the-art modeling approach. It would be very
+% interesting to dissect whether or not the model can account for these changes.
+
+% \begin{figure}[h!]
+% 	\centering \includegraphics
+%   {../fig/si/figS18.pdf}
+% 	\caption{\textbf{Skewness of the regulated promoter with a multiplicative
+% 	factor.} Comparison of the experimental skewness for different operators ((A)
+% 	O1,  $\eR = -15.3 \; k_BT$, (B) O2, $\eR = -13.9 \; k_BT$, (C) O3, $\eR =
+% 	-9.7 \; k_BT$) with the theoretical predictions for the  the multi-promoter
+% 	model corrected by a multiplicative factor. A linear regression determined
+% 	that multiplying the theoretical skewness by a factor of two was enough to
+% 	improve the agreement between theory and experiments. Points represent the
+% 	experimental noise as computed from single-cell fluorescence measurements of
+% 	different {\it E. coli} strains under 12 different inducer concentrations.
+% 	Dotted line indicates plot in linear rather than logarithmic scale. Each
+% 	datum represents a single date measurement of the corresponding strain and
+% 	IPTG concentration with $\geq 300$ cells. The points correspond to the
+% 	median, and the error bars correspond to the 95\% confidence interval as
+% 	determined by 10,000 bootstrap samples.}
+%   \label{sfig_skew_reg_corr}
+% \end{figure}
+
+% \subsubsection{Correction factor for distribution moments}
+
+% In \siref{supp_mult_factor_noise} and \siref{supp_mult_factor_skew} we showed
+% how simple multiplicative factors could improve the agreement between
+% predictions and measurements for the noise and the skewness of the protein
+% distribution. The question now becomes if applying the equivalent correction
+% factors to the moments could improve the agreement between the maximum entropy
+% distributions and the experimental distributions. Specifically if we work with
+% the three first moments of the protein distribution $\ee{p}, \ee{p^2}$, and
+% $\ee{p^3}$ we need to correct our theoretical predictions according to the
+% systematic empirical deviations from the noise and the skewness. Let us use
+% subscript $T$ and $E$ to represent experimental and theoretical quantities. We
+% know that the experimentally determined noise $\eta$ is off by a factor of two
+% from the theoretical predictions, i.e.
+% \begin{equation}
+%   \eta_E = 2 \eta_T.
+% \end{equation}
+% Since our predictions for the fold-change, which depend solely on the first
+% moment of the protein distribution are in agreement, we will assume that there
+% is no need to correct the predictions for the first moment, i.e. $\ee{p}_T =
+% \ee{p}_E$. Let's then take a look at what the correction to the second moment
+% $\ee{p^2}$ need to be in order for the experimental data to agree with the
+% theoretical predictions. The definition of the noise gives then
+% \begin{equation}
+%   {\sqrt{\ee{p^2}_E - \ee{p}_E^2} \over \ee{p}_E} = 
+%   2 {\sqrt{\ee{p^2}_T - \ee{p}_T^2} \over \ee{p}_T}.
+% \end{equation}
+% Using our assumption that the first moment does not change, and solving for
+% $\ee{p^2}_E$ results in
+% \begin{equation}
+%   \ee{p^2}_E = 4 \ee{p^2}_T - 3 \ee{p}_T^2.
+% \end{equation}
+% This result tells us that if we were to modify our prediction for the second
+% moment by this factor we would resolve the disagreement between the theoretical
+% and experimental noise.
+
+% Following a similar logic for the third moment, we showed in section
+% \siref{supp_mult_factor_skew} that the skewness $S$ is also off by a factor of
+% two, i.e.
+% \begin{equation}
+%   S_E = 2 S_T.
+% \end{equation}
+% When we substitute the definition of the skewness and use the correction factor
+% we found for the second moment as well, the algebra works out to a correction
+% for the third moment $\ee{p^3}_E$ of the form
+% \begin{equation}
+%   \ee{p^3}_E = 16 \ee{p^3}_T - 36\ee{p}_T \sigma^2_T - 15\ee{p}^3_T,
+% \end{equation}
+% where $\sigma^2_T \equiv \ee{p^2}_T - \ee{p}_T^2$.
+
+% \fref{sfig_cdf_reg_corr} shows the comparison between the experimental
+% cumulative distributions and the maximum entropy distributions determined using
+% the first three moments of the protein distribution with the correction
+% factors. We can see that the agreement between theory and data is enhanced
+% upon applying these corrections. What the origin of these deviation is remains
+% unclear and will be subject to future investigation.
+
+% \begin{figure}[h!]
+% 	\centering \includegraphics
+%   {../fig/si/figS24.pdf}
+%   \caption{\textbf{Experiment vs. theory comparison for regulated promoters 
+% 	with correction factors for moments.} Example fold-change empirical
+% 	cumulative distribution functions (ECDF) for regulated strains with the three
+% 	operators (different colors) as a function of repressor copy numbers (rows)
+% 	and inducer concentrations (columns). The color curves represent single-cell
+% 	microscopy measurements while the dashed black lines represent the
+% 	theoretical distributions as reconstructed by the maximum entropy principle.
+% 	These distributions in particular differ from \fref{sfig_cdf_reg} in that the
+% 	moments used to reconstruct the distributions were corrected to match the
+% 	experimentally determined noise and skewness.}
+%   \label{sfig_cdf_reg_corr}
+% \end{figure}

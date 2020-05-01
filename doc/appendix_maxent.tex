@@ -3,7 +3,7 @@
 (Note: The Python code used for the calculations presented in this section can
 be found in the
 \href{https://www.rpgroup.caltech.edu//chann_cap/software/MaxEnt_approx_joint.html}{following
-link} as an anotated Jupter notebook)
+link} as an anotated Jupyter notebook)
 
 On the one hand the solution of chemical master equations like the one in
 \secref{sec_model} represent a hard mathematical challenge. As presented in
@@ -135,7 +135,7 @@ the available information.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/si/figS19.pdf}
+  {../fig/si/figS15.pdf}
 	\caption{\textbf{Maximum entropy distribution of six-face die.} (A)biased
   distribution consistent with the constraint $\ee{x} = 4.5$. (B) MaxEnt
   distribution also consistent with the constraint.}
@@ -330,7 +330,7 @@ resolve between different inputs.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/si/figS20.pdf}
+  {../fig/si/figS16.pdf}
 	\caption{\textbf{Maximum entropy mRNA distributions for simple repression
 	constructs.} mRNA distributions for different biophysical parameters. From
 	left to right the repressor-DNA affinity decreases as defined by the three
@@ -344,7 +344,7 @@ resolve between different inputs.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/si/figS21.pdf}
+  {../fig/si/figS17.pdf}
 	\caption{\textbf{Maximum entropy protein distributions for simple repression
 	constructs.} Protein distributions for different biophysical parameters. From
 	left to right the repressor-DNA affinity decreases as defined by the three
@@ -384,7 +384,7 @@ microscopy.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/si/figS22.pdf}
+  {../fig/si/figS18.pdf}
 	\caption{\textbf{Experiment vs. theory comparison for $\Delta lacI$ strain.}
   Example fold-change empirical cumulative distribution functions (ECDF) for
   strains with no repressors and different operators. The color curves
@@ -404,7 +404,7 @@ experimental data.
 
 \begin{figure}[h!]
 	\centering \includegraphics
-  {../fig/si/figS23.pdf}
+  {../fig/si/figS19.pdf}
 	\caption{\textbf{Experiment vs. theory comparison for regulated promoters.}
   Example fold-change empirical cumulative distribution functions (ECDF) for
   regulated strains with the three operators (different colors) as a function
@@ -414,78 +414,4 @@ experimental data.
   maximum entropy principle. The theoretical distributions were fitted using
   the first six moments of the protein distribution}
   \label{sfig_cdf_reg}
-\end{figure}
-
-
-\subsubsection{Correction factor for distribution moments}
-
-In \siref{supp_mult_factor_noise} and \siref{supp_mult_factor_skew} we showed
-how simple multiplicative factors could improve the agreement between
-predictions and measurements for the noise and the skewness of the protein
-distribution. The question now becomes if applying the equivalent correction
-factors to the moments could improve the agreement between the maximum entropy
-distributions and the experimental distributions. Specifically if we work with
-the three first moments of the protein distribution $\ee{p}, \ee{p^2}$, and
-$\ee{p^3}$ we need to correct our theoretical predictions according to the
-systematic empirical deviations from the noise and the skewness. Let us use
-subscript $T$ and $E$ to represent experimental and theoretical quantities. We
-know that the experimentally determined noise $\eta$ is off by a factor of two
-from the theoretical predictions, i.e.
-\begin{equation}
-  \eta_E = 2 \eta_T.
-\end{equation}
-Since our predictions for the fold-change, which depend solely on the first
-moment of the protein distribution are in agreement, we will assume that there
-is no need to correct the predictions for the first moment, i.e. $\ee{p}_T =
-\ee{p}_E$. Let's then take a look at what the correction to the second moment
-$\ee{p^2}$ need to be in order for the experimental data to agree with the
-theoretical predictions. The definition of the noise gives then
-\begin{equation}
-  {\sqrt{\ee{p^2}_E - \ee{p}_E^2} \over \ee{p}_E} = 
-  2 {\sqrt{\ee{p^2}_T - \ee{p}_T^2} \over \ee{p}_T}.
-\end{equation}
-Using our assumption that the first moment does not change, and solving for
-$\ee{p^2}_E$ results in
-\begin{equation}
-  \ee{p^2}_E = 4 \ee{p^2}_T - 3 \ee{p}_T^2.
-\end{equation}
-This result tells us that if we were to modify our prediction for the second
-moment by this factor we would resolve the disagreement between the theoretical
-and experimental noise.
-
-Following a similar logic for the third moment, we showed in section
-\siref{supp_mult_factor_skew} that the skewness $S$ is also off by a factor of
-two, i.e.
-\begin{equation}
-  S_E = 2 S_T.
-\end{equation}
-When we substitute the definition of the skewness and use the correction factor
-we found for the second moment as well, the algebra works out to a correction
-for the third moment $\ee{p^3}_E$ of the form
-\begin{equation}
-  \ee{p^3}_E = 16 \ee{p^3}_T - 36\ee{p}_T \sigma^2_T - 15\ee{p}^3_T,
-\end{equation}
-where $\sigma^2_T \equiv \ee{p^2}_T - \ee{p}_T^2$.
-
-\fref{sfig_cdf_reg_corr} shows the comparison between the experimental
-cumulative distributions and the maximum entropy distributions determined using
-the first three moments of the protein distribution with the correction
-factors. We can see that the agreement between theory and data is enhanced
-upon applying these corrections. What the origin of these deviation is remains
-unclear and will be subject to future investigation.
-
-\begin{figure}[h!]
-	\centering \includegraphics
-  {../fig/si/figS24.pdf}
-  \caption{\textbf{Experiment vs. theory comparison for regulated promoters 
-	with correction factors for moments.} Example fold-change empirical
-	cumulative distribution functions (ECDF) for regulated strains with the three
-	operators (different colors) as a function of repressor copy numbers (rows)
-	and inducer concentrations (columns). The color curves represent single-cell
-	microscopy measurements while the dashed black lines represent the
-	theoretical distributions as reconstructed by the maximum entropy principle.
-	These distributions in particular differ from \fref{sfig_cdf_reg} in that the
-	moments used to reconstruct the distributions were corrected to match the
-	experimentally determined noise and skewness.}
-  \label{sfig_cdf_reg_corr}
 \end{figure}
