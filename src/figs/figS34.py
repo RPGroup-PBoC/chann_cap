@@ -7,9 +7,6 @@ import pandas as pd
 import re
 import git
 
-# Import libraries to parallelize processes
-from joblib import Parallel, delayed
-
 # Import matplotlib stuff for plotting
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
@@ -34,120 +31,175 @@ homedir = repo.working_dir
 figdir = f'{homedir}/fig/si/'
 datadir = f'{homedir}/data/csv_maxEnt_dist/'
 
-# Read resulting values for the multipliers.
-df_maxEnt = pd.read_csv(f"{datadir}MaxEnt_Lagrange_mult_protein_var_mom.csv")
+# %%
+df_cc_protein = pd.read_csv(
+    f"{homedir}/data/csv_maxEnt_dist/chann_cap_multi_prom_protein.csv"
+)
 
-# Group by operator, repressor copy number 
-# and inducer concentartion
-df_group = df_maxEnt.groupby(['operator', 'binding_energy',
-                              'repressor', 'inducer_uM'])
+# Drop infinities
+df_cc_protein = df_cc_protein[df_cc_protein.channcap != np.inf]
 
-# Define names for columns in DataFrame to save KL divergences
-names = ['operator', 'binding_energy', 'repressor', 
-         'inducer_uM', 'num_mom', 'DKL', 'entropy']
+# Generate list of colors for each operator
+col_list = sns.color_palette("colorblind", n_colors=3)
+col_dict = dict(zip(["O1", "O2", "O3"], col_list))
+op_dict = dict(zip(df_cc_protein.operator.unique(),
+                   df_cc_protein.binding_energy.unique()))
 
-# Initialize data frame to save KL divergences
-df_kl = pd.DataFrame(columns=names)
+# Define directory where data is stored
+expdir = f"{homedir}/data/csv_channcap_bootstrap/"
 
-# Define sample space
-mRNA_space = np.array([0])  # Dummy space
-protein_space = np.arange(0, 4E4)
+# Define directory where the bootstrap data was stored
+bootsdir = f"{homedir}/src/channcap_exp/"
 
-# Extract protein moments in constraints
-prot_mom =  [x for x in df_maxEnt.columns if 'm0' in x]
-# Define index of moments to be used in the computation
-moments = [tuple(map(int, re.findall(r'\d+', s))) for s in prot_mom]
+# List files of data taken exclusively for this experiment
+bootsfiles = [
+    x
+    for x in os.listdir(bootsdir)
+    if ("channel_capacity_experiment" in x) & ("ipynb" not in x)
+]
 
-# Loop through groups
-for group, data in df_group:
-    # Extract parameters
-    op = group[0]
-    eR = group[1]
-    rep = group[2]
-    inducer = group[3]
-    
-    # List different number of moments
-    num_mom = data.num_mom.unique()
-    
-    # Initialize matrix to save probability distributions
-    Pp = np.zeros([len(num_mom), len(protein_space)])
-    
-    # Loop through number of moments
-    for i, n in enumerate(num_mom):
-        # Extract the multipliers 
-        df_sample = df_maxEnt[(df_maxEnt.operator == op) &
-                              (df_maxEnt.repressor == rep) &
-                              (df_maxEnt.inducer_uM == inducer) &
-                              (df_maxEnt.num_mom == n)]
-        
-        # Select the Lagrange multipliers
-        lagrange_sample =  df_sample.loc[:, [col for col in data.columns 
-                                         if 'lambda' in col]].values[0][0:n]
+# Extract dates for these experiments
+project_dates = [x.split("_")[0] for x in bootsfiles]
 
-        # Compute distribution from Lagrange multipliers values
-        Pp[i, :] = ccutils.maxent.maxEnt_from_lagrange(mRNA_space, 
-                                                       protein_space, 
-                                                       lagrange_sample,
-                                                    exponents=moments[0:n]).T
-        
-    # Define reference distriution
-    Pp_ref = Pp[-1, :]
-    # Loop through distributions computing the KL divergence at each step
-    for i, n in enumerate(num_mom):
-        DKL = sp.stats.entropy(Pp_ref, Pp[i, :], base=2)
-        entropy = sp.stats.entropy(Pp[i, :], base=2)
-        
-        # Generate series to append to dataframe
-        series = pd.Series([op, eR, rep, inducer, 
-                            n, DKL, entropy], index=names)
-        
-        # Append value to dataframe
-        df_kl = df_kl.append(series, ignore_index=True)
+
+# List files with the bootstrap sampling of the
+files = glob.glob(f"{expdir}*channcap_bootstrap.csv")
+
+# Extract dates from these files
+file_dates = [file.split("/")[-1] for file in files]
+file_dates = [file.split("_")[0] for file in file_dates]
+
+##  Remove data sets that are ignored because of problems with the data quality
+##  NOTE: These data sets are kept in the repository for transparency, but they
+##  failed at one of our quality criteria
+## (see README.txt file in microscopy folder)
+ignore_files = [
+    x
+    for x in os.listdir(f"{homedir}/src/image_analysis/ignore_datasets/")
+    if "microscopy" in x
+]
+# Extract data from these files
+ignore_dates = [x.split("_")[0] for x in ignore_files]
+
+# Filter for files taken exclusively for this experiment.
+files = [
+    file
+    for i, file in enumerate(files)
+    if (file_dates[i] in project_dates) & (not file_dates[i] in ignore_dates)
+]
+
+#%%
+
+# Define dictionaries to map operator to binding energy and rbs to rep copy
+op_dict = dict(zip(["O1", "O2", "O3", "Oid"], [-15.3, -13.9, -9.7, -17]))
+rbs_dict = dict(
+    zip(
+        ["HG104", "RBS1147", "RBS446", "RBS1027", "RBS1", "RBS1L"],
+        [22, 60, 124, 260, 1220, 1740],
+    )
+)
+
+# Define index of entries to save
+index = [
+    "date",
+    "bins",
+    "operator",
+    "rbs",
+    "binding energy",
+    "repressors",
+    "channcap",
+]
+# Initialize DataFrame to save information
+df_cc_exp = pd.DataFrame(columns=index)
+
+# Define bin number to extract
+bin_target = 100
+
+# Loop through files
+for f in files:
+    # Split file name to extract info
+    str_split = f.replace(expdir, "").split("_")
+    # Extract date, operator and rbs info
+    date, op, rbs = str_split[0:3]
+    # Map the binding energy and repressor copy number
+    eRA, rep = op_dict[op], rbs_dict[rbs]
+
+    # Read file
+    df_cc_bs = pd.read_csv(f, header=0)
+
+    # Select df_cc_bs closest to desired number of bins
+    # Find the index of the min df_cc_bs
+    bin_idx = (np.abs(df_cc_bs["bins"] - bin_target)).idxmin()
+    # Choose the bind number
+    bin_num = df_cc_bs.iloc[bin_idx]["bins"]
+
+    # Keep only df_cc_bs with this bin number
+    df_cc_bs = df_cc_bs[df_cc_bs["bins"] == bin_num]
+
+    # Extrapolate to N -> oo
+    x = 1 / df_cc_bs.samp_size
+    y = df_cc_bs.channcap_bs
+    # Perform linear regression
+    lin_reg = np.polyfit(x, y, deg=1)
+    # Extract intercept to find channel capacity estimate
+    cc = lin_reg[1]
+
+    # Compile info into a pandas series to append it to the DataFrame
+    series = pd.Series([date, bin_num, op, rbs, eRA, rep, cc], index=index)
+    # Append to DataFrame
+    df_cc_exp = df_cc_exp.append(series, ignore_index=True)
 
 #%%
 
 # Group data by operator
-df_group = df_kl.groupby('operator')
+df_group = df_cc_protein.groupby("operator")
 
-# Initialize figure
-fig, ax = plt.subplots(1, 3, figsize=(7, 2.5),
-                       sharex=True, sharey=True)
+# Define colors for each operator
+operators = df_cc_protein["operator"].unique()
+colors = sns.color_palette("colorblind", n_colors=len(operators))
+op_col_dict = dict(zip(operators, colors))
 
-# Define colors for operators
-col_list = ['Blues_r', 'Oranges_r', 'Greens_r']
-col_dict = dict(zip(('O1', 'O2', 'O3'), col_list))
+# Define threshold for log vs linear section
+thresh = 1e0
 
-# Loop through operators
-for i, (group, data) in enumerate(df_group):
-    # Group by repressor copy number
-    data_group = data.groupby('repressor')
-    # Generate list of colors
-    colors = sns.color_palette(col_dict[group], n_colors=len(data_group) + 1)
-    
-    # Loop through repressor copy numbers
-    for j, (g, d) in enumerate(data_group):
-        # Plot DK divergence vs number of moments
-        ax[i].plot(d.num_mom, d.DKL, color=colors[j],
-                   lw=0, marker='.', label=str(int(g)))
-    
-    # Change scale of y axis
-    ax[i].set_yscale('symlog', linthreshy=1E-6)
+fig, ax = plt.subplots(1, 1, figsize=(3.5, 2.8))
+for group, data in df_group:
+    # Select x and y data for smoothing
+    x = np.log10(data[data.repressor >= thresh].repressor.values)
+    y = data[data.repressor >= thresh].channcap.values
+    # Define lambda parameter for smoothing
+    lam = 0.21
+    # Smooth the channel capacity
+    channcap_gauss = ccutils.stats.nw_kernel_smooth(x, x, y, lam)
+    # Plot Log scale
+    ax.plot(
+        data[data.repressor >= thresh].repressor,
+        channcap_gauss - 0.43,
+        label=op_dict[group],
+        color=col_dict[group],
+    )
+    # Plot data from operator
+    ax.plot(
+        df_cc_exp[df_cc_exp["operator"] == group]["repressors"],
+        df_cc_exp[df_cc_exp["operator"] == group]["channcap"],
+        lw=0,
+        marker="o",
+        color=op_col_dict[group],
+        label="",
+        alpha=0.8,
+        markeredgecolor="black",
+        markeredgewidth=1,
+    )
 
-    # Set y axis label
-    ax[i].set_xlabel('number of moments')
-    # Set title
-    label = r'$\Delta\epsilon_r$ = {:.1f} $k_BT$'.\
-               format(data.binding_energy.unique()[0])
-    ax[i].set_title(label, bbox=dict(facecolor='#ffedce'))
-    # Add legend
-    ax[i].legend(loc='upper right', title='rep./cell', ncol=2,
-                 fontsize=6)
-    
-# Set x axis label
-ax[0].set_ylabel('KL divergenge (bits)')
+# Set axis range
+ax.set_xlim(left=1)
+ax.set_ylim([-0.05, 2.5])
 
-# Adjust spacing between plots
-plt.subplots_adjust(wspace=0.05)
-   
+# Label plot
+ax.set_xlabel("repressor copy number")
+ax.set_ylabel("channel capacity (bits)")
+ax.set_xscale("symlog", linthreshx=thresh, linscalex=0.3)
+ax.legend(loc="upper left", title=r"$\Delta\epsilon_r \; (k_BT)$")
+
+# Save figure
 plt.savefig(figdir + "figS34.pdf", bbox_inches="tight")
-

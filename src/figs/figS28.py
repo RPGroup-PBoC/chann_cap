@@ -7,6 +7,9 @@ import pandas as pd
 import re
 import git
 
+# Import libraries to parallelize processes
+from joblib import Parallel, delayed
+
 # Import matplotlib stuff for plotting
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
@@ -29,138 +32,80 @@ homedir = repo.working_dir
 
 # Define directories for data and figure 
 figdir = f'{homedir}/fig/si/'
-datadir = f'{homedir}/data/csv_gillespie/'
 
-# %%
-df_sim_prot = pd.read_csv(datadir + "two_state_protein_gillespie.csv")
-
-# Extract protein data
-protein_names = [x for x in df_sim_prot.columns if re.match(r"[p]\d", x)]
-protein_data = df_sim_prot.loc[:, protein_names].values
-
-#%%
-# Extract information from last cell cycle
-idx = np.where(df_sim_prot.cycle == df_sim_prot.cycle.max())
-protein_data = protein_data[idx, :]
-
-# Define unique time points
-time = df_sim_prot.iloc[idx]["time"]
-
-# Define bins
-bins = np.arange(0, protein_data.max())
-
-# Initialize matrix to save histograms for each time point
-histograms = np.zeros([len(bins) - 1, len(time)])
-
-# Loop through time points and generate distributions
-for i, t in enumerate(time):
-    # Generate and save histogram
-    histograms[:, i] = np.histogram(protein_data[:, i], bins, density=1)[0]
-#%%
-# Initialize array to save protein distribution
-Pp = np.zeros(len(bins))
-
-# Compute the time differences
-time_diff = np.diff(time)
-
-# Compute the cumulative time difference
-time_cumsum = np.cumsum(time_diff)
-time_cumsum = time_cumsum / time_cumsum[-1]
-
-# Define array for spacing of cell cycle
-a_array = np.zeros(len(time))
-a_array[1:] = time_cumsum
-
-# Compute probability based on this array
-p_a_array = np.log(2) * 2 ** (1 - a_array)
-
-# Loop through each of the protein copy numbers
-for p in bins[:-1]:
-    # Perform numerical integration
-    Pp[p] = sp.integrate.simps(histograms[p, :] * p_a_array, a_array)
-#%%
-# Read resulting values for the multipliers.
-df_maxEnt = pd.read_csv(
-    "../../data/csv_maxEnt_dist/MaxEnt_Lagrange_mult_protein.csv"
-)
-#%%
-# Extract protein moments in constraints
-prot_mom = [x for x in df_maxEnt.columns if "m0" in x]
-# Define index of moments to be used in the computation
-moments = [tuple(map(int, re.findall(r"\d+", s))) for s in prot_mom]
-
-# Define sample space
-mRNA_space = np.array([0])
-protein_space = np.arange(len(Pp))
-
-# Extract values to be used
-df_sample = df_maxEnt[
-    (df_maxEnt.operator == "O1")
-    & (df_maxEnt.repressor == 0)
-    & (df_maxEnt.inducer_uM == 0)
-]
-
-
-# Select the Lagrange multipliers
-lagrange_sample = df_sample.loc[
-    :, [col for col in df_sample.columns if "lambda" in col]
-].values[0]
-
-# Compute distribution from Lagrange multipliers values
-Pp_maxEnt = ccutils.maxent.maxEnt_from_lagrange(
-    mRNA_space, protein_space, lagrange_sample, exponents=moments
-).T[0]
-#%%
-# Define binstep for plot, meaning how often to plot
-# an entry
-binstep = 10
-
-# Initialize figure
-fig, ax = plt.subplots(2, 1, figsize=(3.5, 4), sharex=True)
-
-# Plot gillespie results
-ax[0].plot(bins[0::binstep], Pp[0::binstep], drawstyle="steps", color="k")
-ax[0].fill_between(
-    bins[0::binstep], Pp[0::binstep], step="pre", alpha=0.5, label="gillespie"
-)
-ax[1].plot(
-    bins[0::binstep],
-    np.cumsum(Pp[0::binstep]),
-    drawstyle="steps",
-    label="gillespie",
+df_cc_single = pd.read_csv(
+    f"{homedir}/data/csv_maxEnt_dist/chann_cap_single_prom_protein.csv"
 )
 
-# Plot MaxEnt results
-ax[0].plot(
-    protein_space[0::binstep],
-    Pp_maxEnt[0::binstep],
-    drawstyle="steps",
-    color="k",
-)
-ax[0].fill_between(
-    protein_space[0::binstep],
-    Pp_maxEnt[0::binstep],
-    step="pre",
-    alpha=0.5,
-    label="MaxEnt",
-)
-ax[1].plot(
-    protein_space[0::binstep],
-    np.cumsum(Pp_maxEnt[0::binstep]),
-    drawstyle="steps",
-    label="MaxEnt",
-)
+# Drop infinities
+df_cc_single = df_cc_single[df_cc_single.channcap != np.inf]
 
-# Add legend
-ax[0].legend()
-ax[1].legend()
-# Label axis
-ax[0].set_ylabel("probability")
-ax[1].set_ylabel("CDF")
-ax[1].set_xlabel("protein / cell")
+# Read channel capacity of multi promoter model
+df_cc_protein = pd.read_csv(f'{homedir}/data/csv_maxEnt_dist/' + 
+                            'chann_cap_multi_prom_protein.csv')
+# Drop infinities
+df_cc_protein = df_cc_protein[df_cc_protein.channcap != np.inf]
 
-# Change spacing between plots
-plt.subplots_adjust(hspace=0.05)
+# Group data by operator
+df_group = df_cc_protein.groupby('operator')
 
+# Define colors for each operator
+operators = df_cc_protein['operator'].unique()
+colors = sns.color_palette('colorblind', n_colors=len(operators))
+op_col_dict = dict(zip(operators, colors))
+op_dict = dict(zip(df_cc_protein.operator.unique(),
+                   df_cc_protein.binding_energy.unique()))
+
+# Define threshold for log vs linear section
+thresh = 1E0
+
+# Initialize plot
+fig, ax = plt.subplots(1, 1, figsize=(3.5,2.8))
+
+# Plot multi-promoter data
+for group, data in df_group:
+    # Select x and y data for smoothing
+    x = np.log10(data[data.repressor >= thresh].repressor.values)
+    y = data[data.repressor >= thresh].channcap.values
+    # Define lambda parameter for smoothing
+    lam = 0.21
+    # Smooth the channel capacity
+    channcap_gauss = ccutils.stats.nw_kernel_smooth(x, x, y,lam)
+    # Plot Log scale
+    ax.plot(data[data.repressor >= thresh].repressor,
+               channcap_gauss, 
+               label=op_dict[group], color=op_col_dict[group])
+    
+#  # Group data by operator
+df_group = df_cc_single.groupby('operator')
+
+# Plot single-promoter
+for group, data in df_group:
+    # Select x and y data for smoothing
+    x = np.log10(data[data.repressor >= thresh].repressor.values)
+    y = data[data.repressor >= thresh].channcap.values
+    # Define lambda parameter for smoothing
+    lam = 0.21
+    # Smooth the channel capacity
+    channcap_gauss = ccutils.stats.nw_kernel_smooth(x, x, y,lam)
+    # Plot Log scale
+    ax.plot(data[data.repressor >= thresh].repressor,
+            channcap_gauss, 
+            label=op_dict[group], color=op_col_dict[group],
+            linestyle='-.')
+    
+# Add artificial plots to add legend
+ax.plot([], [], linestyle='-.', color='k', label='single-promoter')
+ax.plot([], [], linestyle='-', color='k', label='multi-promoter')
+    
+# Increase y limit
+
+# Label plot
+ax.set_xlabel('repressor copy number')
+ax.set_ylabel('channel capacity (bits)')
+ax.set_xscale('log')
+ax.legend(loc='upper left', title=r'$\Delta\epsilon_r \; (k_BT)$',
+          bbox_to_anchor=(1, 0.75))
+    
 plt.savefig(figdir + "figS28.pdf", bbox_inches="tight")
 
