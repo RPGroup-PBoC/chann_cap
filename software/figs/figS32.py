@@ -4,11 +4,8 @@ import glob
 import numpy as np
 import scipy as sp
 import pandas as pd
-import re
+import statsmodels.api as sm
 import git
-
-# Import libraries to parallelize processes
-from joblib import Parallel, delayed
 
 # Import matplotlib stuff for plotting
 import matplotlib.pyplot as plt
@@ -23,6 +20,7 @@ import ccutils
 
 # Set PBoC plotting format
 ccutils.viz.set_plotting_style()
+# Increase dpi
 
 #%%
 
@@ -32,81 +30,171 @@ homedir = repo.working_dir
 
 # Define directories for data and figure 
 figdir = f'{homedir}/fig/si/'
+datadir = f'{homedir}/data/csv_maxEnt_dist/'
 
-# REAL DATA
-read_files = glob.glob(f"{homedir}/data/csv_channcap_bootstrap/*bootstrap.csv")
-df_bs = pd.concat(pd.read_csv(f, comment="#") for f in read_files)
+# %%
 
-# Group by the number of bins
-df_group = df_bs.groupby(["date", "operator", "rbs", "bins"])
+# Read moments for multi-promoter model
+df_mom_rep = pd.read_csv(datadir + 'MaxEnt_multi_prom_constraints.csv')
 
-# Initialize data frame to save the I_oo estimates
-df_cc = pd.DataFrame(columns=["date", "operator", "rbs", "bins", "channcap"])
-for group, data in df_group:
-    x = 1 / data.samp_size
-    y = data.channcap_bs
-    # Perform linear regression
-    lin_reg = np.polyfit(x, y, deg=1)
-    df_tmp = pd.Series(
-        list(group) + [lin_reg[1]],
-        index=["date", "operator", "rbs", "bins", "channcap"],
-    )
-    df_cc = df_cc.append(df_tmp, ignore_index=True)
+# Read experimental determination of noise
+df_noise = pd.read_csv(f'{homedir}/data/csv_microscopy/' + 
+                       'microscopy_noise_bootstrap.csv')
+df_noise = df_noise[df_noise.percentile == 0.95]
 
-# Convert date and bins into integer
-df_cc[["date", "bins"]] = df_cc[["date", "bins"]].astype(int)
+# Find the mean unregulated levels to compute the fold-change
+mean_m_delta = np.mean(df_mom_rep[df_mom_rep.repressor == 0].m1p0)
+mean_p_delta = np.mean(df_mom_rep[df_mom_rep.repressor == 0].m0p1)
 
-# Group by date
-df_O2_1027 = df_cc[df_cc["date"] == 20181003]
-
-# SHUFFLED DATA
-read_files = glob.glob(
-    f"{homedir}/data/csv_channcap_bootstrap/*bootstrap_shuffled.csv"
+# Compute the noise for the multi-promoter data
+df_mom_rep = df_mom_rep.assign(
+    m_noise=(
+        np.sqrt(df_mom_rep.m2p0 - df_mom_rep.m1p0 ** 2) / df_mom_rep.m1p0
+    ),
+    p_noise=(
+        np.sqrt(df_mom_rep.m0p2 - df_mom_rep.m0p1 ** 2) / df_mom_rep.m0p1
+    ),
+    m_fold_change=df_mom_rep.m1p0 / mean_m_delta,
+    p_fold_change=df_mom_rep.m0p1 / mean_p_delta,
 )
-df_bs_rnd = pd.concat(pd.read_csv(f, comment="#") for f in read_files)
 
-# Group by the number of bins
-df_group = df_bs_rnd.groupby(["date", "operator", "rbs", "bins"])
+# Initialize list to save theoretical noise
+thry_noise = list()
+# Iterate through rows
+for idx, row in df_noise.iterrows():
+    # Extract information
+    rep = float(row.repressor)
+    op = row.operator
+    if np.isnan(row.IPTG_uM):
+        iptg = 0
+    else:
+        iptg = row.IPTG_uM
+    
+    # Extract equivalent theoretical prediction
+    thry = df_mom_rep[(df_mom_rep.repressor == rep) &
+                       (df_mom_rep.operator == op) &
+                       (df_mom_rep.inducer_uM == iptg)].p_noise
+    # Append to list
+    thry_noise.append(thry.iloc[0])
+    
+df_noise = df_noise.assign(noise_theory = thry_noise)
 
-# Initialize data frame to save the I_oo estimates
-df_cc_shuff = pd.DataFrame(
-    columns=["date", "operator", "rbs", "bins", "channcap"]
+#%%
+# Linear regression to find multiplicative factor
+
+# Select data with experimetal noise < 10
+data = df_noise[df_noise.noise < 10]
+# Define the weights for each of the datum to be the width
+# of their bootstrap confidence interval.
+noise_range = (data.noise_upper.values - data.noise_lower.values)
+
+weights = noise_range
+# Assign the non-zero minimum value to all zero weights
+weights[weights == 0] = min(weights[weights > 0])
+
+# Normalize weights
+weights = weights / weights.sum()
+
+def add_factor(x, a):
+    '''
+    Function to find additive constant used with scipy curve_fit
+    '''
+    return a + x
+
+popt, pcov = sp.optimize.curve_fit(
+    add_factor,
+    data.noise_theory.values,
+    data.noise.values,
+    sigma=weights,
 )
-for group, data in df_group:
-    x = 1 / data.samp_size
-    y = data.channcap_bs
-    # Perform linear regression
-    lin_reg = np.polyfit(x, y, deg=1)
-    df_tmp = pd.Series(
-        list(group) + [lin_reg[1]],
-        index=["date", "operator", "rbs", "bins", "channcap"],
-    )
-    df_cc_shuff = df_cc_shuff.append(df_tmp, ignore_index=True)
 
-# Convert date and bins into integer
-df_cc_shuff[["date", "bins"]] = df_cc_shuff[["date", "bins"]].astype(int)
-
-# Group by date
-df_O2_1027_shuff = df_cc_shuff[df_cc_shuff["date"] == 20181003]
-
+factor = popt[0]
+# Print result
+print(
+    f"Additive factor: {factor}"
+)
+#%%
 # Initialize figure
-fig, ax = plt.subplots(1, 1)
-# Plot real data
-ax.plot(df_O2_1027.bins, df_O2_1027.channcap, label="experimental data")
-# Plot shuffled data
-ax.plot(
-    df_O2_1027_shuff.bins, df_O2_1027_shuff.channcap, label="shuffled data"
+fig, ax = plt.subplots(1, 2, figsize=(5, 2))
+
+# Linear scale
+
+# Plot reference line
+ax[0].plot([1e-2, 1e2], [1e-2, 1e2], "--", color="gray")
+
+# Plot error bars
+ax[0].errorbar(
+    x=df_noise.noise_theory + factor,
+    y=df_noise.noise,
+    yerr=[
+        df_noise.noise - df_noise.noise_lower,
+        df_noise.noise_upper - df_noise.noise,
+    ],
+    color="gray",
+    alpha=0.5,
+    mew=0,
+    zorder=0,
+    fmt=".",
 )
 
-# Label axis
-ax.set_xlabel("# bins")
-ax.set_ylabel(r"channel capacity $I_\infty$ (bits)")
+# Plot data with color depending on log fold-change
+ax[0].scatter(
+    df_noise.noise_theory + factor,
+    df_noise.noise,
+    c=np.log10(df_noise.fold_change),
+    cmap="viridis",
+    s=10,
+)
 
-# Set x scale to log
-ax.set_xscale("log")
+ax[0].set_xlabel("theoretical noise")
+ax[0].set_ylabel("experimental noise")
+ax[0].set_title("linear scale")
 
-# Add legend
-plt.legend()
+ax[0].set_xlim(0, 2)
+ax[0].set_ylim(0, 2)
 
+# Log scale
+
+# Plot reference line
+line = [1e-1, 1e2]
+ax[1].loglog(line, line, "--", color="gray")
+# Plot data with color depending on log fold-change
+
+ax[1].errorbar(
+    x=df_noise.noise_theory + factor,
+    y=df_noise.noise,
+    yerr=[
+        df_noise.noise - df_noise.noise_lower,
+        df_noise.noise_upper - df_noise.noise,
+    ],
+    color="gray",
+    alpha=0.5,
+    mew=0,
+    zorder=0,
+    fmt=".",
+)
+
+plot = ax[1].scatter(
+    df_noise.noise_theory + factor,
+    df_noise.noise,
+    c=np.log10(df_noise.fold_change),
+    cmap="viridis",
+    s=10,
+)
+
+ax[1].set_xlabel("theoretical noise")
+ax[1].set_ylabel("experimental noise")
+ax[1].set_title("log scale")
+ax[1].set_xlim([0.1, 10])
+
+# show color scale
+fig.subplots_adjust(right=0.8)
+cbar_ax = fig.add_axes([0.82, 0.15, 0.02, 0.7])
+cbar = fig.colorbar(plot, cax=cbar_ax, ticks=[0, -1, -2, -3])
+
+cbar.ax.set_ylabel("fold-change")
+cbar.ax.set_yticklabels(["1", "0.1", "0.01", "0.001"])
+cbar.ax.tick_params(width=0)
+
+plt.subplots_adjust(wspace=0.4)
 plt.savefig(figdir + "figS32.pdf", bbox_inches="tight")
-

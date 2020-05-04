@@ -29,211 +29,92 @@ homedir = repo.working_dir
 
 # Define directories for data and figure 
 figdir = f'{homedir}/fig/si/'
-datadir = f'{homedir}/data/csv_maxEnt_dist/'
 
-# %%
-# Read resulting values for the multipliers.
-df_maxEnt = pd.read_csv(datadir + "MaxEnt_Lagrange_mult_protein_correction.csv")
+df_micro = pd.read_csv(f'{homedir}/data/csv_microscopy/' + 
+                       '20181003_O2_RBS1027_IPTG_titration_microscopy.csv',
+                       comment='#')
 
-# Extract protein moments in constraints
-prot_mom = [x for x in df_maxEnt.columns if "lambda_m0" in x]
-# Define index of moments to be used in the computation
-moments = [tuple(map(int, re.findall(r"\d+", s))) for s in prot_mom]
+# Select RBS1027 day 1 to start the data exploration
+df_group = df_micro[df_micro.rbs == 'RBS1027'].groupby('IPTG_uM')
 
-# Define operators to be included
-operators = ["O1", "O2", "O3"]
-# Define repressor copy number and operator
-rep = [22, 260, 1740]
-# Define binstep for plot
-binstep = 10
-binstep_theory = 100
+# Extract concentrations
+concentrations = df_micro.IPTG_uM.unique()
 
-# Remove these dates
-df_micro = pd.read_csv(
-    "../../data/csv_microscopy/single_cell_microscopy_data.csv"
-)
+# Plot distributions coming from microscopy
+# Decide color
+colors = sns.color_palette("Blues_r", len(concentrations))
 
-df_micro[["date", "operator", "rbs", "mean_intensity", "intensity"]].head()
+fig, ax = plt.subplots(2, 1, figsize=(3.5, 3.5), sharex=True)
 
-# group df by date
-df_group = df_micro.groupby("date")
+# Set the nice scientific notation for the y axis of the histograms
+ax[0].yaxis.set_major_formatter(mpl.ticker.ScalarFormatter(\
+                             useMathText=True, 
+                             useOffset=False))
+ax[0].xaxis.set_major_formatter(mpl.ticker.ScalarFormatter(\
+                             useMathText=True, 
+                             useOffset=False))
 
-# loop through dates
-for group, data in df_group:
-    # Extract mean autofluorescence
-    mean_auto = data[data.rbs == "auto"].mean_intensity.mean()
-    # Extract ∆lacI data
-    delta = data[data.rbs == "delta"]
-    mean_delta = (delta.intensity - delta.area * mean_auto).mean()
-    # Compute fold-change
-    fc = (data.intensity - data.area * mean_auto) / mean_delta
-    # Add result to original dataframe
-    df_micro.loc[fc.index, "fold_change"] = fc
+# Set the number of bins for the histograms
+nbins = 20 
+# Initialize array to save the mean fluorescence
+mean_fl = []
 
-# Define sample space
-mRNA_space = np.array([0])
-protein_space = np.arange(0, 2.2e4)
+# Loop through each group
+for i, (g, data) in enumerate(df_group):
+    # Histogram plot
+    # Add the filling to the histogram
+    n, bins, patches = ax[0].hist(data.intensity, nbins,
+                                  density=1, histtype='stepfilled', alpha=0.4,
+                                  label=str(g)+ r' $\mu$M', facecolor=colors[i],
+                                  linewidth=1)
+    # Add a black outline for each histogram
+    n, bins, patches = ax[0].hist(data.intensity, nbins,
+                                density=1, histtype='stepfilled', 
+                                label='', edgecolor='k',
+                               linewidth=1.5, facecolor='none')
+    # Save the mean fluorescence 
+    mean_fl.append(data.intensity.mean())
+    
+    # ECDF Plot
+    x, y = ccutils.stats.ecdf(data.intensity)
+    ax[1].plot(x, y, '.', label=str(g)+ r' $\mu$M', color=colors[i])
 
-# Extract the multipliers for a specific strain
-df_maxEnt_delta = df_maxEnt[
-    (df_maxEnt.operator == "O1")
-    & (df_maxEnt.repressor == 0)
-    & (df_maxEnt.inducer_uM == 0)
-]
+# Declare color map for legend
+cmap = plt.cm.get_cmap('Blues_r', len(concentrations))
+bounds = np.linspace(0, len(concentrations), len(concentrations) + 1)
 
-# Select the Lagrange multipliers
-lagrange_sample = df_maxEnt_delta.loc[
-    :, [col for col in df_maxEnt_delta.columns if "lambda" in col]
-].values[0]
+# Plot a little triangle indicating the mean of each distribution
+mean_plot = ax[0].scatter(mean_fl, [5E-4] * len(mean_fl), marker='v', s=200,
+            c=np.arange(len(mean_fl)), cmap=cmap,
+            edgecolor='k',
+            linewidth=1.5)
+# Generate a colorbar with the concentrations
+cbar_ax = fig.add_axes([0.95, 0.25, 0.03, 0.5])
+cbar = fig.colorbar(mean_plot, cax=cbar_ax)
+cbar.ax.get_yaxis().set_ticks([])
+for j, r in enumerate(concentrations):
+    if r == 0.1:
+        r = str(r)
+    else:
+        r = str(int(r))
+    cbar.ax.text(1, j / len(concentrations) + 1 / (2 * len(concentrations)),
+                 r, ha='left', va='center',
+                 transform = cbar_ax.transAxes, fontsize=6)
+cbar.ax.get_yaxis().labelpad = 35
+cbar.set_label(r'IPTG ($\mu$M)')
 
-# Compute distribution from Lagrange multipliers values
-Pp = ccutils.maxent.maxEnt_from_lagrange(
-    mRNA_space,
-    protein_space,
-    lagrange_sample,
-    exponents=moments
-).T
+    
+ax[0].set_ylim([0, 1E-3])
+ax[0].set_ylabel('probability')
+ax[0].ticklabel_format(style='sci', axis='y', scilimits=(0,0))
+ 
+ax[1].margins(0.02)
+ax[1].set_xlabel('fluorescence (a.u.)')
+ax[1].set_ylabel('ECDF')
 
-# Compute mean protein copy number
-mean_delta_p = np.sum(protein_space * Pp)
+plt.figtext(0.0, .9, '(A)', fontsize=8)
+plt.figtext(0.0, .46, '(B)', fontsize=8)
 
-# Transform protein_space into fold-change
-fc_space = protein_space / mean_delta_p# Define operators to be included
-operators = ["O1", "O2", "O3"]
-energies = [-15.3, -13.9, -9.7]
-
-# Define repressor to be included
-repressor = [22, 260, 1740]
-
-# Define concnentration to include in plot
-inducer = np.sort(df_maxEnt.inducer_uM.unique())[::2]
-
-# Define color for operators
-# Generate list of colors
-col_list = ["Blues_r", "Oranges_r", "Greens_r"]
-col_dict = dict(zip(operators, col_list))
-
-# Initialize figure
-fig = plt.figure(figsize=(7 * 0.8, 15 * 0.6))
-# Define outer grid
-outer = mpl.gridspec.GridSpec(len(operators), 1, hspace=0.3)
-
-# Loop through operators
-for k, op in enumerate(operators):
-    # Initialize inner grid
-    inner = mpl.gridspec.GridSpecFromSubplotSpec(
-        len(rep), len(inducer), subplot_spec=outer[k], wspace=0.02, hspace=0.05
-    )
-
-    # Define colors
-    colors = sns.color_palette(col_dict[op], n_colors=len(inducer) + 2)
-
-    # Loop through repressor copy numbers
-    for j, r in enumerate(rep):
-        # Loop through concentrations
-        for i, c in enumerate(inducer):
-            # Initialize subplots
-            ax = plt.Subplot(fig, inner[j, i])
-
-            # Add subplot to figure
-            fig.add_subplot(ax)
-
-            # Extract data
-            data = df_micro[
-                (df_micro.repressor == r)
-                & (df_micro.operator == op)
-                & (df_micro.IPTG_uM == c)
-            ]
-
-            # generate experimental ECDF
-            x, y = ccutils.stats.ecdf(data.fold_change)
-
-            # Plot ECDF
-            ax.plot(
-                x[::binstep],
-                y[::binstep],
-                color=colors[i],
-                alpha=1,
-                lw=2,
-                label="{:.0f}".format(c),
-            )
-
-            # Extract lagrange multiplieres
-            df_me = df_maxEnt[
-                (df_maxEnt.operator == op)
-                & (df_maxEnt.repressor == r)
-                & (df_maxEnt.inducer_uM == c)
-            ]
-
-            lagrange_sample = df_me.loc[
-                :, [col for col in df_me.columns if "lambda" in col]
-            ].values[0]
-
-            # Compute distribution from Lagrange multipliers values
-            Pp = ccutils.maxent.maxEnt_from_lagrange(
-                mRNA_space, protein_space, lagrange_sample, exponents=moments
-            ).T
-
-            # Plot theoretical prediction
-            ax.plot(
-                fc_space[0::binstep_theory],
-                np.cumsum(Pp)[0::binstep_theory],
-                linestyle="--",
-                color="k",
-                alpha=0.75,
-                linewidth=1,
-                label="",
-            )
-
-            # Label x axis
-            if j == len(rep) - 1:
-                ax.set_xlabel("fold-change", fontsize=7.5)
-
-            # Label y axis
-            if i == 0:
-                ax.set_ylabel("ECDF")
-
-            # Add title to plot
-            if j == 0:
-                ax.set_title(
-                    r"{:.0f} ($\mu M$)".format(c),
-                    color="white",
-                    bbox=dict(facecolor=colors[i]),
-                    fontsize=7
-                )
-
-            # Remove x ticks and y ticks from middle plots
-            if i != 0:
-                ax.set_yticklabels([])
-            if j != len(rep) - 1:
-                ax.set_xticklabels([])
-
-            # Add repressor copy number to right plots
-            if i == len(inducer) - 1:
-                # Generate twin axis
-                axtwin = ax.twinx()
-                # Remove ticks
-                axtwin.get_yaxis().set_ticks([])
-                # Set label
-                axtwin.set_ylabel(
-                    r"rep. / cell = {:d}".format(r),
-                    bbox=dict(facecolor="#ffedce"),
-                    fontsize=5
-                )
-                # Remove residual ticks from the original left axis
-                ax.tick_params(color="w", width=0)
-
-            if (j == 1) and (i == len(inducer) - 1):
-                text = ax.text(
-                    1.35,
-                    0.5,
-           r"$\Delta\epsilon_r = {:.1f} \; k_BT$".format(energies[k]),
-                    size=8,
-                    verticalalignment="center",
-                    rotation=90,
-                    color="white",
-                    transform=ax.transAxes,
-                    bbox=dict(facecolor=colors[0]),
-                )
-
+plt.subplots_adjust(hspace=0.06)
 plt.savefig(figdir + "figS24.pdf", bbox_inches="tight")
+

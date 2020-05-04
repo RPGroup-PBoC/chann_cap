@@ -29,147 +29,82 @@ homedir = repo.working_dir
 
 # Define directories for data and figure 
 figdir = f'{homedir}/fig/si/'
-datadir = f'{homedir}/data/csv_maxEnt_dist/'
+datadir = f'{homedir}/data/csv_gillespie/'
 
 # %%
-# Read resulting values for the multipliers.
-df_maxEnt_mRNA = pd.read_csv(datadir + "MaxEnt_Lagrange_mult_mRNA.csv")
-
-# Extract protein moments in constraints
-mRNA_mom =  [x for x in df_maxEnt_mRNA.columns if 'lambda_' in x]
-# Define index of moments to be used in the computation
-moments = [tuple(map(int, re.findall(r'\d+', s))) for s in mRNA_mom]
-
-# Define operators to be included
-operators = ["O1", "O2", "O3"]
-
-# Define repressors to be included
-repressors = [22, 260, 1740]
-
-# Define concnentration to include in plot
-inducer = np.sort(df_maxEnt_mRNA.inducer_uM.unique())[::2]
-
-# Define color for operators
-# Generate list of colors
-col_list = ["Blues", "Oranges", "Greens"]
-col_dict = dict(zip(operators, col_list))
-
-# Define binstep for plot, meaning how often to plot
-# an entry
-binstep = 1
-
-# Define sample space
-mRNA_space = np.arange(0, 50)
-protein_space = np.array([0])
+df_sim_mRNA = pd.read_csv(f'{datadir}gillespie_mRNA.csv')
+# Group data by simulation number
+df_group = df_sim_mRNA.groupby("sim_num")
 
 # Initialize plot
-fig, ax = plt.subplots(
-    len(repressors), len(operators), figsize=(5, 5), sharex=True, sharey=True
+fig = plt.figure()
+
+# Define colors
+colors = sns.color_palette("Paired", n_colors=2)
+# Loop through each simulation
+for group, data in df_group:
+    plt.plot(
+        data.time / 60,
+        data.mRNA,
+        "-",
+        lw=0.3,
+        alpha=0.05,
+        color=colors[0],
+        label="",
+    )
+
+# Compute mean mRNA
+mean_mRNA = [data.mRNA.mean() for group, data in df_sim_mRNA.groupby("time")]
+time_points = np.sort(df_sim_mRNA.time.unique()) / 60
+
+# # Plot mean mRNA
+plt.plot(
+    time_points,
+    mean_mRNA,
+    "-",
+    lw=2,
+    color=colors[1],
+    label=r"$\left\langle m(t) \right\rangle$",
 )
 
-# Define displacement
-displacement = 3e-2
+# Group data frame by cell cycle
+df_group = df_sim_mRNA.groupby("cycle")
+# Loop through cycles
+for i, (group, data) in enumerate(df_group):
+    # Define the label only for the last cell cycle not to repeat in legend
+    if group == df_sim_mRNA["cycle"].max():
+        label_s = "single promoter"
+        label_d = "two promoters"
+    else:
+        label_s = ""
+        label_d = ""
+    # Find index for one-promoter state
+    idx = np.where(data.state == "single")[0]
+    # Indicate states with two promoters
+    plt.axvspan(
+        data.iloc[idx.min()]["time"] / 60,
+        data.iloc[idx.max()]["time"] / 60,
+        facecolor="#e3dcd1",
+        label=label_s,
+    )
 
-# Loop through operators
-for j, op in enumerate(operators):
-    # Loop through repressors
-    for i, rep in enumerate(repressors):
+    # Find index for two-promoter state
+    idx = np.where(data.state == "double")[0]
+    # Indicate states with two promoters
+    plt.axvspan(
+        data.iloc[idx.min()]["time"] / 60,
+        data.iloc[idx.max()]["time"] / 60,
+        facecolor="#ffedce",
+        label=label_d,
+    )
 
-        # Extract the multipliers for a specific strain
-        df_sample = df_maxEnt_mRNA[
-            (df_maxEnt_mRNA.operator == op)
-            & (df_maxEnt_mRNA.repressor == rep)
-            & (df_maxEnt_mRNA.inducer_uM.isin(inducer))
-        ]
+# Set limits
+plt.xlim(df_sim_mRNA["time"].min() / 60, df_sim_mRNA["time"].max() / 60)
+# Label plot
+plt.xlabel("time (min)")
+plt.ylabel("mRNA/cell")
+plt.legend(loc="upper right")
 
-        # Group multipliers by inducer concentration
-        df_group = df_sample.groupby("inducer_uM", sort=True)
-
-        # Extract and invert groups to start from higher to lower
-        groups = np.flip([group for group, data in df_group])
-
-        # Define colors for plot
-        colors = sns.color_palette(col_dict[op], n_colors=len(df_group) + 1)
-
-        # Initialize matrix to save probability distributions
-        Pm = np.zeros([len(df_group), len(mRNA_space)])
-
-        # Loop through each of the entries
-        for k, group in enumerate(groups):
-            data = df_group.get_group(group)
-
-            # Select the Lagrange multipliers
-            lagrange_sample = data.loc[
-                :, [col for col in data.columns if "lambda" in col]
-            ].values[0]
-
-            # Compute distribution from Lagrange multipliers values
-            Pm[k, :] = ccutils.maxent.maxEnt_from_lagrange(
-                mRNA_space, protein_space, lagrange_sample, exponents=moments
-            )
-
-            # Generate PMF plot
-            ax[i, j].plot(
-                mRNA_space[0::binstep],
-                Pm[k, 0::binstep] + k * displacement,
-                drawstyle="steps",
-                lw=1,
-                color="k",
-                zorder=len(df_group) * 2 - (2 * k),
-            )
-            # Fill between each histogram
-            ax[i, j].fill_between(
-                mRNA_space[0::binstep],
-                Pm[k, 0::binstep] + k * displacement,
-                [displacement * k] * len(mRNA_space[0::binstep]),
-                color=colors[k],
-                alpha=1,
-                step="pre",
-                zorder=len(df_group) * 2 - (2 * k + 1),
-            )
-
-        # Add x label to lower plots
-        if i == 2:
-            ax[i, j].set_xlabel("mRNA / cell")
-
-        # Add y label to left plots
-        if j == 0:
-            ax[i, j].set_ylabel(r"[IPTG] ($\mu$M)")
-
-        # Add operator top of colums
-        if i == 0:
-            label = r"$\Delta\epsilon_r$ = {:.1f} $k_BT$".format(
-                df_sample.binding_energy.unique()[0]
-            )
-            ax[i, j].set_title(label, bbox=dict(facecolor="#ffedce"))
-
-        # Add repressor copy number to right plots
-        if j == 2:
-            # Generate twin axis
-            axtwin = ax[i, j].twinx()
-            # Remove ticks
-            axtwin.get_yaxis().set_ticks([])
-            # Set label
-            axtwin.set_ylabel(
-                r"rep. / cell = {:d}".format(rep),
-                bbox=dict(facecolor="#ffedce"),
-            )
-            # Remove residual ticks from the original left axis
-            ax[i, j].tick_params(color="w", width=0)
-
-# Change ylim
-ax[0, 0].set_ylim([-3e-3, 9e-2 + len(df_group) * displacement])
-# Adjust spacing between plots
-plt.subplots_adjust(hspace=0.05, wspace=0.02)
-
-# Set y axis ticks
-yticks = np.arange(len(df_group)) * displacement
-yticklabels = [int(x) for x in df_group.groups.keys()]
-
-ax[0, 0].yaxis.set_ticks(yticks)
-ax[0, 0].yaxis.set_ticklabels(yticklabels)
-
-# Set x ticks every 10 mRNA
-ax[0, 0].xaxis.set_ticks(np.arange(0, 50, 10))
-
+# Save figure
+plt.tight_layout()
 plt.savefig(figdir + "figS20.pdf", bbox_inches="tight")

@@ -58,6 +58,7 @@ df_mom_iptg = df_mom_iptg.assign(
 df_noise = pd.read_csv(f'{homedir}/data/csv_microscopy/' + 
                        'microscopy_noise_bootstrap.csv')
 
+df_noise = df_noise[df_noise.percentile == 0.95]
 #%%
 # Extract regulated promoter information
 df_noise_reg = df_noise[df_noise.repressor > 0]
@@ -197,4 +198,3 @@ ax[3].set_ylabel(r"noise")
 plt.subplots_adjust(wspace=0.01, hspace=0.1)
 
 plt.savefig(figdir + "fig03C_v3.pdf", bbox_inches="tight")
-plt.savefig(figdir + "fig03C_v3.png", bbox_inches="tight")

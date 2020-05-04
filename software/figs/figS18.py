@@ -4,7 +4,7 @@ import glob
 import numpy as np
 import scipy as sp
 import pandas as pd
-import statsmodels.api as sm
+import re
 import git
 
 # Import matplotlib stuff for plotting
@@ -20,7 +20,6 @@ import ccutils
 
 # Set PBoC plotting format
 ccutils.viz.set_plotting_style()
-# Increase dpi
 
 #%%
 
@@ -33,174 +32,133 @@ figdir = f'{homedir}/fig/si/'
 datadir = f'{homedir}/data/csv_maxEnt_dist/'
 
 # %%
-# Read predictions for linear regression to find multiplicative factor
+# Read resulting values for the multipliers.
+df_maxEnt = pd.read_csv(datadir + "MaxEnt_Lagrange_mult_protein.csv")
 
-# Read moments for multi-promoter model
-df_mom_rep = pd.read_csv(datadir + 'MaxEnt_multi_prom_constraints.csv')
+# Extract protein moments in constraints
+prot_mom = [x for x in df_maxEnt.columns if "lambda_m0" in x]
+# Define index of moments to be used in the computation
+moments = [tuple(map(int, re.findall(r"\d+", s))) for s in prot_mom]
 
-# Read experimental determination of noise
-df_noise = pd.read_csv(f'{homedir}/data/csv_microscopy/' + 
-                       'microscopy_noise_bootstrap.csv')
-
-# Find the mean unregulated levels to compute the fold-change
-mean_m_delta = np.mean(df_mom_rep[df_mom_rep.repressor == 0].m1p0)
-mean_p_delta = np.mean(df_mom_rep[df_mom_rep.repressor == 0].m0p1)
-
-# Compute the skewness for the multi-promoter data
-m_mean = df_mom_rep.m1p0
-p_mean = df_mom_rep.m0p1
-m_var = df_mom_rep.m2p0 - df_mom_rep.m1p0 ** 2
-p_var = df_mom_rep.m0p2 - df_mom_rep.m0p1 ** 2
-
-df_mom_rep = df_mom_rep.assign(
-    m_skew=(df_mom_rep.m3p0 - 3 * m_mean * m_var - m_mean**3)
-    / m_var**(3 / 2),
-    p_skew=(df_mom_rep.m0p3 - 3 * p_mean * p_var - p_mean**3)
-    / p_var**(3 / 2),
-)
-
-# Initialize list to save theoretical noise
-thry_skew = list()
-# Iterate through rows
-for idx, row in df_noise.iterrows():
-    # Extract information
-    rep = float(row.repressor)
-    op = row.operator
-    if np.isnan(row.IPTG_uM):
-        iptg = 0
-    else:
-        iptg = row.IPTG_uM
-    
-    # Extract equivalent theoretical prediction
-    thry = df_mom_rep[(df_mom_rep.repressor == rep) &
-                       (df_mom_rep.operator == op) &
-                       (df_mom_rep.inducer_uM == iptg)].p_skew
-    # Append to list
-    thry_skew.append(thry.iloc[0])
-    
-df_noise = df_noise.assign(skew_theory = thry_skew)
-
-# Extract fold-change
-fc = df_noise.fold_change.values
-# Set values for ∆lacI to be fold-change 1
-fc[np.isnan(fc)] = 1
-# Normalize weights
-weights = fc / fc.sum()
-
-# Declare linear regression model
-wls_model = sm.WLS(df_noise.skewness.values,
-                   df_noise.skew_theory.values,
-                   weights=weights)
-# Fit parameter
-results = wls_model.fit()
-factor = results.params[0]
-
-#%%
-# Read moments for multi-promoter model
-df_mom_iptg = pd.read_csv(datadir + 'MaxEnt_multi_prom_IPTG_range.csv')
-
-# Compute the skewness for the multi-promoter data
-m_mean = df_mom_iptg.m1p0
-p_mean = df_mom_iptg.m0p1
-m_var = df_mom_iptg.m2p0 - df_mom_iptg.m1p0 ** 2
-p_var = df_mom_iptg.m0p2 - df_mom_iptg.m0p1 ** 2
-
-df_mom_iptg = df_mom_iptg.assign(
-    m_skew=(df_mom_iptg.m3p0 - 3 * m_mean * m_var - m_mean**3)
-    / m_var**(3 / 2) * factor,
-    p_skew=(df_mom_iptg.m0p3 - 3 * p_mean * p_var - p_mean**3)
-    / p_var**(3 / 2) * factor,
-)
-
-# Read experimental determination of noise
-df_noise = pd.read_csv(f'{homedir}/data/csv_microscopy/' + 
-                       'microscopy_noise_bootstrap.csv')
-
-#%%
-# Extract regulated promoter information
-df_noise_reg = df_noise[df_noise.repressor > 0]
-# Define repressor copy numbers to include
-rep = df_noise_reg["repressor"].unique()
-
-# Group moments by operator and repressor
-df_group_exp = (
-    df_noise_reg[df_noise_reg.noise > 0]
-    .sort_values("IPTG_uM")
-    .groupby(["operator", "repressor"])
-)
-
-df_group = (
-    df_mom_iptg[df_mom_iptg["repressor"].isin(rep)]
-    .sort_values("inducer_uM")
-    .groupby(["operator", "repressor"])
-)
-
-# Generate index for each opeartor
+# Define operators to be included
 operators = ["O1", "O2", "O3"]
-energies = [-15.3, -13.9, -9.7]
-op_idx = dict(zip(operators, np.arange(3)))
 
-# Generate list of colors
-col_list = ["Blues_r", "Oranges_r", "Greens_r"]
-# Loop through operators generating dictionary of colors for each
-col_dict = {}
-for i, op in enumerate(operators):
-    col_dict[op] = dict(
-        zip(rep, sns.color_palette(col_list[i], n_colors=len(rep) + 1)[0:3])
-    )
+# Remove these dates
+df_micro = pd.read_csv(
+    "../../data/csv_microscopy/single_cell_microscopy_data.csv"
+)
 
-# Define threshold to separate log scale from linear scale
-thresh = 1e-1
+df_micro[["date", "operator", "rbs", "mean_intensity", "intensity"]].head()
+
+# group df by date
+df_group = df_micro.groupby("date")
+
+# loop through dates
+for group, data in df_group:
+    # Extract mean autofluorescence
+    mean_auto = data[data.rbs == "auto"].mean_intensity.mean()
+    # Extract ∆lacI data
+    delta = data[data.rbs == "delta"]
+    mean_delta = (delta.intensity - delta.area * mean_auto).mean()
+    # Compute fold-change
+    fc = (data.intensity - data.area * mean_auto) / mean_delta
+    # Add result to original dataframe
+    df_micro.loc[fc.index, "fold_change"] = fc
+
+# Define sample space
+mRNA_space = np.array([0])
+protein_space = np.arange(0, 2.2e4)
+
+# Extract the multipliers for a specific strain
+df_maxEnt_delta = df_maxEnt[
+    (df_maxEnt.operator == "O1")
+    & (df_maxEnt.repressor == 0)
+    & (df_maxEnt.inducer_uM == 0)
+]
+
+# Select the Lagrange multipliers
+lagrange_sample = df_maxEnt_delta.loc[
+    :, [col for col in df_maxEnt_delta.columns if "lambda" in col]
+].values[0]
+
+# Compute distribution from Lagrange multipliers values
+Pp = ccutils.maxent.maxEnt_from_lagrange(
+    mRNA_space,
+    protein_space,
+    lagrange_sample,
+    exponents=moments
+).T
+
+# Compute mean protein copy number
+mean_delta_p = np.sum(protein_space * Pp)
+
+# Transform protein_space into fold-change
+fc_space = protein_space / mean_delta_p
+
+##  Plot ECDF for experimental data
+# Keep only data for ∆lacI
+df_delta = df_micro[df_micro.rbs == "delta"]
+
+# Group data by operator
+df_group = df_delta.groupby("operator")
+
 # Initialize figure
 fig, ax = plt.subplots(1, 3, figsize=(7, 2.5), sharex=True, sharey=True)
 
-# Loop through groups on multi-promoter
+# Define colors for operators
+col_list = ["Blues_r", "Reds_r", "Greens_r"]
+col_dict = dict(zip(("O1", "O2", "O3"), col_list))
+
+# Loop through operators
 for i, (group, data) in enumerate(df_group):
-    # Log scale
-    ax[op_idx[group[0]]].plot(
-        data[data.inducer_uM >= thresh].inducer_uM,
-        data[data.inducer_uM >= thresh].p_skew,
-        color=col_dict[group[0]][group[1]],
-        label=int(group[1]),
-    )
-    # linear scale
-    ax[op_idx[group[0]]].plot(
-        data[data.inducer_uM <= thresh].inducer_uM,
-        data[data.inducer_uM <= thresh].p_skew,
-        color=col_dict[group[0]][group[1]],
-        label="",
-        linestyle=":",
-    )
+    # Group data by date
+    data_group = data.groupby("date")
+    # Generate list of colors
+    colors = sns.color_palette(col_dict[group], n_colors=len(data_group))
 
-# Loop through groups on experimental data
-for i, (group, data) in enumerate(df_group_exp):
-    ax[op_idx[group[0]]].errorbar(
-        x=data.IPTG_uM,
-        y=data.skewness,
-        yerr=[data.skewness - data.skewness_lower, 
-        data.skewness_upper - data.skewness],
-        fmt="o",
-        ms=3.5,
-        color=col_dict[group[0]][group[1]],
-        label="",
-    )
+    # Loop through dates
+    for j, (g, d) in enumerate(data_group):
+        # Generate ECDF
+        x, y = ccutils.stats.ecdf(d.fold_change)
+        # Plot ECDF
+        ax[i].plot(
+            x[::10],
+            y[::10],
+            lw=0,
+            marker=".",
+            color=colors[j],
+            alpha=0.3,
+            label="",
+        )
 
-
-for i, a in enumerate(ax):
-    # systematically change axis for all subplots
-    ax[i].set_xscale("symlog", linthreshx=thresh, linscalex=0.5)
-    # Set legend
-    leg = ax[i].legend(title="rep./cell", fontsize=8)
-    # Set legend font size
-    plt.setp(leg.get_title(), fontsize=8)
-
+    # Label x axis
+    ax[i].set_xlabel("fold-change")
     # Set title
-    label = r"$\Delta\epsilon_r$ = {:.1f} $k_BT$".format(energies[i])
+    label = r"operator {:s}".format(group)
     ax[i].set_title(label, bbox=dict(facecolor="#ffedce"))
-    # Label axis
-    ax[i].set_xlabel(r"IPTG (µM)")
-ax[0].set_ylabel(r"skewness")
+
+    # Plot theoretical prediction
+    ax[i].plot(
+        fc_space[0::100],
+        np.cumsum(Pp)[0::100],
+        linestyle="--",
+        color="k",
+        linewidth=1.5,
+        label="theory",
+    )
+
+    # Add fake data point for legend
+    ax[i].plot([], [], lw=0, marker=".", color=colors[0], label="microscopy")
+    # Add legend
+    ax[i].legend()
+
+# Label y axis of left plot
+ax[0].set_ylabel("ECDF")
+
+# Change limit
+ax[0].set_xlim(right=3)
 
 # Change spacing between plots
 plt.subplots_adjust(wspace=0.05)
+
 plt.savefig(figdir + "figS18.pdf", bbox_inches="tight")

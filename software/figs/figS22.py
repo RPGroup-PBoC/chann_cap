@@ -29,136 +29,124 @@ homedir = repo.working_dir
 
 # Define directories for data and figure 
 figdir = f'{homedir}/fig/si/'
-datadir = f'{homedir}/data/csv_maxEnt_dist/'
+datadir = f'{homedir}/data/csv_gillespie/'
 
 # %%
-# Read resulting values for the multipliers.
-df_maxEnt = pd.read_csv(datadir + "MaxEnt_Lagrange_mult_protein.csv")
+df_sim_prot = pd.read_csv(datadir + "two_state_protein_gillespie.csv")
 
-# Extract protein moments in constraints
-prot_mom = [x for x in df_maxEnt.columns if "lambda_m0" in x]
-# Define index of moments to be used in the computation
-moments = [tuple(map(int, re.findall(r"\d+", s))) for s in prot_mom]
+# Extract mRNA data
+mRNA_names = [x for x in df_sim_prot.columns if re.match(r"[m]\d", x)]
+mRNA_data = df_sim_prot.loc[:, mRNA_names].values
+# Compute mean mRNA
+mRNA_mean = mRNA_data.mean(axis=1)
 
-# Define operators to be included
-operators = ["O1", "O2", "O3"]
+# Extract protein data
+protein_names = [x for x in df_sim_prot.columns if re.match(r"[p]\d", x)]
+protein_data = df_sim_prot.loc[:, protein_names].values
+# Compute mean protein
+protein_mean = protein_data.mean(axis=1)
 
-# Remove these dates
-df_micro = pd.read_csv(
-    "../../data/csv_microscopy/single_cell_microscopy_data.csv"
+# Initialize plot
+fig, ax = plt.subplots(2, 1, figsize=(2.5, 2), sharex=True)
+
+# Define colors
+colors = sns.color_palette("Paired", n_colors=2)
+
+# Define time stepsize for plot
+binstep = 10
+# Define every how many trajectories to plot
+simnum = 10
+
+
+# Plot mRNA trajectories
+ax[0].plot(
+    df_sim_prot["time"][0::binstep] / 60,
+    mRNA_data[0::binstep, 0::simnum],
+    color=colors[0],
+)
+# Plot mean mRNA
+ax[0].plot(
+    df_sim_prot["time"][0::binstep] / 60,
+    mRNA_mean[0::binstep],
+    color=colors[1],
 )
 
-df_micro[["date", "operator", "rbs", "mean_intensity", "intensity"]].head()
+# Plot protein trajectories
+ax[1].plot(
+    df_sim_prot["time"][0::binstep] / 60,
+    protein_data[0::binstep, 0::simnum],
+    color=colors[0],
+)
+# Plot mean protein
+ax[1].plot(
+    df_sim_prot["time"][0::binstep] / 60,
+    protein_mean[0::binstep],
+    color=colors[1],
+)
 
-# group df by date
-df_group = df_micro.groupby("date")
-
-# loop through dates
-for group, data in df_group:
-    # Extract mean autofluorescence
-    mean_auto = data[data.rbs == "auto"].mean_intensity.mean()
-    # Extract ∆lacI data
-    delta = data[data.rbs == "delta"]
-    mean_delta = (delta.intensity - delta.area * mean_auto).mean()
-    # Compute fold-change
-    fc = (data.intensity - data.area * mean_auto) / mean_delta
-    # Add result to original dataframe
-    df_micro.loc[fc.index, "fold_change"] = fc
-
-# Define sample space
-mRNA_space = np.array([0])
-protein_space = np.arange(0, 2.2e4)
-
-# Extract the multipliers for a specific strain
-df_maxEnt_delta = df_maxEnt[
-    (df_maxEnt.operator == "O1")
-    & (df_maxEnt.repressor == 0)
-    & (df_maxEnt.inducer_uM == 0)
-]
-
-# Select the Lagrange multipliers
-lagrange_sample = df_maxEnt_delta.loc[
-    :, [col for col in df_maxEnt_delta.columns if "lambda" in col]
-].values[0]
-
-# Compute distribution from Lagrange multipliers values
-Pp = ccutils.maxent.maxEnt_from_lagrange(
-    mRNA_space,
-    protein_space,
-    lagrange_sample,
-    exponents=moments
-).T
-
-# Compute mean protein copy number
-mean_delta_p = np.sum(protein_space * Pp)
-
-# Transform protein_space into fold-change
-fc_space = protein_space / mean_delta_p
-
-##  Plot ECDF for experimental data
-# Keep only data for ∆lacI
-df_delta = df_micro[df_micro.rbs == "delta"]
-
-# Group data by operator
-df_group = df_delta.groupby("operator")
-
-# Initialize figure
-fig, ax = plt.subplots(1, 3, figsize=(7, 2.5), sharex=True, sharey=True)
-
-# Define colors for operators
-col_list = ["Blues_r", "Reds_r", "Greens_r"]
-col_dict = dict(zip(("O1", "O2", "O3"), col_list))
-
-# Loop through operators
+# Group data frame by cell cycle
+df_group = df_sim_prot.groupby("cycle")
+# Loop through cycles
 for i, (group, data) in enumerate(df_group):
-    # Group data by date
-    data_group = data.groupby("date")
-    # Generate list of colors
-    colors = sns.color_palette(col_dict[group], n_colors=len(data_group))
-
-    # Loop through dates
-    for j, (g, d) in enumerate(data_group):
-        # Generate ECDF
-        x, y = ccutils.stats.ecdf(d.fold_change)
-        # Plot ECDF
-        ax[i].plot(
-            x[::10],
-            y[::10],
-            lw=0,
-            marker=".",
-            color=colors[j],
-            alpha=0.3,
-            label="",
-        )
-
-    # Label x axis
-    ax[i].set_xlabel("fold-change")
-    # Set title
-    label = r"operator {:s}".format(group)
-    ax[i].set_title(label, bbox=dict(facecolor="#ffedce"))
-
-    # Plot theoretical prediction
-    ax[i].plot(
-        fc_space[0::100],
-        np.cumsum(Pp)[0::100],
-        linestyle="--",
-        color="k",
-        linewidth=1.5,
-        label="theory",
+    # Define the label only for the last cell cycle not to repeat in legend
+    if group == df_sim_prot["cycle"].max():
+        label_s = "single promoter"
+        label_d = "two promoters"
+    else:
+        label_s = ""
+        label_d = ""
+    # Find index for one-promoter state
+    idx = np.where(data.state == "single")[0]
+    # Indicate states with two promoters
+    ax[0].axvspan(
+        data.iloc[idx.min()]["time"] / 60,
+        data.iloc[idx.max()]["time"] / 60,
+        facecolor="#e3dcd1",
+        label=label_s,
+    )
+    ax[1].axvspan(
+        data.iloc[idx.min()]["time"] / 60,
+        data.iloc[idx.max()]["time"] / 60,
+        facecolor="#e3dcd1",
+        label=label_s,
     )
 
-    # Add fake data point for legend
-    ax[i].plot([], [], lw=0, marker=".", color=colors[0], label="microscopy")
-    # Add legend
-    ax[i].legend()
+    # Find index for two-promoter state
+    idx = np.where(data.state == "double")[0]
+    # Indicate states with two promoters
+    ax[0].axvspan(
+        data.iloc[idx.min()]["time"] / 60,
+        data.iloc[idx.max()]["time"] / 60,
+        facecolor="#ffedce",
+        label=label_d,
+    )
+    ax[1].axvspan(
+        data.iloc[idx.min()]["time"] / 60,
+        data.iloc[idx.max()]["time"] / 60,
+        facecolor="#ffedce",
+        label=label_d,
+    )
 
-# Label y axis of left plot
-ax[0].set_ylabel("ECDF")
 
-# Change limit
-ax[0].set_xlim(right=3)
+# Set limits
+ax[0].set_xlim(df_sim_prot["time"].min() / 60, df_sim_prot["time"].max() / 60)
+# Label plot
+ax[1].set_xlabel("time (min)")
+ax[0].set_ylabel("mRNA/cell")
+ax[1].set_ylabel("protein/cell")
 
-# Change spacing between plots
-plt.subplots_adjust(wspace=0.05)
+# Set legend for both plots
+ax[0].legend(
+    loc="upper left",
+    ncol=2,
+    frameon=False,
+    bbox_to_anchor=(-0.12, 0, 0, 1.3),
+    fontsize=6.5,
+)
+
+# Align y axis labels
+fig.align_ylabels()
+
+plt.subplots_adjust(hspace=0.05)
 
 plt.savefig(figdir + "figS22.pdf", bbox_inches="tight")

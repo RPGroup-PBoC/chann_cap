@@ -57,9 +57,7 @@ df_mom_iptg = df_mom_iptg.assign(
 # Read experimental determination of noise
 df_noise = pd.read_csv(f'{homedir}/data/csv_microscopy/' + 
                        'microscopy_noise_bootstrap.csv')
-# Keep only percentile required
-percentile = 0.95
-df_noise = df_noise[df_noise.percentile == percentile]
+df_noise = df_noise[df_noise.percentile == 0.95]
 
 #%%
 # Extract regulated promoter information
@@ -253,13 +251,14 @@ for i in range(4, 6):
 # Set scales of reference plots and the other ones will follow
 ax_noise[3].set_xscale("symlog", linthreshx=thresh)  # , linscalex=0.5)
 ax_noise[0].set_yscale("log")
+ax_noise[3].set_yscale("log")
 
 # Set limits
 for i in range(3):
     ax_fc[i].set_ylim([-0.05, 1.4])
 
 ax_noise[0].set_ylim([dthresh, 5e2])
-ax_noise[3].set_ylim([-0.25, dthresh])
+ax_noise[3].set_ylim(top=dthresh)
 
 # Label axis
 for i, ax in enumerate(ax_fc):
@@ -290,5 +289,4 @@ ax_noise[3].set_ylabel(r"noise")
 fig.align_ylabels()
 
 plt.savefig(figdir + "fig03C.pdf", bbox_inches="tight")
-plt.savefig(figdir + "fig03C.svg", bbox_inches="tight")
 plt.savefig(figdir + "fig03C.png", bbox_inches="tight")
