@@ -67,6 +67,9 @@ graphicspath.tex
 *.pkl
 *.dill
 
+# Ignore webste stuff
+.jekyll-cache/
+
 # Local directories to ignore
 tmp/
 fig/
