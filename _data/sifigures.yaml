@@ -196,78 +196,15 @@
       link: microscopy_noise_bootstrap.csv
 
 - sifig:
-  title: "Fig. S15. Multiplicative factor to improve theoretical vs. experimental comparison of noise in gene expression."
+  title: "Fig. S15. Maximum entropy distribution of six-face die."
   filename: figS15.py
-  desc: >
-    Theoretical vs. experimental noise with constant multiplicative factor.
-  req:
-    - ds:
-      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
-      storage: local 
-      link: MaxEnt_multi_prom_constraints.csv
-    - ds:
-      title: Bootstrap gene expression fold-change and gene expression noise.
-      storage: local 
-      link: microscopy_noise_bootstrap.csv
-
-- sifig:
-  title: "Fig. S16. Protein noise of the regulated promoter with multiplicative factor."
-  filename: figS16.py
-  desc: >
-    Comparison of the experimental and theoretical noise for different
-    operators with multiplicative factor.
-  req:
-    - ds:
-      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
-      storage: local 
-      link: MaxEnt_multi_prom_constraints.csv
-    - ds:
-      title: Bootstrap gene expression fold-change and gene expression noise.
-      storage: local 
-      link: microscopy_noise_bootstrap.csv
-
-- sifig:
-  title: "Fig. S17. Skewness of the regulated promoter."
-  filename: figS17.py
-  desc: >
-    Comparison of the experimental and theoretical skewness for different
-    operators.
-  req:
-    - ds:
-      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
-      storage: local 
-      link: MaxEnt_multi_prom_constraints.csv
-    - ds:
-      title: Bootstrap gene expression fold-change and gene expression noise.
-      storage: local 
-      link: microscopy_noise_bootstrap.csv
-
-- sifig:
-  title: "Fig. S18. Skewness of the regulated promoter with a multiplicative factor."
-  filename: figS18.py
-  desc: >
-    Comparison of the experimental and theoretical skewness for different
-    operators with multiplicative factor.
-  req:
-    - ds:
-      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
-      storage: local 
-      link: MaxEnt_multi_prom_constraints.csv
-    - ds:
-      title: Bootstrap gene expression fold-change and gene expression noise.
-      storage: local 
-      link: microscopy_noise_bootstrap.csv
-
-- sifig:
-  title: "Fig. S19. Maximum entropy distribution of six-face die."
-  filename: figS19.py
   desc: >
     Example distribution for a six-face die inferred from the value of the mean
     face value using Maximum Entropy.
 
 - sifig:
-  title: "Fig. S20. Maximum entropy mRNA distributions for simple repression constructs"
-  filename: figS20.py
+  title: "Fig. S16. Maximum entropy mRNA distributions for simple repression constructs"
+  filename: figS16.py
   desc: >
       Predicted mRNA distributions under different inducer (IPTG)
       concentrations for different combinations of repressor-DNA affinities
@@ -279,9 +216,9 @@
       link: MaxEnt_Lagrange_mult_mRNA.csv
 
 - sifig:
-  title: "Fig. 21. Maximum entropy protein distributions for varying physical
+  title: "Fig. 17. Maximum entropy protein distributions for varying physical
   parameters"
-  filename: figS21.py
+  filename: figS17.py
   desc: >
       Predicted protein distributions under different inducer (IPTG)
       concentrations for different combinations of repressor-DNA affinities
@@ -293,8 +230,8 @@
       link: MaxEnt_Lagrange_mult_protein.csv
 
 - sifig:
-  title: "Fig. 22. Experiment vs. theory comparison for ∆lacI strain."
-  filename: figS22.py
+  title: "Fig. 18. Experiment vs. theory comparison for ∆lacI strain."
+  filename: figS18.py
   desc: >
       Comparison of experimental and theoretical cumulative distribution
       functions for the unregulated promoter.
@@ -309,8 +246,8 @@
       link: single_cell_microscopy_data.csv
 
 - sifig:
-  title: "Fig. 23. Experiment vs. theory comparison for regulated strain."
-  filename: figS23.py
+  title: "Fig. 19. Experiment vs. theory comparison for regulated strain."
+  filename: figS19.py
   desc: >
       Comparison of experimental and theoretical cumulative distribution
       functions for the regulated promoter.
@@ -325,32 +262,15 @@
       link: single_cell_microscopy_data.csv
 
 - sifig:
-  title: "Fig. 24. Experiment vs. theory comparison for regulated strain with multiplicative factor correction for second and third moment."
-  filename: figS24.py
-  desc: >
-      Comparison of experimental and theoretical cumulative distribution
-      functions for the regulated promoter with a multiplicative factor for the
-      second and third moment.
-  req:
-    - ds:
-      title: Maximum entropy Lagrange multipliers for protein distribution as inferred from the modified moments.
-      storage: local 
-      link: MaxEnt_Lagrange_mult_protein_correction.csv
-    - ds:
-      title: Single-cell fluorescence intensities.
-      storage: local 
-      link: single_cell_microscopy_data.csv
-
-- sifig:
-  title: "Fig. 25. Stochastic trajectories of mRNA counts."
-  filename: figS25.py
+  title: "Fig. 20. Stochastic trajectories of mRNA counts."
+  filename: figS20.py
   desc: >
       mRNA count trajectories over several cell cycles simulated with the
       Gillespie algorithm.
 
 - sifig:
-  title: "Fig. 26. Comparison of analytical and simulated mRNA distribution."
-  filename: figS26.py
+  title: "Fig. 21. Comparison of analytical and simulated mRNA distribution."
+  filename: figS21.py
   desc: >
     Comparison of analytical result and Gillespie simulation of mRNA
     distribution for cells with a single copy and two copies of the gene.
@@ -361,15 +281,15 @@
       link: MaxEnt_Lagrange_mult_mRNA.csv
 
 - sifig:
-  title: "Fig. 27. Stochastic trajectories of mRNA and protein counts."
-  filename: figS27.py
+  title: "Fig. 22. Stochastic trajectories of mRNA and protein counts."
+  filename: figS22.py
   desc: >
       mRNA and protein count trajectories over several cell cycles simulated
       with the Gillespie algorithm.
 
 - sifig:
-  title: "Fig. 28. Comparison of protein distributions."
-  filename: figS28.py
+  title: "Fig. 23. Comparison of protein distributions."
+  filename: figS23.py
   desc: >
     Comparison of maximum entropy and Gillespie simulation of protein 
     distribution.
@@ -380,8 +300,8 @@
       link: MaxEnt_Lagrange_mult_mRNA.csv
 
 - sifig:
-  title: "Fig. 29. Single cell fluorescence distributions for different inducer concentrations."
-  filename: figS29.py
+  title: "Fig. 24. Single cell fluorescence distributions for different inducer concentrations."
+  filename: figS24.py
   desc: >
     Example fluorescence distribution as obtained for a single strain under
     different inducer concentrations.
@@ -392,8 +312,8 @@
       link: single_cell_microscopy_data.csv
 
 - sifig:
-  title: "Fig. S30. Channel capacity bootstrap for experimental data."
-  filename: figS30.py
+  title: "Fig. S25. Channel capacity bootstrap for experimental data."
+  filename: figS25.py
   desc: >
     Cumulative distribution function of the resulting channel capacity
     estimates.
@@ -404,8 +324,8 @@
       link: https://data.caltech.edu/records/1185
 
 - sifig:
-  title: "Fig. S31. Inverse sample size vs channel capacity."
-  filename: figS31.py
+  title: "Fig. S26. Inverse sample size vs channel capacity."
+  filename: figS26.py
   desc: >
     Channel capacity obtained for different subsample sizes of the data plotted
     against the inverse sample size.
@@ -417,8 +337,8 @@
 
 
 - sifig:
-  title: "Fig. S32. Channel capacity as a function of the number of bins."
-  filename: figS32.py
+  title: "Fig. S27. Channel capacity as a function of the number of bins."
+  filename: figS27.py
   desc: >
     Unbiased channel capacity estimates obtained from linear regressions.
   req:
@@ -428,8 +348,8 @@
       link: https://data.caltech.edu/records/1185
 
 - sifig:
-  title: "Fig. S33. Comparison of channel capacity predictions for single- and multi-promoter models."
-  filename: figS33.py
+  title: "Fig. S28. Comparison of channel capacity predictions for single- and multi-promoter models."
+  filename: figS28.py
   desc: >
     Channel capacity for the multi-promoter model vs. the single-promoter
     steady state model as a function of repressor copy numbers for di↵erent
@@ -445,8 +365,8 @@
       link: chann_cap_single_prom_protein.csv
 
 - sifig:
-  title: "Fig. S34. Measuring the loss of information by using di↵erent number of constraints."
-  filename: figS34.py
+  title: "Fig. S29. Measuring the loss of information by using di↵erent number of constraints."
+  filename: figS29.py
   desc: >
     The Kullback-Leibler divergence was computed between the maximum entropy
     distribution constructed using the first 6 moments of the distribution and
@@ -458,8 +378,70 @@
       link: MaxEnt_Lagrange_mult_protein_var_mom.csv
 
 - sifig:
-  title: "Fig. S35. Additive correction factor for channel capacit."
-  filename: figS35.py
+  title: "Fig. S30. Multiplicative factor to improve theoretical vs. experimental comparison of noise in gene expression."
+  filename: figS30.py
+  desc: >
+    Theoretical vs. experimental noise with constant multiplicative factor.
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
+      storage: local 
+      link: MaxEnt_multi_prom_constraints.csv
+    - ds:
+      title: Bootstrap gene expression fold-change and gene expression noise.
+      storage: local 
+      link: microscopy_noise_bootstrap.csv
+
+- sifig:
+  title: "Fig. S31. Protein noise of the regulated promoter with multiplicative factor."
+  filename: figS31.py
+  desc: >
+    Comparison of the experimental and theoretical noise for different
+    operators with multiplicative factor.
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
+      storage: local 
+      link: MaxEnt_multi_prom_constraints.csv
+    - ds:
+      title: Bootstrap gene expression fold-change and gene expression noise.
+      storage: local 
+      link: microscopy_noise_bootstrap.csv
+
+- sifig:
+  title: "Fig. S32. Additive factor to improve theoretical vs. experimental comparison of noise in gene expression."
+  filename: figS32.py
+  desc: >
+    Theoretical vs. experimental noise with constant additive factor.
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
+      storage: local 
+      link: MaxEnt_multi_prom_constraints.csv
+    - ds:
+      title: Bootstrap gene expression fold-change and gene expression noise.
+      storage: local 
+      link: microscopy_noise_bootstrap.csv
+
+- sifig:
+  title: "Fig. S33. Protein noise of the regulated promoter with additive factor."
+  filename: figS33.py
+  desc: >
+    Comparison of the experimental and theoretical noise for different
+    operators with additive factor.
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle for multi-promoter model.
+      storage: local 
+      link: MaxEnt_multi_prom_constraints.csv
+    - ds:
+      title: Bootstrap gene expression fold-change and gene expression noise.
+      storage: local 
+      link: microscopy_noise_bootstrap.csv
+
+- sifig:
+  title: "Fig. S34. Additive correction factor for channel capacit."
+  filename: figS34.py
   desc: >
     Corrected channel capacity accounting for the systematic deviation of the noise.
   req:
