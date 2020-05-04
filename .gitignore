@@ -62,6 +62,7 @@ graphicspath.tex
 *pycache*
 *egg-info
 *.vscode
+.jekyll-cache/
 
 # Ignore pickle files
 *.pkl
