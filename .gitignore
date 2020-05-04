@@ -61,6 +61,7 @@ graphicspath.tex
 **/.ipynb_checkpoints/
 *pycache*
 *egg-info
+*.vscode
 
 # Ignore pickle files
 *.pkl
