@@ -60,17 +60,17 @@ we now compare the predictions of the model with experimental data. As detailed
 in the Methods section, we obtained single-cell fluorescence values of
 different {\it E. coli} strains carrying a YFP gene under the control of the
 LacI repressor. Each strain was exposed to twelve different inducer
-concentrations until reaching steady-state expression. The strains imaged
-spanned three orders of magnitude in repressor copy number and three distinct
-repressor-DNA affinities. Since growth was asynchronous, we reason that cells
-were randomly sampled at all stages of the cell cycle. Therefore, when
-computing statistics from the data such as the mean fluorescence value, in
-reality we are averaging over the cell cycle. In other words, as depicted in
-\fref{fig3_cell_cycle}(B), quantities such as the mean protein copy number
-change over time, i.e. $\ee{p} \equiv \ee{p(t)}$. This means that computing the
-mean of a population of unsynchronized cells is equivalent to averaging this
-time-dependent mean protein copy number over the span of the cell cycle.
-Mathematically this is expressed as
+concentrations for $\approx 8$ generations for cells to adapt to the media. The
+strains imaged spanned three orders of magnitude in repressor copy number and
+three distinct repressor-DNA affinities. Since growth was asynchronous, we
+reason that cells were randomly sampled at all stages of the cell cycle.
+Therefore, when computing statistics from the data such as the mean fluorescence
+value, in reality we are averaging over the cell cycle. In other words, as
+depicted in \fref{fig3_cell_cycle}(B), quantities such as the mean protein copy
+number change over time, i.e. $\ee{p} \equiv \ee{p(t)}$. This means that
+computing the mean of a population of unsynchronized cells is equivalent to
+averaging this time-dependent mean protein copy number over the span of the cell
+cycle. Mathematically this is expressed as
 \begin{equation}
 	\ee{p}_c = \int_{t_o}^{t_d} \ee{p(t)} P(t) dt,
 	\label{eq_time_avg}
@@ -82,16 +82,16 @@ $t_d$ represents the time of cell division, and $P(t)$ represents the
 probability of any cell being at time $t \in [t_o, t_d]$ of their cell cycle.
 We do not consider cells uniformly distributed along the cell cycle since it is
 known that cells age is exponentially distributed, having more younger than
-older cells at any time point \cite{Powell1956} (See \siref{supp_cell_age_dist}
-for further details). All computations hereafter are therefore done by applying
-an average like that in \eref{eq_time_avg} for the span of a cell cycle. We
-remind the reader that these time averages are done under a fixed environmental
-state. It is the trajectory of cells over cell cycles under a constant
-environment that we need to account for. It is through this averaging over the
-span of a cell cycle that we turn a periodic process as the one shown in
-\fref{fig3_cell_cycle}(B) into a stationary process that we can compare with
-experimental data and, as we will see later, use to reconstruct the steady
-state gene expression distribution.
+older cells at any point in time \cite{Powell1956} (See
+\siref{supp_cell_age_dist} for further details). All computations hereafter are
+therefore done by applying an average like that in \eref{eq_time_avg} for the
+span of a cell cycle. We remind the reader that these time averages are done
+under a fixed environmental state. It is the trajectory of cells over cell
+cycles under a constant environment that we need to account for. It is through
+this averaging over the span of a cell cycle that we turn a periodic process as
+the one shown in \fref{fig3_cell_cycle}(B) into a stationary process that we can
+compare with experimental data and, as we will see later, use to reconstruct the
+steady state gene expression distribution.
 
 \fref{fig3_cell_cycle}(C) compares zero-parameter fit predictions (lines) with
 experimentally determined quantities (points). The upper row shows the
@@ -101,7 +101,7 @@ expression level with respect to an unregulated promoter. For protein this is
 \begin{equation}
 	\foldchange = {\ee{p(R > 0)}_c \over \ee{p(R = 0)}_c},
 \end{equation}
-where $\ee{p(R \neq 0)}_c$ represents the mean protein count for cells with
+where $\ee{p(R > 0)}_c$ represents the mean protein count for cells with
 non-zero repressor copy number count $R$ over the entire cell cycle, and
 $\ee{p(R = 0)}_c$ represents the equivalent for a strain with no repressors
 present. The experimental points were determined from the YFP fluorescent
@@ -117,7 +117,7 @@ goes beyond the equilibrium picture to generate predictions for moments of the
 distribution other than the mean mRNA or mean protein count. To test this
 extended predictive power the lower row of \fref{fig3_cell_cycle}(C) shows the
 noise in gene expression defined as the standard deviation over the mean
-protein count accounting for the changes in gene dosage during the cell cycle.
+protein count, accounting for the changes in gene dosage during the cell cycle.
 Although our model systematically underestimates the noise in gene expression,
 the zero-parameter fits capture the scaling of this noise. Possible origins of
 this systematic discrepancy could be the intrinsic cell-to-cell variability of
@@ -130,8 +130,8 @@ denominator - mean fluorescence level - when computing the noise. Although the
 model is still highly informative about the physical nature of how cells
 regulate their gene expression, the lack of exact numerical agreement between
 theory and data opens an opportunity to gain new insights into the biophysical
-origin of cell-to-cell variability. In \mrm{add SI section} we explore empirical
-ways to account for this systematic deviation. We direct the reader to
+origin of cell-to-cell variability. In \siref{supp_empirical} we explore
+empirical ways to account for this systematic deviation. We direct the reader to
 \siref{supp_multi_gene} where equivalent predictions are done ignoring the
 changes in gene dosage due to the replication of the genome.
 

@@ -85,25 +85,24 @@ biophysical parameters such as transcription factor copy number and protein-DNA
 affinity have on the information processing capacity of a simple genetic
 circuit. Specifically, to predict the mutual information between an
 extracellular chemical signal (input $c$) and the corresponding cellular
-response in the form of protein expression (output $p$)
-(\eref{eq_mutual_info}), we must compute the input-output function $P(p \mid
-c)$. To do so, we use a master-equation-based model to construct the protein
-copy number distribution as a function of an extracellular inducer
-concentration for different combinations of transcription factor copy numbers
-and binding sites. Having these input-output distributions allows us to compute
-the mutual information $I$ between inputs and outputs for any arbitrary input
-distribution $P(c)$. We opt to compute the channel capacity, i.e., the maximum
-information that can be processed by this gene regulatory architecture, defined
-as \eref{eq_mutual_info} maximized over all possible input distributions
-$P(c)$. By doing so we examine the physical limits of what cells can do in
-terms of information processing by harboring these genetic circuits.
-Nevertheless, given the generality of the input-output function $P(p \mid c)$
-we derive, the model presented here can be used to compute the mutual
-information for any arbitrary input distribution $P(c)$. All parameters used
-for our model were inferred from a series of studies that span several
-experimental techniques \cite{Garcia2011c, Jones2014a, Brewster2014,
-Razo-Mejia2018}, allowing us to make parameter-free predictions of this
-information processing capacity \cite{Phillips2019}.
+response in the form of protein expression (output $p$), we must compute the
+input-output function $P(p \mid c)$. To do so, we use a master-equation-based
+model to construct the protein copy number distribution as a function of an
+extracellular inducer concentration for different combinations of transcription
+factor copy numbers and binding sites. Having these input-output distributions
+allows us to compute the mutual information $I$ between inputs and outputs for
+any arbitrary input distribution $P(c)$. We opt to compute the channel capacity,
+i.e., the maximum information that can be processed by this gene regulatory
+architecture, defined as \eref{eq_mutual_info} maximized over all possible input
+distributions $P(c)$. By doing so we examine the physical limits of what cells
+can do in terms of information processing by harboring these genetic circuits.
+Nevertheless, given the generality of the input-output function $P(p \mid c)$ we
+derive, the model presented here can be used to compute the mutual information
+for any arbitrary input distribution $P(c)$. All parameters used for our model
+were inferred from a series of studies that span several experimental techniques
+\cite{Garcia2011c, Jones2014a, Brewster2014, Razo-Mejia2018}, allowing us to
+make parameter-free predictions of this information processing capacity
+\cite{Phillips2019}.
 
 These predictions are then contrasted with experimental data, where the channel
 capacity is inferred from single-cell fluorescence distributions taken at

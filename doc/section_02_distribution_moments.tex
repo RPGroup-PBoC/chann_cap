@@ -2,16 +2,16 @@
 \label{sec_moments}
 
 Finding analytical solutions to chemical master equations is often fraught with
-difficulty. However, an alternative approach is to to approximate the
-distribution. One such scheme of approximation, the maximum entropy principle,
-makes use of the moments of the distribution to approximate the full
-distribution. In this section we will demonstrate an iterative algorithm to
-compute the mRNA and protein distribution moments.
+difficulty. An alternative approach is to to approximate the distribution. One
+such scheme of approximation, the maximum entropy principle, makes use of the
+moments of the distribution to approximate the full distribution. In this
+section we will demonstrate an iterative algorithm to compute the mRNA and
+protein distribution moments.
 
 The kinetic model for the simple repression motif depicted in
 \fref{fig2_minimal_model}(A) consists of an infinite system of ODEs for each
-possible pair of mRNA and protein copy number, $m, p$. To compute any moment of
-the distribution, we define a vector
+possible pair of mRNA and protein copy number, $(m, p)$. To compute any moment
+of the distribution, we define a vector
 \begin{equation}
 	\ee{\bb{m^x p^y}} \equiv (\ee{m^x p^y}_A, \ee{m^x p^y}_I, \ee{m^x p^y}_R)^T,
 \end{equation}
@@ -74,4 +74,5 @@ moments of interest as cells progress through the cell cycle. We will then use
 the value of the moments of the distribution to approximate the full gene
 expression distribution. This method is computationally more efficient than
 trying to numerically integrate the infinite set of equations describing the
-full probability distribution $\bb{P}(m, p)$.
+full probability distribution $\bb{P}(m, p)$, or using a stochastic algorithm 
+to sample from the distribution.

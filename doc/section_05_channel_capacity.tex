@@ -12,13 +12,13 @@ logarithm of the number of states that the signaling system can properly
 resolve. For example, a signaling system with a channel capacity of $C$ bits is
 interpreted as being able to resolve $2^C$ states, though channel capacities
 with fractional values are allowed. We therefore prefer the Bayesian
-interpretation that the mutual information, and as a consequence the channel
-capacity, quantifies the improvement in the inference of the input when
-considering the output compared to just using the prior distribution of the
-input by itself for prediction \cite{Voliotis2014a, Bowsher2014}. Under this
-interpretation a channel capacity of a fractional bit still quantifies an
-improvement in the ability of the signaling system to infer the value of the
-extracellular signal compared to having no sensing system at all.
+interpretation that the mutual information quantifies the improvement in the
+inference of the input when considering the output compared to just using the
+prior distribution of the input by itself for prediction \cite{Voliotis2014a,
+Bowsher2014}. Under this interpretation a channel capacity of a fractional bit
+still quantifies an improvement in the ability of the signaling system to infer
+the value of the extracellular signal compared to having no sensing system at
+all.
 
 Computing the channel capacity implies optimizing over an infinite space of
 possible distributions $P(c)$. For special cases in which the noise is small
@@ -62,7 +62,7 @@ maximum expression is highly dependent on the repressor-DNA affinity. For strong
 binding sites (blue curve in \fref{fig5_channcap}(A)) there is a rapid increment
 in the channel capacity, but the maximum value reached is smaller compared to a
 weaker binding site (orange curve in \fref{fig5_channcap}(A)). In
-\mrm{ref to appendix} we show using the small noise approximation
+\siref{supp_empirical} we show using the small noise approximation
 \cite{Tkacik2008, Tkacik2008a} that if the systematic deviation of our
 predictions on the cell-to-cell variability was explained with a multiplicative
 constant, i.e. all noise predictions can be corrected by multiplying them by a
