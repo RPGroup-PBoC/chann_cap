@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head><meta charset="utf-8" />
-
+<style>
+  div.prompt {display:none}
+</style>
 <title>gillespie_simulation</title>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.1.10/require.min.js"></script>
@@ -13017,159 +13019,6 @@ ul.typeahead-list  > li > a.pull-right {
 .highlight .vm { color: #19177C } /* Name.Variable.Magic */
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */
     </style>
-<style type="text/css">
-    .container { width:100% !important; }
-
-body {
-    color: #333;
-    background: #f6f6f6;
-    width: 980px;
-    margin: auto;
-}
-
-#notebook_panel { /* main background */
-    color: #f6f6f6;
-    margin: auto;
-}
-
-div #notebook { /* center the content */
-    background: #4b4b4b;
-    color: #333;    
-    padding-left: 1em;
-    padding-right: 1em;
-    padding-top: 2ex;
-    text-align: justify;
-}
-
-#notebook li { /* More space between bullets. */
-    margin-top: 0.8em;
-}
-
-div.text_cell {
-    text-align: justify;
-    width: 105ex /* instead of 100%, */
-}
-
-div.text_cell_render{
-    text-align: justify;
-    padding: 0em 1em 0em 1em;
-    font-family: Verdana, Geneva, sans-serif;
-    line-height: 145%; /* added for some line spacing of text. */
-    width: 842px;      /* instead of 'inherit' for shorter lines */
-    font-weight: Light;
-    font-size: 13pt;
-}
-
-div.text_cell_render.border-box-sizing.rendered_html {
-    margin: 0;
-    padding: 1em; 
-    margin-left: 4ex;
-    text-align: justify;
-}
-div.cell.text_cell.border-box-sizing {
-    margin: 0;
-    padding: 0; 
-    text-align: justify;
-}
-.rendered_html h1 { /* Main titles big with more space*/
-    margin-top: 2.2em;
-    line-height: 1.4em;
-    margin-bottom: 0.1em;
-    padding: 0;
-    font-family: "Open Sans", Sans-Serif; 
-    font-weight: Light;
-}
-.rendered_html h2 {
-    margin-top:2.0em;
-    margin-bottome:0.0em;
-    margin: 0;
-    padding: 0;
-    font-family: "Open Sans", Sans-Serif; font-weight: Light;
-}
-.rendered_html h3 {
-    margin: 0;
-    padding: 0;
-    font-family: "Open Sans", Sans-Serif; font-weight: Light;
-}
-
-div.cell { /* set cell width to about 80 chars */
-    margin-top:1em;
-    margin-bottom:1em;
-    margin-left:auto;
-    margin-right:auto;
-    width: 842px;
-    text-align: justify;
-}
-
-.cell.command_mode.selected {
-    border-color: rgba(0,0,0,0.1);
-}
-
-.cell.edit_mode.selected {
-    border-color: rgba(0,0,0,0.15);
-    box-shadow: 0px 0px 5px #f0f0f0;
-    -webkit-box-shadow: 0px 0px 5px #f0f0f0;
-}
-
-div.cell.code_cell {  /* Area containing both code and output */
-background-color: #FFF;
-border-radius: 10px;
-border-style: solid;
-border-width: 1px;
-border-color: gray;
-padding: 1em;
-}
-
-div.cell.selected { /* Current cell */
-    border-radius: 5px;
-    border-color: #1E90FF;  /* Dodger blue*/
-    border-width: 2px;
-}
-
-div.cell.running{ /* Cell the is running */
-     border: 3px dashed #f33;
-}
-
-
-div.input_area { /* box around box with code */
-    border: none;
-    background: #f5f5f5;
-    border: 2px solid #ccc;
-    border-radius: 10px;
-    padding-top: 0.5ex;
-    padding-bottom: 0.5ex;
-    padding-left: 0.5em;
-}
-
-div.input { /* box with code */
-    width: 810px;
-}
-
-div.CodeMirror { /* code font */
-    font-family: "Droid Sans Mono", monospace;
-    font-size: 12pt;
-}
-
-div.prompt { /* remove In/Out prompt */
-    display: none;
-}
-
-div.cell.border-box-sizing.code_cell.rendered {
-    font-size: 12pt;
-}
- 
-div.output_subarea {
-    border:none;
-    font-size: 12pt;
-}
-
-/* header colors and fonts */
-h1 { color: #444; }
-h2 { color: #444; }
-h3 { color: #444; font-style: italic; font-weight: normal}
-
-
-    </style>
 
 
 <style type="text/css">
@@ -13283,9 +13132,9 @@ div#notebook {
 <span class="n">homedir</span> <span class="o">=</span> <span class="n">repo</span><span class="o">.</span><span class="n">working_dir</span>
 
 <span class="c1"># Define directories for data and figure </span>
-<span class="n">tmpdir</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{homedir}</span><span class="s1">/tmp/&#39;</span>
-<span class="n">figdir</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{homedir}</span><span class="s1">/fig/gillespie_simulation/&#39;</span>
-<span class="n">datadir</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{homedir}</span><span class="s1">/data/csv_gillespie/&#39;</span>
+<span class="n">tmpdir</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">homedir</span><span class="si">}</span><span class="s1">/tmp/&#39;</span>
+<span class="n">figdir</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">homedir</span><span class="si">}</span><span class="s1">/fig/gillespie_simulation/&#39;</span>
+<span class="n">datadir</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">homedir</span><span class="si">}</span><span class="s1">/data/csv_gillespie/&#39;</span>
 </pre></div>
 
     </div>
@@ -14629,7 +14478,7 @@ height=265
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pops_prom</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">names</span><span class="p">)</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">value_vars</span><span class="o">=</span><span class="n">names</span><span class="p">)</span>
 <span class="c1"># Add promoter state</span>
 <span class="n">df_sim_mRNA</span><span class="p">[</span><span class="s2">&quot;prom_state&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">value</span>
-<span class="n">df_sim_mRNA</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{datadir}</span><span class="s1">gillespie_mRNA.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">df_sim_mRNA</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">datadir</span><span class="si">}</span><span class="s1">gillespie_mRNA.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 <span class="n">df_sim_mRNA</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
 </pre></div>
@@ -16783,20 +16632,20 @@ height=389
 <span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Mean protein copy number&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gillespie: </span><span class="si">{mean_gillespie}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;MaxEnt: </span><span class="si">{mean_maxent}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gillespie: </span><span class="si">{</span><span class="n">mean_gillespie</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;MaxEnt: </span><span class="si">{</span><span class="n">mean_maxent</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Variance protein copy number&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gillespie: </span><span class="si">{var_gillespie}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;MaxEnt: </span><span class="si">{var_maxent}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gillespie: </span><span class="si">{</span><span class="n">var_gillespie</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;MaxEnt: </span><span class="si">{</span><span class="n">var_maxent</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Noise in protein copy number&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gillespie: {np.sqrt(var_gillespie) / mean_gillespie}&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;MaxEnt: {np.sqrt(var_maxent) / mean_maxent}&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gillespie: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var_gillespie</span><span class="p">)</span> <span class="o">/</span> <span class="n">mean_gillespie</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;MaxEnt: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var_maxent</span><span class="p">)</span> <span class="o">/</span> <span class="n">mean_maxent</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Skewness protein copy number&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gillespie: </span><span class="si">{skew_gillespie}</span><span class="s1">&#39;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;MaxEnt: </span><span class="si">{skew_maxent}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Gillespie: </span><span class="si">{</span><span class="n">skew_gillespie</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;MaxEnt: </span><span class="si">{</span><span class="n">skew_maxent</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 
     </div>

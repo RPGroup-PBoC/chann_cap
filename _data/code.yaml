@@ -84,6 +84,23 @@
       link: chann_cap_multi_prom_protein.csv
 
 - script:
+  name: empirical_constants
+  desc: >
+    Empirical fixes to the disagreement between theoretical and experimental 
+    noise in gene expression. These explorations aim to aid the next generation
+    of theory-experiment comparison to find a foundational reason for the 
+    systematic underestimate of the cell-to-cell variability
+  req:
+    - ds:
+      title: Moments of mRNA and protein distribution over cell cycle.
+      storage: local 
+      link: MaxEnt_multi_prom_IPTG_range.csv
+    - ds:
+      title: Single-cell fluorescence intensities.
+      storage: local 
+      link: single_cell_microscopy_data.csv
+
+- script:
   name: image_analysis_pipeline
   desc: >
     Image processing pipeline to extract single-cell fluorescence values.
