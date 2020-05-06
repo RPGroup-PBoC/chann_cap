@@ -3,8 +3,8 @@ description: > # this means to ignore newlines until "baseurl:"
   This website is an online repositor for the manuscript "First-principles prediction of the 
   information processing capacity of a simple genetic circuit"
 # permalink: ':title/'
-baseurl: "/" # the subpath of your site, e.g. /blog
-url: "https://www.rpgroup.caltech.edu" # the base hostname & protocol for your site, e.g. http://example.com
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://www.rpgroup.caltech.edu/" # the base hostname & protocol for your site, e.g. http://example.com
 
 # You can include social icons
 site-twitter: #if your site has a twitter account, enter it here
