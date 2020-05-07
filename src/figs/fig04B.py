@@ -112,7 +112,7 @@ en_list = [-15.3, -13.9, -9.7]
 en_dict = dict(zip(("O1", "O2", "O3"), en_list))
 
 # Define binstep
-binstep = 10
+binstep = 20
 # Loop through operators
 for i, (op, data) in enumerate(df_group):
     # Generate list of colors
@@ -125,13 +125,12 @@ for i, (op, data) in enumerate(df_group):
         # Generate ECDF
         x, y = ccutils.stats.ecdf(d.fold_change)
         # Plot ECDF
-        ax[i].plot(
+        ax[i].step(
             x[::binstep],
             y[::binstep],
-            lw=0,
-            marker=".",
+            lw=3.5,
             color=colors[j],
-            alpha=0.3,
+            alpha=1,
             label=f'',
         )
         # Add fake plots for legend (to fix the alpha)
@@ -162,13 +161,13 @@ for i, (op, data) in enumerate(df_group):
         fc_space = protein_space / mean_delta_p
         # Plot theoretical prediction
         ax[i].plot(
-            fc_space[0::100],
-            np.cumsum(Pp)[0::100],
+            fc_space[0::1000],
+            np.cumsum(Pp)[0::1000],
             linestyle='--',
             color='k',
             linewidth=1.5,
             label="",
-            alpha=0.75
+            alpha=0.75,
         )
 
     # Label y axis
@@ -176,8 +175,9 @@ for i, (op, data) in enumerate(df_group):
 
     # Add legend
     label = f'$\\beta\Delta\epsilon_r =$ {en_dict[op]}'
-    ax[i].legend(loc='lower right', frameon=False, title=label, 
+    legend = ax[i].legend(loc='lower right', frameon=False, title=label, 
                  bbox_to_anchor=(1.08, 0))
+    legend.get_title().set_fontsize('8')
 
 # Label y axis of left plot
 ax[2].set_xlabel("fold-change")
@@ -191,5 +191,6 @@ ax[0].set_title(f'rep./cell = {rep}', bbox=dict(facecolor="#ffedce"))
 # Change spacing between plots
 plt.subplots_adjust(hspace=0.02)
 
-plt.savefig(figdir + "fig04B.pdf", bbox_inches="tight")
+plt.savefig(figdir + "fig04B.pdf", bbox_inches="tight", dpi=400)
+plt.savefig(figdir + "fig04B.svg", bbox_inches="tight")
 plt.savefig(figdir + "fig04B.png", bbox_inches="tight")

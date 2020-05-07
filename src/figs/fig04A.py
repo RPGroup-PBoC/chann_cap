@@ -174,4 +174,5 @@ xticks = [0, 4e3, 8e3, 1.2e4]
 ax[0, 0].xaxis.set_ticks(xticks)
 
 plt.savefig(figdir + "fig04A.pdf", bbox_inches="tight")
+plt.savefig(figdir + "fig04A.svg", bbox_inches="tight")
 plt.savefig(figdir + "fig04A.png", bbox_inches="tight")

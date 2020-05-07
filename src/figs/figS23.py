@@ -113,7 +113,7 @@ Pp_maxEnt = ccutils.maxent.maxEnt_from_lagrange(
 #%%
 # Define binstep for plot, meaning how often to plot
 # an entry
-binstep = 10
+binstep = 50
 
 # Initialize figure
 fig, ax = plt.subplots(2, 1, figsize=(3.5, 4), sharex=True)
