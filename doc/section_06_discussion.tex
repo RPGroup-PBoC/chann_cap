@@ -16,21 +16,21 @@ experimentally and theoretically.
 In this paper we take advantage of the recent progress on the quantitative
 modeling of input-output functions of genetic circuits to build a minimal model
 of the simple repression motif \cite{Phillips2019}. By combining a series of
-studies on this circuit spanning diverse experimental methods for measuring
-gene expression under a myriad of different conditions, we possess complete a
-priori parametric knowledge -- allowing us to generate parameter-free
-predictions for processes related to information processing. Some of the model
-parameters for our kinetic formulation of the input-output function are
-informed by inferences made from equilibrium models. We use the fact that if
-both kinetic and thermodynamic languages describe the same system, the
-predictions must be self-consistent. In other words, if the equilibrium model
-can only make statements about the mean mRNA and mean protein copy number
-because of the way these models are constructed, those predictions must be
-equivalent to what the kinetic model has to say about these same quantities.
-This condition therefore constrains the values that the kinetic rates in the
-model can take. To test whether or not the equilibrium picture can reproduce
-the predictions made by the kinetic model we compare the experimental and
-theoretical fold-change in protein copy number for a suite of biophysical
+studies on this circuit spanning diverse experimental methods for measuring gene
+expression under a myriad of different conditions, for the first time we
+hypothesize we possess complete a priori parametric knowledge -- allowing us to
+generate parameter-free predictions for processes related to information
+processing. Some of the model parameters for our kinetic formulation of the
+input-output function are informed by inferences made from equilibrium models.
+We use the fact that if both kinetic and thermodynamic languages describe the
+same system, the predictions must be self-consistent. In other words, if the
+equilibrium model can only make statements about the mean mRNA and mean protein
+copy number because of the way these models are constructed, those predictions
+must be equivalent to what the kinetic model has to say about these same
+quantities. This condition therefore constrains the values that the kinetic
+rates in the model can take. To test whether or not the equilibrium picture can
+reproduce the predictions made by the kinetic model we compare the experimental
+and theoretical fold-change in protein copy number for a suite of biophysical
 parameters and environmental conditions (\fref{fig3_cell_cycle}(C) upper row).
 The agreement between theory and experiment demonstrates that these two
 frameworks can indeed make consistent predictions.
@@ -38,24 +38,30 @@ frameworks can indeed make consistent predictions.
 The kinetic treatment of the system brings with it increasing predictive power
 compared to the equilibrium picture. Under the kinetic formulation, the
 predictions are not limited only to the mean but to any of the moments of the
-mRNA and protein distributions. We first test these novel predictions by
-comparing the noise in protein copy number (standard deviation / mean) with
-experimental data. Our minimal model predicts the noise up to a systematic
-deviation. The physical or biological origins of this discrepancy remain an
-open question. In that way the work presented here exposes the status quo of
-our understanding of gene regulation in bacteria, posing new questions to be
-answered with future refinements of the model. We then extend our analysis to
-infer entire protein distributions at different input signal concentrations by
-using the maximum entropy principle. What this means is that we compute moments
-of the protein distribution, and then use these moments to build an
-approximation to the full distribution. These predicted distributions are then
-compared with experimental single-cell distributions as shown in
-\fref{fig4_maxent}(B) and \siref{supp_maxent}. Again, here although our minimal
-model systematically underestimates the width of the distributions, it informs
-how changes in parameters such as protein copy number or protein-DNA binding
-affinity will affect the full probabilistic input-output function of the genetic
-circuit, up to a multiplicative constant. We then use our model to predict the
-information processing capacity.
+mRNA and protein distributions. Furthermore, our formulation in terms of
+dynamical equations allows us to account for the time-varying nature of the
+moments of the mRNA and protein copy numbers. Specifically, since the protein
+mean lifetime is comparable with the cell cycle length, the protein copy number
+does not reach a steady state across the cell cycle. Accounting for this effect
+increases the expected cell-to-cell variability when measuring non-synchronized
+cells. We first test these novel predictions by comparing the noise in protein
+copy number (standard deviation / mean) with experimental data. Our minimal
+model predicts the noise up to a systematic deviation. The physical or
+biological origins of this discrepancy remain an open question. In that way the
+work presented here exposes the status quo of our understanding of gene
+regulation in bacteria, posing new questions to be answered with future
+refinements of the model. We then extend our analysis to infer entire protein
+distributions at different input signal concentrations by using the maximum
+entropy principle. What this means is that we compute moments of the protein
+distribution, and then use these moments to build an approximation to the full
+distribution. These predicted distributions are then compared with experimental
+single-cell distributions as shown in \fref{fig4_maxent}(B) and
+\siref{supp_maxent}. Again, here although our minimal model systematically
+underestimates the width of the distributions, it informs how changes in
+parameters such as protein copy number or protein-DNA binding affinity will
+affect the full probabilistic input-output function of the genetic circuit, up
+to a multiplicative constant. We then use our model to predict the information
+processing capacity.
 
 By maximizing the mutual information between input signal concentration and
 output protein distribution over all possible input distributions, we predict
@@ -63,23 +69,28 @@ the channel capacity of the system over a suite of biophysical parameters such
 as varying repressor protein copy number and repressor-DNA binding affinity.
 Although there is no reason to assume the the simplified synthetic circuit we
 used as an experimental model operates optimally given the distribution of
-inputs, the relevance of the channel capacity comes from its interpretation as
-a metric of the physical limit of how precise an inference cells can
-make about what the state of the environment is. Our model, despite the
-systematic deviations, makes non-trivial predictions such as the existence of
-an optimal repressor copy number for a given repressor-DNA binding energy,
-predicting the channel capacity up to an additive constant (See
-\fref{fig5_channcap}). The origin of this optimal combination of repressor copy
-number and binding energy differs from previous publications in which an extra
-term associated with the cost of producing protein was included in the model
-\cite{Tkacik2011}. This optimal parameter combination is a direct consequence
-of the fact that the LacI repressor cannot be fully deactivated
-\cite{Razo-Mejia2018}. This implies that as the number of repressors increases,
-a significant number of them are still able to bind to the promoter even at
-saturating concentrations of inducer. This causes all of the input-output
-functions to be shift towards low expression levels, regardless of the inducer
-concentration, decreasing the amount of information that the circuit is able to
-process.
+inputs, the relevance of the channel capacity comes from its interpretation as a
+metric of the physical limit of how precise an inference cells can make about
+what the state of the environment is. Our model, despite the systematic
+deviations, makes non-trivial predictions such as the existence of an optimal
+repressor copy number for a given repressor-DNA binding energy, predicting the
+channel capacity up to an additive constant (See \fref{fig5_channcap}). The
+origin of this optimal combination of repressor copy number and binding energy
+differs from previous publications in which an extra term associated with the
+cost of producing protein was included in the model \cite{Tkacik2011}. This
+optimal parameter combination is a direct consequence of the fact that the LacI
+repressor cannot be fully deactivated \cite{Razo-Mejia2018}. This implies that
+as the number of repressors increases, a significant number of them are still
+able to bind to the promoter even at saturating concentrations of inducer. This
+causes all of the input-output functions to be shift towards low expression
+levels, regardless of the inducer concentration, decreasing the amount of
+information that the circuit is able to process. Interestingly, the number of
+bits predicted and measured in our system are similar to that of the gap genes
+in the \textit{Drosophila} embryo \cite{Dubuis2013}. Although this is a
+suggestive coincidence that sets current experimental data on information 
+processing capacity of genetic circuits between 1 and 2 bits, more work is 
+required to fully understand the effect that different regulatory architectures
+have on the ability to resolve different signals.
 
 We consider it important to highlight the limitations of the work presented
 here. The previously discussed systematic deviation for the noise and skewness
