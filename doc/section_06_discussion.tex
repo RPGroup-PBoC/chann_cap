@@ -17,20 +17,20 @@ In this paper we take advantage of the recent progress on the quantitative
 modeling of input-output functions of genetic circuits to build a minimal model
 of the simple repression motif \cite{Phillips2019}. By combining a series of
 studies on this circuit spanning diverse experimental methods for measuring gene
-expression under a myriad of different conditions, for the first time we
-hypothesize we possess complete a priori parametric knowledge -- allowing us to
-generate parameter-free predictions for processes related to information
-processing. Some of the model parameters for our kinetic formulation of the
-input-output function are informed by inferences made from equilibrium models.
-We use the fact that if both kinetic and thermodynamic languages describe the
-same system, the predictions must be self-consistent. In other words, if the
-equilibrium model can only make statements about the mean mRNA and mean protein
-copy number because of the way these models are constructed, those predictions
-must be equivalent to what the kinetic model has to say about these same
-quantities. This condition therefore constrains the values that the kinetic
-rates in the model can take. To test whether or not the equilibrium picture can
-reproduce the predictions made by the kinetic model we compare the experimental
-and theoretical fold-change in protein copy number for a suite of biophysical
+expression under a myriad of different conditions, for the first time we possess
+complete \textit{a priori} parametric knowledge -- allowing us to generate
+parameter-free predictions for processes related to information processing. Some
+of the model parameters for our kinetic formulation of the input-output function
+are informed by inferences made from equilibrium models. We use the fact that if
+both kinetic and thermodynamic languages describe the same system, the
+predictions must be self-consistent. In other words, if the equilibrium model
+can only make statements about the mean mRNA and mean protein copy number
+because of the way these models are constructed, those predictions must be
+equivalent to what the kinetic model has to say about these same quantities.
+This condition therefore constrains the values that the kinetic rates in the
+model can take. To test whether or not the equilibrium picture can reproduce the
+predictions made by the kinetic model we compare the experimental and
+theoretical fold-change in protein copy number for a suite of biophysical
 parameters and environmental conditions (\fref{fig3_cell_cycle}(C) upper row).
 The agreement between theory and experiment demonstrates that these two
 frameworks can indeed make consistent predictions.
@@ -42,13 +42,13 @@ mRNA and protein distributions. Furthermore, our formulation in terms of
 dynamical equations allows us to account for the time-varying nature of the
 moments of the mRNA and protein copy numbers. Specifically, since the protein
 mean lifetime is comparable with the cell cycle length, the protein copy number
-does not reach a steady state across the cell cycle. Accounting for this effect
-increases the expected cell-to-cell variability when measuring non-synchronized
-cells. We first test these novel predictions by comparing the noise in protein
-copy number (standard deviation / mean) with experimental data. Our minimal
-model predicts the noise up to a systematic deviation. The physical or
-biological origins of this discrepancy remain an open question. In that way the
-work presented here exposes the status quo of our understanding of gene
+does not reach a steady state over the duration of the cell cycle. Accounting
+for this effect increases the expected cell-to-cell variability when measuring
+non-synchronized cells. We first test these novel predictions by comparing the
+noise in protein copy number (standard deviation / mean) with experimental data.
+Our minimal model predicts the noise up to a systematic deviation. The physical
+or biological origins of this discrepancy remain an open question. In that way
+the work presented here exposes the status quo of our understanding of gene
 regulation in bacteria, posing new questions to be answered with future
 refinements of the model. We then extend our analysis to infer entire protein
 distributions at different input signal concentrations by using the maximum
@@ -85,21 +85,26 @@ able to bind to the promoter even at saturating concentrations of inducer. This
 causes all of the input-output functions to be shift towards low expression
 levels, regardless of the inducer concentration, decreasing the amount of
 information that the circuit is able to process. Interestingly, the number of
-bits predicted and measured in our system are similar to that of the gap genes
-in the \textit{Drosophila} embryo \cite{Dubuis2013}. Although this is a
-suggestive coincidence that sets current experimental data on information 
-processing capacity of genetic circuits between 1 and 2 bits, more work is 
+bits predicted and measured in our system is similar to that of the gap genes in
+the \textit{Drosophila} embryo \cite{Dubuis2013}. Although this is a suggestive
+numerical correspondence that sets current experimental data on information
+processing capacity of genetic circuits between 1 and 2 bits, more work is
 required to fully understand the effect that different regulatory architectures
-have on the ability to resolve different signals.
+have on the ability to resolve different signals. 
 
 We consider it important to highlight the limitations of the work presented
 here. The previously discussed systematic deviation for the noise and skewness
 of the predicted distributions (See \siref{supp_multi_gene}), and therefore of
-the predicted distributions and channel capacity, remains an unresolved question
-that deserves to be addressed in further iterations of our minimal model. Also,
-as first reported in \cite{Razo-Mejia2018}, our model fails to capture the
-steepness of the fold-change induction curve for the weakest repressor binding
-site (See \fref{fig3_cell_cycle}(B)). Furthermore the minimal model in
+the predicted distributions and channel capacity, remains an unresolved
+question. Our current best hypothesis for the origin of this unaccounted noise
+pertains to cell-to-cell variability in the central dogma machinery. More
+specifically, our model does not account for changes in RNAP and sigma factor
+copy numbers, changes in ribosome numbers, and even the variability in the
+repressor copy number. This possibility deserves to be addressed in further
+iterations of our minimal model. Also, as first reported in
+\cite{Razo-Mejia2018}, our model fails to capture the steepness of the
+fold-change induction curve for the weakest repressor binding site (See
+\fref{fig3_cell_cycle}(B)). Furthermore the minimal model in
 \fref{fig2_minimal_model}(A), despite being widely used, is an
 oversimplification of the physical picture of how the transcriptional machinery
 works. The coarse-graining of all the kinetic steps involved in transcription
