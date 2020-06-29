@@ -163,15 +163,15 @@ times to get a better estimate of the channel capacity.
   \label{sfig_channcap_bootstrap}
 \end{figure}
 
-\eref{seq_mutual_biased} tells us that if we subsample each of the
-distributions from \fref{sfig_fluor_dist} at different fractions, and plot them
-as a function of the inverse sample size we will find a linear relationship if
-the expansion of the mutual information is valid. To test this idea we repeated
-the bootstrap estimate of \fref{sfig_channcap_bootstrap} sampling 10\%, 20\%,
-and so on until taking 100\% of the data. We repeated this for different number
-of bins since a priori for arbitrary units of fluorescence we do not have a way
-to select the optimal number of bins. \fref{sfig_channcap_lin_reg} shows the
-result of these estimates. We can see that the linear relationship proposed in
+\eref{seq_mutual_biased} tells us that if we subsample each of the distributions
+from \fref{sfig_fluor_dist} at different fractions, and plot them as a function
+of the inverse sample size we will find a linear relationship if the expansion
+of the mutual information is valid. To test this idea we repeated the bootstrap
+estimate of \fref{sfig_channcap_bootstrap} sampling 10\%, 20\%, and so on until
+taking 100\% of the data. We repeated this for different number of bins since
+\textit{a priori} for arbitrary units of fluorescence we do not have a way to
+select the optimal number of bins. \fref{sfig_channcap_lin_reg} shows the result
+of these estimates. We can see that the linear relationship proposed in
 \eref{seq_mutual_biased} holds true for all number of bins selected. We also
 note that the value of the intercept of the linear regression varies depending
 on the number of bins.
